@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+	<head>
+		<meta name="robots" content="noindex, nofollow">
+		<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+		<link rel="stylesheet" type="text/css" href="chat.css">
+		<title>Infos zum Chat v6.0</title>
+	</head>
+
+	<body>
+		<p>Diese Chat-Version besteht zum einen aus einem erneuerten, auf SQL basierenden Log-System
+		und zum anderen aus einem neuen Interface (<a href="index.php">index.php</a>), welches es dem
+		Client erlaubt, nicht wie bisher ständig in konstanten Zeitabständen nach neuen Posts fragen zu müssen.
+		Es wird nun eine HTTP-Verbindung aufrecht erhalten, über die der Server eigenständig Nachrichten
+		an den Client senden kann. Nun führt dies zu einer Reihe von möglichen Problemen:</p>
+		
+		<p>Einerseits wird diese Lösung nicht sicher von allen Browsern unterstützt (erfolgreich getestet wurden
+		Internet Explorer, Mozilla/Firefox, Netscape), weswegen parallel ein altes Interface angeboten wird (TODO).</p
+		
+		<p>Andererseits könnten eventuell zwischengeschaltete Proxies Teilantworten des Servers zwischenspeichern
+		und erst dann an den Client weiterleiten, wenn die Antwort vollständig ist, die Verbindung vom Server also getrennt wurde
+		(was mit den Standardeinstellungen ja nie passiert). Dieses Problem lässt sich durch Anhängen der Optionen
+		patient=1 und limit=1 (<a href="index.php?patient=1&limit=1">index.php?patient=1&limit=1</a>)
+		lösen, wodurch für jeden zu empfangenden Post eine neue Verbindung aufgebaut wird (dies ist immer noch
+		ressourcensparender als das ständige Neuladen nach jeweils ca. 5 Sekunden). Allerdings merkt der Client
+		dann (wie im alten Chat) nicht automatisch, dass der Chat hängt, weil er die Bestätigungsnachricht des Servers
+		beim Verbindungsaufbau nicht mehr erhält (siehe "patient" unten).</p>
+
+		<p>Auch gibt es eine Reihe von weiteren Parametern, die sich an die <a href="index.php">index.php</a> nach
+		obiger Syntax anhängen lassen. Auf diese Weise lässt sich eine persönlich angepasste URL formen,
+		die man sich als Lesezeichen speichern kann um nicht jedes Mal z. B. den Namen eingeben oder die Zahl
+		der anzuzeigenden Posts einstellen zu müssen. Nachfolgender Tabelle stellt eine Auflistung dar:</p>
+		<table>
+			<tr><th>Parameter</th><th>mögliche Werte</th><th>Default</th><th>Beschreibung</th></tr>
+			<tr><td>name</td><td>beliebig</td><td></td><td>Gibt den standardmäßig einzutragenden Namen an. Leerzeichen werden (wie immer in URLs) durch %20 kodiert, siehe <a href="http://www.usability-now.com/tools/url-encoder-decoder/">hier</a> (Encode)</td></tr>
+			<tr><td>last</td><td>4 bis 24</td><td>20</td><td>Wie viele Posts sollen maximal gleichzeitig angezeigt werden?</td></tr>
+			<tr><td>old</td><td>0 oder 1</td><td>0</td><td>Sollen (1) oder sollen nicht (0) alle jemals empfangenen Posts angezeigt werden? Setzt die Option "last" außer Kraft.</td></tr>
+			<tr><td>ip</td><td>0 oder 1</td><td>0</td><td>Sollen IPs angezeigt werden?</td></tr>
+			<tr><td>delay</td><td>0 oder 1</td><td>0</td><td>Sollen Delays angezeigt werden?</td></tr>
+			<tr><td>links</td><td>0 oder 1</td><td>1</td><td>Sollen Links anklickbar sein?</td></tr>
+			<tr><td>logip</td><td>0 oder 1</td><td>1</td><td>Sollen IPs im Log angezeigt werden?</td></tr>
+			<tr><td>logdelay</td><td>0 oder 1</td><td>0</td><td>Sollen Delays im Log angezeigt werden?</td></tr>
+			<tr><td>loglinks</td><td>0 oder 1</td><td>1</td><td>Sollen Links im Log anklickbar sein?</td></tr>
+			<tr><td>target</td><td>self, parent, top, _blank</td><td>_blank</td><td>In welchem Fenster sollen Links beim Anklicken geöffnet werden? self: selbes Frame-Fenster, parent: Eltern-Frame-Fenster, top: aktueller Tab, _blank: neuer Tab bzw. neue Seite</td></tr>
+			<tr><td>sound</td><td>0 oder 1</td><td>0</td><td>Soll bei jedem empfangenen Post der Sound "sound_post" abgespielt werden? Funktioniert nur unter einigen Browsern (u. a. Internet Explorer und t. w. Mozilla/Firefox) und führt eventuell zu Bugs.</td></tr>
+			<tr><td>sound_post</td><td>Dateiname</td><td>spam.wav</td><td>siehe "sound"</td></tr>
+			<tr><td>redirect</td><td>beliebige URL</td><td>http://www.stud.uni-muenchen.de/~christian.sattler/ redirect.html? (kodiert)</td><td>Bei anklickbaren Links: Welcher Redirect-Service soll benutzt werden, damit yefx.org nicht als Referrer erscheint?</td></tr>
+			<tr><td>method</td><td>xml, iframe oder detect</td><td>detect</td><td>Mit welcher Methode sollen Posts im Hintergrund geladen werden? Diese Option sollte nicht verwendet werden.</td></tr>
+			<tr><td>limit</td><td>natürliche Zahl</td><td>256</td><td>Nach wie vielen Posts soll die Verbindung neu aufgebaut werden?</td></tr>
+			<tr><td>patient</td><td>0 oder 1</td><td>0</td><td>Soll eine neue Verbindung erstellt werden, wenn sich der Server innerhalb von "wait" Sekunden nach Verbindungsaufbau nicht meldet? Normalerweise sendet der Server am Anfang eine Bestätigungsnachricht, diese ist bei Aktivierung dieser Option nicht mehr erforderlich. (Achtung: Heißt nicht, dass alle "wait" Sekunden eine neue Verbindung aufgebaut wird.)</td></tr>
+			<tr><td>wait</td><td>natürliche Zahl</td><td>10</td><td>siehe "patient"</td></tr>
+			<tr><td>title</td><td>0 oder 1</td><td>1</td><td>Soll der letzte Post in der Titelzeile erscheinen?</td></tr>
+		</table>
+	</body>
+	
+	<p>Beispiel: <a href="http://noname.yefx.org/beta/index.php?name=%20%20Spam&last=20&ip=1&logdelay=1">http://noname.yefx.org/beta/index.php?name=%20%20Spam&last=20&ip=1&logdelay=1</a></p>
+
+</html>

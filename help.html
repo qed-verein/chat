@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+	<head>
+		<meta name="robots" content="noindex, nofollow">
+		<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+		<link rel="stylesheet" type="text/css" href="chat.css">
+		<script type="text/javascript" src="help.js"></script>
+		<title>Hilfsfenster</title>
+	</head>
+
+	<body onload="Init ()">
+		<p>
+			<input type="checkbox" id="ip" onclick="ShowIp ()" />IPs anzeigen
+			<input type="checkbox" id="delay" onclick="ShowDelay ()" />Delays anzeigen
+			<input type="checkbox" id="links" onclick="ShowLinks ()" />Links anzeigen
+			<br />
+			<input type="checkbox" id="botblock" onclick="NotShowBot ()"/>Sinn anzeigen
+			<br />
+			<input type="checkbox" id="old" onclick="ShowOld ()" />Alle empf. Posts anzeigen, sonst
+			<input type="button" onclick="Decrease ()" value="<" />
+			<input type="text" id="last" onchange="CheckSize ()" size="2" value="24" />
+			<input type="button" onclick="Increase ()" value=">" />	
+		</p>
+		<table style="width:100%;">
+		  <tr>
+		    <td style="text-align: left; width:100%;"><a href="http://uxul.org/ersatz.html" target="parent">Ersatzchat</a> --- <a href="http://uxul.org/wiki/">Wiki</a></td>
+		  </tr>
+		<!-- <!CDATA[[ <tr>
+				<td style="text-align: left; width:100%;"><a href="http://uxul.org/test/index.html?occupants=10%25" target="parent">Webinterface des neuen Chats</a> - <a href="http://uxul.org:8000/">The Sum of All Human Knowledge</a></td>
+			</tr>
+			<tr>
+				<td style="text-align: left; width:100%;"><a href="http://uxul.org/upload/" target="parent">Hochgeladene Dinge</a> - <a href="http://uxul.org/upload/upload.php">Dinge hochladen</a></td>
+			</tr>
+			<tr>
+				<td style="text-align: left; width:33%;"><a href="get_card.php?open=0">Karte verdeckt ziehen</a></td>
+				<td style="text-align: center; width:33%;"><a href="get_card.php?open=1">Karte offen ziehen</a></td>
+				<td style="text-align: right; width:33%;"><a href="dis_card.php">Karte ablegen</a></td>
+			</tr>
+			<tr>
+				<td style="text-align: left; width:33%;"><a href="get_card.php?open=1&discarded=1">Karte vom Ablagestapel ziehen</a></td>
+				<td style="text-align: center; width:33%;"><a href="discarded.txt">Ablagestapel einsehen</a></td>
+				<td style="text-align: right; width:33%;"></td>
+			</tr> ]]> -->
+		</table>
+	</body>
+
+</html>
