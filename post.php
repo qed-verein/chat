@@ -175,7 +175,7 @@
 	}
 	        mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
                 mysql_select_db (SQL_DATABASE);
-		$gebannt=mysql_result(mysql_query('SELECT grund FROM blacklist WHERE IP="'.mysql_real_escape_string($post['ip']).'"'),0);
+		$gebannt=@mysql_result(mysql_query('SELECT grund FROM blacklist WHERE IP="'.mysql_real_escape_string($post['ip']).'"'),0);
 
 	    if ($gebannt)
 		{
