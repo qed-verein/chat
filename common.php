@@ -101,21 +101,17 @@ require("usermod.php");
 			echo "\t<ok/>\n";
 	}
 	
-	function output_line ($type, $array, $unl33t)
+	function output_line ($type, $array)
 	{
-		if ($unl33t) {
-			//$array["message"] = strtr($array["message"], "0123456789", "          ");
-			//$array["message"] = strtr($array["message"], "OIZEASGTB?", "          ");
-		}
 		$coloredarray = $array;
 		$coloredarray["color"] = get_color($array["name"]);
 		$coloredarray = applymods($coloredarray);
 		if ($type == "html")
-			echo "\t\t<script type=\"text/javascript\">parent." . format_post_javascript ($coloredarray) . "</script>\n";
+			return "\t\t<script type=\"text/javascript\">parent." . format_post_javascript ($coloredarray) . "</script>\n";
 		else if ($type == "javascript")
-			echo format_post_javascript ($coloredarray) . "\n";
+			return format_post_javascript ($coloredarray) . "\n";
 		else if ($type == "xml")
-			echo "\t" . format_post_xml ($coloredarray) . "\n";
+			return "\t" . format_post_xml ($coloredarray) . "\n";
 	}
 
 	function get_key_generator ()
@@ -232,7 +228,7 @@ require("usermod.php");
 
 	function format_post_javascript ($array)
 	{
-		return 'AddPost (' . $array["id"] . ', "' . rawurlencode ($array["name"]) . '", "' . rawurlencode ($array["message"]) . '", "' . $array["date"] . '", "' . $array["ip"] . '", "' . $array["delay"] . '", "' . ($array["hollow"] ? "555555" : $array["color"]) . '", "'.$array['bottag'].'");';
+		return 'AddPost (' . $array["id"] . ', "' . rawurlencode ($array["name"]) . '", "' . rawurlencode ($array["message"]) . '", "' . $array["date"] . '", "' . $array["ip"] . '", "' . $array["delay"] . '", "' . (!empty($array["hollow"]) ? "555555" : $array["color"]) . '", "'.$array['bottag'].'");';
 	}
 	
 	function get_date ($string)

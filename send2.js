@@ -53,14 +53,14 @@ function InitRemote (options)
 	
 	generator = options["generator"];
 	
-	if (options["urgent"] && window.XMLHttpRequest) {
+	/* if (options["urgent"] && window.XMLHttpRequest) {
 		var r = new XMLHttpRequest();
 		r.open("GET", "http://uxul.org/upload/urgent.txt", false);
 		r.send(null);
 		var text = r.responseText;
 		
 		document.getElementById ("message").value = text;
-	}
+	}*/
 }
 
 function SetPosition (value)
@@ -101,7 +101,7 @@ function OnTimeout (to)
 
 function Send ()
 {
-	if (createRequest != null)
+	if (createRequest != null) {
 		if (request == null)
 			{
 				SetStatus ("Sende Post ...");
@@ -119,4 +119,7 @@ function Send ()
 			}
 		else
 			SetStatus ("Dein alter Post wird noch gesendet ...");
+	}
+	else
+	    alert("createrequest ist put");
 }

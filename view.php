@@ -11,7 +11,7 @@
 	output_header ($type);
 	output_prefix ($type);
 
-	set_error_handler (ErrorHandler);
+//	set_error_handler ('ErrorHandler');
 
 	function ErrorHandler ($number, $description, $file, $line)
 	{
@@ -32,6 +32,7 @@
 
 	$name = "sockets/" . uniqid ("s") . ".sock";
 	$socket = socket_create (AF_UNIX, SOCK_DGRAM, 0);
+	//trigger_error("socket gemacht ".socket_strerror(socket_last_error($socket))); 
 	socket_set_nonblock($socket);
 #	socket_set_block ($socket);
 	socket_bind ($socket, $name);
@@ -58,9 +59,11 @@
 		mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 		mysql_select_db (SQL_DATABASE);
 		$query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position");
+		//trigger_error ("iiii".$position."####".mysql_num_rows($query));
 		while ($array = mysql_fetch_assoc ($query))
 		{
-			output_line ($type, $array, isset($_GET["unl33t"]) || getenv("HTTP_USER_AGENT") == "We are Xorg. Resistance is futile." || $_SERVER['REMOTE_ADDR'] == "134.2.62.65");
+			echo output_line ($type, $array);
+			//trigger_error(output_line ($type, $array));
 			++$position;
 		}
 		mysql_close ();
@@ -88,13 +91,15 @@
 			$zaehler=0;
 		    }
 		    $socket_status =@socket_recvfrom ($socket, $buffer, 4, 0, $source);
-		    //if ($socket_status === -1)
-			// die ("alles put ".socket_strerror(socket_last_error($socket))); 
+		    /* trigger_error('dddd'.$source);
+		    if ($socket_status === -1)
+			trigger_error("alles put ".socket_strerror(socket_last_error($socket)));  */
 		    if ($socket_status > 0)
 			break;
 		    usleep(100000);
 		}
 	}
+	//trigger_error('verbindung weg');
 	socket_shutdown($socket);
 	socket_close($socket);
 	unlink($name);	

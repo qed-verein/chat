@@ -2,7 +2,7 @@
 
 	ignore_user_abort (true);
 
-	set_error_handler (ErrorHandler);
+	set_error_handler ('ErrorHandler');
 
 	function ErrorHandler ($number, $description, $file, $line)
 	{
