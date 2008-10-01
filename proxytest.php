@@ -39,7 +39,7 @@ class proxytest
 		$senden='';
 		foreach ($senden_dec as $zeichen)
 			$senden.=chr($zeichen);
-		$empf="Server: GWS";
+		$empf="Server: gws";
 		$fp = @fsockopen($host, $port, $errno, $errstr, 1);
 		//FIXME mifritscher:  nicht nur ports testen, sondern auch die Antwort...
 		if (!$fp)
