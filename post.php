@@ -18,7 +18,7 @@
 		
 			echo "Der Fehler mit Nummer $number trat in $file in Zeile $line auf.";
 			if ($description != "")
-				echo "<br>Beschreibung: $descriptions";
+				echo "<br>Beschreibung: $description";
 			exit ();
 		}
 	}
@@ -169,10 +169,20 @@
 				echo "Aus Traffic-Gründen dürfen Posts momentan nicht allzu groß sein.<br>" . $offset . " " . strlen ($post["message"]);
 				die ();
 			}
+	    
         }
             	   
 	}
+	        mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
+                mysql_select_db (SQL_DATABASE);
+		$gebannt=mysql_result(mysql_query('SELECT grund FROM blacklist WHERE IP="'.mysql_real_escape_string($post['ip']).'"'),0);
 
+	    if ($gebannt)
+		{
+	    		header ("HTTP/1.1 403 Forbidden");
+				echo "IP gebannt, Grund: $gebannt<br>";
+				die ();
+		}
 
 	
 

@@ -11,7 +11,7 @@
 	output_header ($type);
 	output_prefix ($type);
 
-//	set_error_handler ('ErrorHandler');
+	set_error_handler ('ErrorHandler');
 
 	function ErrorHandler ($number, $description, $file, $line)
 	{
