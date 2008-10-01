@@ -175,17 +175,33 @@
 	}
 	        mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
                 mysql_select_db (SQL_DATABASE);
-		$gebannt=@mysql_result(mysql_query('SELECT grund FROM blacklist WHERE "'.mysql_real_escape_string($post['ip']).'" like IP'),0);
+		//schon in whitelist?		
+		if (!mysql_result(mysql_query('SELECT COUNT(*) FROM getestet WHERE IP="'.mysql_real_escape_string($post['ip']).'"'),0)) {
+			//in der blacklist?
+			$gebannt=@mysql_result(mysql_query('SELECT grund FROM blacklist WHERE "'.mysql_real_escape_string($post['ip']).'" like IP'),0);
 
-	    if ($gebannt)
-		{
-	    		header ("HTTP/1.1 403 Forbidden");
+			if ($gebannt)
+			{
+		    		header ("HTTP/1.1 403 Forbidden");
 				echo "IP gebannt, Grund: $gebannt<br>";
 				die ();
+			}
+			//proxytest
+			require_once('proxytest.php');
+			$obj_proxytest = new proxytest();
+			$result = $obj_proxytest->proxy_test($post['ip']);
+			if ($result) {
+				mysql_query('INSERT INTO blacklist SET zeit=NOW(), grund="proxytest", IP="'.mysql_real_escape_string($post['ip']).'"');
+		    		header ("HTTP/1.1 403 Forbidden");
+				echo "IP wurde gerade gebannt<br>";
+				die ();
+
+			}
+			//alles ok
+			mysql_query('INSERT INTO getestet SET zeit=NOW(), IP="'.mysql_real_escape_string($post['ip']).'"');
+
 		}
 
-	
-
 	do_post ($post);
-
 ?>
+

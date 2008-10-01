@@ -19,17 +19,17 @@ class proxytest
 	function http_get_test($host,$port)
 	{
 		$senden="GET http://www.google.com HTTP/1.0\nHost: www.google.com\n\n";
-		$empf="Server: GWS";
+		$empf="Server: gws";
 		$fp = @fsockopen($host, $port, $errno, $errstr, 1);
 		if (!$fp)
 			return false;
 		stream_set_timeout($fp,1);
 		fwrite($fp, $senden);
 		while (!feof($fp)) {
-	      $text=fgets($fp, 1024);
-		  if (strpos($text,$empf)!==false)
-			return true;
-	   }		
+			$text=fgets($fp, 1024);
+			if (strpos($text,$empf)!==false)
+				return true;
+	   	}	
 	   return false;
 	}
 	function socks4_test($host,$port)
@@ -56,4 +56,4 @@ class proxytest
 	   return false;*/
 	}
 }
-?> 
+?>
