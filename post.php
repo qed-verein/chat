@@ -75,7 +75,7 @@
 
 	}
 
-	if(substr($post["ip"],0,6)=="129.21")
+	if(substr($post["ip"],0,7)=="129.217")
 	{
 		exit();
 	}
