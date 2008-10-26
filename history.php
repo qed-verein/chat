@@ -77,7 +77,7 @@
 		$coloredarray["color"] = get_color($array["name"]);
 		//$coloredarray = applymods($coloredarray);
 
-		if ($reverse_output) array_reverse($coloredarray);
+		if ($reverse_output) $coloredarray = array_reverse($coloredarray);
 		
 		if ($type == "html")
 			echo "\t\t\t" . format_post ($coloredarray, $_GET) . "\n";
