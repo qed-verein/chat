@@ -3,6 +3,10 @@
 	require_once ("data.php");
 	require_once ("common.php");
 	
+	$reverse_output = false; //reverse output of posts?
+	if (!empty($_GET['reverse']) && $_GET['reverse'] == "true")
+	   $reverse_output = true;
+
 	mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 	mysql_select_db (SQL_DATABASE);
 	$botblocksql='';
@@ -72,6 +76,8 @@
 		$coloredarray = $array;
 		$coloredarray["color"] = get_color($array["name"]);
 		//$coloredarray = applymods($coloredarray);
+
+		if ($reverse_output) array_reverse($coloredarray);
 		
 		if ($type == "html")
 			echo "\t\t\t" . format_post ($coloredarray, $_GET) . "\n";
