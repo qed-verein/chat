@@ -28,8 +28,6 @@
 	    else
 		$to="";
 	    if (!empty($_GET['mode']) && $_GET["mode"] == "posts") {
-	        $from = intval($from);
-		$to = intval($to);
 	    	$query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > " . $from . " && id <= " . $to. $botblocksql);
 	    } else
 		$query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE date >= \"" . get_date ($from) . "\" && date < \"" . get_date ($to) . "\"". $botblocksql);
