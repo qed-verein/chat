@@ -84,7 +84,7 @@
 	if ($type == "html")
 	{
 		echo "\t\t</table>\n"
-			. "\t<a name="bottom" />\n"
+			. "\t<a name=\"bottom\" />\n"
 			. "\t</body>\n"
 			. "</html>";
 	}
