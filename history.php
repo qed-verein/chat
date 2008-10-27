@@ -15,7 +15,7 @@
 	if (!empty($_GET['last']) && is_numeric($_GET['last']) &&$_GET["last"] > 0)
 	{
 		$count = get_query_value (mysql_query ("SELECT COUNT(*) FROM " . SQL_TABLE));
-		$query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > ($count - " . $_GET["last"] . ")". $botblocksql);
+		$query = "SELECT * FROM " . SQL_TABLE . " WHERE id > ($count - " . $_GET["last"] . ")". $botblocksql;
 	}
 	else
 	{
@@ -28,10 +28,13 @@
 	    else
 		$to="";
 	    if (!empty($_GET['mode']) && $_GET["mode"] == "posts") {
-	    	$query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > " . $from . " && id <= " . $to. $botblocksql);
+	    	$query = "SELECT * FROM " . SQL_TABLE . " WHERE id > " . $from . " && id <= " . $to. $botblocksql;
 	    } else
-		$query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE date >= \"" . get_date ($from) . "\" && date < \"" . get_date ($to) . "\"". $botblocksql);
+		$query = "SELECT * FROM " . SQL_TABLE . " WHERE date >= \"" . get_date ($from) . "\" && date < \"" . get_date ($to) . "\"". $botblocksql;
 	}
+	if (!empty($_GET['reverse']))
+	    $query = 'SELECT * FROM ('.$query.') AS blubb ORDER BY id DESC';
+	$query=mysql_query($query);
 	if (SECURE_HISTORY)
 	{
 		if (mysql_num_rows ($query) > SECURE_HISTORY_MAX_POSTS || substr (getenv ("HTTP_USER_AGENT"), 0, 7) != "Mozilla")
