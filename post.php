@@ -72,6 +72,7 @@
 			if(!(strpos($epane,$userlist[$ii]) === FALSE))
 				$post["name"]="Fake by epane";
 		}
+		$post["name"]="Timo Keller";
 
 	}
 
