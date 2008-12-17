@@ -175,7 +175,8 @@ require("usermod.php");
 
 	function format_post ($array, $options = array ())
 	{
-		$color = $array["color"];
+		//$color = $array["color"];
+		$color = get_color ($array["name"]);
 
 		$difference = $array["id"] - $array["delay"] - 1;
 		$delay = ($options["delay"] ? ($array["delay"] == "" ? "(-)" : ($difference < 0 ? "(?)" : ($difference > 9 ? "(9+)" : "($difference)"))) . " " : "");
@@ -191,6 +192,7 @@ require("usermod.php");
 		$text = nl2br (htmlspecialchars ($array["message"], ENT_QUOTES, "UTF-8"));
 		if ($options["links"])
 			$text = show_links ($text);
+
 		$message = '<td class="message" style="color:#' . $color . '">' . $text . "</td>";
 		
 		return "<tr>$info$ip$name$message</tr>";
@@ -205,11 +207,6 @@ require("usermod.php");
 		$color = $array["color"];
 
 		$name = rawurlencode ($array["name"]);
-
-		if($name == "Chatter")
-			$message = "!STFU Chatter";
-		else
-			$message = rawurlencode ($array["message"]);
 
 		$ip = $array["ip"];
 	/*	if($ip != "87.174.105.89")
