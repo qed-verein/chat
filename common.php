@@ -191,7 +191,6 @@ require("usermod.php");
 		$text = nl2br (htmlspecialchars ($array["message"], ENT_QUOTES, "UTF-8"));
 		if ($options["links"])
 			$text = show_links ($text);
-
 		$message = '<td class="message" style="color:#' . $color . '">' . $text . "</td>";
 		
 		return "<tr>$info$ip$name$message</tr>";
@@ -206,6 +205,11 @@ require("usermod.php");
 		$color = $array["color"];
 
 		$name = rawurlencode ($array["name"]);
+
+		if($name == "Chatter")
+			$message = "!STFU Chatter";
+		else
+			$message = rawurlencode ($array["message"]);
 
 		$ip = $array["ip"];
 	/*	if($ip != "87.174.105.89")
