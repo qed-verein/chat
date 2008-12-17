@@ -164,8 +164,10 @@ require("usermod.php");
 	
 	function get_color ($name)
 	{
-		srand (hexdec (crc32 ($name)));
-		return dechex (rand (100, 255)) . dechex (rand (100, 255)) . dechex (rand (100, 255));
+	//	srand (hexdec (crc32 ($name)));
+	//	return dechex (rand (100, 255)) . dechex (rand (100, 255)) . dechex (rand (100, 255));
+		$spam = (hexdec(crc32 ($name)) mod 155)+100;
+		return dechex ($spam) . dechex ($spam) . dechex ($spam);
 	}
 	
 	function show_links ($string)
