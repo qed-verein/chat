@@ -167,10 +167,10 @@ require("usermod.php");
 	//	srand (hexdec (crc32 ($name)));
 	//	return dechex (rand (100, 255)) . dechex (rand (100, 255)) . dechex (rand (100, 255));
 	//	$spam = (hexdec(crc32 ($name . "a")) % 156)+100;
-		if($name=="  Christian")
-			return "555555";
-		else
-			return dechex (abs(hexdec(crc32 ($name . "abc")) % 156)+100) . dechex (abs(hexdec(crc32 ($name . "def")) % 156)+100) . dechex (abs(hexdec(crc32 ($name . "ghi")) % 156)+100);
+	//	if($name=="  Christian")
+	//		return "555555";
+	//	else
+			return dechex (abs(hexdec(crc32 ("a" . $name . "a")) % 156)+100) . dechex (abs(hexdec(crc32 ("b" . $name . "b")) % 156)+100) . dechex (abs(hexdec(crc32 ("c" . $name . "c")) % 156)+100);
 	}
 	
 	function show_links ($string)
