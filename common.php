@@ -164,7 +164,8 @@ require("usermod.php");
 	
 	function get_color ($name)
 	{
-		srand (hexdec (crc32 ($name)));
+		//srand (hexdec (crc32 ($name)));
+		srand(1);
 		return dechex (rand (100, 255)) . dechex (rand (100, 255)) . dechex (rand (100, 255));
 	}
 	
