@@ -170,7 +170,7 @@ require("usermod.php");
 		if($name=="  Christian")
 			return "555555";
 		else
-			return dechex (abs(hexdec(crc32 ($name . "a")) % 156)+100) . dechex (abs(hexdec(crc32 ($name . "b")) % 156)+100) . dechex (abs(hexdec(crc32 ($name . "c")) % 156)+100);
+			return dechex (abs(hexdec(crc32 ($name . "abc")) % 156)+100) . dechex (abs(hexdec(crc32 ($name . "def")) % 156)+100) . dechex (abs(hexdec(crc32 ($name . "ghi")) % 156)+100);
 	}
 	
 	function show_links ($string)
