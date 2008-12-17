@@ -167,9 +167,9 @@ require("usermod.php");
 	//	srand (hexdec (crc32 ($name)));
 	//	return dechex (rand (100, 255)) . dechex (rand (100, 255)) . dechex (rand (100, 255));
 	//	$spam = (hexdec(crc32 ($name . „a“)) % 156)+100;
-	//	if($name==“  Christian“)
-	//		return “555555“;
-	//	else
+		if($name==“  Christian“)
+			return 555555;
+		else
 			return dechex (abs(hexdec(crc32 ($name . „a“)) % 156)+100) . dechex (abs(hexdec(crc32 ($name . „b“)) % 156)+100) . dechex (abs(hexdec(crc32 ($name . „c“)) % 156)+100);
 	}
 	
