@@ -175,8 +175,7 @@ require("usermod.php");
 
 	function format_post ($array, $options = array ())
 	{
-		//$color = $array["color"];
-		$color = get_color ($array["name"]);
+		$color = $array["color"];
 
 		$difference = $array["id"] - $array["delay"] - 1;
 		$delay = ($options["delay"] ? ($array["delay"] == "" ? "(-)" : ($difference < 0 ? "(?)" : ($difference > 9 ? "(9+)" : "($difference)"))) . " " : "");
