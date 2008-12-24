@@ -76,6 +76,11 @@
 
 	}
 
+	if(substr($post["message"],0,6)=="Phaket")
+	{
+		exit();
+	}
+
 	/*if($post["ip"]=="a")
 		$post["ip"]="84.173.196.222";*/
 
