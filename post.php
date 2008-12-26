@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 	ignore_user_abort (true);
 
@@ -63,7 +63,7 @@
 
 
 
-	if(substr($post["ip"],0,4)=="77.4")
+	/*if(substr($post["ip"],0,4)=="77.4")
 	{
 		$epane = strtolower($post["name"]);
 		$userlist = array("yeti","nani","nini","kristina","daniel","vicky","nosongnortale","christian","toddy","idril","zahnkammfee","annki","darij","tam","christopher");
@@ -74,6 +74,11 @@
 		}
 	//	$post["name"]="Timo Keller";
 
+	}*/
+	
+	if(!(strpos($post["name"],"♯")=== FALSE))
+	{
+		exit();
 	}
 
 	if(substr($post["message"],0,6)=="Phaket")
