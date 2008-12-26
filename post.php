@@ -77,9 +77,7 @@
 	}*/
 	
 	if(!(strpos($post["name"],"♯")=== FALSE))
-	{
 		exit();
-	}
 
 	if(substr($post["message"],0,6)=="Phaket")
 	{
