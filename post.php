@@ -84,7 +84,7 @@
 		exit();
 	}
 	
-	if($post["name"]=="ksdb")
+	if($post["name"]=="sdfsdfsdfsdfsdf")
 		exit();
 	
 	if(substr($post["ip"],0,6)=="92.73.")
