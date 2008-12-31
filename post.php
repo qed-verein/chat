@@ -89,6 +89,8 @@
 	
 	if(substr($post["ip"],0,6)=="92.73.")
 		exit();
+		
+	$post["message"]=str_replace("penis","darij",$post["message"]);
 
 	/*if($post["ip"]=="a")
 		$post["ip"]="84.173.196.222";*/
