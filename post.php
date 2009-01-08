@@ -92,7 +92,7 @@
 		
 	$post["message"]=str_replace("penis","darij",$post["message"]);
 	
-	if($post["name"]=="Toddy")
+	if($post["name"]=="   Toddy")
 		$post["message"]="";
 
 	/*if($post["ip"]=="a")
