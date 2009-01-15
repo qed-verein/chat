@@ -90,7 +90,7 @@
 	if(substr($post["ip"],0,6)=="92.73.")
 		exit();
 		
-	$post["message"]=str_replace(array("penis","schwanz","schwänze"," arsch","fuck","fick","pisse"),array("darij","darij","darijs"," spam","freu","freu","wasser"),$post["message"]);
+	$post["message"]=str_replace(array("penis","schwanz","schwänze"," arsch","fuck","fick","pisse"),array("darij","darij","darijs"," spam","freu","freu","pizza"),$post["message"]);
 	
 	
 	/*if($post["name"]=="   Toddy")
