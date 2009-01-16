@@ -66,7 +66,7 @@
 	/*if(substr($post["ip"],0,4)=="77.4")
 	{
 		$epane = strtolower($post["name"]);
-		$userlist = array("yeti","nani","nini","kristina","daniel","vicky","nosongnortale","christian","toddy","idril","zahnkammfee","annki","darij","tam","christopher");
+		$userlist = array("yeti","nani","nini","kristina","daniel","vicky","nosongnortale","christian","toddy","idril","zahnkammfee","annki","darij","tam","christopher","kathi");
 		for($ii=0;$ii<sizeof($userlist);$ii++)
 		{
 			if(!(strpos($epane,$userlist[$ii]) === FALSE))
