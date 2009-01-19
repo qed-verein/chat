@@ -93,7 +93,7 @@
 	$post["message"]=str_replace(array("penis","schwanz","schwänze"," arsch","fuck","fick","pisse"),array("darij","darij","darijs"," spam","freu","freu","pizza"),$post["message"]);
 	
 	
-	$post['name']=substr($post['name'],0,30);
+	$post['name']=substr($post['name'],0,100);
 	/*if($post["name"]=="   Toddy")
 		$post["message"]="";*/
 
