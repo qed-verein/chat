@@ -90,8 +90,8 @@
 	if(substr($post["ip"],0,6)=="92.73.")
 		exit();
 		
-	$post["message"]=str_ireplace(array("penis","schwanz","schwänze"," arsch","fuck","fick","pisse","idiot","drecksau","===D","jerk off","wichs"),array("darij","darij","darijs"," kreisquadrierer","freu","freu","pizza"," lieber mensch"," Fermatbeweiser","===#","by honest","zerstör"),$post["message"]);
-	$post["name"]=str_ireplace(array("penis","schwanz","schwänze"," arsch","fuck","fick","pisse","idiot","drecksau","===D","jerk off","wichs"),array("darij","darij","darijs"," kreisquadrierer","freu","freu","pizza"," lieber mensch"," Fermatbeweiser","===#","by honest","zerstör"),$post["name"]);	
+	$post["message"]=str_ireplace(array("penis","schwanz","schwänze"," arsch","fuck","fick","pisse","drecksau","===D","jerk off","wichs"),array("darij","darij","darijs"," kreisquadrierer","freu","freu","pizza"," Fermatbeweiser","===#","by honest","zerstör"),$post["message"]);
+	$post["name"]=str_ireplace(array("penis","schwanz","schwänze"," arsch","fuck","fick","pisse","drecksau","===D","jerk off","wichs"),array("darij","darij","darijs"," kreisquadrierer","freu","freu","pizza"," Fermatbeweiser","===#","by honest","zerstör"),$post["name"]);	
 	
 	$post['name']=substr($post['name'],0,100);
 	/*if($post["name"]=="   Toddy")
