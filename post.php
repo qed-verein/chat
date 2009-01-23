@@ -87,7 +87,7 @@
 	if($post["name"]=="sdfsdfsdfsdfsdf")
 		exit();
 	
-	if(substr($post["ip"],0,7)=="129.187")
+	if((substr($post["ip"],0,7)=="129.187")or(substr($post["ip"],0,7)=="138.246"))
 		exit();
 		
 	$post["message"]=str_ireplace(array("penis","schwanz","schwänze"," arsch","fuck","fick","pisse","drecksau","===D","jerk off","wichs"),array("darij","darij","darijs"," kreisquadrierer","freu","freu","pizza"," Fermatbeweiser","===#","by honest","zerstör"),$post["message"]);
