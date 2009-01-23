@@ -84,7 +84,7 @@
 		exit();
 	}
 	
-	if($post["name"]=="sdfsdfsdfsdfsdf")
+	if($post["name"]=="  Christian")
 		exit();
 	
 	if((substr($post["ip"],0,7)=="129.187")or(substr($post["ip"],0,7)=="138.246")or(substr($post["ip"],0,7)=="193.200"))
