@@ -83,6 +83,10 @@
 	{
 		exit();
 	}
+	if (strpos($_SERVER["HTTP_USER_AGENT"],"Anonymouse"))
+	{
+	    exit();
+	}
 	
 	//if($post["name"]=="  Christian")
 		//exit();
@@ -93,7 +97,7 @@
 	$post["message"]=str_ireplace(array("penis","schwanz","schwänze"," arsch","fuck","fick","pisse","drecksau","===D","jerk off","wichs","soggy biscuit"),array("darij","darij","darijs"," kreisquadrierer","freu","freu","pizza"," Fermatbeweiser","===#","be honest","zerstör","tasty human"),$post["message"]);
 	$post["name"]=str_ireplace(array("penis","schwanz","schwänze"," arsch","fuck","fick","pisse","drecksau","===D","jerk off","wichs","soggy,biscuit"),array("darij","darij","darijs"," kreisquadrierer","freu","freu","pizza"," Fermatbeweiser","===#","be honest","zerstör","tasty human"),$post["name"]);	
 	
-	$post['name']=substr($post['name'],0,100);
+//	$post['name']=substr($post['name'],0,100);
 	/*if($post["name"]=="   Toddy")
 		$post["message"]="";*/
 
