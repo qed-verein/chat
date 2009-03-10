@@ -7,7 +7,7 @@
 	require ("data.php");
 	require ("common.php");
 
-	$type = $_GET["type"];
+	$type = @$_GET["type"];
 	output_header ($type);
 	output_prefix ($type);
 
@@ -63,6 +63,7 @@
 		while ($array = mysql_fetch_assoc ($query))
 		{
 			echo output_line ($type, $array);
+			//print_r($array);
 			//trigger_error(output_line ($type, $array));
 			++$position;
 		}
@@ -73,9 +74,14 @@
 	//FF2 mag wohl nicht alle 100 ms was zu bekommen...
 	//19 damit beim 1. Durclauf gleich was gesendet wird
 	$zaehler=19;
+	$zaehler2=0;
 	while (!connection_aborted())
 	{
 		Check ($mem, $sem, $name, $position);
+		output_line($type,array('name' =>'a','id' =>3,'message' => 'a', 'date'=>'2342', 'ip' => 'a', 'delay'=>'2', 'bottag' =>0));
+		//fcgi-Hack: Laufzeit begrenzen
+		    $zaehler2++;
+
 		flush();
 		if ($position >= $limit)
 			break;
@@ -85,11 +91,16 @@
 		//blocken ist hier aua, weil php in der Zeit nicht testen kann ob die verbindung noch da ist
 		while (!connection_aborted()) {
 		    $zaehler++;
+		    $zaehler2++;
 		    if($zaehler>=20) {
 			echo "\n";
 			flush ();
 			$zaehler=0;
 		    }
+		if ($zaehler2 >100)
+		    aufraeumen();
+//		    if ($zaehler>=10)
+//			exit;
 		    $socket_status =@socket_recvfrom ($socket, $buffer, 4, 0, $source);
 		    /* trigger_error('dddd'.$source);
 		    if ($socket_status === -1)
@@ -99,10 +110,18 @@
 		    usleep(100000);
 		}
 	}
-	//trigger_error('verbindung weg');
-	socket_shutdown($socket);
-	socket_close($socket);
-	unlink($name);	
-	output_suffix ($type);
+	aufraeumen();
+	function aufraeumen () {
+		echo "\n";
+		global $socket;
+		global $type;
+		global $name;
+		//trigger_error('verbindung weg');
+		@socket_shutdown($socket);
+		@socket_close($socket);
+		@unlink($name);	
+		output_suffix ($type);
+		exit;
+	}
 
 ?>

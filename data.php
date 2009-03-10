@@ -8,9 +8,9 @@
     define ("MAX_PROTECTION", 0); // set this to 1 for |\/|4XXXXim41 pr0tection
 
     // SQL login and database information
-    define ("SQL_HOST", "localhost:3306"); // host name
+    define ("SQL_HOST", "127.0.0.1:3306"); // host name
     define ("SQL_USER", "chat"); // user name
-    define ("SQL_PASSWORD", "spam"); // user password
+    define ("SQL_PASSWORD", "spa!spa123"); // user password
     define ("SQL_DATABASE", "spam"); // database name  (if changed init.php has to be called)
     define ("SQL_TABLE", "content"); // name of table to be used (if changed init.php has to be called)
 

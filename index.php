@@ -10,7 +10,9 @@
 		
 			var options = new Object ();
 <?php
-
+	//HACK für fcgi
+	$_GET['limit']=1;
+	$_GET['patient']=true;
 	require_once ("data.php");
 	require_once ("common.php");
 

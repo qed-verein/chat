@@ -113,6 +113,8 @@ require("usermod.php");
 			return format_post_javascript ($coloredarray) . "\n";
 		else if ($type == "xml")
 			return "\t" . format_post_xml ($coloredarray) . "\n";
+		else
+			return "\ttyp kenn ich nicht \n";
 	}
 
 	function get_key_generator ()
