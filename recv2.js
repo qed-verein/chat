@@ -86,7 +86,7 @@ function MsieCheck ()
 
 function Receive ()
 {
-	SetStatus ("Verbindung wird hergestellt (" + ++numTries + ". Versuch) ...");
+//	fgci SetStatus ("Verbindung wird hergestellt (" + ++numTries + ". Versuch) ...");
 	ReceiveInternal ();
 }
 
