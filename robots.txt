@@ -1,4 +1,4 @@
-# Ganze Site f√ºr alle Robots sperren
+# Ganze Site fueºr alle Robots sperren
 User-agent: *
 Disallow: /
 
