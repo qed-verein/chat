@@ -57,7 +57,7 @@
 	</head>
 
 	<?php echo '<frameset rows="' . $sizeRecv0 . ', ' . $sizeRecv1 . '">';?>
-		<frame name="recv" src="recv2.html">
+		<frame name="recv" src="recv1337.html">
 		<?php echo '<frameset cols="' . $sizeSend0 . ', ' . $sizeSend1 . '">';?>
 			<frame name="send" src="send2.html">
 			<?php echo '<frameset rows="' . $sizeHelp0 . ', ' . $sizeHelp1 . '">';?>
