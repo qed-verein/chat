@@ -55,7 +55,7 @@
 	}*/
 
 	$post = array ("name" => demagicalize_string ($_POST["name"]),
-				   "message" => demagicalize_string ($_POST["message"]),
+				   "message" => demagicalize_string (@$_POST["message"]),
 				   "ip" => getenv ("REMOTE_ADDR"),
 				   "date" => date ("Y-m-d H-i-s"),
 				   "delay" => ((!is_numeric ($_POST["delay"]) | $_POST["delay"] < 0) ? "NULL" : $_POST["delay"]),
