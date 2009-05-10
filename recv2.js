@@ -184,6 +184,17 @@ function HtmlEscape (text, links)
 	if (links)
 		text = InsertLinks (text);
 	text = text.replace (/&amp/g, "&amp;").replace (/;&lt/g, "&lt;").replace (/;&gt/g, "&gt;").replace (/;&quot/g, "&quot;");
+	//text = text.replace (/ /g,"&nbsp;");
+	return text.replace (/\n/g, "<br>");
+}
+
+function HtmlEscapeMessage (text, links)
+{
+	text = text.replace (/&/g, "&amp").replace (/</g, ";&lt").replace (/>/g, ";&gt").replace (/\"/g, ";&quot");
+	if (links)
+		text = InsertLinks (text);
+	text = text.replace (/&amp/g, "&amp;").replace (/;&lt/g, "&lt;").replace (/;&gt/g, "&gt;").replace (/;&quot/g, "&quot;");
+	text = text.replace (/ /g,"&nbsp;");
 	return text.replace (/\n/g, "<br>");
 }
 
@@ -230,7 +241,7 @@ function CreatePost (post)
 	tr.appendChild (node);
 	
 	node = document.createElement ("td");
-	node.innerHTML = HtmlEscape (post["message"], options["links"]);
+	node.innerHTML = HtmlEscapeMessage (post["message"], options["links"]);
 	node.setAttribute ("class", "message");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);

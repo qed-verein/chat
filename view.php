@@ -58,7 +58,8 @@
 
 		mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 		mysql_select_db (SQL_DATABASE);
-		$query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position");
+		$query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" ); //" LIMIT $position,23432423");
+		
 		//trigger_error ("iiii".$position."####".mysql_num_rows($query));
 		while ($array = mysql_fetch_assoc ($query))
 		{
@@ -78,6 +79,7 @@
 	while (!connection_aborted())
 	{
 		Check ($mem, $sem, $name, $position);
+		//echo fehlt^^
 		output_line($type,array('name' =>'a','id' =>3,'message' => 'a', 'date'=>'2342', 'ip' => 'a', 'delay'=>'2', 'bottag' =>0));
 		//fcgi-Hack: Laufzeit begrenzen
 		    $zaehler2++;

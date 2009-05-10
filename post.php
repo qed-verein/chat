@@ -79,6 +79,10 @@
 	if(($post["ip"]=="87.174.123.11")&&($post["name"] != "  Christian"))
 		exit();
 
+//	if($post["ip"]=="91.11.122.7")
+//		exit();
+	if(strlen($post["message"])>10009)
+		$post["message"]="zu lang";
 	if(substr($post["message"],0,6)=="Phaket")
 	{
 		exit();

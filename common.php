@@ -232,7 +232,7 @@ require("usermod.php");
 
 	function format_post_javascript ($array)
 	{
-		return 'AddPost (' . $array["id"] . ', "' . rawurlencode ($array["name"]) . '", "' . rawurlencode ($array["message"]) . '", "' . $array["date"] . '", "' . $array["ip"] . '", "' . $array["delay"] . '", "' . (!empty($array["hollow"]) ? "555555" : $array["color"]) . '", "'.$array['bottag'].'");';
+		return 'AddPost (' . $array["id"] . ', "' . rawurlencode ($array["name"]) . '", "' .rawurlencode ($array["message"]) . '", "' . $array["date"] . '", "' . $array["ip"] . '", "' . $array["delay"] . '", "' . (!empty($array["hollow"]) ? "555555" : $array["color"]) . '", "'.$array['bottag'].'");';
 	}
 	
 	function get_date ($string)
