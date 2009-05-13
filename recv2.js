@@ -191,10 +191,10 @@ function HtmlEscape (text, links)
 function HtmlEscapeMessage (text, links)
 {
 	text = text.replace (/&/g, "&amp").replace (/</g, ";&lt").replace (/>/g, ";&gt").replace (/\"/g, ";&quot");
+	text = text.replace (/ /g,"&nbsp;");
 	if (links)
 		text = InsertLinks (text);
 	text = text.replace (/&amp/g, "&amp;").replace (/;&lt/g, "&lt;").replace (/;&gt/g, "&gt;").replace (/;&quot/g, "&quot;");
-	text = text.replace (/ /g,"&nbsp;");
 	return text.replace (/\n/g, "<br>");
 }
 
