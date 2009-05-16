@@ -197,7 +197,7 @@
 		$IPhalb=$IPhalb[0] . '.' . $IPhalb[1];
 		if (mysql_result(mysql_query('SELECT COUNT(*) FROM flood WHERE DATE_SUB(CURDATE(),INTERVAL 10 SECOND) <= date AND (IP="'.$post['ip'].'" OR IPhalb="'.$post['ip'].'")'),0))
 			die ("Floodschutz aktiv - WARNUNG, bei weiteren Versuchen wird DAUERHAFT gebannt!!!");
-		mysql_query('INSERT INTO flood SET date=NOW(), IP="'.$post['ip'].'", IPhalb="'.$IPhalb.'"',0);
+		mysql_query('INSERT INTO flood SET date=NOW(), IP="'.$post['ip'].'", IPhalb="'.$IPhalb.'"');
 
 		//schon in whitelist?		
 		if (!mysql_result(mysql_query('SELECT COUNT(*) FROM getestet WHERE IP="'.mysql_real_escape_string($post['ip']).'"'),0)) {
