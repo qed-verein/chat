@@ -196,6 +196,7 @@
 		$IPhalb=explode('.',$post['ip']);
 		$IPhalb=$IPhalb[0] . '.' . $IPhalb[1];
 		if (mysql_result(mysql_query('SELECT COUNT(*) FROM flood WHERE DATE_SUB(CURDATE(),INTERVAL 10 SECOND) <= date AND (IP="'.$post['ip'].'" OR IPhalb="'.$post['ip'].'")'),0) >3 ) {
+			header ("HTTP/1.1 403 Forbidden");			
 			echo "Floodschutz aktiv - WARNUNG, bei weiteren Versuchen wird DAUERHAFT gebannt!!!";
 			die ();
 		}
