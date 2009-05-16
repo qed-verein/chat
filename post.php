@@ -83,10 +83,7 @@
 //		exit();
 	if(strlen($post["message"])>10009)
 		$post["message"]="zu lang";
-	if(substr($post["message"],0,6)=="Phaket")
-	{
-		exit();
-	}
+	
 	if (strpos($_SERVER["HTTP_USER_AGENT"],"Anonymouse"))
 	{
 	    exit();
@@ -94,21 +91,7 @@
 	
 	if (strlen($post["message"])<=1)
 		exit();
-	//if($post["name"]=="  Christian")
-		//exit();
 	
-//	if((substr($post["ip"],0,7)=="129.187")or(substr($post["ip"],0,7)=="138.246")or(substr($post["ip"],0,7)=="193.200")or(substr($post["ip"],0,7)=="200.140")or(substr($post["ip"],0,6)=="194.95")or(substr($post["ip"],0,8)=="141.84.2")or(substr($post["ip"],0,7)=="193.200")or(substr($post["ip"],0,5)=="78.46"))
-	//	exit();
-		
-//	$post["message"]=str_ireplace(array("penis","schwanz","schwänze"," arsch","fuck","fick","pisse","drecksau","===D","jerk off","wichs","soggy biscuit"),array("darij","darij","darijs"," kreisquadrierer","freu","freu","pizza"," Fermatbeweiser","===#","be honest","zerstör","tasty human"),$post["message"]);
-//	$post["name"]=str_ireplace(array("penis","schwanz","schwänze"," arsch","fuck","fick","pisse","drecksau","===D","jerk off","wichs","soggy,biscuit"),array("darij","darij","darijs"," kreisquadrierer","freu","freu","pizza"," Fermatbeweiser","===#","be honest","zerstör","tasty human"),$post["name"]);	
-	
-//	$post['name']=substr($post['name'],0,100);
-	/*if($post["name"]=="   Toddy")
-		$post["message"]="";*/
-
-	/*if($post["ip"]=="a")
-		$post["ip"]="84.173.196.222";*/
 
 	//if($HTTP_SERVER_VARS['HTTP_USER_AGENT']=='http://Anonymouse.org/ (Unix)')
 	//	exit();
@@ -207,6 +190,15 @@
 	}
 	        mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
                 mysql_select_db (SQL_DATABASE);
+
+		//Floodschutz
+		$post['ip']=mysql_real_escape_string($post['ip']);
+		$IPhalb=explode('.',$post['ip']);
+		$IPhalb=$IPhalb[0] . '.' . $IPhalb[1];
+		if (mysql_result(mysql_query('SELECT COUNT(*) FROM flood WHERE DATE_SUB(CURDATE(),INTERVAL 10 SECOND) <= date AND (IP="'.$post['ip'].'" OR IPhalb="'.$post['ip'].'")')))
+			die ("Floodschutz aktiv - WARNUNG, bei weiteren Versuchen wird DAUERHAFT gebannt!!!");
+		mysql_query('INSERT INTO flood SET date=NOW(), IP="'.$post['ip'].'", IPhalb="'.$IPhalb.'"');
+
 		//schon in whitelist?		
 		if (!mysql_result(mysql_query('SELECT COUNT(*) FROM getestet WHERE IP="'.mysql_real_escape_string($post['ip']).'"'),0)) {
 			//in der blacklist?
