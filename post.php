@@ -92,6 +92,8 @@
 	    exit();
 	}
 	
+	if (strlen($post["message"])<=1)
+		exit();
 	//if($post["name"]=="  Christian")
 		//exit();
 	
