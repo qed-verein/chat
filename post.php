@@ -86,7 +86,7 @@
 	    exit();
 	}
 	
-	if (strlen($post["message"])<=1)
+	if (strlen($post["message"])<1)
 		exit();
 	
 
