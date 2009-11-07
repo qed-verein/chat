@@ -60,7 +60,8 @@ function InitRemote (options)
 		var text = r.responseText;
 		
 		document.getElementById ("message").value = text;
-	}*/
+	}
+*/
 }
 
 function SetPosition (value)
@@ -109,6 +110,7 @@ function Send ()
 				request.onreadystatechange = StateChanged;
 				request.open ("POST", "post.php", true);
 				request.setRequestHeader ("Content-Type", "application/x-www-form-urlencoded");
+				request.setRequestHeader ("Content-Encoding", "utf-8");
 				//%%user \neq bot
 				var content = 
 					"delay=" + position + "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value)+"&bottag="+zero;
