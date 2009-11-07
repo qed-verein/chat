@@ -99,6 +99,7 @@ function Send ()
 				request.onreadystatechange = StateChanged;
 				request.open ("POST", "post.php", true);
 				request.setRequestHeader ("Content-Type", "application/x-www-form-urlencoded");
+				request.setRequestHeader ("Content-Encoding", "utf-8");
 				var content = "delay=" + position + "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value);
 				if (generator)
 					content += "&key=" + GetKey (generator++);
