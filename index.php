@@ -1,6 +1,6 @@
 <?php
-	if ($_SERVER['SERVER_NAME']!='chat.qed-verein.de')
-	     die;
+	if ($_SERVER['SERVER_NAME']!='chat.qed-verein.de' && $_SERVER['SERVER_NAME']!='qedchat.qed-verein.de')
+	     die ("grml");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 
