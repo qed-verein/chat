@@ -247,6 +247,8 @@ function CreatePost (post)
 	tr.appendChild (node);
 
 	document.getElementById ("display").appendChild (tr);
+	MathJax.Hub.Queue(["Typeset",MathJax.Hub,tr]);
+	MathJax.Hub.queue.Push( function () { scrollBy (0, 999999); });
 	scrollBy (0, 999999);
 }
 

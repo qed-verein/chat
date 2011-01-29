@@ -8,7 +8,7 @@
 
 	<head>
 		<meta name="robots" content="noindex, nofollow">
-		<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<link rel="stylesheet" type="text/css" href="chat.css">
 		<script type="text/javascript">
 		
