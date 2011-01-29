@@ -57,16 +57,16 @@ function InitRemote (opt)
 {
 	options = opt;
 	(window.XMLHttpRequest ? false : true);
-	
+
 	timeWait = 1000 * options["wait"];
-	
+
 	if (options["method"] == "xml")
 		noXml = false;
 	else if (options["method"] == "iframe")
 		noXml = true;
 	else
 		noXml = (window.XMLHttpRequest ? false : true);
-		
+
 	if (noXml)
 		document.body.innerHTML += '<iframe id="iframe" style="border:0px; width:0px; height:0px;"></iframe>';
 	else
@@ -125,7 +125,7 @@ function StateChanged ()
 			eval (request.responseText.substring (cursor, next));
 			cursor = next;
 		}
-		
+
 		if (request.readyState == 4)
 			Disconnected ();
 	}
@@ -167,7 +167,7 @@ function SpawnError (number, description, file, line)
 
 function InsertLinks (text)
 {
-	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-]*)/g, '<a href="' + options["redirect"] + '$1$2" target="' + options["target"] + '">$1$2</a>');
+	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g, '<a href="' + options["redirect"] + '$1$2" target="' + options["target"] + '">$1$2</a>');
 }
 
 function GetNodeIp (post)
@@ -180,21 +180,23 @@ function GetNodeIp (post)
 
 function HtmlEscape (text, links)
 {
-	text = text.replace (/&/g, "&amp").replace (/</g, ";&lt").replace (/>/g, ";&gt").replace (/\"/g, ";&quot");
+	//text = text.replace (/&/g, "&amp").replace (/</g, ";&lt").replace (/>/g, ";&gt").replace (/\"/g, ";&quot");
+	text = text.replace (/&/g, "&amp;").replace (/</g, "&lt;").replace (/>/g, "&gt;").replace (/\"/g, "&quot;");
 	if (links)
 		text = InsertLinks (text);
-	text = text.replace (/&amp/g, "&amp;").replace (/;&lt/g, "&lt;").replace (/;&gt/g, "&gt;").replace (/;&quot/g, "&quot;");
+	//text = text.replace (/&amp/g, "&amp;").replace (/;&lt/g, "&lt;").replace (/;&gt/g, "&gt;").replace (/;&quot/g, "&quot;");
 	//text = text.replace (/ /g,"&nbsp;");
 	return text.replace (/\n/g, "<br>");
 }
 
 function HtmlEscapeMessage (text, links)
 {
-	text = text.replace (/&/g, "&amp").replace (/</g, ";&lt").replace (/>/g, ";&gt").replace (/\"/g, ";&quot");
+	//text = text.replace (/&/g, "&amp").replace (/</g, ";&lt").replace (/>/g, ";&gt").replace (/\"/g, ";&quot");
+	text = text.replace (/&/g, "&amp;").replace (/</g, "&lt;").replace (/>/g, "&gt;").replace (/\"/g, "&quot;");
 //	text = text.replace (/ /g," &nbsp;");
 	if (links)
 		text = InsertLinks (text);
-	text = text.replace (/&amp/g, "&amp;").replace (/;&lt/g, "&lt;").replace (/;&gt/g, "&gt;").replace (/;&quot/g, "&quot;");
+	//text = text.replace (/&amp/g, "&amp;").replace (/;&lt/g, "&lt;").replace (/;&gt/g, "&gt;").replace (/;&quot/g, "&quot;");
 	return text.replace (/\n/g, "<br>");
 }
 
@@ -230,7 +232,7 @@ function CreatePost (post)
 	node.appendChild (document.createTextNode (info));
 	node.setAttribute ("class", "info");
 	tr.appendChild (node);
-	
+
 	if (options["ip"])
 		tr.appendChild (GetNodeIp (post));
 
@@ -239,7 +241,7 @@ function CreatePost (post)
 	node.setAttribute ("class", "name");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);
-	
+
 	node = document.createElement ("td");
 	node.innerHTML = HtmlEscapeMessage (post["message"], options["links"]);
 	node.setAttribute ("class", "message");
@@ -274,7 +276,7 @@ function AddPost (id, name, message, date, ip, delay, color,bottag)
 			post["color"] = color;
 			post["bottag"] = bottag;
 			posts.push (post);
-			
+
 			if (parent != self)
 				parent.SetPosition (position);
 
@@ -288,8 +290,8 @@ function AddPost (id, name, message, date, ip, delay, color,bottag)
 					if (i >= options["last"])
 						display.removeChild (temp);
 				}
-			}			
-				
+			}
+
 			CreatePost (post);
 
 			if (options["title"])
@@ -297,13 +299,13 @@ function AddPost (id, name, message, date, ip, delay, color,bottag)
 					top.document.title = post["message"];
 				else
 					top.document.title = post["message"].substr (0, 252) + "...";
-			
+
 			if (options["sound"])
 				if (parent != self)
 					parent.send.document.getElementById ("sound").innerHTML = '<embed src="' + options["sound_post"] + '" hidden=true autostart=true loop=false>';
 				else
 					document.getElementById ("sound").innerHTML = '<embed src="' + options["sound_post"] + '" hidden=true autostart=true loop=false>';
-		} 
+		}
 		//else { position=id; }
 	}
 	else{position=id;}
@@ -311,7 +313,7 @@ function AddPost (id, name, message, date, ip, delay, color,bottag)
 //	setTimeout ("PingTimeout (" + position + ")", 120000);
 }
 
-function PingTimeout (lastpos) 
+function PingTimeout (lastpos)
 {
 	if (position == lastpos) {
 		Disconnected();}
