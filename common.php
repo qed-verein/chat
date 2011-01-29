@@ -8,9 +8,9 @@ require("usermod.php");
 		mysql_select_db (SQL_DATABASE);
 		$bottag=!empty($post['bottag'])?1:0;
 		mysql_query ('INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, bottag) VALUES ("' . $post["date"] . '", ' . $post["delay"] . ', "' . $post["ip"] . '", "' . escape_string($post["name"]) . '", "' . escape_string ($post["message"]) . '",'.$bottag.')');
-		
+
 		$recorded = true;
-		
+
 		$mem = shm_attach (MEM_SOCKETS_KEY, MEM_SOCKETS_SIZE);
 		$sem = sem_get (SEM_SOCKETS_KEY);
 		sem_acquire ($sem);
@@ -21,11 +21,11 @@ require("usermod.php");
 			$listeners = array ();
 		shm_put_var ($mem, MEM_SOCKETS_VAR, array ());
 		sem_release ($sem);
-		
+
 		$socket = socket_create (AF_UNIX, SOCK_DGRAM, 0);
 		socket_set_option ($socket, SOL_SOCKET, SO_REUSEADDR, 1);
 		socket_set_nonblock ($socket);
-		# socket_set_timeout($socket,1);		
+		# socket_set_timeout($socket,1);
 		$sem = sem_get (SEM_POST_KEY);
 		sem_acquire ($sem);
 		@unlink ("sockets/post.sock");
@@ -37,7 +37,7 @@ require("usermod.php");
 
 	function output_header ($type)
 	{
-		header ("Cache-Control: no-cache"); 
+		header ("Cache-Control: no-cache");
 
 		if ($type == "html")
 			header ("Content-Type: text/html; charset=utf-8");
@@ -62,7 +62,7 @@ require("usermod.php");
 			echo "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
 				. "<content>\n";
 	}
-	
+
 	function output_suffix ($type)
 	{
 		if ($type == "html")
@@ -75,7 +75,7 @@ require("usermod.php");
 		else if ($type == "xml")
 			echo "</content>\n";
 	}
-	
+
 	function output_error ($type, $number, $description, $file, $line)
 	{
 		if ($type == "html")
@@ -90,7 +90,7 @@ require("usermod.php");
 			echo "\t<error number=\"$number\" description=\"$description\" file=\"$file\" line=\"$line\"/>\n"
 				. "</content>\n";
 	}
-	
+
 	function output_feedback ($type)
 	{
 		if ($type == "html")
@@ -100,7 +100,7 @@ require("usermod.php");
 		else if ($type == "xml")
 			echo "\t<ok/>\n";
 	}
-	
+
 	function output_line ($type, $array)
 	{
 		$coloredarray = $array;
@@ -164,17 +164,17 @@ require("usermod.php");
 	{
 		return strtr (addslashes ($string), array ("\n" => '\n', "\r" => '\r'));
 	}
-	
+
 	function get_color ($name)
 	{
 		srand (hexdec (crc32 ($name)));
 		return dechex (rand (100, 255)) . dechex (rand (100, 255)) . dechex (rand (100, 255));
 	//		return dechex (abs(hexdec(crc32 ("a" . $name . "a")) % 156)+100) . dechex (abs(hexdec(crc32 ("b" . $name . "b")) % 156)+100) . dechex (abs(hexdec(crc32 ("c" . $name . "c")) % 156)+100);
 	}
-	
+
 	function show_links ($string)
 	{
-		return preg_replace ('#(http://|https://|ftp://)([\w\&.~%\/?\#=@:\[\]+\$\,-]*)#sm', '<a href="' . URL_REDIRECT . '\1\2">\1\2</a>', $string);
+		return preg_replace ('#(http://|https://|ftp://)([\w\&.~%\/?\#=@:\[\]+\$\,-;]*)#sm', '<a href="' . URL_REDIRECT . '\1\2">\1\2</a>', $string);
 	}
 
 	function format_post ($array, $options = array ())
@@ -186,17 +186,17 @@ require("usermod.php");
 		$info = '<td class="info">' . $delay . $array["date"] . "</td>";
 
 		$ip = ($options["ip"] ? '<td class="ip">' . $array["ip"] . "</td>" : "");
-		
+
 		$text = nl2br (htmlspecialchars ($array["name"], ENT_QUOTES, "UTF-8"));
 		if ($options["links"])
 			$text = show_links ($text);
 		$name = '<td class="name" style="color:#' . $color . '">' . $text . ":</td>";
-		
+
 		$text = nl2br (htmlspecialchars ($array["message"], ENT_QUOTES, "UTF-8"));
 		if ($options["links"])
 			$text = show_links ($text);
 		$message = '<td class="message" style="color:#' . $color . '">' . $text . "</td>";
-		
+
 		return "<tr>$info$ip$name$message</tr>";
 	}
 
@@ -234,7 +234,7 @@ require("usermod.php");
 	{
 		return 'AddPost (' . $array["id"] . ', "' . rawurlencode ($array["name"]) . '", "' .rawurlencode ($array["message"]) . '", "' . $array["date"] . '", "' . $array["ip"] . '", "' . $array["delay"] . '", "' . (!empty($array["hollow"]) ? "555555" : $array["color"]) . '", "'.$array['bottag'].'");';
 	}
-	
+
 	function get_date ($string)
 	{
 		sscanf (date ("i_H_d_m_Y"), "%d_%d_%d_%d_%d", $n, $h, $d, $m, $y);
@@ -242,7 +242,7 @@ require("usermod.php");
 		sscanf ($string, "%d_%d_%d_%d_%d", $n, $h, $d, $m, $y);
 		return date ("Y-m-d H-i-s", mktime ($h, $n, 0, $m, $d, $y));
 	}
-	
+
 	function get_query_value ($resource)
 	{
 		$temp = mysql_fetch_array ($resource);
