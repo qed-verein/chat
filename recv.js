@@ -313,6 +313,12 @@ function RecreatePosts ()
 		CreatePost (posts[cursor]);
 }
 
+function ShowMathjax (value)
+{
+    options["mathjax"] = value;
+    RecreatePosts ();
+}
+
 function ShowIp (value)
 {
 	options["ip"] = value;

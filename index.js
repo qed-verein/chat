@@ -52,6 +52,11 @@ function ShowLinks (value)
 	recv.ShowLinks (value);
 }
 
+function ShowMathjax (value)
+{
+    recv.ShowMathjax (value);
+}
+
 function ShowOld (value)
 {
 	recv.ShowOld (value);

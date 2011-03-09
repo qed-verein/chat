@@ -36,6 +36,7 @@ function Init ()
 		options["wait"] = 10;
 		options["target"] = "_blank";
 		options["urgent"] = true;
+		options["mathjax"] = false;
 		InitRemote (options);
 	}
 }
@@ -248,8 +249,11 @@ function CreatePost (post)
 	tr.appendChild (node);
 
 	document.getElementById ("display").appendChild (tr);
-	MathJax.Hub.Queue(["Typeset",MathJax.Hub,tr]);
-	MathJax.Hub.queue.Push( function () { scrollBy (0, 999999); });
+
+	if (options["mathjax"]) {
+		MathJax.Hub.Queue(["Typeset",MathJax.Hub,node]);
+		MathJax.Hub.queue.Push( function () { scrollBy (0, 999999); });
+	}
 	scrollBy (0, 999999);
 }
 
