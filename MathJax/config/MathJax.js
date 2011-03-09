@@ -387,7 +387,8 @@ MathJax.Hub.Config({
               href: '{\\bf\\mbox{[Latex: kein Href erlaubt!]}}',
               newenvironment: '{\\bf\\mbox{[Latex: Kein Newenvironment erlaubt!]}}',
               Rule: '{\\bf\\mbox{[Latex: kein Rule erlaubt!]}}',
-              style: '{\\bf\\mbox{[Latex: kein Style erlaubt!]}}'
+              style: '{\\bf\\mbox{[Latex: kein Style erlaubt!]}}',
+              "!": '{\\bf\\mbox{[Latex: Lass den mist!]}}'
 	}
     
   },
