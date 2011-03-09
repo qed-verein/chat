@@ -388,7 +388,8 @@ MathJax.Hub.Config({
               newenvironment: '{\\bf\\mbox{[Latex: Kein Newenvironment erlaubt!]}}',
               Rule: '{\\bf\\mbox{[Latex: kein Rule erlaubt!]}}',
               style: '{\\bf\\mbox{[Latex: kein Style erlaubt!]}}',
-              "!": '{\\bf\\mbox{[Latex: Lass den mist!]}}'
+              "!": '{\\bf\\mbox{[Latex: Lass den mist!]}}',
+              color: '{\\bf\\mbox{[Latex: kein Color erlaubt!]}}'
 	}
     
   },
