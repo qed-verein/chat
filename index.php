@@ -44,8 +44,6 @@
 	echo "\t\t\toptions[\"urgent\"] = " . (isset ($_GET["no_urgency"]) ? "false" : "true") . ";\n";
         echo "\t\t\toptions[\"mathjax\"] = " . (isset ($_GET["latex"]) ? "false" : "true") . ";\n";
 	
-echo "//test\n";
-	
 	if (SECURE_POSTS)
 		echo "\t\t\toptions[\"generator\"] = " . (SECURE_POSTS_GENERATOR_NUM_USES * get_key_generator ()) . ";\n";
 		

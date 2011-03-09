@@ -15,7 +15,6 @@ function Init ()
 		options["last"] = 20;
 		options["target"] = "_blank";
 		options["botblock"] = 1;
-	        options["mathjax"] = false;
 		InitRemote (options);
 	}
 }

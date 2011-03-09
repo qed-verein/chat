@@ -36,7 +36,6 @@ function Init ()
 		options["wait"] = 10;
 		options["target"] = "_blank";
 		options["urgent"] = true;
-		options["mathjax"] = false;
 		InitRemote (options);
 	}
 }
