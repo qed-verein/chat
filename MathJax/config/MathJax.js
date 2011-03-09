@@ -376,7 +376,18 @@ MathJax.Hub.Config({
     //Macros: {}
     Macros: { newcommand: '{\\bf\\mbox{[Latex: kein Newcommand erlaubt!]}}', 
               renewcommand: '{\\bf\\mbox{[Latex: kein Renewcommand erlaubt!]}}',
-	      def: '{\\bf\\mbox{[Latex: kein Def erlaubt!]}}'
+	      def: '{\\bf\\mbox{[Latex: kein Def erlaubt!]}}',
+              require: '{\\bf\\mbox{[Latex: kein  Require erlaubt!]}},
+              vskip: '{\\bf\\mbox{[Latex: kein Vskip erlaubt!]}},
+              hskip: '{\\bf\\mbox{[Latex: kein Hskip erlaubt!]}},
+              mskip: '{\\bf\\mbox{[Latex: kein Mskip erlaubt!]}},
+              mspace: '{\\bf\\mbox{[Latex: kein Mspace erlaubt!]}},
+              class: '{\\bf\\mbox{[Latex: kein Class erlaubt!]}},
+              cssId: '{\\bf\\mbox{[Latex: kein CSSID erlaubt!]}},
+              href: '{\\bf\\mbox{[Latex: kein Href erlaubt!]}},
+              newenvironment: '{\\bf\\mbox{[Latex: Kein Newenvironment erlaubt!]}},
+              Rule: '{\\bf\\mbox{[Latex: kein Rule erlaubt!]}},
+              style: '{\\bf\\mbox{[Latex: kein Style erlaubt!]}}
 	}
     
   },
