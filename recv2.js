@@ -251,7 +251,6 @@ function CreatePost (post)
 	document.getElementById ("display").appendChild (tr);
 
 	if (options["mathjax"] == true) {
-	    unpack ();
 	    MathJax.Hub.Queue(["Typeset",MathJax.Hub,node]);
 	    MathJax.Hub.queue.Push( function () { scrollBy (0, 999999); });
 	}
