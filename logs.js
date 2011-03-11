@@ -26,7 +26,7 @@ function RenewLinks ()
 	document.getElementById ("lastHour").href = "history.php?from=-60" + parameters;
 	document.getElementById ("thisDay").href = "history.php?from=0_0" + parameters;
 	document.getElementById ("lastDay").href = "history.php?from=0_-24" + parameters;
-	document.getElementById ("threeDays").href = "history.php?from=0_-48" + parameters;
+	document.getElementById ("threeDays").href = "history.php?from=0_-72" + parameters;
 
 	document.getElementById ("last100").href = "history.php?last=100" + parameters;
 	document.getElementById ("last200").href = "history.php?last=200" + parameters;
