@@ -21,7 +21,7 @@
 	require_once ("data.php");
 	require_once ("common.php");
 
-	echo "\t\t\toptions[\"redirect\"] = \"" . ((isset ($_GET["redirect"]) && 0 )? rawurlencode (demagicalize_string ($_GET["redirect"])) : "http://nasobem.i-networx.de/redirect.php?to=") . "\";\n";
+	echo "\t\t\toptions[\"redirect\"] = \"" . ((isset ($_GET["redirect"]) && 0 )? rawurlencode (demagicalize_string ($_GET["redirect"])) : "http://uxul.de/redirect.php?") . "\";\n";
 	echo "\t\t\toptions[\"name\"] = \"" . (isset($_GET["name"])?$_GET["name"]:'') . "\";\n";
 	echo "\t\t\toptions[\"last\"] = " . (isset ($_GET["last"]) ? max (4, min (24, intval ($_GET["last"]))) : 20) . ";\n";
 	echo "\t\t\toptions[\"old\"] = " . (isset ($_GET["old"]) ? intval ($_GET["old"]) : 0) . ";\n";
