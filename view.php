@@ -66,7 +66,9 @@
 		
 			//ZALGO-Workaround (sollte verbessert werden)
 			//filter_var($array['name'], FILTER_SANITIZE_ENCODED);
-			$array['name'] = preg_replace("#[^A-Za-z ]#", "", $array['name'] ); 
+			//$array['name'] = preg_replace("#[^A-Za-z0-9äöüÄÖÜáß ]#", "q", $array['name'] ); 
+			//$array['name'] = preg_replace('/[^(\x20-\x7F)]*/','', $array['name']);
+			$array['name'] = quoted_printable_encode($array['name']);
 
 			echo output_line ($type, $array);
 			//print_r($array);
