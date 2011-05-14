@@ -63,6 +63,11 @@
 		//trigger_error ("iiii".$position."####".mysql_num_rows($query));
 		while ($array = mysql_fetch_assoc ($query))
 		{
+		
+			//ZALGO-Workaround (sollte verbessert werden)
+			//filter_var($array['name'], FILTER_SANITIZE_ENCODED);
+			$array['name'] = preg_replace("#[^A-Za-z ]#", "", $array['name'] ); 
+
 			echo output_line ($type, $array);
 			//print_r($array);
 			//trigger_error(output_line ($type, $array));
