@@ -1,4 +1,4 @@
-﻿<?php
+﻿<?
 
 	ignore_user_abort (true);
 
@@ -26,7 +26,7 @@
 	$recorded = false;
 	
 	require_once ("data.php");
-	require_once ("common.php");	
+	require_once ("common.php");
 
 	/*if (strstr (getenv("HTTP_USER_AGENT"), "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.8) Gecko/20071004 Iceweasel/2.0.0.8 (Debian-2.0.0.6+2.0.0.8-0etch1)") !== FALSE
 		&& $post["ip"] == "89.14.166.134")
@@ -75,7 +75,7 @@
 	//	$post["name"]="Timo Keller";
 
 	}*/
-	
+	
 //	if($post["ip"]=="91.11.122.7")
 //		exit();
 	if(strlen($post["message"])>10009)
@@ -190,10 +190,11 @@
 
 		//Floodschutz
 		$post['ip']=mysql_real_escape_string($post['ip']);
+		$post['userid']=$userid;
 		$IPhalb=explode('.',$post['ip']);
 		$IPhalb=$IPhalb[0] . '.' . $IPhalb[1];
 		if (mysql_result(mysql_query('SELECT COUNT(*) FROM flood WHERE DATE_SUB(NOW(),INTERVAL 5 SECOND) <= date AND (IP="'.$post['ip'].'" OR IPhalb="'.$post['ip'].'")'),0) >3 ) {
-			header ("HTTP/1.1 403 Forbidden");			
+			header ("HTTP/1.1 403 Forbidden");
 			echo "Floodschutz aktiv - WARNUNG, bei weiteren Versuchen wird DAUERHAFT gebannt!!!";
 			die ();
 		}
