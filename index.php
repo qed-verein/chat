@@ -29,17 +29,22 @@
 		$userid=@mysql_result(mysql_query('SELECT id FROM user WHERE username="'.$user.'" AND password="'.$pw.'"'),0,0);
 		if ($userid) {
 			$_SESSION['userid']=$userid;
+			$_SESSION['anonym'] = 0;
 			unset($_REQUEST['logout']);
 		}
 		else {
 			$falsches_pw=true;
 		}
 	}
+	if (!empty($_REQUEST['anonym'])) {
+		$_SESSION['userid'] = 0;
+		$_SESSION['anonym'] = 1;
+	}
 	if (!empty($_REQUEST['logout'])) {
 		session_destroy();
 		unset($_SESSION['userid']);
 	}
-	if (!empty($_SESSION['userid'])) {
+	if (!empty($_SESSION['userid']) || !empty($_SESSION['anonym'])) {
 		//HACK für fcgi
 		$_GET['limit']=1;
 		$_GET['patient']=true;
@@ -95,7 +100,7 @@
 	</head>
 
 <?php
-	if (!empty($_SESSION['userid'])) { ?>
+	if (!empty($_SESSION['userid']) || !empty($_SESSION['anonym'])) { ?>
 	<?php echo '<frameset rows="' . $sizeRecv0 . ', ' . $sizeRecv1 . '">';?>
 		<frame name="recv" src="recv1337.html">
 		<?php echo '<frameset cols="' . $sizeSend0 . ', ' . $sizeSend1 . '">';?>
@@ -115,6 +120,7 @@
 		echo "Falsches PW";
 	}
 	?>
+	Anonym: <a href="index.php?anonym=1">hier</a><br />
 	<form action="" method="post">
 		Username: <input name="username" /><br />
 		Passwort: <input name="password" type="password" /> <br />

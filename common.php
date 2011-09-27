@@ -1,13 +1,14 @@
 <?php
 
 session_start();
-if (empty($ignore_no_login) && empty($_SESSION['userid'])) {
+/*if (empty($ignore_no_login) && empty($_SESSION['userid'])) {
 	die("Du musst dich erst einloggen");
-}
+}*/
 if (!empty($_SESSION['userid']))
 	$userid=$_SESSION['userid'];
-else
-	$userid=0;
+else {
+	$_SESSION['userid']=$userid=0;
+}
 if (empty($session_not_close))
 	session_write_close();
 
@@ -257,7 +258,7 @@ require("usermod.php");
 
 	function format_post_javascript ($array)
 	{
-		return 'AddPost (' . $array["id"] . ', "' . rawurlencode ($array["name"]) . '", "' .rawurlencode ($array["message"]) . '", "' . $array["date"] . '", "' . $array["ip"] . '", "' . $array["delay"] . '", "' . (!empty($array["hollow"]) ? "555555" : $array["color"]) . '", "'.$array['bottag'].'");';
+		return 'AddPost (' . $array["id"] . ', "' . rawurlencode ($array["name"]) . (@$array["user_id"]?'':' (anonym)') .'", "' .rawurlencode ($array["message"]) . '", "' . $array["date"] . '", "' . $array["ip"] . '", "' . $array["delay"] . '", "' . (!empty($array["hollow"]) ? "555555" : $array["color"]) . '", "'.$array['bottag'].'");';
 	}
 
 	function get_date ($string)
