@@ -4,7 +4,10 @@ session_start();
 if (empty($ignore_no_login) && empty($_SESSION['userid'])) {
 	die("Du musst dich erst einloggen");
 }
-$userid=$_SESSION['userid'];
+if (!empty($_SESSION['userid']))
+	$userid=$_SESSION['userid'];
+else
+	$userid=0;
 if (empty($session_not_close))
 	session_write_close();
 

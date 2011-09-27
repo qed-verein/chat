@@ -24,9 +24,12 @@
 		mysql_select_db (SQL_DATABASE);
 		$pw=userhash($_REQUEST['username'],$_REQUEST['password']);
 		$user=mysql_escape_string($_REQUEST['username']);
-		$userid=mysql_result(mysql_query('SELECT id FROM user WHERE username="'.$user.'" AND password="'.$pw.'"'),0,0);
+		//echo $pw;
+		mysql_query('SET NAMES "utf8"');
+		$userid=@mysql_result(mysql_query('SELECT id FROM user WHERE username="'.$user.'" AND password="'.$pw.'"'),0,0);
 		if ($userid) {
 			$_SESSION['userid']=$userid;
+			unset($_REQUEST['logout']);
 		}
 		else {
 			$falsches_pw=true;
@@ -34,6 +37,7 @@
 	}
 	if (!empty($_REQUEST['logout'])) {
 		session_destroy();
+		unset($_SESSION['userid']);
 	}
 	if (!empty($_SESSION['userid'])) {
 		//HACK für fcgi
@@ -116,5 +120,6 @@
 		Passwort: <input name="password" type="password" /> <br />
 		<input type="submit" />
 	</form>
+	Hinweis: Der Username und das Passwort ist dasselbe wie f&uuml;r die qeddb.
 	<?php } ?>
 </html>
