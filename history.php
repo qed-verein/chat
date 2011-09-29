@@ -2,7 +2,7 @@
 
 	require_once ("data.php");
 	require_once ("common.php");
-	
+
 	$reverse_output = false; //reverse output of posts?
 	if (!empty($_GET['reverse']) && $_GET['reverse'] == "true")
 	   $reverse_output = true;
@@ -19,11 +19,11 @@
 	}
 	else
 	{
-	    if (isset($_GET['from']) && ereg("^-?[0-9]+(_-?[0-9]+)*$",$_GET['from']))
+	    if (isset($_GET['from']) && @ereg("^-?[0-9]+(_-?[0-9]+)*$",$_GET['from']))
 		$from=$_GET['from'];
 	    else
 		$from="";
-	    if (isset($_GET['to']) && ereg("^-?[0-9]+(_-?[0-9]+)*$",$_GET['to']))
+	    if (isset($_GET['to']) && @ereg("^-?[0-9]+(_-?[0-9]+)*$",$_GET['to']))
 		$to=$_GET['to'];
 	    else
 		$to="";
@@ -44,7 +44,7 @@
 			die ();
 		}
 	}
-		
+
 	header ("Content-Type: text/html; charset=utf-8");
 
 	if (isset ($_GET["type"]))
@@ -79,7 +79,7 @@
 		//$coloredarray = applymods($coloredarray);
 
 		if ($reverse_output) $coloredarray = array_reverse($coloredarray);
-		
+
 		if ($type == "html")
 			echo "\t\t\t" . format_post ($coloredarray, $_GET) . "\n";
 		else if ($type == "xml")
@@ -99,5 +99,5 @@
 	{
 		echo "</content>\n";
 	}
-	
+
 ?>
