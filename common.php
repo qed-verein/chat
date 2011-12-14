@@ -19,8 +19,12 @@ require("usermod.php");
 		mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 		mysql_select_db (SQL_DATABASE);
 		$bottag=!empty($post['bottag'])?1:0;
-		$sql = 'INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag) VALUES ("' . $post["date"] 
-			. '", ' . $post["delay"] . ', "' . $post["ip"] . '", "' . escape_string($post["name"]) . '", "' . escape_string ($post["message"]) 
+
+		if($_SESSION['anonym'] == 1 && strip($post["name"]) == "Daniel")
+			$post["name"] = "Noob";
+
+		$sql = 'INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag) VALUES ("' . $post["date"]
+			. '", ' . $post["delay"] . ', "' . $post["ip"] . '", "' . escape_string($post["name"]) . '", "' . escape_string ($post["message"])
 			. '", ' . intval($post['userid']) .','.$bottag.')';
 		mysql_query ($sql);// or trigger_error($sql, E_USER_ERROR);
 
@@ -253,7 +257,7 @@ require("usermod.php");
 		/* Vandalismus ausserhalb der usermods :-) - cian
 		*/
 
-		return '<post id="' . $array["id"] . '" name="' . $name . '" message="' . $message . '" date="' . $array["date"] . '" ip="' . $ip 
+		return '<post id="' . $array["id"] . '" name="' . $name . '" message="' . $message . '" date="' . $array["date"] . '" ip="' . $ip
 			. '" delay="' . $array["delay"] . '" color="' . $color . '" bottag="'.$array['bottag'].'" anonym="' . !(@$array["user_id"]) . '" />';
 	}
 
