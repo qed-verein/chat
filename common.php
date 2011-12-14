@@ -19,10 +19,6 @@ require("usermod.php");
 		mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 		mysql_select_db (SQL_DATABASE);
 		$bottag=!empty($post['bottag'])?1:0;
-
-		if($_SESSION['anonym'] == 1 && strip($post["name"]) == "Daniel")
-			$post["name"] = "Noob";
-
 		$sql = 'INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag) VALUES ("' . $post["date"]
 			. '", ' . $post["delay"] . ', "' . $post["ip"] . '", "' . escape_string($post["name"]) . '", "' . escape_string ($post["message"])
 			. '", ' . intval($post['userid']) .','.$bottag.')';
