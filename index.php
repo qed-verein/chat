@@ -36,12 +36,12 @@
 			$falsches_pw=true;
 		}
 	}
-/*
+
 	if (!empty($_REQUEST['anonym'])) {
 		$_SESSION['userid'] = 0;
 		$_SESSION['anonym'] = 1;
 	}
-*/
+
 	if (!empty($_REQUEST['logout'])) {
 		session_destroy();
 		unset($_SESSION['userid']);
@@ -122,7 +122,7 @@
 		echo "Falsches PW";
 	}
 	?>
-	<?php /* Anonym: <a href="index.php?anonym=1">hier</a><br /> */ ?>
+	<?php Anonym: <a href="index.php?anonym=1">hier</a><br /> <b>Warnung:</b> Missbrauch jeglicher Art kann durch IP-Sperre, Meldung bei dem Provider, Hausverbot oder Deaktivierung des anonymen Zugangs geandet werden. ?>
 	<form action="" method="post">
 		Username: <input name="username" /><br />
 		Passwort: <input name="password" type="password" /> <br />
