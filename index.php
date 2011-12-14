@@ -122,7 +122,7 @@
 		echo "Falsches PW";
 	}
 	?>
-	Anonym: <a href="index.php?anonym=1">hier</a><br />
+	<?php /* Anonym: <a href="index.php?anonym=1">hier</a><br /> */ ?>
 	<form action="" method="post">
 		Username: <input name="username" /><br />
 		Passwort: <input name="password" type="password" /> <br />
