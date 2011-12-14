@@ -20,7 +20,7 @@ require("usermod.php");
 		mysql_select_db (SQL_DATABASE);
 		$bottag=!empty($post['bottag'])?1:0;
 
-		if($_SESSION["anonym"] == 1 && trim($post["name"]) == "Daniel")
+		if($_SESSION["anonym"] == 1 && strpos($post["name"], "Daniel") !== FALSE)
 			$post["name"] = "Noobfaker";
 
 		$sql = 'INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag) VALUES ("' . $post["date"]
