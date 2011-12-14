@@ -1,5 +1,4 @@
-﻿<?
-
+<?php
 	ignore_user_abort (true);
 
 	set_error_handler ('ErrorHandler');

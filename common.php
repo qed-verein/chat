@@ -253,7 +253,8 @@ require("usermod.php");
 		/* Vandalismus ausserhalb der usermods :-) - cian
 		*/
 
-		return '<post id="' . $array["id"] . '" name="' . $name . '" message="' . $message . '" date="' . $array["date"] . '" ip="' . $ip . '" delay="' . $array["delay"] . '" color="' . $color . '" bottag="'.$array['bottag'].'" />';
+		return '<post id="' . $array["id"] . '" name="' . $name . '" message="' . $message . '" date="' . $array["date"] . '" ip="' . $ip 
+			. '" delay="' . $array["delay"] . '" color="' . $color . '" bottag="'.$array['bottag'].'" anonym="' . !(@$array["user_id"]) . '" />';
 	}
 
 	function format_post_javascript ($array)
