@@ -4,7 +4,7 @@
 	function userhash($username, $password) {
 		return sha1($username . $password);
 	}
-	
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 
@@ -36,10 +36,12 @@
 			$falsches_pw=true;
 		}
 	}
+/*
 	if (!empty($_REQUEST['anonym'])) {
 		$_SESSION['userid'] = 0;
 		$_SESSION['anonym'] = 1;
 	}
+*/
 	if (!empty($_REQUEST['logout'])) {
 		session_destroy();
 		unset($_SESSION['userid']);
@@ -52,9 +54,9 @@
 
 		?>
 		<script type="text/javascript">
-		
+
 		var options = new Object ();
-		
+
 		<?php
 		echo "\t\t\toptions[\"redirect\"] = \"" . ((isset ($_GET["redirect"]) && 0 )? rawurlencode (demagicalize_string ($_GET["redirect"])) : "http://uxul.de/redirect.php?") . "\";\n";
 		echo "\t\t\toptions[\"name\"] = \"" . (isset($_GET["name"])?$_GET["name"]:'') . "\";\n";
@@ -68,7 +70,7 @@
 		echo "\t\t\toptions[\"logLinks\"] = " . (isset ($_GET["logLinks"]) ? intval ($_GET["logLinks"]) : 1) . ";\n";
 		echo "\t\t\toptions[\"sound\"] = " . (isset ($_GET["sound"]) ? intval ($_GET["sound"]) : 0) . ";\n";
 		echo "\t\t\toptions[\"sound_post\"] = \"" . (isset ($_GET["sound_post"]) ? demagicalize_string ($_GET["sound_post"]) : "spam.wav") . "\";\n";
-		echo "\t\t\toptions[\"method\"] = \"" . (isset ($_GET["method"]) ? demagicalize_string ($_GET["method"]) : "detect") . "\";\n";	
+		echo "\t\t\toptions[\"method\"] = \"" . (isset ($_GET["method"]) ? demagicalize_string ($_GET["method"]) : "detect") . "\";\n";
 		echo "\t\t\toptions[\"limit\"] = \"" . (isset ($_GET["limit"]) ? intval ($_GET["limit"]) : "256000") . "\";\n";
 		echo "\t\t\toptions[\"patient\"] = \"" . (isset ($_GET["patient"]) ? intval ($_GET["patient"]) : 0) . "\";\n";
 		echo "\t\t\toptions[\"wait\"] = \"" . (isset ($_GET["wait"]) ? intval ($_GET["wait"]) : 10) . "\";\n";
@@ -78,10 +80,10 @@
 		echo "\t\t\toptions[\"unl33t\"] = " . (isset ($_GET["unl33t"]) ? 1 : 0) . ";\n";
 		echo "\t\t\toptions[\"urgent\"] = " . (isset ($_GET["no_urgency"]) ? "false" : "true") . ";\n";
 		echo "\t\t\toptions[\"mathjax\"] = " . (isset ($_GET["latex"]) ? "true" : "false") . ";\n";
-	
+
 		if (SECURE_POSTS)
 			echo "\t\t\toptions[\"generator\"] = " . (SECURE_POSTS_GENERATOR_NUM_USES * get_key_generator ()) . ";\n";
-		
+
 		$sizeRecv0 = (isset ($_GET["sizeRecv0"]) ? demagicalize_string ($_GET["sizeRecv0"]) : "60%");
 		$sizeRecv1 = (isset ($_GET["sizeRecv1"]) ? demagicalize_string ($_GET["sizeRecv1"]) : "40%");
 		$sizeSend0 = (isset ($_GET["sizeSend0"]) ? demagicalize_string ($_GET["sizeSend0"]) : "60%");
@@ -114,8 +116,8 @@
 		  Diese Seite ben&ouml;tigt Frames um zu funktionieren.
 		</noframes>
 	</frameset>
-	<?php } else { 
-	
+	<?php } else {
+
 	if (!empty($falsches_pw)) {
 		echo "Falsches PW";
 	}
