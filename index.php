@@ -129,5 +129,6 @@
 		<input type="submit" />
 	</form>
 	Hinweis: Der Username und das Passwort ist dasselbe wie f&uuml;r die qeddb.
+	Bei Problemen, bitte an <a href="mailto:webmaster@qed-verein.de">webmaster@qed-verein.de</a> schreiben.
 	<?php } ?>
 </html>
