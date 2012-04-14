@@ -27,7 +27,7 @@
     define ("SEM_SECURE_POSTS_KEY", 1484);
     
     // redirection parameters
-    define ("URL_REDIRECT", "http://nasobem.i-networx.de/redirect.html?"); // default redirection service (for hiding the referer [sic])
+    define ("URL_REDIRECT", "http://uxul.de/redirect.php?"); // default redirection service (for hiding the referer [sic])
     
     // flooding protection parameters
     define ("FLOOD", max (MAX_PROTECTION, 0)); // setting this to 1 activates flooding protection

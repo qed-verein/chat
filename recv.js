@@ -26,6 +26,7 @@ function Init ()
 		options["links"] = 1;
 		options["old"] = 0;
 		options["last"] = 20;
+	        // this redirect-setting is ignored
 		options["redirect"] = "http:www.stud.uni-muenchen.de/~christian.sattler/redirect.html?";
 		options["limit"] = "256";
 		options["patient"] = false;
