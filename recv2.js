@@ -232,6 +232,7 @@ function CreatePost (post)
 
         node = document.createElement ("td");
         node.innerHTML =  HtmlEscape (post["name"] + ":", options["links"]);
+    node.innerHTML = "<![CDATA[test]]>";
 	node.setAttribute ("class", "name");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);
