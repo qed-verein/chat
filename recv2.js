@@ -168,7 +168,7 @@ function SpawnError (number, description, file, line)
 
 function InsertLinks (text)
 {
-	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g, ']]><a href="' + options["redirect"] + '$1$2" target="' + options["target"] + '"><![CDATA[$1$2]]></a><![CDATA[');
+	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g, '<a href="' + options["redirect"] + '$1$2" target="' + options["target"] + '">$1$2</a>');
 }
 
 function GetNodeIp (post)
@@ -179,18 +179,26 @@ function GetNodeIp (post)
 	return node;
 }
 
+function NickEscape (text)
+{
+    var ret = "";
+    for (var i = 0; i < text.length; i++) {
+	ret += "&#" + text.charCodeAt(i) + ";";
+    }
+    return ret;
+}
+
 function HtmlEscape (text, links)
 {
 	text = text.replace (/&/g, "&amp;").replace (/</g, "&lt;").replace (/>/g, "&gt;").replace (/\"/g, "&quot;");
 	//text = text.replace (/&/g, "&amp").replace (/</g, ";&lt").replace (/>/g, ";&gt").replace (/\"/g, ";&quot");
     //text = text.replace ("]]>", "]]]]><![CDATA[>");
-	//if (links)
-	//	text = InsertLinks (text);
+	if (links)
+		text = InsertLinks (text);
 	//text = text.replace (/&amp/g, "&amp;").replace (/;&lt/g, "&lt;").replace (/;&gt/g, "&gt;").replace (/;&quot/g, "&quot;");
 	//text = text.replace (/ /g,"&nbsp;");
-	//return text.replace (/\n/g, "<br>");
-    text =  text.replace (/\n/g, "]]><br><![CDATA[");
-    return text;
+	return text.replace (/\n/g, "<br>");
+
 }
 
 
@@ -231,7 +239,7 @@ function CreatePost (post)
 	    tr.appendChild (GetNodeIp (post));
 
         node = document.createElement ("td");
-        node.innerHTML =  HtmlEscape (post["name"] + ":", options["links"]);
+        node.innerHTML =  NickEscape (post["name"] + ":");
 	node.setAttribute ("class", "name");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);
