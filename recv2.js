@@ -189,7 +189,7 @@ function HtmlEscape (text, links)
 	//text = text.replace (/&amp/g, "&amp;").replace (/;&lt/g, "&lt;").replace (/;&gt/g, "&gt;").replace (/;&quot/g, "&quot;");
 	//text = text.replace (/ /g,"&nbsp;");
 	//return text.replace (/\n/g, "<br>");
-    text = "<![CDATA[" + text.replace (/\n/g, "]]><br><![CDATA[") + "]]>";
+    text =  text.replace (/\n/g, "]]><br><![CDATA[");
     return text;
 }
 
