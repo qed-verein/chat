@@ -237,7 +237,7 @@ function CreatePost (post)
 		tr.appendChild (GetNodeIp (post));
 
 	node = document.createElement ("td");
-	node.innerHTML = HtmlEscape (post["name"], options["links"]) + ":";
+	node.innerText =  post["name"] + ":";
 	node.setAttribute ("class", "name");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);

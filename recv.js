@@ -10,7 +10,7 @@ var timeWait;
 
 function SetStatus (text)
 {
-	document.getElementById ("status").innerHTML = text;
+	document.getElementById ("status").innerText = text;
 	scrollBy (0, 999999);
 }
 
@@ -232,7 +232,7 @@ function CreatePost (post)
 		tr.appendChild (GetNodeIp (post));
 
 	node = document.createElement ("td");
-	node.innerHTML = HtmlEscape (post["name"], options["links"]) + ":";
+	node.innerText = post["name"] + ":";
 	node.setAttribute ("class", "name");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);
