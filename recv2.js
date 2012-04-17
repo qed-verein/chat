@@ -11,8 +11,8 @@ var lastposition = -1;
 
 function SetStatus (text)
 {
-	document.getElementById ("status").innerHTML = text;
-	scrollBy (0, 999999);
+    document.getElementById ("status").innerHTML = text;
+    scrollBy (0, 999999);
 }
 
 function Init ()
@@ -189,7 +189,8 @@ function HtmlEscape (text, links)
 	//text = text.replace (/&amp/g, "&amp;").replace (/;&lt/g, "&lt;").replace (/;&gt/g, "&gt;").replace (/;&quot/g, "&quot;");
 	//text = text.replace (/ /g,"&nbsp;");
 	//return text.replace (/\n/g, "<br>");
-    return "<![CDATA[" + text.replace (/\n/g, "]]><br><![CDATA[") + "]]>";
+    text = "<![CDATA[" + text.replace (/\n/g, "]]><br><![CDATA[") + "]]>";
+    return text;
 }
 
 
