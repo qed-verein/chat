@@ -181,15 +181,15 @@ function GetNodeIp (post)
 
 function HtmlEscape (text, links)
 {
-	//text = text.replace (/&/g, "&amp;").replace (/</g, "&lt;").replace (/>/g, "&gt;").replace (/\"/g, "&quot;");
+	text = text.replace (/&/g, "&amp;").replace (/</g, "&lt;").replace (/>/g, "&gt;").replace (/\"/g, "&quot;");
 	//text = text.replace (/&/g, "&amp").replace (/</g, ";&lt").replace (/>/g, ";&gt").replace (/\"/g, ";&quot");
-    text = text.replace ("]]>", "]]]]><![CDATA[>");
-	if (links)
-		text = InsertLinks (text);
+    //text = text.replace ("]]>", "]]]]><![CDATA[>");
+	//if (links)
+	//	text = InsertLinks (text);
 	//text = text.replace (/&amp/g, "&amp;").replace (/;&lt/g, "&lt;").replace (/;&gt/g, "&gt;").replace (/;&quot/g, "&quot;");
 	//text = text.replace (/ /g,"&nbsp;");
 	//return text.replace (/\n/g, "<br>");
-    text = "<![CDATA[" + text.replace (/\n/g, "]]><br><![CDATA[") + "]]>";
+    //text = "<![CDATA[" + text.replace (/\n/g, "]]><br><![CDATA[") + "]]>";
     return text;
 }
 
@@ -232,7 +232,6 @@ function CreatePost (post)
 
         node = document.createElement ("td");
         node.innerHTML =  HtmlEscape (post["name"] + ":", options["links"]);
-    node.innerHTML = "<![CDATA[test]]>";
 	node.setAttribute ("class", "name");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);
