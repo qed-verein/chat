@@ -168,7 +168,7 @@ function SpawnError (number, description, file, line)
 
 function InsertLinks (text)
 {
-	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g, '<a href="' + options["redirect"] + '$1$2" target="' + options["target"] + '">$1$2</a>');
+	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g, ']]><a href="' + options["redirect"] + '$1$2" target="' + options["target"] + '"><![CDATA[$1$2]]></a><![CDATA[');
 }
 
 function GetNodeIp (post)
@@ -181,24 +181,17 @@ function GetNodeIp (post)
 
 function HtmlEscape (text, links)
 {
-	text = text.replace (/&/g, "&amp;").replace (/</g, "&lt;").replace (/>/g, "&gt;").replace (/\"/g, "&quot;");
+	//text = text.replace (/&/g, "&amp;").replace (/</g, "&lt;").replace (/>/g, "&gt;").replace (/\"/g, "&quot;");
 	//text = text.replace (/&/g, "&amp").replace (/</g, ";&lt").replace (/>/g, ";&gt").replace (/\"/g, ";&quot");
+    text = text.replace ("]]>", "]]]]><![CDATA[>");
 	if (links)
 		text = InsertLinks (text);
 	//text = text.replace (/&amp/g, "&amp;").replace (/;&lt/g, "&lt;").replace (/;&gt/g, "&gt;").replace (/;&quot/g, "&quot;");
 	//text = text.replace (/ /g,"&nbsp;");
-	return text.replace (/\n/g, "<br>");
+	//return text.replace (/\n/g, "<br>");
+    return "<![CDATA[" + text.replace (/\n/g, "]]><br><![CDATA[") + "]]>";
 }
 
-function HtmlEscapeMessage (text, links)
-{
-	text = text.replace (/&/g, "&amp;").replace (/</g, "&lt;").replace (/>/g, "&gt;").replace (/\"/g, "&quot;");
-//	text = text.replace (/ /g," &nbsp;");
-	if (links)
-		text = InsertLinks (text);
-	//text = text.replace (/&amp/g, "&amp;").replace (/;&lt/g, "&lt;").replace (/;&gt/g, "&gt;").replace (/;&quot/g, "&quot;");
-	return text.replace (/\n/g, "<br>");
-}
 
 function CreatePost (post)
 {
@@ -233,17 +226,17 @@ function CreatePost (post)
 	node.setAttribute ("class", "info");
 	tr.appendChild (node);
 
-	if (options["ip"])
-		tr.appendChild (GetNodeIp (post));
+        if (options["ip"])
+	    tr.appendChild (GetNodeIp (post));
 
-	node = document.createElement ("td");
-	node.innerText =  post["name"] + ":";
+        node = document.createElement ("td");
+        node.innerHTML =  HtmlEscape (post["name"] + ":", options["links"]);
 	node.setAttribute ("class", "name");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);
 
 	node = document.createElement ("td");
-	node.innerHTML = HtmlEscapeMessage (post["message"], options["links"]);
+	node.innerHTML = HtmlEscape (post["message"], options["links"]);
 	node.setAttribute ("class", "message");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);

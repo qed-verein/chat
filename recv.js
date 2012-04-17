@@ -1,3 +1,5 @@
+/* diese Datei sollte eigentlich nicht mehr verwendet werden ... */
+
 var request;
 var cursor = 0;
 var numTries = 0;
