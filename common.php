@@ -123,7 +123,6 @@ if (empty($session_not_close))
 		$coloredarray = $array;
 		$coloredarray["color"] = get_color($array["name"]);
 		$array["name"] = substr(trim($array["name"]),0,30);
-		$coloredarray = applymods($coloredarray);
 		if ($type == "html")
 			return "\t\t<script type=\"text/javascript\">parent." . format_post_javascript ($coloredarray) . "</script>\n";
 		else if ($type == "javascript")
