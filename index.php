@@ -118,11 +118,11 @@
 		  Diese Seite ben&ouml;tigt Frames um zu funktionieren.
 		</noframes>
 	</frameset>
-	<?php } else if(isset($_GET('mobile'))) {
+	<?php } else if(isset ($_GET("mobile"))) {
 		echo '<frameset rows="' . $sizeRecv0 . ', ' . $sizeRecv1 . '">';
-		echo '<frame name="recv" src="recv1337.html" />'
-		echo '<frame name="send" src="send2.html" />'
-		echo '</frameset>'
+		echo '<frame name="recv" src="recv1337.html" />';
+		echo '<frame name="send" src="send2.html" />';
+		echo '</frameset>';
 	} else {
 
 	if (!empty($falsches_pw)) {
