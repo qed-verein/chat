@@ -17,7 +17,8 @@
 		<link rel="stylesheet" title="normal" type="text/css" href="chat.css" />
 		<link rel="stylesheet" title="mobile" media="handheld" type="text/css" href="chat.css" />
 <?php
-	$mobile = $_GET('mobile');
+	$mobilefuckphp = $_GET["mobile"];
+	$mobile = isset($mobilefuckphp) ? true : false;
 	$ignore_no_login=true;
 	$session_not_close=true;
 	require_once ("data.php");
