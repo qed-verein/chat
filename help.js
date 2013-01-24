@@ -28,8 +28,6 @@ function InitRemote (options)
 	document.getElementById ("old").checked = options["old"];
 	document.getElementById ("last").value = count = options["last"];
 	document.getElementById ("botblock").checked = options["botblock"];
-        document.getElementById ("mathjax").checked = options["mathjax"];
-	//document.getElementById ("links").target = options["target"];
 }
 
 function ShowIp ()
@@ -61,13 +59,6 @@ function NotShowBot()
 	if (parent != self)
 		parent.NotShowBot (document.getElementById ("botblock").checked);
 }
-
-function ShowMathjax ()
-{
-    if (parent != self)
-	parent.ShowMathjax (document.getElementById ("mathjax").checked);
-}
-
 
 function CheckSize ()
 {

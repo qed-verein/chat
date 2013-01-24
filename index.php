@@ -87,8 +87,6 @@
 		echo "\t\t\toptions[\"css\"] = \"" . (isset ($_GET["css"]) ? htmlentities ($_GET["css"]) : "chat.css") . "\";\n";
 		echo "\t\t\toptions[\"unl33t\"] = " . (isset ($_GET["unl33t"]) ? 1 : 0) . ";\n";
 		echo "\t\t\toptions[\"urgent\"] = " . (isset ($_GET["no_urgency"]) ? "false" : "true") . ";\n";
-		echo "\t\t\toptions[\"mathjax\"] = " . (isset ($_GET["latex"]) ? "true" : "false") . ";\n";
-
 		if (SECURE_POSTS)
 			echo "\t\t\toptions[\"generator\"] = " . (SECURE_POSTS_GENERATOR_NUM_USES * get_key_generator ()) . ";\n";
 

@@ -36,7 +36,6 @@ function Init ()
 		options["wait"] = 10;
 		options["target"] = "_blank";
 		options["urgent"] = true;
-		//options["mathjax"] = false;
 		InitRemote (options);
 	}
 }
@@ -252,10 +251,6 @@ function CreatePost (post)
 
 	document.getElementById ("display").appendChild (tr);
 
-	if (options["mathjax"] == true) {
-	    MathJax.Hub.Queue(["Typeset",MathJax.Hub,node]);
-	    MathJax.Hub.queue.Push( function () { scrollBy (0, 999999); });
-	}
 	scrollBy (0, 999999);
 }
 
@@ -332,12 +327,6 @@ function RecreatePosts ()
 
 	for (var cursor = (options["old"] ? 0 : Math.max (0, posts.length - options["last"])); cursor != posts.length; ++cursor)
 		CreatePost (posts[cursor]);
-}
-
-function ShowMathjax (value)
-{
- options["mathjax"] = value;
- RecreatePosts ();
 }
 
 function ShowIp (value)
