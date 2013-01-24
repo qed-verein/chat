@@ -110,7 +110,12 @@
 	</head>
 
 <?php
-	if (!empty($_SESSION['userid']) || !empty($_SESSION['anonym'])) { ?>
+	if($mobile) {
+		echo '<frameset rows="' . $sizeRecv0 . ', ' . $sizeRecv1 . '">';
+		echo '<frame name="recv" src="recv1337.html" />';
+		echo '<frame name="send" src="send2.html" />';
+		echo '</frameset>';
+	} else if (!empty($_SESSION['userid']) || !empty($_SESSION['anonym'])) { ?>
 	<?php echo '<frameset rows="' . $sizeRecv0 . ', ' . $sizeRecv1 . '">';?>
 		<frame name="recv" src="recv1337.html">
 		<?php echo '<frameset cols="' . $sizeSend0 . ', ' . $sizeSend1 . '">';?>
@@ -124,12 +129,7 @@
 		  Diese Seite ben&ouml;tigt Frames um zu funktionieren.
 		</noframes>
 	</frameset>
-	<?php } else if($mobile) {
-		echo '<frameset rows="' . $sizeRecv0 . ', ' . $sizeRecv1 . '">';
-		echo '<frame name="recv" src="recv1337.html" />';
-		echo '<frame name="send" src="send2.html" />';
-		echo '</frameset>';
-	} else {
+	<?php } else {
 
 	if (!empty($falsches_pw)) {
 		echo "Falsches PW";
