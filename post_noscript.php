@@ -19,7 +19,13 @@
 	<body style="height: 100%; margin: 0; padding: 0; border: none;">
 		<form method="POST" action="post_noscript.php">
 			<table style="height: 99%; width: 99%; margin: 0 auto; padding: 0; border: none;">
-				<tr><td>Name:</td><td><input name="name" class="text" style="width:100%;" value="<?php echo addslashes(isset($_GET["name"]) ? $_GET["name"] : $_POST["name"]);?>"></td></tr>
+				<tr><td>Name:</td><td><input name="name" class="text" style="width:100%;" value="<?php 
+				if (isset($_GET["name"])) {
+				   echo addslashes($_GET["name"]);
+				} else if (isset($_POST["name"])) {
+				     echo addslashes($_POST["name"]);
+				}
+				?>"></td></tr>
 				<tr><td>Text:</td><td style="height:100%; width:100%;"><textarea name="message" class="text" rows="4" style="width:100%; height:100%;"></textarea></td></tr>
 				<tr><td><input type="submit" value="senden"></tr>
 			</table>
