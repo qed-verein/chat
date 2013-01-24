@@ -16,9 +16,9 @@
 		<meta name="robots" content="noindex, nofollow" />
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<?php if ($mobile) {
-		       echo '<meta http-equiv="Default-Style" content="mobile" />'
+		       echo '<meta http-equiv="Default-Style" content="mobile" />';
 		      } else {
-		       echo '<meta http-equiv="Default-Style" content="normal" />'
+		       echo '<meta http-equiv="Default-Style" content="normal" />';
 		      } ?>
 		<link rel="stylesheet" title="normal" type="text/css" href="chat.css" />
 		<link rel="stylesheet" title="mobile" type="text/css" href="chat-mobile.css" />
