@@ -11,9 +11,11 @@
 <html>
 
 	<head>
-		<meta name="robots" content="noindex, nofollow">
-		<meta http-equiv="content-type" content="text/html; charset=utf-8">
-		<link rel="stylesheet" type="text/css" href="chat.css">
+		<meta name="robots" content="noindex, nofollow" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Default-Style" content="normal" />
+		<link rel="stylesheet" title="normal" type="text/css" href="chat.css" />
+		<link rel="stylesheet" title="mobile" media="handheld" type="text/css" href="chat.css" />
 <?php
 	$ignore_no_login=true;
 	$session_not_close=true;
@@ -116,7 +118,12 @@
 		  Diese Seite ben&ouml;tigt Frames um zu funktionieren.
 		</noframes>
 	</frameset>
-	<?php } else {
+	<?php } else if(isset($_GET('mobile'))) {
+		echo '<frameset rows="' . $sizeRecv0 . ', ' . $sizeRecv1 . '">';
+		echo '<frame name="recv" src="recv1337.html" />'
+		echo '<frame name="send" src="send2.html" />'
+		echo '</frameset>'
+	} else {
 
 	if (!empty($falsches_pw)) {
 		echo "Falsches PW";
