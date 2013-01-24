@@ -17,6 +17,7 @@
 		<link rel="stylesheet" title="normal" type="text/css" href="chat.css" />
 		<link rel="stylesheet" title="mobile" media="handheld" type="text/css" href="chat.css" />
 <?php
+	$mobile = isset($_GET("mobile")) ? true : false;
 	$ignore_no_login=true;
 	$session_not_close=true;
 	require_once ("data.php");
@@ -118,7 +119,7 @@
 		  Diese Seite ben&ouml;tigt Frames um zu funktionieren.
 		</noframes>
 	</frameset>
-	<?php } else if(isset ($_GET("mobile"))) {
+	<?php } else if($mobile) {
 		echo '<frameset rows="' . $sizeRecv0 . ', ' . $sizeRecv1 . '">';
 		echo '<frame name="recv" src="recv1337.html" />';
 		echo '<frame name="send" src="send2.html" />';
