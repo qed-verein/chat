@@ -5,6 +5,8 @@
 		return sha1($username . $password);
 	}
 
+	$mobile = isset($_GET["mobile"]) ? true : false;
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 
@@ -13,11 +15,14 @@
 	<head>
 		<meta name="robots" content="noindex, nofollow" />
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta http-equiv="Default-Style" content="normal" />
+		<?php if ($mobile) {
+		       echo '<meta http-equiv="Default-Style" content="mobile" />'
+		      } else {
+		       echo '<meta http-equiv="Default-Style" content="normal" />'
+		      } ?>
 		<link rel="stylesheet" title="normal" type="text/css" href="chat.css" />
-		<link rel="stylesheet" title="mobile" media="handheld" type="text/css" href="chat.css" />
+		<link rel="stylesheet" title="mobile" type="text/css" href="chat-mobile.css" />
 <?php
-	$mobile = isset($_GET["mobile"]) ? true : false;
 	$ignore_no_login=true;
 	$session_not_close=true;
 	require_once ("data.php");
