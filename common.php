@@ -12,8 +12,6 @@ else {
 if (empty($session_not_close))
 	session_write_close();
 
-require("usermod.php");
-
 	function do_post ($post)
 	{
 		mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
@@ -246,17 +244,6 @@ require("usermod.php");
 			$message = rawurlencode ($array["message"]);
 
 		$ip = $array["ip"];
-	/*	if($ip != "87.174.105.89")
-		{
-			$iplist = array("129.217.129.132", "141.84.69.20", "87.174.86.106", "82.113.106.16", "138.246.7.139", "91.45.163.78", "217.89.77.90", "134.2.62.65");
-			$iplist = array("n00b", "spam", "blah", "blubb", "blubblubb!", "v1AgRR4, \\/41IuM, P3Ni5EnL4Rgem3ntp1LL", "unbekanntes Xorgobjekt", "*help me I'm a shizophrenic!!111elf");
-			$ip = "";
-			$name ="";
-		}*/
-
-		/* Vandalismus ausserhalb der usermods :-) - cian
-		*/
-
 		return '<post id="' . $array["id"] . '" name="' . $name . '" message="' . $message . '" date="' . $array["date"] . '" ip="' . $ip
 			. '" delay="' . $array["delay"] . '" color="' . $color . '" bottag="'.$array['bottag'].'" anonym="' . !(@$array["user_id"]) . '" />';
 	}
