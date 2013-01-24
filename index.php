@@ -110,12 +110,12 @@
 <?php
 	if($mobile) {
 		echo '<frameset rows="' . $sizeRecv0 . ', ' . $sizeRecv1 . '">';
-		echo '<frame name="recv" src="recv1337.html" />';
+		echo '<frame name="recv" src="receive.html" />';
 		echo '<frame name="send" src="send-mobile.html" />';
 		echo '</frameset>';
 	} else if (!empty($_SESSION['userid']) || !empty($_SESSION['anonym'])) { ?>
 	<?php echo '<frameset rows="' . $sizeRecv0 . ', ' . $sizeRecv1 . '">';?>
-		<frame name="recv" src="recv1337.html">
+		<frame name="recv" src="receive.html">
 		<?php echo '<frameset cols="' . $sizeSend0 . ', ' . $sizeSend1 . '">';?>
 			<frame name="send" src="send2.html">
 			<?php echo '<frameset rows="' . $sizeHelp0 . ', ' . $sizeHelp1 . '">';?>
