@@ -229,33 +229,26 @@ function CreatePost (post)
 		info = delay + info;
 	}
 
-	var tr = document.createElement ("tr");
-	var node = document.createElement ("td");
+	var node = document.createElement ("li");
 	node.setAttribute ("text", "ff00ff");
 	node.appendChild (document.createTextNode (info));
 	node.setAttribute ("class", "info");
-	tr.appendChild (node);
-    disp.appendChild(tr);
+    disp.appendChild(node);
 
 /*        if (options["ip"])
 	    tr.appendChild (GetNodeIp (post)); */
 
-    tr = document.createElement("tr");
-
-        node = document.createElement ("td");
+        node = document.createElement ("li");
         node.innerHTML =  NickEscape (post["name"] + ":");
 	node.setAttribute ("class", "name");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
-	tr.appendChild (node);
-    disp.appendChild(tr);
+    disp.appendChild(node);
 
-    tr = document.createElement("tr");
-	node = document.createElement ("td");
+	node = document.createElement ("li");
 	node.innerHTML = HtmlEscape (post["message"], options["links"]);
 	node.setAttribute ("class", "message");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
-	tr.appendChild (node);
-    disp.appendChild(tr);
+    disp.appendChild(node);
 
 //	document.getElementById ("display").appendChild (tr);
 
