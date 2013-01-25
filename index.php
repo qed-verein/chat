@@ -110,7 +110,7 @@
 <?php
 	if($mobile) {
 		echo '<frameset rows="' . $sizeRecv0 . ', ' . $sizeRecv1 . '">';
-		echo '<frame name="recv" src="receive.html" />';
+		echo '<frame name="recv" src="receive-mobile.html" />';
 		echo '<frame name="send" src="send-mobile.html" />';
 		echo '</frameset>';
 	} else if (!empty($_SESSION['userid']) || !empty($_SESSION['anonym'])) { ?>
