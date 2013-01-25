@@ -1,3 +1,5 @@
+@media handheld {
+
 body, input, textarea, td, frame
 {
 	background-color: #555555;
@@ -57,4 +59,6 @@ a:link
 a:visited
 {
 	color: #000000;
+}
+
 }
