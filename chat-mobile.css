@@ -41,6 +41,7 @@ td.name
 table
 {
 	border-collapse: collapse;
+	width: 95%;
 }
 
 td.text
