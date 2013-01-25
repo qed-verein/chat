@@ -16,6 +16,7 @@
 		<meta name="robots" content="noindex, nofollow" />
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<?php if ($mobile) {
+		       echo '<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>';
 		       echo '<link rel="stylesheet" type="text/css" href="chat-mobile.css" />';
 		      } else {
 		       echo '<link rel="stylesheet" type="text/css" href="chat.css" />';
