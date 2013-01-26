@@ -8,7 +8,7 @@ body, input, textarea, td, frame
 	font-size: 9pt; */
 }
 
-info, ip
+li.info, li.ip
 {
 	border-top: thin dotted #dddddd;
 	border-bottom: thin dotted #dddddd;
@@ -19,7 +19,7 @@ info, ip
 	vertical-align: top;
 }
 
-info
+li.info
 {
 	text-align: right;
 	background-color: #cccccc;
@@ -27,19 +27,19 @@ info
 	font-size: xx-small
 }
 
-ip
+li.ip
 {
 	text-align: center;
 }
 
-name
+li.name
 {
 	font-weight: bold;
 	vertical-align: top;
 	overflow: hidden;
 }
 
-text
+li.text
 {
 	vertical-align: top;
 }
