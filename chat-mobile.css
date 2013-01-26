@@ -8,7 +8,7 @@ body, input, textarea, td, frame
 	font-size: 9pt; */
 }
 
-td.info, td.ip
+info, ip
 {
 	border-top: thin dotted #dddddd;
 	border-bottom: thin dotted #dddddd;
@@ -19,7 +19,7 @@ td.info, td.ip
 	vertical-align: top;
 }
 
-td.info
+info
 {
 	text-align: right;
 	background-color: #cccccc;
@@ -27,26 +27,19 @@ td.info
 	font-size: xx-small
 }
 
-td.ip
+ip
 {
 	text-align: center;
 }
 
-td.name
+name
 {
 	font-weight: bold;
 	vertical-align: top;
-	max-width: 15em;
 	overflow: hidden;
 }
 
-table
-{
-	border-collapse: collapse;
-	width: 95%;
-}
-
-td.text
+text
 {
 	vertical-align: top;
 }
