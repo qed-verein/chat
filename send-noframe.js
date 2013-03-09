@@ -47,21 +47,13 @@ function InitRemote (options)
 		createRequest = null;
 		
 	if (createRequest == null)
-		SetStatus ('Hm, anscheinend unterstützt dein Browser kein XMLHttpRequest-Object.<br>Probiere doch einfach mal <a href="bla.html">dieses</a> Interface.');
+		SetStatus ('Hm, anscheinend unterstützt dein Browser kein XMLHttpRequest-Object.');
 	else
 		request = null;
 	
 	generator = options["generator"];
-	
-	/* if (options["urgent"] && window.XMLHttpRequest) {
-		var r = new XMLHttpRequest();
-		r.open("GET", "http://uxul.org/upload/urgent.txt", false);
-		r.send(null);
-		var text = r.responseText;
-		
-		document.getElementById ("message").value = text;
-	}
-*/
+
+    alert(createRequest);
 }
 
 function SetPosition (value)
