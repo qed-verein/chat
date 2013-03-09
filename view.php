@@ -62,7 +62,7 @@
 	      shm_put_var ($mem, MEM_SOCKETS_VAR, $listeners);
 	      sem_release ($sem);
 	    */
-	  global $position, $type;
+	  global $position, $type, $touchme;
 
 	  if (inotify_read($touchme) !== FALSE) {
 	    
