@@ -9,8 +9,8 @@
 
         $touchme = inotify_init();
         $touchme_deleteme = inotify_add_watch ($touchme, TOUCH_FILE, IN_ATTRIB);
-        stream_set_blocking ($touchme, 0);
-
+//stream_set_blocking ($touchme, 0);
+socket_set_nonblock ($touchme);
 //var_dump ($touchme);
 //var_dump ($touchme_deleteme);
 
