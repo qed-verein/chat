@@ -1,6 +1,6 @@
 var createRequest, request, position, from = 0, timeWait, generator = 0,zero=0;
 
-function GetKey (gen)
+function Send_GetKey (gen)
 {
 	var genString = gen.toString (16);
 	while (genString.length != 8)
@@ -14,7 +14,7 @@ function GetKey (gen)
 	return genString + DoWhateverNeedToBeDone (string);
 }
 
-function SetStatus (text)
+function Send_SetStatus (text)
 {
 	document.getElementById ("status").innerHTML = text;
 }
@@ -29,13 +29,12 @@ function Send_Init ()
 		options["name"] = "";
 		options["wait"] = 60;
 		options["urgent"] = true;
-		InitRemote (options);
+		Send_InitRemote (options);
 	}
     alert(createRequest);
-
 }
 
-function InitRemote (options)
+function Send_InitRemote (options)
 {
 	timeWait = 6000 * options["wait"];
 
@@ -49,43 +48,43 @@ function InitRemote (options)
 		createRequest = null;
 		
 	if (createRequest == null)
-		SetStatus ('Hm, anscheinend unterstützt dein Browser kein XMLHttpRequest-Object.');
+		Send_SetStatus ('Hm, anscheinend unterstützt dein Browser kein XMLHttpRequest-Object.');
 	else
 		request = null;
 	
 	generator = options["generator"];
 }
 
-function SetPosition (value)
+function Send_SetPosition (value)
 {
 	position = value;	
 }
 
-function StateChanged ()
+function Send_StateChanged ()
 {
 	if (request.readyState == 4)
 	{
 		if (request.status >= 200 && request.status < 300)
 		{
-			SetStatus ("");
+			Send_SetStatus ("");
 			var
 			message = document.getElementById ("message");
 			message.value = "";
 			message.focus ();
 		}
 		else
-			SetStatus ("Dein Post konnte nicht übertragen werden (" + request.status + ", " + request.statusText + ").<br>" + request.responseText);
+			Send_SetStatus ("Dein Post konnte nicht übertragen werden (" + request.status + ", " + request.statusText + ").<br>" + request.responseText);
 
 		request = null;
 		++from;
 	}
 }
 
-function OnTimeout (to)
+function Send_OnTimeout (to)
 {
 	if (from == to)
 	{
-		SetStatus ("Der Server antwortete nicht innerhalb von " + (timeWait / 1000) + " Sekunden auf deine Postsendung.");
+		Send_SetStatus ("Der Server antwortete nicht innerhalb von " + (timeWait / 1000) + " Sekunden auf deine Postsendung.");
 
 		request.abort ();
 		request = null;
@@ -97,9 +96,9 @@ function Send ()
 	if (createRequest != null) {
 		if (request == null)
 			{
-				SetStatus ("Sende Post ...");
+				Send_SetStatus ("Sende Post ...");
 				request = createRequest ();
-				request.onreadystatechange = StateChanged;
+				request.onreadystatechange = Send_StateChanged;
 				request.open ("POST", "post.php", true);
 				request.setRequestHeader ("Content-Type", "application/x-www-form-urlencoded");
 				request.setRequestHeader ("Content-Encoding", "utf-8");
@@ -109,10 +108,10 @@ function Send ()
 				if (generator)
 					content += "&key=" + GetKey (generator++);
 				request.send (content);
-				setTimeout ("OnTimeout (" + from + ")", timeWait);
+				setTimeout ("Send_OnTimeout (" + from + ")", timeWait);
 			}
 		else
-			SetStatus ("Dein alter Post wird noch gesendet ...");
+			Send_SetStatus ("Dein alter Post wird noch gesendet ...");
 	}
 	else
 	    alert("createrequest ist put");
