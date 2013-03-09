@@ -64,7 +64,9 @@
 	    */
 	  global $position, $type, $touchme;
 
-	  if (inotify_read($touchme) !== FALSE) {
+	  var_dump (inotify_read($touchme));
+
+	  //if (inotify_read($touchme) !== FALSE) {
 	    
 	    mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 	    mysql_select_db (SQL_DATABASE);
@@ -77,7 +79,7 @@
 		++$position;
 	      }
 	    mysql_close ();
-	  }
+	    //}
 	}
 
 	$limit = $position + ((isset ($_GET["limit"]) && is_numeric ($_GET["limit"])) ? $_GET["limit"] : 256);
