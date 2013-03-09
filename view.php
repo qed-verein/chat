@@ -8,8 +8,8 @@
 	require ("common.php");
 
         $touchme = inotify_init();
-var_dump(stream_set_blocking ($touchme, 0));
         $touchme_deleteme = inotify_add_watch ($touchme, TOUCH_FILE, IN_ATTRIB);
+var_dump(stream_set_blocking ($touchme, 0));
 
 var_dump ($touchme);
 var_dump ($touchme_deleteme);
