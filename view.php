@@ -129,6 +129,8 @@
 		global $socket;
 		global $type;
 		global $name;
+		global $touchme;
+		global $touchme_deleteme;
 		//trigger_error('verbindung weg');
 		//CSS, der sockets nicht mag
 		/*@socket_shutdown($socket);
