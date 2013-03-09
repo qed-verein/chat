@@ -18,8 +18,9 @@ if (empty($session_not_close))
 		mysql_select_db (SQL_DATABASE);
 		$bottag=!empty($post['bottag'])?1:0;
 
-		if($_SESSION["userid"] != 62 && strpos(strtoupper($post["name"]), "DANIEL") !== FALSE)
-			$post["name"] = "Noobfaker";
+		/* muss das sein? - css
+		  if($_SESSION["userid"] != 62 && strpos(strtoupper($post["name"]), "DANIEL") !== FALSE)
+		  $post["name"] = "Noobfaker"; */
 
 		$sql = 'INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag) VALUES ("' . $post["date"]
 			. '", ' . $post["delay"] . ', "' . $post["ip"] . '", "' . escape_string($post["name"]) . '", "' . escape_string ($post["message"])
@@ -28,6 +29,12 @@ if (empty($session_not_close))
 
 		$recorded = true;
 
+
+		//CSS, der sockets nicht mag
+
+		touch (TOUCH_FILE);
+
+		/*
 		$mem = shm_attach (MEM_SOCKETS_KEY, MEM_SOCKETS_SIZE);
 		$sem = sem_get (SEM_SOCKETS_KEY);
 		sem_acquire ($sem);
@@ -49,7 +56,7 @@ if (empty($session_not_close))
 		socket_bind ($socket, "sockets/post.sock");
 		foreach ($listeners as $name)
 			@socket_sendto ($socket, "news", 4, 0, is_array ($name) ? $name[0] : $name);
-		sem_release ($sem);
+		sem_release ($sem); */
 	}
 
 	function output_header ($type)

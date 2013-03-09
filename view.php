@@ -7,6 +7,10 @@
 	require ("data.php");
 	require ("common.php");
 
+        $touchme = inotify_init();
+        stream_set_blocking ($touchme, 0);
+        $touchme_deleteme = inotify_add_watch ($touchme, TOUCH_FILE, IN_ATTRIB);
+
 	$type = @$_GET["type"];
 	output_header ($type);
 	output_prefix ($type);
@@ -30,6 +34,7 @@
 	$position = ($position < 0 ? max (0, $count - 24) : min ($position, $count));
 	mysql_close ();
 
+/*
 	$name = "sockets/" . uniqid ("s") . ".sock";
 	$socket = socket_create (AF_UNIX, SOCK_DGRAM, 0);
 	//trigger_error("socket gemacht ".socket_strerror(socket_last_error($socket))); 
@@ -39,43 +44,40 @@
 #	socket_set_timeout($socket,1);
 		
 	$mem = shm_attach (MEM_SOCKETS_KEY, MEM_SOCKETS_SIZE);
-	$sem = sem_get (SEM_SOCKETS_KEY);
+	$sem = sem_get (SEM_SOCKETS_KEY); */
 
 	if (isset ($_GET["feedback"]) && $_GET["feedback"])
 		output_feedback ($type);
 
-	function Check ()
-	{
-		global $mem, $sem, $name, $position, $type;
+	function Check () {
+	  global $mem, $sem, $name, $position, $type;
 
-		sem_acquire ($sem);
-		$listeners = @shm_get_var ($mem, MEM_SOCKETS_VAR);
-		if (!$listeners)
-			$listeners = array ();
-		array_push ($listeners, $name);
-		shm_put_var ($mem, MEM_SOCKETS_VAR, $listeners);
-		sem_release ($sem);
 
-		mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
-		mysql_select_db (SQL_DATABASE);
-		$query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" ); //" LIMIT $position,23432423");
-		
-		//trigger_error ("iiii".$position."####".mysql_num_rows($query));
-		while ($array = mysql_fetch_assoc ($query))
-		{
-		
-			//ZALGO-Workaround (sollte verbessert werden)
-			//filter_var($array['name'], FILTER_SANITIZE_ENCODED);
-			//$array['name'] = preg_replace("#[^A-Za-z0-9äöüÄÖÜáß ]#", "q", $array['name'] ); 
-			//$array['name'] = preg_replace('/[^(\x20-\x7F)]*/','', $array['name']);
-			//$array['name'] = quoted_printable_encode($array['name']);
+	  if (inotify_read($touchme) !== FALSE) {
 
-			echo output_line ($type, $array);
-			//print_r($array);
-			//trigger_error(output_line ($type, $array));
-			++$position;
-		}
-		mysql_close ();
+	    //CSS, der sockets nicht mag
+	    /*
+	      sem_acquire ($sem);
+	      $listeners = @shm_get_var ($mem, MEM_SOCKETS_VAR);
+	      if (!$listeners)
+	      $listeners = array ();
+	      array_push ($listeners, $name);
+	      shm_put_var ($mem, MEM_SOCKETS_VAR, $listeners);
+	      sem_release ($sem);
+	    */
+	    
+	    mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
+	    mysql_select_db (SQL_DATABASE);
+	    $query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" ); //" LIMIT $position,23432423");
+	    
+	    //trigger_error ("iiii".$position."####".mysql_num_rows($query));
+	    while ($array = mysql_fetch_assoc ($query))
+	      {
+		echo output_line ($type, $array);
+		++$position;
+	      }
+	    mysql_close ();
+	  }
 	}
 
 	$limit = $position + ((isset ($_GET["limit"]) && is_numeric ($_GET["limit"])) ? $_GET["limit"] : 256);
@@ -96,7 +98,7 @@
 			break;
 
 		//mifritscher: damit php testen kann ob die verbindugn noch steht
-		# socket_set_timeout($socket,1);
+		//# socket_set_timeout($socket,1);
 		//blocken ist hier aua, weil php in der Zeit nicht testen kann ob die verbindung noch da ist
 		while (!connection_aborted()) {
 		    $zaehler++;
@@ -110,12 +112,14 @@
 		    aufraeumen();
 //		    if ($zaehler>=10)
 //			exit;
+				//CSS, der sockets nicht mag
+		/*
 		    $socket_status =@socket_recvfrom ($socket, $buffer, 4, 0, $source);
 		    /* trigger_error('dddd'.$source);
 		    if ($socket_status === -1)
-			trigger_error("alles put ".socket_strerror(socket_last_error($socket)));  */
+			trigger_error("alles put ".socket_strerror(socket_last_error($socket)));  * /
 		    if ($socket_status > 0)
-			break;
+		    break;*/
 		    usleep(100000);
 		}
 	}
@@ -126,10 +130,12 @@
 		global $type;
 		global $name;
 		//trigger_error('verbindung weg');
-		@socket_shutdown($socket);
+		//CSS, der sockets nicht mag
+		/*@socket_shutdown($socket);
 		@socket_close($socket);
 		@unlink($name);	
-		output_suffix ($type);
+		output_suffix ($type);*/
+		inotify_rm_watch($touchme, $touchme_deleteme);
 		exit;
 	}
 

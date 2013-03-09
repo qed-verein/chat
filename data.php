@@ -25,7 +25,10 @@
     define ("SEM_POST_KEY", 1482); 
     define ("SEM_FLOOD_KEY", 1483);
     define ("SEM_SECURE_POSTS_KEY", 1484);
-    
+
+//CSS, der sockets nicht mag
+define ("TOUCH_FILE", "sockets/touchthis");
+
     // redirection parameters
     define ("URL_REDIRECT", "http://uxul.de/redirect.php?"); // default redirection service (for hiding the referer [sic])
     
