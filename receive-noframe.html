@@ -6,8 +6,14 @@
 		<meta name="robots" content="noindex, nofollow">
 		<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 		<link rel="stylesheet" type="text/css" href="chat.css">
-                <script type="text/javascript" src="send2.js"></script>
-                <script type="text/javascript" src="receive.js"></script>
+                <script type="text/javascript" src="send-noframe.js"></script>
+                <script type="text/javascript" src="receive-noframe.js"></script>
+		<script type="text/javascript">
+		  function Init () {
+		    Send_Init ();
+		    Recv_Init ();
+		  }
+		</script>
 
 		<title>Anzeigefenster</title>
 	</head>
