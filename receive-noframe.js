@@ -145,7 +145,7 @@ function Recv_Disconnected ()
 		Receive ();
 }
 
-function Recv_Ok ()
+function Ok ()
 {
 	Recv_SetStatus ("");
 	numTries = 0;
