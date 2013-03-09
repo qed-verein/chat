@@ -9,10 +9,10 @@
 
         $touchme = inotify_init();
         $touchme_deleteme = inotify_add_watch ($touchme, TOUCH_FILE, IN_ATTRIB);
-var_dump(stream_set_blocking ($touchme, 0));
+        stream_set_blocking ($touchme, 0);
 
-var_dump ($touchme);
-var_dump ($touchme_deleteme);
+//var_dump ($touchme);
+//var_dump ($touchme_deleteme);
 
 	$type = @$_GET["type"];
 	output_header ($type);
@@ -67,9 +67,9 @@ var_dump ($touchme_deleteme);
 	    */
 	  global $position, $type, $touchme;
 
-	  var_dump (inotify_read($touchme));
+	  //var_dump (inotify_read($touchme));
 
-	  //if (inotify_read($touchme) !== FALSE) {
+	  if (inotify_read($touchme) !== FALSE) {
 	    
 	    mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 	    mysql_select_db (SQL_DATABASE);
@@ -82,7 +82,7 @@ var_dump ($touchme_deleteme);
 		++$position;
 	      }
 	    mysql_close ();
-	    //}
+	    }
 	}
 
 	$limit = $position + ((isset ($_GET["limit"]) && is_numeric ($_GET["limit"])) ? $_GET["limit"] : 256);

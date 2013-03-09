@@ -137,7 +137,7 @@ if (empty($session_not_close))
 		else if ($type == "xml")
 			return "\t" . format_post_xml ($coloredarray) . "\n";
 		else
-			return "\ttyp kenn ich nicht \n";
+			return "\"" . $type . "\"\ttyp kenn ich nicht \n";
 	}
 
 	function get_key_generator ()
