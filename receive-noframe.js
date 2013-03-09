@@ -9,34 +9,38 @@ var noXml;
 var timeWait;
 var lastposition = -1;
 
-function Recv_SetStatus (text)
+function SetStatus (text)
 {
     document.getElementById ("status").innerHTML = text;
     scrollBy (0, 999999);
 }
 
-function Recv_Init ()
+function Init ()
 {
-    var options = new Object ();
-    //%%botblock option added
-    options["botblock"] = 1;
-    options["ip"] = 1;
-    options["delay"] = 1;
-    options["links"] = 1;
-    options["old"] = 0;
-    options["last"] = 20;
-    options["redirect"] = "http:www.stud.uni-muenchen.de/~christian.sattler/redirect.html?";
-    options["limit"] = "256";
-    options["patient"] = false;
-    options["method"] = "detect";
-    options["wait"] = 10;
-    options["target"] = "_blank";
-    options["urgent"] = true;
-    Recv_InitRemote (options);
+	if (parent != self)
+		parent.InitRecv ();
+	else
+	{
+		var options = new Object ();
+		//%%botblock option added
+		options["botblock"] = 1;
+		options["ip"] = 1;
+		options["delay"] = 1;
+		options["links"] = 1;
+		options["old"] = 0;
+		options["last"] = 20;
+		options["redirect"] = "http:www.stud.uni-muenchen.de/~christian.sattler/redirect.html?";
+		options["limit"] = "256";
+		options["patient"] = false;
+		options["method"] = "detect";
+		options["wait"] = 10;
+		options["target"] = "_blank";
+		options["urgent"] = true;
+		InitRemote (options);
+	}
 }
 
-
-function Recv_Debug (message)
+function Debug (message)
 {
 	var post = new Object ();
 	post["id"] = 0;
@@ -46,10 +50,10 @@ function Recv_Debug (message)
 	post["ip"] = "";
 	post["delay"] = "";
 	post["color"] = "FFFFFF";
-	Recv_CreatePost (post);
+	CreatePost (post);
 }
 
-function Recv_InitRemote (opt)
+function InitRemote (opt)
 {
 	options = opt;
 	(window.XMLHttpRequest ? false : true);
@@ -76,42 +80,42 @@ function MsieCheck ()
 	if (document.getElementById ("iframe").readyState == "complete")
 	{
 		clearInterval (msieInterval);
-		Recv_Disconnected ();
+		Disconnected ();
 	}
 }
 
 function Receive ()
 {
 //	fgci SetStatus ("Verbindung wird hergestellt (" + ++numTries + ". Versuch) ...");
-	Recv_ReceiveInternal ();
+	ReceiveInternal ();
 }
 
-function Recv_ReceiveInternal ()
+function ReceiveInternal ()
 {
 	if (noXml)
-		Recv_ReceiveNoXml ();
+		ReceiveNoXml ();
 	else
-		Recv_ReceiveXml ();
+		ReceiveXml ();
 }
 
-function Recv_ReceiveNoXml ()
+function ReceiveNoXml ()
 {
 	var iframe = document.getElementById ("iframe");
 	iframe.src = "view.php?type=html&feedback=1&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "");
 	msieInterval = setInterval ("MsieCheck ()", 500);
 }
 
-function Recv_ReceiveXml ()
+function ReceiveXml ()
 {
 	cursor = 0;
-	request.onreadystatechange = Recv_StateChanged;
+	request.onreadystatechange = StateChanged;
 	request.open ("GET", "view.php?type=javascript&feedback=1&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : ""), true);
 	request.send ("");
 	if (!options["patient"])
-		setTimeout ("Recv_OnTimeout (" + from + ")", timeWait);
+		setTimeout ("OnTimeout (" + from + ")", timeWait);
 }
 
-function Recv_StateChanged ()
+function StateChanged ()
 {
 	if (request.readyState >= 3)
 	{
@@ -123,17 +127,17 @@ function Recv_StateChanged ()
 		}
 
 		if (request.readyState == 4)
-			Recv_Disconnected ();
+			Disconnected ();
 	}
 }
 
-function Recv_OnTimeout (to)
+function OnTimeout (to)
 {
 	if (from == to)
-		Recv_Disconnected ();
+		Disconnected ();
 }
 
-function Recv_Disconnected ()
+function Disconnected ()
 {
 	request.abort ();
 	if (numTries == 3)
@@ -147,26 +151,26 @@ function Recv_Disconnected ()
 
 function Ok ()
 {
-	Recv_SetStatus ("");
+	SetStatus ("");
 	numTries = 0;
 
 	if (!noXml)
 		++from;
 }
 
-function Recv_SpawnError (number, description, file, line)
+function SpawnError (number, description, file, line)
 {
-	Recv_SetStatus ("Ein Verbindungsfehler trat auf:<br>(" + number + ", " + HtmlEscape (description, false) + ", " + file + ", " + line + ")<br>Verbinde erneut ...");
+	SetStatus ("Ein Verbindungsfehler trat auf:<br>(" + number + ", " + HtmlEscape (description, false) + ", " + file + ", " + line + ")<br>Verbinde erneut ...");
 	request.abort ();
-	Recv_ReceiveInternal ();
+	ReceiveInternal ();
 }
 
-function Recv_InsertLinks (text)
+function InsertLinks (text)
 {
 	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g, '<a href="' + options["redirect"] + '$1$2" target="' + options["target"] + '">$1$2</a>');
 }
 
-function Recv_GetNodeIp (post)
+function GetNodeIp (post)
 {
 	node = document.createElement ("td");
 	node.appendChild (document.createTextNode (post["ip"]));
@@ -174,7 +178,7 @@ function Recv_GetNodeIp (post)
 	return node;
 }
 
-function Recv_NickEscape (text)
+function NickEscape (text)
 {
     var ret = "";
     for (var i = 0; i < text.length; i++) {
@@ -183,7 +187,7 @@ function Recv_NickEscape (text)
     return ret;
 }
 
-function Recv_HtmlEscape (text, links)
+function HtmlEscape (text, links)
 {
 	text = text.replace (/&/g, "&amp;").replace (/</g, "&lt;").replace (/>/g, "&gt;").replace (/\"/g, "&quot;");
 	//text = text.replace (/&/g, "&amp").replace (/</g, ";&lt").replace (/>/g, ";&gt").replace (/\"/g, ";&quot");
@@ -197,7 +201,7 @@ function Recv_HtmlEscape (text, links)
 }
 
 
-function Recv_CreatePost (post)
+function CreatePost (post)
 {
 	var tr = document.createElement ("tr");
 
@@ -231,16 +235,16 @@ function Recv_CreatePost (post)
 	tr.appendChild (node);
 
         if (options["ip"])
-	    tr.appendChild (Recv_GetNodeIp (post));
+	    tr.appendChild (GetNodeIp (post));
 
         node = document.createElement ("td");
-        node.innerHTML =  Recv_NickEscape (post["name"] + ":");
+        node.innerHTML =  NickEscape (post["name"] + ":");
 	node.setAttribute ("class", "name");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);
 
 	node = document.createElement ("td");
-	node.innerHTML = Recv_HtmlEscape (post["message"], options["links"]);
+	node.innerHTML = HtmlEscape (post["message"], options["links"]);
 	node.setAttribute ("class", "message");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);
@@ -250,7 +254,7 @@ function Recv_CreatePost (post)
 	scrollBy (0, 999999);
 }
 
-function Recv_AddPost (id, name, message, date, ip, delay, color,bottag)
+function AddPost (id, name, message, date, ip, delay, color,bottag)
 {
 //%%bottag added
 	/**************************************CSSHACK****************************/
@@ -288,7 +292,7 @@ function Recv_AddPost (id, name, message, date, ip, delay, color,bottag)
 				}
 			}
 
-			Recv_CreatePost (post);
+			CreatePost (post);
 
 			if (options["title"])
 				if (post["message"].length < 256)
@@ -309,59 +313,59 @@ function Recv_AddPost (id, name, message, date, ip, delay, color,bottag)
 //	setTimeout ("PingTimeout (" + position + ")", 120000);
 }
 
-function Recv_PingTimeout (lastpos)
+function PingTimeout (lastpos)
 {
 	if (position == lastpos) {
-		Recv_Disconnected();}
+		Disconnected();}
 }
 
-function Recv_RecreatePosts ()
+function RecreatePosts ()
 {
 	var display = document.getElementById ("display");
 	while (display.hasChildNodes ())
 		display.removeChild (display.lastChild);
 
 	for (var cursor = (options["old"] ? 0 : Math.max (0, posts.length - options["last"])); cursor != posts.length; ++cursor)
-		Recv_CreatePost (posts[cursor]);
+		CreatePost (posts[cursor]);
 }
 
-function Recv_ShowIp (value)
+function ShowIp (value)
 {
 	options["ip"] = value;
-	Recv_RecreatePosts ();
+	RecreatePosts ();
 }
 
-function Recv_ShowDelay (value)
+function ShowDelay (value)
 {
 	options["delay"] = value;
-	Recv_RecreatePosts ();
+	RecreatePosts ();
 }
 
-function Recv_ShowLinks (value)
+function ShowLinks (value)
 {
-	Recv_options["links"] = value;
-	Recv_RecreatePosts ();
+	options["links"] = value;
+	RecreatePosts ();
 }
 
-function Recv_NotShowBot (value)
+function NotShowBot (value)
 {
 	options["botblock"] = value;
-	Recv_RecreatePosts ();
+	RecreatePosts ();
 }
 
-function Recv_ShowOld (value)
+function ShowOld (value)
 {
 	options["old"] = value;
-	Recv_RecreatePosts ();
+	RecreatePosts ();
 }
 
-function Recv_ChangeLast (value)
+function ChangeLast (value)
 {
 	options["last"] = value;
-	Recv_RecreatePosts ();
+	RecreatePosts ();
 }
 
-function Recv_EnableSound (value)
+function EnableSound (value)
 {
 	options["sound"] = value;
 }

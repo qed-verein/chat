@@ -9,8 +9,8 @@
                 <script type="text/javascript" src="send-noframe.js"></script>
                 <script type="text/javascript" src="receive-noframe.js"></script>
 		<script type="text/javascript">
-		  function Init () {
-		    Recv_Init ();
+		  function Init_ () {
+		    Init ();
 		    Send_Init ();
 		  }
 		</script>
@@ -18,7 +18,7 @@
 		<title>Anzeigefenster</title>
 	</head>
 
-	<body onload="Init ()">
+	<body onload="Init_ ()">
 	  <table>
 	    <tbody id="display">
 	      <tr><td></td></tr>
