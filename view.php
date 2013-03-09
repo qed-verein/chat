@@ -14,6 +14,8 @@ socket_set_nonblock ($touchme);
 //var_dump ($touchme);
 //var_dump ($touchme_deleteme);
 
+touch (TOUCH_FILE);
+
 	$type = @$_GET["type"];
 	output_header ($type);
 	output_prefix ($type);
