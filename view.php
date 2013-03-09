@@ -50,13 +50,10 @@
 		output_feedback ($type);
 
 	function Check () {
-	  global $mem, $sem, $name, $position, $type;
-
-
-	  if (inotify_read($touchme) !== FALSE) {
-
 	    //CSS, der sockets nicht mag
 	    /*
+	      global $mem, $sem, $name, $position, $type;
+
 	      sem_acquire ($sem);
 	      $listeners = @shm_get_var ($mem, MEM_SOCKETS_VAR);
 	      if (!$listeners)
@@ -65,6 +62,9 @@
 	      shm_put_var ($mem, MEM_SOCKETS_VAR, $listeners);
 	      sem_release ($sem);
 	    */
+	  global $name, $position, $type;
+
+	  if (inotify_read($touchme) !== FALSE) {
 	    
 	    mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 	    mysql_select_db (SQL_DATABASE);
@@ -87,7 +87,7 @@
 	$zaehler2=0;
 	while (!connection_aborted())
 	{
-		Check ($mem, $sem, $name, $position);
+	  Check ($name, $position);
 		//echo fehlt^^
 		output_line($type,array('name' =>'a','id' =>3,'message' => 'a', 'date'=>'2342', 'ip' => 'a', 'delay'=>'2', 'bottag' =>0));
 		//fcgi-Hack: Laufzeit begrenzen
