@@ -31,6 +31,8 @@ function Send_Init ()
 		options["urgent"] = true;
 		InitRemote (options);
 	}
+    alert(createRequest);
+
 }
 
 function InitRemote (options)
@@ -52,8 +54,6 @@ function InitRemote (options)
 		request = null;
 	
 	generator = options["generator"];
-
-    alert(createRequest);
 }
 
 function SetPosition (value)
