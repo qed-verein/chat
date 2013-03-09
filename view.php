@@ -11,6 +11,9 @@
         stream_set_blocking ($touchme, 0);
         $touchme_deleteme = inotify_add_watch ($touchme, TOUCH_FILE, IN_ATTRIB);
 
+var_dump ($touchme);
+var_dump ($touchme_deleteme);
+
 	$type = @$_GET["type"];
 	output_header ($type);
 	output_prefix ($type);
