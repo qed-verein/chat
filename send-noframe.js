@@ -31,7 +31,6 @@ function Send_Init ()
 		options["urgent"] = true;
 		Send_InitRemote (options);
 	}
-    alert(createRequest);
 }
 
 function Send_InitRemote (options)
