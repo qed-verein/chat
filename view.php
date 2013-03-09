@@ -62,7 +62,7 @@
 	      shm_put_var ($mem, MEM_SOCKETS_VAR, $listeners);
 	      sem_release ($sem);
 	    */
-	  global $name, $position, $type;
+	  global $position, $type;
 
 	  if (inotify_read($touchme) !== FALSE) {
 	    
@@ -87,7 +87,7 @@
 	$zaehler2=0;
 	while (!connection_aborted())
 	{
-	  Check ($name, $position);
+	  Check ($position);
 		//echo fehlt^^
 		output_line($type,array('name' =>'a','id' =>3,'message' => 'a', 'date'=>'2342', 'ip' => 'a', 'delay'=>'2', 'bottag' =>0));
 		//fcgi-Hack: Laufzeit begrenzen
