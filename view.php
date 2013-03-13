@@ -1,5 +1,5 @@
 <?php
-@apache_setenv('no-gzip', 1);
+//@apache_setenv('no-gzip', 1);
 //	mifritscher: erledige ich manuell
 //	ignore_user_abort (false);
 	ignore_user_abort (true);
