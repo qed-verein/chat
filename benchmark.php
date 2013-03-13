@@ -4,7 +4,7 @@ require ("common.php");
 ignore_user_abort (true);
 
 $touchme = inotify_init();
-$touchme_deleteme = inotify_add_watch ($touchme, TOUCH_FILE, IN_ATTRIB);
+$touchme_deleteme = inotify_add_watch ($touchme, TOUCH_FILE, IN_MODIFY);
 
 touch (TOUCH_FILE);
 
