@@ -82,6 +82,7 @@ mysql_close ();
 		++$position;
 	      }
 	    flush();
+	    ob_flush();
 	    }
 	}
 
