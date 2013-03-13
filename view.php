@@ -22,7 +22,7 @@ touch (TOUCH_FILE);
 	set_error_handler ('ErrorHandler');
 
 function xflush () {
-  echo str_repeat("\n",4096*8);
+  //echo str_repeat("\n",4096*8);
   flush();
   ob_flush();
 }
