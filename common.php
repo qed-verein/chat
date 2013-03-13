@@ -14,7 +14,9 @@ if (empty($session_not_close))
 
 	function do_post ($post)
 	{
-		mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
+	  // Skaliert zwar wohl besser, aber hat vmtl mehr lag - CSS
+	  //mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
+	  mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 		mysql_select_db (SQL_DATABASE);
 		$bottag=!empty($post['bottag'])?1:0;
 
@@ -27,8 +29,12 @@ if (empty($session_not_close))
 			. '", ' . intval($post['userid']) .','.$bottag.')';
 		mysql_query ($sql);// or trigger_error($sql, E_USER_ERROR);
 
+		// CSS, der versucht, den lag zu verkleinern.
+		mysql_close();
+
 		$recorded = true;
 
+		
 
 		//CSS, der sockets nicht mag
 
