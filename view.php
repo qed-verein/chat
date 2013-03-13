@@ -32,11 +32,11 @@ touch (TOUCH_FILE);
 	}
 	
 	$position = ((isset ($_GET["position"]) && is_numeric ($_GET["position"])) ? $_GET["position"] : -1);
-	mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
+	mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 	mysql_select_db (SQL_DATABASE);
 	$count = get_query_value (mysql_query ("SELECT COUNT(*) FROM " . SQL_TABLE));
 	$position = ($position < 0 ? max (0, $count - 24) : min ($position, $count));
-	mysql_close ();
+//mysql_close ();
 
 /*
 	$name = "sockets/" . uniqid ("s") . ".sock";
@@ -82,7 +82,7 @@ touch (TOUCH_FILE);
 		echo output_line ($type, $array);
 		++$position;
 	      }
-	    mysql_close ();
+	    //mysql_close ();
 	    }
 	}
 

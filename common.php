@@ -34,8 +34,6 @@ if (empty($session_not_close))
 
 		$recorded = true;
 
-		
-
 		//CSS, der sockets nicht mag
 
 		touch (TOUCH_FILE);
