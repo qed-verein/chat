@@ -12,7 +12,6 @@ while (!connection_aborted()) {
   if (inotify_read($touchme) !== FALSE) {
     echo "touched!\n"; flush();
   }
-  usleep(100000);
 }
   
 
