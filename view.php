@@ -21,6 +21,13 @@ touch (TOUCH_FILE);
 
 	set_error_handler ('ErrorHandler');
 
+function xflush ($out) {
+  echo $out;
+  echo str_repeat("\n",1024);
+  flush();
+  ob_flush();
+}
+
 	function ErrorHandler ($number, $description, $file, $line)
 	{
 		if (error_reporting () & $number)
@@ -81,8 +88,7 @@ mysql_close ();
 		echo output_line ($type, $array);
 		++$position;
 	      }
-	    flush();
-	    ob_flush();
+	    xflush();
 	    }
 	}
 
@@ -102,8 +108,7 @@ mysql_close ();
 		//fcgi-Hack: Laufzeit begrenzen
 		    $zaehler2++;
 
-		flush();
-		ob_flush();
+		xflush();
 		if ($position >= $limit)
 			break;
 
@@ -115,8 +120,7 @@ mysql_close ();
 		    $zaehler2++;
 		    if($zaehler>=20) {
 			echo "\n";
-			flush ();
-			ob_flush();
+			xflush ();
 			$zaehler=0;
 		    }
 		if ($zaehler2 >100)
