@@ -21,9 +21,8 @@ touch (TOUCH_FILE);
 
 	set_error_handler ('ErrorHandler');
 
-function xflush ($out) {
-  echo $out;
-  echo str_repeat("\n",1024);
+function xflush () {
+  echo str_repeat("\n",4096);
   flush();
   ob_flush();
 }
