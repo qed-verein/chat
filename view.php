@@ -103,6 +103,7 @@ mysql_close ();
 		    $zaehler2++;
 
 		flush();
+		ob_flush();
 		if ($position >= $limit)
 			break;
 
@@ -115,6 +116,7 @@ mysql_close ();
 		    if($zaehler>=20) {
 			echo "\n";
 			flush ();
+			ob_flush();
 			$zaehler=0;
 		    }
 		if ($zaehler2 >100)
