@@ -81,6 +81,7 @@ mysql_close ();
 		echo output_line ($type, $array);
 		++$position;
 	      }
+	    flush();
 	    }
 	}
 
