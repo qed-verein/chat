@@ -73,8 +73,6 @@ mysql_close ();
 	  if (inotify_read($touchme) !== FALSE) {
 	    
 	    //mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
-	    mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
-	    mysql_select_db (SQL_DATABASE);
 	    $query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" ); //" LIMIT $position,23432423");
 	    
 	    //trigger_error ("iiii".$position."####".mysql_num_rows($query));
@@ -83,7 +81,6 @@ mysql_close ();
 		echo output_line ($type, $array);
 		++$position;
 	      }
-	    mysql_close ();
 	    }
 	}
 
@@ -94,6 +91,9 @@ mysql_close ();
 	$zaehler2=0;
 	while (!connection_aborted())
 	{
+	  mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
+	  mysql_select_db (SQL_DATABASE);
+
 	  Check ($position);
 		//echo fehlt^^
 		output_line($type,array('name' =>'a','id' =>3,'message' => 'a', 'date'=>'2342', 'ip' => 'a', 'delay'=>'2', 'bottag' =>0));
@@ -145,6 +145,7 @@ mysql_close ();
 		@unlink($name);	
 		output_suffix ($type);*/
 		inotify_rm_watch($touchme, $touchme_deleteme);
+		mysql_close ();
 		exit;
 	}
 
