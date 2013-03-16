@@ -1,10 +1,4 @@
 <?php
-
-	//define ("GAME_FILE_CARDS", "cards_1337.txt");
-	//define ("GAME_FILE_DISCARDED", "discarded.txt");
-	//define ("GAME_FILE_TYPES", "types.txt");
-	//define ("GAME_SEM", 1485);
-
     define ("MAX_PROTECTION", 0); // set this to 1 for |\/|4XXXXim41 pr0tection
 
     // SQL login and database information
@@ -14,20 +8,8 @@
     define ("SQL_DATABASE", "spam"); // database name  (if changed init.php has to be called)
     define ("SQL_TABLE", "content"); // name of table to be used (if changed init.php has to be called)
 
-    // shared memory parameters (do not change)
-    define ("MEM_SOCKETS_KEY", 11337);
-    define ("MEM_SOCKETS_SIZE", 16378);
-    define ("MEM_SOCKETS_VAR", 23);
-    define ("MEM_PIDS_VAR", 24);
-
-    // semaphore ids, have to be unique (do not change)
-    define ("SEM_SOCKETS_KEY", 1481);
-    define ("SEM_POST_KEY", 1482); 
-    define ("SEM_FLOOD_KEY", 1483);
-    define ("SEM_SECURE_POSTS_KEY", 1484);
-
-//CSS, der sockets nicht mag
-define ("TOUCH_FILE", "sockets/touchthis");
+    //CSS, der sockets nicht mag
+    define ("TOUCH_FILE", "sockets/touchthis");
 
     // redirection parameters
     define ("URL_REDIRECT", "http://uxul.de/redirect.php?"); // default redirection service (for hiding the referer [sic])
@@ -53,4 +35,9 @@ define ("TOUCH_FILE", "sockets/touchthis");
     // history DOS protection, including preventing bots from accessing the history (bot recognition still n00bish - via user agent)
     define ("SECURE_HISTORY", max (MAX_PROTECTION, 0)); // setting this to 1 activates history DOS protection
     define ("SECURE_HISTORY_MAX_POSTS", 500); // maximum number of posts possible to retrieve
+
+// Timeouts
+define ("POLL_MICROSECONDS", 100000);
+define ("TIMEOUT_POLL_NUM",1200);
+define ("KEEP_ALIVE_NL_POLL_NUM",100);
 ?>
