@@ -127,7 +127,7 @@ mysql_close ();
 		while (!connection_aborted()) {
 		    $zaehler++;
 		    $zaehler2++;
-		    if($zaehler>=100) {
+		    if($zaehler>=20) {
 			echo "\n";
 			xflush ();
 			$zaehler=0;
