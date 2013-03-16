@@ -21,9 +21,16 @@ touch (TOUCH_FILE);
 
 	set_error_handler ('ErrorHandler');
 
+$chunk = "";
+if (isset ($_GET["laghack"])) {
+  for ($i = 0; $i < 1024*64; $i++) {
+    $chunk = $chunk . ((rand(0, 1) == 0) ? " " : "\n");
+  }
+}
+
 function xflush () {
   if (isset ($_GET["laghack"])) {
-    echo str_repeat("\n",4096*8);
+    echo $chunk;
   }
   flush();
   ob_flush();
