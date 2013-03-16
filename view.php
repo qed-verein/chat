@@ -46,7 +46,7 @@ function xflush () {
 			exit ();
 		}
 	}
-	
+
 	$position = ((isset ($_GET["position"]) && is_numeric ($_GET["position"])) ? $_GET["position"] : -1);
 	mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 	mysql_select_db (SQL_DATABASE);
@@ -57,12 +57,12 @@ mysql_close ();
 /*
 	$name = "sockets/" . uniqid ("s") . ".sock";
 	$socket = socket_create (AF_UNIX, SOCK_DGRAM, 0);
-	//trigger_error("socket gemacht ".socket_strerror(socket_last_error($socket))); 
+	//trigger_error("socket gemacht ".socket_strerror(socket_last_error($socket)));
 	socket_set_nonblock($socket);
 #	socket_set_block ($socket);
 	socket_bind ($socket, $name);
 #	socket_set_timeout($socket,1);
-		
+
 	$mem = shm_attach (MEM_SOCKETS_KEY, MEM_SOCKETS_SIZE);
 	$sem = sem_get (SEM_SOCKETS_KEY); */
 
@@ -87,10 +87,10 @@ mysql_close ();
 	  //var_dump (inotify_read($touchme));
 
 	  if (inotify_read($touchme) !== FALSE) {
-	    
+
 	    //mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 	    $query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" ); //" LIMIT $position,23432423");
-	    
+
 	    //trigger_error ("iiii".$position."####".mysql_num_rows($query));
 	    while ($array = mysql_fetch_assoc ($query))
 	      {
@@ -127,7 +127,7 @@ mysql_close ();
 		while (!connection_aborted()) {
 		    $zaehler++;
 		    $zaehler2++;
-		    if($zaehler>=20) {
+		    if($zaehler>=100) {
 			echo "\n";
 			xflush ();
 			$zaehler=0;
@@ -159,7 +159,7 @@ mysql_close ();
 		//CSS, der sockets nicht mag
 		/*@socket_shutdown($socket);
 		@socket_close($socket);
-		@unlink($name);	
+		@unlink($name);
 		output_suffix ($type);*/
 		inotify_rm_watch($touchme, $touchme_deleteme);
 		mysql_close ();
