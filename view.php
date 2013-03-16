@@ -86,7 +86,8 @@ if (isset ($_GET["feedback"]) && $_GET["feedback"])
 	    //trigger_error ("iiii".$position."####".mysql_num_rows($query));
 	    while ($array = mysql_fetch_assoc ($query))
 	      {
-		if (! $firstCheck) $receivedPosts = true;
+		if ($firstCheck) {}
+		else {$receivedPosts = true;}
 		echo output_line ($type, $array);
 		++$position;
 	      }
@@ -116,12 +117,12 @@ if (isset ($_GET["feedback"]) && $_GET["feedback"])
 	    break;
 	  $zaehler++;
 	  $zaehler2++;
-	  if($zaehler>=20) {
+	  if($zaehler>=100) {
 	    echo "\n";
 	    xflush ();
 	    $zaehler=0;
 	  }
-	  if ($zaehler2 >100)
+	  if ($zaehler2 >600)
 	    aufraeumen();
 	  
 	  if ($receivedPosts)
