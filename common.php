@@ -14,53 +14,18 @@ if (empty($session_not_close))
 
 	function do_post ($post)
 	{
-	  // Skaliert zwar wohl besser, aber hat vmtl mehr lag - CSS
-	  //mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
-	  mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
+	        mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 		mysql_select_db (SQL_DATABASE);
 		$bottag=!empty($post['bottag'])?1:0;
-
-		/* muss das sein? - css
-		  if($_SESSION["userid"] != 62 && strpos(strtoupper($post["name"]), "DANIEL") !== FALSE)
-		  $post["name"] = "Noobfaker"; */
 
 		$sql = 'INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag) VALUES ("' . $post["date"]
 			. '", ' . $post["delay"] . ', "' . $post["ip"] . '", "' . escape_string($post["name"]) . '", "' . escape_string ($post["message"])
 			. '", ' . intval($post['userid']) .','.$bottag.')';
-		mysql_query ($sql);// or trigger_error($sql, E_USER_ERROR);
-
-		// CSS, der versucht, den lag zu verkleinern.
+		mysql_query ($sql);
 		mysql_close();
 
 		$recorded = true;
-
-		//CSS, der sockets nicht mag
-
 		touch (TOUCH_FILE);
-
-		/*
-		$mem = shm_attach (MEM_SOCKETS_KEY, MEM_SOCKETS_SIZE);
-		$sem = sem_get (SEM_SOCKETS_KEY);
-		sem_acquire ($sem);
-		$listeners = @shm_get_var ($mem, MEM_SOCKETS_VAR);
-		if ($listeners)
-			$listeners = array_unique ($listeners);
-		else
-			$listeners = array ();
-		shm_put_var ($mem, MEM_SOCKETS_VAR, array ());
-		sem_release ($sem);
-
-		$socket = socket_create (AF_UNIX, SOCK_DGRAM, 0);
-		socket_set_option ($socket, SOL_SOCKET, SO_REUSEADDR, 1);
-		socket_set_nonblock ($socket);
-		# socket_set_timeout($socket,1);
-		$sem = sem_get (SEM_POST_KEY);
-		sem_acquire ($sem);
-		@unlink ("sockets/post.sock");
-		socket_bind ($socket, "sockets/post.sock");
-		foreach ($listeners as $name)
-			@socket_sendto ($socket, "news", 4, 0, is_array ($name) ? $name[0] : $name);
-		sem_release ($sem); */
 	}
 
 	function output_header ($type)
@@ -194,20 +159,10 @@ if (empty($session_not_close))
 
 	function get_color ($name)
 	{
-/*
-		srand (hexdec (crc32 ($name)));
-		return dechex (rand (100, 255)) . dechex (rand (100, 255)) . dechex (rand (100, 255));
-*/
-
-/*
-		return dechex (abs(hexdec(crc32 ("a" . $name . "a")) % 156)+100) . dechex (abs(hexdec(crc32 ("b" . $name . "b")) % 156)+100) . dechex (abs(hexdec(crc32 ("c" . $name . "c")) % 156)+100);
-*/
-
 		$r = hexdec(substr(md5("a" . $name . "a"), -7)) % 156 + 100;
 		$g = hexdec(substr(md5("b" . $name . "b"), -7)) % 156 + 100;
 		$b = hexdec(substr(md5("c" . $name . "c"), -7)) % 156 + 100;
 		return dechex($r) . dechex($g) . dechex($b);
-
 	}
 
 	function show_links ($string)
@@ -240,18 +195,11 @@ if (empty($session_not_close))
 
 	function format_post_xml ($array)
 	{
-		/*if (substr($array["ip"], 0, 7) == "129.217")
-			$color = "ff55cc";
-		else*/
-		//	$color = get_color ($array["name"]);
 		$color = $array["color"];
 
 		$name = rawurlencode ($array["name"]);
 
-		if($name == "Chatter")
-			$message = "!STFU Chatter";
-		else
-			$message = rawurlencode ($array["message"]);
+		$message = rawurlencode ($array["message"]);
 
 		$ip = $array["ip"];
 		return '<post id="' . $array["id"] . '" name="' . $name . '" message="' . $message . '" date="' . $array["date"] . '" ip="' . $ip
