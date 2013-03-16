@@ -21,7 +21,10 @@ touch (TOUCH_FILE);
 
 	set_error_handler ('ErrorHandler');
 
+$receivedPosts = false;
+
 $chunk = "";
+
 if (isset ($_GET["laghack"])) {
   for ($i = 0; $i < 1024*64; $i++) {
     $chunk = $chunk . ((rand(0, 1) == 0) ? " " : "\n");
@@ -82,7 +85,7 @@ mysql_close ();
 	      shm_put_var ($mem, MEM_SOCKETS_VAR, $listeners);
 	      sem_release ($sem);
 	    */
-	  global $position, $type, $touchme;
+	  global $position, $type, $touchme, $receivedPosts;
 
 	  //var_dump (inotify_read($touchme));
 
@@ -94,6 +97,7 @@ mysql_close ();
 	    //trigger_error ("iiii".$position."####".mysql_num_rows($query));
 	    while ($array = mysql_fetch_assoc ($query))
 	      {
+		$receivedPosts = true;
 		echo output_line ($type, $array);
 		++$position;
 	      }
@@ -132,8 +136,12 @@ mysql_close ();
 			xflush ();
 			$zaehler=0;
 		    }
-		if ($zaehler2 >20)
+		if ($zaehler2 >300)
 		    aufraeumen();
+	       
+		if ($receivedPosts)
+		  aufraeumen();
+
 //		    if ($zaehler>=10)
 //			exit;
 				//CSS, der sockets nicht mag
