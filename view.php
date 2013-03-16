@@ -132,7 +132,7 @@ mysql_close ();
 			xflush ();
 			$zaehler=0;
 		    }
-		if ($zaehler2 >100)
+		if ($zaehler2 >20)
 		    aufraeumen();
 //		    if ($zaehler>=10)
 //			exit;
