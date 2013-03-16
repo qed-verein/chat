@@ -136,13 +136,13 @@ mysql_close ();
 			xflush ();
 			$zaehler=0;
 		    }
-		if ($zaehler2 >300)
-		    aufraeumen();
+		    if ($zaehler2 >100)
+		      aufraeumen();
 	       
-		if ($receivedPosts)
-		  aufraeumen();
+		    if ($receivedPosts)
+		      aufraeumen();
 
-//		    if ($zaehler>=10)
+		    //		    if ($zaehler>=10)
 //			exit;
 				//CSS, der sockets nicht mag
 		/*
