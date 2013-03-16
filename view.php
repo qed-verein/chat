@@ -29,6 +29,7 @@ if (isset ($_GET["laghack"])) {
 }
 
 function xflush () {
+  global $chunk;
   if (isset ($_GET["laghack"])) {
     echo $chunk;
   }
