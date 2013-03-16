@@ -22,6 +22,7 @@ touch (TOUCH_FILE);
 	set_error_handler ('ErrorHandler');
 
 $receivedPosts = false;
+$firstCheck = true;
 
 $chunk = "";
 
@@ -57,19 +58,7 @@ function xflush () {
 	$position = ($position < 0 ? max (0, $count - 24) : min ($position, $count));
 mysql_close ();
 
-/*
-	$name = "sockets/" . uniqid ("s") . ".sock";
-	$socket = socket_create (AF_UNIX, SOCK_DGRAM, 0);
-	//trigger_error("socket gemacht ".socket_strerror(socket_last_error($socket)));
-	socket_set_nonblock($socket);
-#	socket_set_block ($socket);
-	socket_bind ($socket, $name);
-#	socket_set_timeout($socket,1);
-
-	$mem = shm_attach (MEM_SOCKETS_KEY, MEM_SOCKETS_SIZE);
-	$sem = sem_get (SEM_SOCKETS_KEY); */
-
-	if (isset ($_GET["feedback"]) && $_GET["feedback"])
+if (isset ($_GET["feedback"]) && $_GET["feedback"])
 		output_feedback ($type);
 
 	function Check () {
@@ -85,7 +74,7 @@ mysql_close ();
 	      shm_put_var ($mem, MEM_SOCKETS_VAR, $listeners);
 	      sem_release ($sem);
 	    */
-	  global $position, $type, $touchme, $receivedPosts;
+	  global $position, $type, $touchme, $receivedPosts, $firstCheck;
 
 	  //var_dump (inotify_read($touchme));
 
@@ -97,7 +86,7 @@ mysql_close ();
 	    //trigger_error ("iiii".$position."####".mysql_num_rows($query));
 	    while ($array = mysql_fetch_assoc ($query))
 	      {
-		$receivedPosts = true;
+		if (! $firstCheck) $receivedPosts = true;
 		echo output_line ($type, $array);
 		++$position;
 	      }
@@ -116,46 +105,32 @@ mysql_close ();
 	  mysql_select_db (SQL_DATABASE);
 
 	  Check ($position);
+	  $firstCheck = false;
 		//echo fehlt^^
-		output_line($type,array('name' =>'a','id' =>3,'message' => 'a', 'date'=>'2342', 'ip' => 'a', 'delay'=>'2', 'bottag' =>0));
+	  //output_line($type,array('name' =>'a','id' =>3,'message' => 'a', 'date'=>'2342', 'ip' => 'a', 'delay'=>'2', 'bottag' =>0));
 		//fcgi-Hack: Laufzeit begrenzen
-		    $zaehler2++;
+	  $zaehler2++;
 
-		xflush();
-		if ($position >= $limit)
-			break;
-
-		//mifritscher: damit php testen kann ob die verbindugn noch steht
-		//# socket_set_timeout($socket,1);
-		//blocken ist hier aua, weil php in der Zeit nicht testen kann ob die verbindung noch da ist
-		while (!connection_aborted()) {
-		    $zaehler++;
-		    $zaehler2++;
-		    if($zaehler>=20) {
-			echo "\n";
-			xflush ();
-			$zaehler=0;
-		    }
-		    if ($zaehler2 >100)
-		      aufraeumen();
-	       
-		    if ($receivedPosts)
-		      aufraeumen();
-
-		    //		    if ($zaehler>=10)
-//			exit;
-				//CSS, der sockets nicht mag
-		/*
-		    $socket_status =@socket_recvfrom ($socket, $buffer, 4, 0, $source);
-		    /* trigger_error('dddd'.$source);
-		    if ($socket_status === -1)
-			trigger_error("alles put ".socket_strerror(socket_last_error($socket)));  * /
-		    if ($socket_status > 0)
-		    break;*/
-		    usleep(100000);
-		}
+	  xflush();
+	  if ($position >= $limit)
+	    break;
+	  $zaehler++;
+	  $zaehler2++;
+	  if($zaehler>=20) {
+	    echo "\n";
+	    xflush ();
+	    $zaehler=0;
+	  }
+	  if ($zaehler2 >100)
+	    aufraeumen();
+	  
+	  if ($receivedPosts)
+	    aufraeumen();
+	  usleep(100000);
 	}
 	aufraeumen();
+
+
 	function aufraeumen () {
 		echo "\n";
 		global $socket;
