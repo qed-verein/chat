@@ -1,6 +1,6 @@
 <?php
 
-ignore_user_abort (true);
+ignore_user_abort(true);
 
 require_once("data.php");
 require_once("common.php");
@@ -12,6 +12,7 @@ touch(TOUCH_FILE);
 
 $type = uriParamString('type');
 $position = uriParamInteger('position', -1);
+$limit = uriParamInteger('limit', 256);
 
 output_header($type);
 output_prefix($type);
@@ -48,7 +49,7 @@ if (isset ($_GET["feedback"]) && $_GET["feedback"])
 
 function waitForMessages()
 {
-	global $keepAliveCounter, $timeoutCounter, $touchme, $position, $limit;
+	global $keepAliveCounter, $timeoutCounter, $messageCounter, $touchme, $limit;
 
 	while(!connection_aborted())
 	{
@@ -58,7 +59,7 @@ function waitForMessages()
 		$keepAliveCounter++;
 		$timeoutCounter++;
 
-		if($position >= $limit || $timeoutCounter > TIMEOUT_POLL_NUM)
+		if($messageCounter >= $limit || $timeoutCounter > TIMEOUT_POLL_NUM)
 			break;
 
 		if($keepAliveCounter >= KEEP_ALIVE_NL_POLL_NUM) {
@@ -72,17 +73,19 @@ function waitForMessages()
 	return FALSE;
 }
 
-$limit = $position + uriParamInteger('limit', 256);
+
 $keepAliveCounter = KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durchlauf gleich was gesendet wird
 $timeoutCounter = 0;
+$messageCounter = 0;
 
 while(waitForMessages())
 {
-	$query = mysql_query("SELECT * FROM " . SQL_TABLE . " WHERE id > $position");
+	$sql = sprintf("SELECT * FROM %s WHERE id > %d", SQL_TABLE, $position + $messageCounter);
+	$query = mysql_query($sql);
 	while($array = mysql_fetch_assoc($query))
 	{
 		echo output_line($type, $array);
-		$position = intval($array["id"]);
+		$messageCounter++;
 	}
 	flushOutput();
 }
