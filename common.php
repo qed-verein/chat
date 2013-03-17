@@ -225,4 +225,28 @@ if (empty($session_not_close))
 		return $temp[0];
 	}
 
+
+	function uriParamString($name, $default = null)
+	{
+		if(!isset($_GET[$name]))
+		{
+			if(is_null($default)) exit(sprintf("Fehler: Parameter %s fehlt", $name));
+			else return $default;
+		}
+
+		return $_GET[$name];
+	}
+
+
+	function uriParamInteger($name, $default = null)
+	{
+		if(!isset($_GET[$name]) && is_numeric($_GET[$name]))
+		{
+			if(is_null($default)) exit(sprintf("Fehler: Parameter %s fehlt", $name));
+			else return $default;
+		}
+
+		return intval($_GET[$name]);
+	}
+
 ?>
