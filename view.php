@@ -73,6 +73,10 @@ function waitForMessages()
 }
 
 
+if(isset($_GET["feedback"]) && $_GET["feedback"])
+	output_feedback($type);
+
+
 $keepAliveCounter = KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durchlauf gleich was gesendet wird
 $timeoutCounter = 0;
 $nextPosition = $position;
