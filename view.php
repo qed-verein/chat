@@ -19,7 +19,7 @@ set_error_handler('ErrorHandler');
 $receivedPosts = false;
 $firstCheck = true;
 
-function xflush () {
+function flushOutput () {
 	flush();
 	ob_flush();
 }
@@ -55,13 +55,13 @@ function Check () {
 	echo output_line ($type, $array);
 	++$position;
       }
-    xflush();
+    flushOutput();
     }
 }
 
 $limit = $position + ((isset ($_GET["limit"]) && is_numeric ($_GET["limit"])) ? $_GET["limit"] : 256);
-$zaehler= KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durclauf gleich was gesendet wird
-$zaehler2=0;
+$keepAliveCounter= KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durclauf gleich was gesendet wird
+$timeoutCounter=0;
 	mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 	mysql_select_db (SQL_DATABASE);
 while (!connection_aborted())
@@ -69,17 +69,17 @@ while (!connection_aborted())
   Check ($position);
   $firstCheck = false;
   //Laufzeit begrenzen, keep-alive
-  $zaehler++;
-  $zaehler2++;
+  $keepAliveCounter++;
+  $timeoutCounter++;
 
-  xflush();
+  flushOutput();
   if (($position >= $limit) ||
-      ($zaehler2 > TIMEOUT_POLL_NUM) ||
+      ($timeoutCounter > TIMEOUT_POLL_NUM) ||
       ($receivedPosts)) break;
-  if($zaehler>=KEEP_ALIVE_NL_POLL_NUM) {
+  if($keepAliveCounter>=KEEP_ALIVE_NL_POLL_NUM) {
     echo "\n";
-    xflush ();
-    $zaehler=0;
+    flushOutput();
+    $keepAliveCounter=0;
   }
   usleep(POLL_MICROSECONDS);
 }
