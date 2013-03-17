@@ -88,7 +88,7 @@ do
 	while($array = mysql_fetch_assoc($query))
 	{
 		echo output_line($type, $array);
-		$nextPosition = intval($array["id"]) + 1;
+		$nextPosition++;
 	}
 
 	flushOutput();
