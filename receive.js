@@ -87,7 +87,6 @@ function MsieCheck ()
 
 function Receive ()
 {
-	alert("Receive");
 //	fgci
 	SetStatus ("Verbindung wird hergestellt (" + ++numTries + ". Versuch) ...");
 	ReceiveInternal ();
@@ -95,7 +94,6 @@ function Receive ()
 
 function ReceiveInternal ()
 {
-	alert("ReceiveInternal");
 	if (noXml)
 		ReceiveNoXml ();
 	else
@@ -115,14 +113,12 @@ function ReceiveXml ()
 	request.onreadystatechange = StateChanged;
     request.open ("GET", "view.php?type=javascript&feedback=1&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
 	request.send ("");
-	alert("ReceiveXml");
 	if (!options["patient"])
 		setTimeout ("OnTimeout (" + from + ")", timeWait);
 }
 
 function StateChanged ()
 {
-	alert("StateChanged");
 	if (request.readyState >= 3)
 	{
 		var next;
@@ -139,14 +135,12 @@ function StateChanged ()
 
 function OnTimeout (to)
 {
-	alert("OnTimeout");
 	if (from == to)
 		Disconnected ();
 }
 
 function Disconnected ()
 {
-	alert("Disconnected");
 	request.abort ();
 	if (numTries == 3)
 	{
