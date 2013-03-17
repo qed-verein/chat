@@ -15,9 +15,6 @@
 
 	set_error_handler ('ErrorHandler');
 
-	$receivedPosts = false;
-	$firstCheck = true;
-
 	function keepAlive() {
 		echo "\n";
 		xflush();
@@ -58,11 +55,10 @@
 		output_feedback ($type);
 
 	function Check () {
-		global $position, $type, $touchme, $receivedPosts, $firstCheck;
+		global $position, $type, $touchme;
 		if (inotify_read($touchme) !== FALSE) {
 			$query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" );
 			while ($array = mysql_fetch_assoc ($query)) {
-				if (!$firstCheck) {$receivedPosts = true;}
 				echo output_line ($type, $array);
 				++$position;
 			}
@@ -78,13 +74,12 @@
 	while (!connection_aborted())
 	{
 		Check ($position);
-		$firstCheck = false;
 		//Laufzeit begrenzen, keep-alive
 		$keepAliveCounter++;
 		$timeoutCounter++;
 
-		if (($position >= $limit) || ($timeoutCounter > TIMEOUT_POLL_NUM) || ($receivedPosts))
-			aufraeumen();
+		if ($position >= $limit || $timeoutCounter > TIMEOUT_POLL_NUM)
+			break;
 
 		if($keepAliveCounter >= KEEP_ALIVE_NL_POLL_NUM) {
 			keepAlive();
@@ -93,5 +88,6 @@
 
 		usleep(POLL_MICROSECONDS);
 	}
+
 	aufraeumen();
 ?>
