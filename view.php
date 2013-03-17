@@ -13,7 +13,6 @@ touch(TOUCH_FILE);
 $type = uriParamString('type');
 $position = uriParamInteger('position', -1);
 
-
 output_header($type);
 output_prefix($type);
 
@@ -39,9 +38,9 @@ function flushOutput() {
 	ob_flush();
 }
 
-mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
-mysql_select_db (SQL_DATABASE);
-$count = get_query_value (mysql_query ("SELECT COUNT(*) FROM " . SQL_TABLE));
+mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
+mysql_select_db(SQL_DATABASE);
+$count = get_query_value(mysql_query("SELECT COUNT(*) FROM " . SQL_TABLE));
 $position = ($position < 0 ? max (0, $count - 24) : min ($position, $count));
 
 if (isset ($_GET["feedback"]) && $_GET["feedback"])
@@ -79,14 +78,13 @@ $timeoutCounter = 0;
 
 while(waitForMessages())
 {
-	$query = mysql_query("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" );
+	$query = mysql_query("SELECT * FROM " . SQL_TABLE . " WHERE id > $position");
 	while($array = mysql_fetch_assoc($query))
 	{
 		echo output_line($type, $array);
-		++$position;
+		$position = intval($array["id"]);
 	}
+	flushOutput();
 }
-
-flushOutput();
 
 ?>
