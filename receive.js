@@ -87,7 +87,8 @@ function MsieCheck ()
 
 function Receive ()
 {
-//	fgci SetStatus ("Verbindung wird hergestellt (" + ++numTries + ". Versuch) ...");
+//	fgci
+	SetStatus ("Verbindung wird hergestellt (" + ++numTries + ". Versuch) ...");
 	ReceiveInternal ();
 }
 
@@ -112,9 +113,7 @@ function ReceiveXml ()
 	request.onreadystatechange = StateChanged;
     request.open ("GET", "view.php?type=javascript&feedback=1&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
 	request.send ("");
-	alert("Frage neue Nachrichten ab!");
-	alert(timeWait);
-	//if (!options["patient"])
+	if (!options["patient"])
 		setTimeout ("OnTimeout (" + from + ")", timeWait);
 }
 
