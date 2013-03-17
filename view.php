@@ -46,7 +46,7 @@ if (isset ($_GET["feedback"]) && $_GET["feedback"])
 	output_feedback ($type);
 
 function Check () {
-  global $position, $type, $touchme, $receivedPosts, $firstCheck;
+  global $position, $type, $touchme;
   if (inotify_read($touchme) !== FALSE) {
     $query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" );
     while ($array = mysql_fetch_assoc ($query))
@@ -64,18 +64,20 @@ $timeoutCounter=0;
 
 while (!connection_aborted())
 {
-  Check ($position);
-  //Laufzeit begrenzen, keep-alive
-  $keepAliveCounter++;
-  $timeoutCounter++;
+	Check($position);
+	$keepAliveCounter++;
+	$timeoutCounter++;
 
-  flushOutput();
-  if (($position >= $limit) ||
-      ($timeoutCounter > TIMEOUT_POLL_NUM)) break;
-  if($keepAliveCounter>=KEEP_ALIVE_NL_POLL_NUM) {
-	keepAlive();
-    $keepAliveCounter=0;
-  }
-  usleep(POLL_MICROSECONDS);
+	flushOutput();
+
+	if($position >= $limit || $timeoutCounter > TIMEOUT_POLL_NUM)
+		break;
+
+	if($keepAliveCounter >= KEEP_ALIVE_NL_POLL_NUM) {
+		keepAlive();
+		$keepAliveCounter = 0;
+	}
+
+	usleep(POLL_MICROSECONDS);
 }
 ?>
