@@ -1,13 +1,13 @@
 <?php
-        ignore_user_abort (true);
+	ignore_user_abort (true);
 
-        require ("data.php");
-        require ("common.php");
+	require ("data.php");
+	require ("common.php");
 
-        $touchme = inotify_init();
-        $touchme_deleteme = inotify_add_watch ($touchme, TOUCH_FILE, IN_ATTRIB);
-        stream_set_blocking ($touchme, 0);
-        touch (TOUCH_FILE);
+	$touchme = inotify_init();
+	$touchme_deleteme = inotify_add_watch ($touchme, TOUCH_FILE, IN_ATTRIB);
+	stream_set_blocking ($touchme, 0);
+	touch (TOUCH_FILE);
 
 	$type = @$_GET["type"];
 	output_header ($type);
@@ -15,12 +15,17 @@
 
 	set_error_handler ('ErrorHandler');
 
-        $receivedPosts = false;
-        $firstCheck = true;
+	$receivedPosts = false;
+	$firstCheck = true;
 
-        function xflush () {
-          flush();
-	  ob_flush();
+	function keepAlive() {
+		echo "\n";
+		xflush();
+	}
+
+	function xflush () {
+		flush();
+		ob_flush();
 	}
 
 	function aufraeumen () {
@@ -32,7 +37,7 @@
 		exit;
 	}
 
-        function ErrorHandler ($number, $description, $file, $line)
+	function ErrorHandler ($number, $description, $file, $line)
 	{
 		if (error_reporting () & $number)
 		{
@@ -47,49 +52,46 @@
 	mysql_select_db (SQL_DATABASE);
 	$count = get_query_value (mysql_query ("SELECT COUNT(*) FROM " . SQL_TABLE));
 	$position = ($position < 0 ? max (0, $count - 24) : min ($position, $count));
-        mysql_close ();
+	mysql_close ();
 
-        if (isset ($_GET["feedback"]) && $_GET["feedback"])
+	if (isset ($_GET["feedback"]) && $_GET["feedback"])
 		output_feedback ($type);
 
 	function Check () {
-	  global $position, $type, $touchme, $receivedPosts, $firstCheck;
-	  if (inotify_read($touchme) !== FALSE) {
-	    $query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" );
-	    while ($array = mysql_fetch_assoc ($query))
-	      {
-		if ($firstCheck) {}
-		else {$receivedPosts = true;}
-		echo output_line ($type, $array);
-		++$position;
-	      }
-	    xflush();
-	    }
+		global $position, $type, $touchme, $receivedPosts, $firstCheck;
+		if (inotify_read($touchme) !== FALSE) {
+			$query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" );
+			while ($array = mysql_fetch_assoc ($query)) {
+				if (!$firstCheck) {$receivedPosts = true;}
+				echo output_line ($type, $array);
+				++$position;
+			}
+			xflush();
+		}
 	}
 
 	$limit = $position + ((isset ($_GET["limit"]) && is_numeric ($_GET["limit"])) ? $_GET["limit"] : 256);
-	$zaehler= KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durclauf gleich was gesendet wird
-	$zaehler2=0;
-        mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
-        mysql_select_db (SQL_DATABASE);
+	$keepAliveCounter = KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durclauf gleich was gesendet wird
+	$timeoutCounter = 0;
+	mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
+	mysql_select_db (SQL_DATABASE);
 	while (!connection_aborted())
 	{
-	  Check ($position);
-	  $firstCheck = false;
-	  //Laufzeit begrenzen, keep-alive
-	  $zaehler++;
-	  $zaehler2++;
+		Check ($position);
+		$firstCheck = false;
+		//Laufzeit begrenzen, keep-alive
+		$keepAliveCounter++;
+		$timeoutCounter++;
 
-	  xflush();
-	  if (($position >= $limit) ||
-	      ($zaehler2 > TIMEOUT_POLL_NUM) ||
-	      ($receivedPosts)) aufraeumen();
-	  if($zaehler>=KEEP_ALIVE_NL_POLL_NUM) {
-	    echo "\n";
-	    xflush ();
-	    $zaehler=0;
-	  } 
-	  usleep(POLL_MICROSECONDS);
+		if (($position >= $limit) || ($timeoutCounter > TIMEOUT_POLL_NUM) || ($receivedPosts))
+			aufraeumen();
+
+		if($keepAliveCounter >= KEEP_ALIVE_NL_POLL_NUM) {
+			keepAlive();
+			$keepAliveCounter = 0;
+		}
+
+		usleep(POLL_MICROSECONDS);
 	}
 	aufraeumen();
 ?>
