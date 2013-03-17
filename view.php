@@ -48,7 +48,7 @@ $position = ($position < 0 ? max(0, $count - 24) : min($position, $count));
 
 function waitForMessages()
 {
-	global $keepAliveCounter, $timeoutCounter, $touchme, $messageCounter, $limit;
+	global $keepAliveCounter, $timeoutCounter, $touchme, $nextPosition, $limit;
 
 	while(!connection_aborted())
 	{
@@ -58,7 +58,7 @@ function waitForMessages()
 		$keepAliveCounter++;
 		$timeoutCounter++;
 
-		if ($messageCounter >= $limit || $timeoutCounter > TIMEOUT_POLL_NUM)
+		if ($nextPosition >= $position + $limit || $timeoutCounter > TIMEOUT_POLL_NUM)
 			break;
 
 		if($keepAliveCounter >= KEEP_ALIVE_NL_POLL_NUM) {
@@ -75,16 +75,16 @@ function waitForMessages()
 
 $keepAliveCounter = KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durchlauf gleich was gesendet wird
 $timeoutCounter = 0;
-$messageCounter = 0;
+$nextPosition = $position;
 
 while(waitForMessages())
 {
-	$sql = sprintf("SELECT * FROM %s WHERE id > %d", SQL_TABLE, $position + $messageCounter);
+	$sql = sprintf("SELECT * FROM %s WHERE id >= %d", SQL_TABLE, $nextPosition);
 	$query = mysql_query($sql);
 	while($array = mysql_fetch_assoc($query))
 	{
 		echo output_line($type, $array);
-		$messageCounter++;
+		$nextPosition = intval($array["id"]) + 1;
 	}
 
 	flushOutput();
