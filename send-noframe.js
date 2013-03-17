@@ -45,18 +45,18 @@ function Send_InitRemote (options)
 		createRequest = function () {return new ActiveXObject ("Microsoft.XMLHTTP");};
 	else
 		createRequest = null;
-
+		
 	if (createRequest == null)
 		Send_SetStatus ('Hm, anscheinend unterstützt dein Browser kein XMLHttpRequest-Object.');
 	else
 		send_request = null;
-
+	
 	generator = options["generator"];
 }
 
 function Send_SetPosition (value)
 {
-	position = value;
+	position = value;	
 }
 
 function Send_StateChanged ()
@@ -102,7 +102,7 @@ function Send ()
 				send_request.setRequestHeader ("Content-Type", "application/x-www-form-urlencoded");
 				send_request.setRequestHeader ("Content-Encoding", "utf-8");
 				//%%user \neq bot
-				var content =
+				var content = 
 					"delay=" + position + "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value)+"&bottag="+zero;
 				if (generator)
 					content += "&key=" + GetKey (generator++);
