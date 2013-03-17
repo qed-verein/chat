@@ -48,7 +48,7 @@ if (isset ($_GET["feedback"]) && $_GET["feedback"])
 
 function waitForMessages()
 {
-	global $keepAliveCounter, $timeoutCounter, $touchme;
+	global $keepAliveCounter, $timeoutCounter, $touchme, $position, $limit;
 
 	while(!connection_aborted())
 	{
