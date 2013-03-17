@@ -228,25 +228,25 @@ if (empty($session_not_close))
 
 	function uriParamString($name, $default = null)
 	{
-		if(!isset($_GET[$name]))
+		if(!isset($_REQUEST[$name]))
 		{
 			if(is_null($default)) exit(sprintf("Fehler: Parameter %s fehlt", $name));
 			else return $default;
 		}
 
-		return $_GET[$name];
+		return demagicalize_string($_REQUEST[$name]);
 	}
 
 
 	function uriParamInteger($name, $default = null)
 	{
-		if(!isset($_GET[$name]) && is_numeric($_GET[$name]))
+		if(!isset($_REQUEST[$name]) && is_numeric($_REQUEST[$name]))
 		{
 			if(is_null($default)) exit(sprintf("Fehler: Parameter %s fehlt", $name));
 			else return $default;
 		}
 
-		return intval($_GET[$name]);
+		return intval($_REQUEST[$name]);
 	}
 
 ?>

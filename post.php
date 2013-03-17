@@ -48,13 +48,13 @@
 		}
 	}*/
 
-	$post = array ("name" => demagicalize_string ($_POST["name"]),
-				   "message" => demagicalize_string (@$_POST["message"]),
-				   "ip" => getenv ("REMOTE_ADDR"),
-				   "date" => date ("Y-m-d H-i-s"),
-				   "delay" => ((!isset($_POST["delay"]) || !is_numeric ($_POST["delay"]) || ($_POST["delay"] < 0)) ? "NULL" : $_POST["delay"]),
-				   'bottag' => (!empty($_REQUEST['bottag'])?1:0));
-
+	$post = array();
+	$post['name'] = uriParamString('name');
+	$post['message'] = uriParamString('message');
+	$post['ip'] = getenv('REMOTE_ADDR');
+	$post['date'] = date("Y-m-d H-i-s");
+	$post['delay'] = uriParamInteger('delay', 'NULL');
+	$post['bottag'] = uriParamInteger('bottag', 0);
 
 	if(strlen($post["message"])>10009)
 		$post["message"]="zu lang";
