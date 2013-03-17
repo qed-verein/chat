@@ -45,26 +45,29 @@ $position = ($position < 0 ? max (0, $count - 24) : min ($position, $count));
 if (isset ($_GET["feedback"]) && $_GET["feedback"])
 	output_feedback ($type);
 
-function Check () {
-  global $position, $type, $touchme;
-  if (inotify_read($touchme) !== FALSE) {
-    $query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" );
-    while ($array = mysql_fetch_assoc ($query))
-    {
-		echo output_line ($type, $array);
-		++$position;
-      }
-    flushOutput();
+function checkPostings()
+{
+	global $position, $type, $touchme;
+	if(inotify_read($touchme) !== FALSE)
+	{
+		$query = mysql_query("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" );
+		while($array = mysql_fetch_assoc($query))
+		{
+			echo output_line($type, $array);
+			++$position;
+		}
+
+		flushOutput();
     }
 }
 
 $limit = $position + ((isset ($_GET["limit"]) && is_numeric ($_GET["limit"])) ? $_GET["limit"] : 256);
-$keepAliveCounter= KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durclauf gleich was gesendet wird
-$timeoutCounter=0;
+$keepAliveCounter = KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durclauf gleich was gesendet wird
+$timeoutCounter = 0;
 
-while (!connection_aborted())
+while(!connection_aborted())
 {
-	Check($position);
+	checkPostings($position);
 	$keepAliveCounter++;
 	$timeoutCounter++;
 
@@ -74,8 +77,8 @@ while (!connection_aborted())
 		break;
 
 	if($keepAliveCounter >= KEEP_ALIVE_NL_POLL_NUM) {
-		keepAlive();
 		$keepAliveCounter = 0;
+		keepAlive();
 	}
 
 	usleep(POLL_MICROSECONDS);
