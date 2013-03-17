@@ -163,6 +163,7 @@ function Ok ()
 function SpawnError (number, description, file, line)
 {
 	SetStatus ("Ein Verbindungsfehler trat auf:<br>(" + number + ", " + HtmlEscape (description, false) + ", " + file + ", " + line + ")<br>Verbinde erneut ...");
+	alert("Fehler");
 	request.abort ();
 	ReceiveInternal ();
 }
