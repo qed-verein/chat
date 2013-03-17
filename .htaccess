@@ -1,5 +1,5 @@
 #order allow,deny
 #deny from 87.174.70.15
 #allow from all
-deny from all
+#deny from all
 SetEnv no-gzip 1
