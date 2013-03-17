@@ -77,8 +77,7 @@ while (!connection_aborted())
 
   flushOutput();
   if (($position >= $limit) ||
-      ($timeoutCounter > TIMEOUT_POLL_NUM) ||
-      ($receivedPosts)) break;
+      ($timeoutCounter > TIMEOUT_POLL_NUM)) break;
   if($keepAliveCounter>=KEEP_ALIVE_NL_POLL_NUM) {
 	keepAlive();
     $keepAliveCounter=0;
