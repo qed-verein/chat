@@ -50,7 +50,7 @@
 
 	$post = array();
 	$post['name'] = uriParamString('name');
-	$post['message'] = uriParamString($_POST["message"]);
+	$post['message'] = uriParamString("message");
 	$post['ip'] = getenv('REMOTE_ADDR');
 	$post['date'] = date ('Y-m-d H-i-s');
 	$post['delay'] = uriParamInteger('delay', 'NULL');
