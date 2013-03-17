@@ -10,7 +10,10 @@ inotify_add_watch($touchme, TOUCH_FILE, IN_ATTRIB);
 stream_set_blocking($touchme, 0);
 touch(TOUCH_FILE);
 
-$type = @$_GET["type"];
+$type = uriParamString('type');
+$position = uriParamInteger('position', -1);
+
+
 output_header($type);
 output_prefix($type);
 
@@ -36,7 +39,6 @@ function flushOutput() {
 	ob_flush();
 }
 
-$position = ((isset ($_GET["position"]) && is_numeric ($_GET["position"])) ? $_GET["position"] : -1);
 mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 mysql_select_db (SQL_DATABASE);
 $count = get_query_value (mysql_query ("SELECT COUNT(*) FROM " . SQL_TABLE));
@@ -61,8 +63,8 @@ function checkPostings()
     }
 }
 
-$limit = $position + ((isset ($_GET["limit"]) && is_numeric ($_GET["limit"])) ? $_GET["limit"] : 256);
-$keepAliveCounter = KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durclauf gleich was gesendet wird
+$limit = $position + uriParamInteger('limit', 256);
+$keepAliveCounter = KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durchlauf gleich was gesendet wird
 $timeoutCounter = 0;
 
 while(!connection_aborted())
@@ -71,16 +73,16 @@ while(!connection_aborted())
 	$keepAliveCounter++;
 	$timeoutCounter++;
 
-	flushOutput();
-
 	if($position >= $limit || $timeoutCounter > TIMEOUT_POLL_NUM)
 		break;
 
-	if($keepAliveCounter >= KEEP_ALIVE_NL_POLL_NUM) {
+	if($keepAliveCounter >= KEEP_ALIVE_NL_POLL_NUM)
+	{
 		$keepAliveCounter = 0;
 		keepAlive();
 	}
 
 	usleep(POLL_MICROSECONDS);
 }
+
 ?>
