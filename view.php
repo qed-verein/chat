@@ -24,15 +24,6 @@ function xflush () {
 	ob_flush();
 }
 
-function aufraeumen () {
-	echo "\n";
-	global $socket, $type, $name, $touchme;
-	global $touchme_deleteme;
-	inotify_rm_watch($touchme, $touchme_deleteme);
-	mysql_close ();
-	exit;
-}
-
 function ErrorHandler ($number, $description, $file, $line)
 {
 	if (error_reporting () & $number)
@@ -84,7 +75,7 @@ while (!connection_aborted())
   xflush();
   if (($position >= $limit) ||
       ($zaehler2 > TIMEOUT_POLL_NUM) ||
-      ($receivedPosts)) aufraeumen();
+      ($receivedPosts)) break;
   if($zaehler>=KEEP_ALIVE_NL_POLL_NUM) {
     echo "\n";
     xflush ();
@@ -92,5 +83,4 @@ while (!connection_aborted())
   }
   usleep(POLL_MICROSECONDS);
 }
-aufraeumen();
 ?>
