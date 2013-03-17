@@ -16,24 +16,24 @@ output_prefix($type);
 
 set_error_handler('ErrorHandler');
 
+function ErrorHandler($number, $description, $file, $line)
+{
+	if (error_reporting() & $number)
+	{
+		global $type;
+		output_error($type, $number, $description, $file, $line);
+		exit();
+	}
+}
+
 function keepAlive() {
     echo "\n";
     flushOutput();
 }
 
-function flushOutput () {
+function flushOutput() {
 	flush();
 	ob_flush();
-}
-
-function ErrorHandler ($number, $description, $file, $line)
-{
-	if (error_reporting () & $number)
-	{
-		global $type;
-		output_error ($type, $number, $description, $file, $line);
-		exit ();
-	}
 }
 
 $position = ((isset ($_GET["position"]) && is_numeric ($_GET["position"])) ? $_GET["position"] : -1);
