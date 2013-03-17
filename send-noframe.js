@@ -96,7 +96,7 @@ function Send ()
 		if (sendRequest == null)
 			{
 				Send_SetStatus ("Sende Post ...");
-				sendRequest = createRequest;
+				sendRequest = createRequest ();
 				sendRequest.onreadystatechange = Send_StateChanged;
 				sendRequest.open ("POST", "post.php", true);
 				sendRequest.setRequestHeader ("Content-Type", "application/x-www-form-urlencoded");
