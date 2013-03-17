@@ -19,6 +19,11 @@ set_error_handler('ErrorHandler');
 $receivedPosts = false;
 $firstCheck = true;
 
+function keepAlive() {
+    echo "\n";
+    flushOutput();
+}
+
 function flushOutput () {
 	flush();
 	ob_flush();
@@ -77,8 +82,7 @@ while (!connection_aborted())
       ($timeoutCounter > TIMEOUT_POLL_NUM) ||
       ($receivedPosts)) break;
   if($keepAliveCounter>=KEEP_ALIVE_NL_POLL_NUM) {
-    echo "\n";
-    flushOutput();
+	keepAlive();
     $keepAliveCounter=0;
   }
   usleep(POLL_MICROSECONDS);
