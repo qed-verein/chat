@@ -112,7 +112,6 @@ function ReceiveXml ()
 	request.onreadystatechange = StateChanged;
     request.open ("GET", "view.php?type=javascript&feedback=1&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
 	request.send ("");
-	alert("Frage neue Nachrichten ab");
 	if (!options["patient"])
 		setTimeout ("OnTimeout (" + from + ")", timeWait);
 }
@@ -141,7 +140,6 @@ function OnTimeout (to)
 
 function Disconnected ()
 {
-	alert("Disconnected");
 	request.abort ();
 	if (numTries == 3)
 	{
