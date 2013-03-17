@@ -16,9 +16,6 @@ output_prefix($type);
 
 set_error_handler('ErrorHandler');
 
-$receivedPosts = false;
-$firstCheck = true;
-
 function keepAlive() {
     echo "\n";
     flushOutput();
@@ -53,11 +50,9 @@ function Check () {
   if (inotify_read($touchme) !== FALSE) {
     $query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" );
     while ($array = mysql_fetch_assoc ($query))
-      {
-	if ($firstCheck) {}
-	else {$receivedPosts = true;}
-	echo output_line ($type, $array);
-	++$position;
+    {
+		echo output_line ($type, $array);
+		++$position;
       }
     flushOutput();
     }
@@ -70,7 +65,6 @@ $timeoutCounter=0;
 while (!connection_aborted())
 {
   Check ($position);
-  $firstCheck = false;
   //Laufzeit begrenzen, keep-alive
   $keepAliveCounter++;
   $timeoutCounter++;
