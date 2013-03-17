@@ -52,7 +52,7 @@
 				   "message" => demagicalize_string (@$_POST["message"]),
 				   "ip" => getenv ("REMOTE_ADDR"),
 				   "date" => date ("Y-m-d H-i-s"),
-				   "delay" => ((!is_numeric ($_POST["delay"]) | $_POST["delay"] < 0) ? "NULL" : $_POST["delay"]),
+				   "delay" => ((!isset($_POST["delay"]) || !is_numeric ($_POST["delay"]) || ($_POST["delay"] < 0)) ? "NULL" : $_POST["delay"]),
 				   'bottag' => (!empty($_REQUEST['bottag'])?1:0));
 
 
