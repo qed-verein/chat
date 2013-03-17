@@ -1,4 +1,4 @@
-var createRequest, sendRequest, position, from = 0, timeWait, generator = 0,zero=0;
+var createRequest, send_request, position, from = 0, timeWait, generator = 0,zero=0;
 
 function Send_GetKey (gen)
 {
@@ -48,8 +48,8 @@ function Send_InitRemote (options)
 
 	if (createRequest == null)
 		Send_SetStatus ('Hm, anscheinend unterstützt dein Browser kein XMLHttpRequest-Object.');
-
-	sendRequest = null;
+	else
+		send_request = null;
 
 	generator = options["generator"];
 }
@@ -61,9 +61,9 @@ function Send_SetPosition (value)
 
 function Send_StateChanged ()
 {
-	if (sendRequest.readyState == 4)
+	if (send_request.readyState == 4)
 	{
-		if (sendRequest.status >= 200 && sendRequest.status < 300)
+		if (send_request.status >= 200 && send_request.status < 300)
 		{
 			Send_SetStatus ("");
 			var
@@ -72,9 +72,9 @@ function Send_StateChanged ()
 			message.focus ();
 		}
 		else
-			Send_SetStatus ("Dein Post konnte nicht übertragen werden (" + sendRequest.status + ", " + sendRequest.statusText + ").<br>" + sendRequest.responseText);
+			Send_SetStatus ("Dein Post konnte nicht übertragen werden (" + send_request.status + ", " + send_request.statusText + ").<br>" + send_request.responseText);
 
-		sendRequest = null;
+		send_request = null;
 		++from;
 	}
 }
@@ -85,28 +85,28 @@ function Send_OnTimeout (to)
 	{
 		Send_SetStatus ("Der Server antwortete nicht innerhalb von " + (timeWait / 1000) + " Sekunden auf deine Postsendung.");
 
-		sendRequest.abort ();
-		sendRequest = null;
+		send_request.abort ();
+		send_request = null;
 	}
 }
 
 function Send ()
 {
 	if (createRequest != null) {
-		if (sendRequest == null)
+		if (send_request == null)
 			{
 				Send_SetStatus ("Sende Post ...");
-				sendRequest = createRequest ();
-				sendRequest.onreadystatechange = Send_StateChanged;
-				sendRequest.open ("POST", "post.php", true);
-				sendRequest.setRequestHeader ("Content-Type", "application/x-www-form-urlencoded");
-				sendRequest.setRequestHeader ("Content-Encoding", "utf-8");
+				send_request = createRequest ();
+				send_request.onreadystatechange = Send_StateChanged;
+				send_request.open ("POST", "post.php", true);
+				send_request.setRequestHeader ("Content-Type", "application/x-www-form-urlencoded");
+				send_request.setRequestHeader ("Content-Encoding", "utf-8");
 				//%%user \neq bot
 				var content =
 					"delay=" + position + "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value)+"&bottag="+zero;
 				if (generator)
 					content += "&key=" + GetKey (generator++);
-				sendRequest.send (content);
+				send_request.send (content);
 				setTimeout ("Send_OnTimeout (" + from + ")", timeWait);
 			}
 		else
