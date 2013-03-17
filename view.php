@@ -78,7 +78,7 @@ $keepAliveCounter = KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durchlauf gleich
 $timeoutCounter = 0;
 $nextPosition = $position;
 
-while(waitForMessages())
+do
 {
 	$sql = sprintf("SELECT * FROM %s WHERE id >= %d", SQL_TABLE, $nextPosition);
 	$query = mysql_query($sql);
@@ -90,5 +90,6 @@ while(waitForMessages())
 
 	flushOutput();
 }
+while(waitForMessages());
 
 ?>
