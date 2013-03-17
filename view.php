@@ -48,7 +48,7 @@ $position = ($position < 0 ? max(0, $count - 24) : min($position, $count));
 
 function waitForMessages()
 {
-	global $keepAliveCounter, $timeoutCounter, $touchme, $nextPosition, $limit;
+	global $keepAliveCounter, $timeoutCounter, $touchme, $nextPosition, $position, $limit;
 
 	while(!connection_aborted())
 	{
