@@ -1,5 +1,6 @@
 <?php
 
+die();
 ignore_user_abort(true);
 
 require("data.php");
