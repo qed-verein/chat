@@ -1,45 +1,46 @@
 <?php
+        ignore_user_abort (true);
 
-ignore_user_abort(true);
+        require ("data.php");
+        require ("common.php");
 
-require("data.php");
-require("common.php");
-
-$touchme = inotify_init();
-inotify_add_watch($touchme, TOUCH_FILE, IN_ATTRIB);
-stream_set_blocking($touchme, 0);
-touch(TOUCH_FILE);
-
-$type = uriParamString('type');
-$position = uriParamInteger('position', -1);
-$limit = uriParamInteger('limit', 256);
-
-output_header($type);
-output_prefix($type);
-
-set_error_handler('ErrorHandler');
-
-function ErrorHandler($number, $description, $file, $line)
-{
-	if (error_reporting() & $number)
-	{
-		global $type;
-		output_error($type, $number, $description, $file, $line);
-		exit();
-	}
-}
-
-function keepAlive() {
-	echo "\n";
-	flushOutput();
-}
-
-function flushOutput () {
-	flush();
-	ob_flush();
-}
+        $touchme = inotify_init();
+        $touchme_deleteme = inotify_add_watch ($touchme, TOUCH_FILE, IN_ATTRIB);
+        stream_set_blocking ($touchme, 0);
+        touch (TOUCH_FILE);
 
 	$type = @$_GET["type"];
+	output_header ($type);
+	output_prefix ($type);
+
+	set_error_handler ('ErrorHandler');
+
+        $receivedPosts = false;
+        $firstCheck = true;
+
+        function xflush () {
+          flush();
+	  ob_flush();
+	}
+
+	function aufraeumen () {
+		echo "\n";
+		global $socket, $type, $name, $touchme;
+		global $touchme_deleteme;
+		inotify_rm_watch($touchme, $touchme_deleteme);
+		mysql_close ();
+		exit;
+	}
+
+        function ErrorHandler ($number, $description, $file, $line)
+	{
+		if (error_reporting () & $number)
+		{
+			global $type;
+			output_error ($type, $number, $description, $file, $line);
+			exit ();
+		}
+	}
 
 	$position = ((isset ($_GET["position"]) && is_numeric ($_GET["position"])) ? $_GET["position"] : -1);
 	mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
@@ -82,9 +83,13 @@ function flushOutput () {
 	  xflush();
 	  if (($position >= $limit) ||
 	      ($zaehler2 > TIMEOUT_POLL_NUM) ||
-	      ($receivedPosts)) break;
-	  if($zaehler>=KEEP_ALIVE_NL_POLL_NUM)
-		keepAlive();
+	      ($receivedPosts)) aufraeumen();
+	  if($zaehler>=KEEP_ALIVE_NL_POLL_NUM) {
+	    echo "\n";
+	    xflush ();
+	    $zaehler=0;
+	  }
 	  usleep(POLL_MICROSECONDS);
 	}
+	aufraeumen();
 ?>
