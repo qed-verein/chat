@@ -44,7 +44,6 @@ mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 mysql_select_db (SQL_DATABASE);
 $count = get_query_value (mysql_query ("SELECT COUNT(*) FROM " . SQL_TABLE));
 $position = ($position < 0 ? max (0, $count - 24) : min ($position, $count));
-mysql_close ();
 
 if (isset ($_GET["feedback"]) && $_GET["feedback"])
 	output_feedback ($type);
@@ -67,8 +66,7 @@ function Check () {
 $limit = $position + ((isset ($_GET["limit"]) && is_numeric ($_GET["limit"])) ? $_GET["limit"] : 256);
 $keepAliveCounter= KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durclauf gleich was gesendet wird
 $timeoutCounter=0;
-	mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
-	mysql_select_db (SQL_DATABASE);
+
 while (!connection_aborted())
 {
   Check ($position);
