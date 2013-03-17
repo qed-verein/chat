@@ -1,95 +1,96 @@
 <?php
-        ignore_user_abort (true);
 
-        require ("data.php");
-        require ("common.php");
+ignore_user_abort (true);
 
-        $touchme = inotify_init();
-        $touchme_deleteme = inotify_add_watch ($touchme, TOUCH_FILE, IN_ATTRIB);
-        stream_set_blocking ($touchme, 0);
-        touch (TOUCH_FILE);
+require_once("data.php");
+require_once("common.php");
 
-	$type = @$_GET["type"];
-	output_header ($type);
-	output_prefix ($type);
+$touchme = inotify_init();
+inotify_add_watch($touchme, TOUCH_FILE, IN_ATTRIB);
+stream_set_blocking($touchme, 0);
+touch(TOUCH_FILE);
 
-	set_error_handler ('ErrorHandler');
+$type = @$_GET["type"];
+output_header($type);
+output_prefix($type);
 
-        $receivedPosts = false;
-        $firstCheck = true;
+set_error_handler('ErrorHandler');
 
-        function xflush () {
-          flush();
-	  ob_flush();
-	}
+$receivedPosts = false;
+$firstCheck = true;
 
-	function aufraeumen () {
-		echo "\n";
-		global $socket, $type, $name, $touchme;
-		global $touchme_deleteme;
-		inotify_rm_watch($touchme, $touchme_deleteme);
-		mysql_close ();
-		exit;
-	}
+function xflush () {
+	flush();
+	ob_flush();
+}
 
-        function ErrorHandler ($number, $description, $file, $line)
+function aufraeumen () {
+	echo "\n";
+	global $socket, $type, $name, $touchme;
+	global $touchme_deleteme;
+	inotify_rm_watch($touchme, $touchme_deleteme);
+	mysql_close ();
+	exit;
+}
+
+function ErrorHandler ($number, $description, $file, $line)
+{
+	if (error_reporting () & $number)
 	{
-		if (error_reporting () & $number)
-		{
-			global $type;
-			output_error ($type, $number, $description, $file, $line);
-			exit ();
-		}
+		global $type;
+		output_error ($type, $number, $description, $file, $line);
+		exit ();
 	}
+}
 
-	$position = ((isset ($_GET["position"]) && is_numeric ($_GET["position"])) ? $_GET["position"] : -1);
+$position = ((isset ($_GET["position"]) && is_numeric ($_GET["position"])) ? $_GET["position"] : -1);
+mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
+mysql_select_db (SQL_DATABASE);
+$count = get_query_value (mysql_query ("SELECT COUNT(*) FROM " . SQL_TABLE));
+$position = ($position < 0 ? max (0, $count - 24) : min ($position, $count));
+mysql_close ();
+
+if (isset ($_GET["feedback"]) && $_GET["feedback"])
+	output_feedback ($type);
+
+function Check () {
+  global $position, $type, $touchme, $receivedPosts, $firstCheck;
+  if (inotify_read($touchme) !== FALSE) {
+    $query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" );
+    while ($array = mysql_fetch_assoc ($query))
+      {
+	if ($firstCheck) {}
+	else {$receivedPosts = true;}
+	echo output_line ($type, $array);
+	++$position;
+      }
+    xflush();
+    }
+}
+
+$limit = $position + ((isset ($_GET["limit"]) && is_numeric ($_GET["limit"])) ? $_GET["limit"] : 256);
+$zaehler= KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durclauf gleich was gesendet wird
+$zaehler2=0;
 	mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 	mysql_select_db (SQL_DATABASE);
-	$count = get_query_value (mysql_query ("SELECT COUNT(*) FROM " . SQL_TABLE));
-	$position = ($position < 0 ? max (0, $count - 24) : min ($position, $count));
-        mysql_close ();
+while (!connection_aborted())
+{
+  Check ($position);
+  $firstCheck = false;
+  //Laufzeit begrenzen, keep-alive
+  $zaehler++;
+  $zaehler2++;
 
-        if (isset ($_GET["feedback"]) && $_GET["feedback"])
-		output_feedback ($type);
-
-	function Check () {
-	  global $position, $type, $touchme, $receivedPosts, $firstCheck;
-	  if (inotify_read($touchme) !== FALSE) {
-	    $query = mysql_query ("SELECT * FROM " . SQL_TABLE . " WHERE id > $position" );
-	    while ($array = mysql_fetch_assoc ($query))
-	      {
-		if ($firstCheck) {}
-		else {$receivedPosts = true;}
-		echo output_line ($type, $array);
-		++$position;
-	      }
-	    xflush();
-	    }
-	}
-
-	$limit = $position + ((isset ($_GET["limit"]) && is_numeric ($_GET["limit"])) ? $_GET["limit"] : 256);
-	$zaehler= KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durclauf gleich was gesendet wird
-	$zaehler2=0;
-        mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
-        mysql_select_db (SQL_DATABASE);
-	while (!connection_aborted())
-	{
-	  Check ($position);
-	  $firstCheck = false;
-	  //Laufzeit begrenzen, keep-alive
-	  $zaehler++;
-	  $zaehler2++;
-
-	  xflush();
-	  if (($position >= $limit) ||
-	      ($zaehler2 > TIMEOUT_POLL_NUM) ||
-	      ($receivedPosts)) aufraeumen();
-	  if($zaehler>=KEEP_ALIVE_NL_POLL_NUM) {
-	    echo "\n";
-	    xflush ();
-	    $zaehler=0;
-	  }
-	  usleep(POLL_MICROSECONDS);
-	}
-	aufraeumen();
+  xflush();
+  if (($position >= $limit) ||
+      ($zaehler2 > TIMEOUT_POLL_NUM) ||
+      ($receivedPosts)) aufraeumen();
+  if($zaehler>=KEEP_ALIVE_NL_POLL_NUM) {
+    echo "\n";
+    xflush ();
+    $zaehler=0;
+  }
+  usleep(POLL_MICROSECONDS);
+}
+aufraeumen();
 ?>
