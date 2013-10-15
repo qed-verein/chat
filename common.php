@@ -172,6 +172,8 @@ if (empty($session_not_close))
 
 	function format_post ($array, $options = array ())
 	{
+
+	  /* TODO: Brauchen wir das noch? - CSS */
 		$color = $array["color"];
 
 		$difference = $array["id"] - $array["delay"] - 1;
@@ -203,11 +205,13 @@ if (empty($session_not_close))
 
 		$ip = $array["ip"];
 		return '<post id="' . $array["id"] . '" name="' . $name . '" message="' . $message . '" date="' . $array["date"] . '" ip="' . $ip
-			. '" delay="' . $array["delay"] . '" color="' . $color . '" bottag="'.$array['bottag'].'" anonym="' . !(@$array["user_id"]) . '" />';
+			. '" delay="' . $array["delay"] . '" color="' . $color . '" bottag="'.$array['bottag'].'" anonym="' . !(@$array["user_id"])
+		        . '" channel="'.$array["channel"].'" />';
 	}
 
 	function format_post_javascript ($array)
 	{
+	  /* TODO: Brauchen wir das noch? - CSS */
 		return 'AddPost (' . $array["id"] . ', "' . rawurlencode ($array["name"]) . (@$array["user_id"]?'':' (anonym)') .'", "' .rawurlencode ($array["message"]) . '", "' . $array["date"] . '", "' . $array["ip"] . '", "' . $array["delay"] . '", "' . (!empty($array["hollow"]) ? "555555" : $array["color"]) . '", "'.$array['bottag'].'");';
 	}
 
