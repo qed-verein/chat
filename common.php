@@ -203,10 +203,12 @@ if (empty($session_not_close))
 
 		$message = rawurlencode ($array["message"]);
 
+		$channel = rawurlencode ($array["channel"]);
+
 		$ip = $array["ip"];
 		return '<post id="' . $array["id"] . '" name="' . $name . '" message="' . $message . '" date="' . $array["date"] . '" ip="' . $ip
 			. '" delay="' . $array["delay"] . '" color="' . $color . '" bottag="'.$array['bottag'].'" anonym="' . !(@$array["user_id"])
-		        . '" channel="'.$array["channel"].'" />';
+		        . '" channel="'. $channel .'" />';
 	}
 
 	function format_post_javascript ($array)
