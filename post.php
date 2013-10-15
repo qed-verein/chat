@@ -27,6 +27,25 @@
 	require_once ("data.php");
 	require_once ("common.php");
 
+	function do_post ($post)
+	{
+	        mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
+		mysql_select_db (SQL_DATABASE);
+		$bottag=!empty($post['bottag'])?1:0;
+
+		/* TODO: Little Bobby Tables laesst gruessen ... - CSS */
+
+		$sql = 'INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag, channel) VALUES ("' . $post["date"]
+			. '", ' . $post["delay"] . ', "' . $post["ip"] . '", "' . escape_string($post["name"]) . '", "' . escape_string ($post["message"])
+			. '", ' . intval($post['userid']) .','.$bottag.', "'.$post["channel"].'")';
+		mysql_query ($sql);
+		mysql_close();
+
+		$recorded = true;
+		touch (TOUCH_FILE);
+	}
+
+
 	/*if (SECURE_POSTS)
 	{
 		$sem = sem_get (SEM_SECURE_POSTS_KEY);
@@ -55,6 +74,7 @@
 	$post['date'] = date ('Y-m-d H-i-s');
 	$post['delay'] = uriParamInteger('delay', 'NULL');
 	$post['bottag'] = uriParamInteger('bottag', 0);
+        $post['channel'] = uriParamString('channel', '');
 
 	if(strlen($post["message"])>10009)
 		$post["message"]="zu lang";

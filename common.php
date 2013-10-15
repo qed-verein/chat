@@ -12,22 +12,6 @@ else {
 if (empty($session_not_close))
 	session_write_close();
 
-	function do_post ($post)
-	{
-	        mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
-		mysql_select_db (SQL_DATABASE);
-		$bottag=!empty($post['bottag'])?1:0;
-
-		$sql = 'INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag) VALUES ("' . $post["date"]
-			. '", ' . $post["delay"] . ', "' . $post["ip"] . '", "' . escape_string($post["name"]) . '", "' . escape_string ($post["message"])
-			. '", ' . intval($post['userid']) .','.$bottag.')';
-		mysql_query ($sql);
-		mysql_close();
-
-		$recorded = true;
-		touch (TOUCH_FILE);
-	}
-
 	function output_header ($type)
 	{
 		header ("Cache-Control: no-cache");
