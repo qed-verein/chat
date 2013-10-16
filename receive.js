@@ -112,7 +112,7 @@ function ReceiveXml ()
 {
 	cursor = 0;
 	request.onreadystatechange = StateChanged;
-    request.open ("GET", "view.php?type=javascript&feedback=1&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
+    request.open ("GET", "view.php?type=json&feedback=1&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
 	request.send ("");
 	if (!options["patient"])
 		setTimeout ("OnTimeout (" + from + ")", timeWait);
