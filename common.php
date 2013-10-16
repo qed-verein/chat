@@ -212,10 +212,10 @@ if (empty($session_not_close))
 	    '", "message" : "' . $message .
 	    '", "date" : "' . $array["date"] .
 	    '", "ip" : "' . $ip .
-            '", "delay" : "' . $array["delay"] .
-	    '", "color" : "' . $color .
-	    '", "bottag" : "' . $array["bottag"] .
-	    '", "channel" : "' . $channel . '" };';
+            '", "delay" : ' . $array["delay"] .
+	    ', "color" : "' . $color .
+	    '", "bottag" : ' . $array["bottag"] .
+	    ', "channel" : "' . $channel . '" };';
         }
 
 	function format_post_javascript ($array)
