@@ -125,8 +125,11 @@ function StateChanged ()
 		var next;
 		while ((next = request.responseText.indexOf (";", cursor) + 1) != 0)
 		{
-			eval (request.responseText.substring (cursor, next));
-			cursor = next;
+		    var post = eval (request.responseText.substring (cursor, next - 1));
+		    AddPost(post["id"], post["name"] + (post["anonym"] == "1" ? " (anonym)" : ""),
+			    post["message"], post["date"], post["ip"], post["delay"],
+			    post["color"], post["bottag"]);
+		    cursor = next;
 		}
 
 		if (request.readyState == 4)
