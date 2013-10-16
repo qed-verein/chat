@@ -123,10 +123,9 @@ function StateChanged ()
 	if (request.readyState >= 3)
 	{
 		var next;
-	        var p;
 		while ((next = request.responseText.indexOf (";", cursor) + 1) != 0)
 		{
-		    p = eval (request.responseText.substring (cursor, next));
+		    var p = eval ('(' + request.responseText.substring (cursor, next) + ')');
 		    if (p == undefined) {
 			SpawnError (91923, "Invalid JSON: " + request.responseText.substring (cursor, next), "receive.js", 131);
 		    } else if (p["type"] == "ok") {
