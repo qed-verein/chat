@@ -126,7 +126,8 @@ function StateChanged ()
 	        var p;
 		while ((next = request.responseText.indexOf (";", cursor) + 1) != 0)
 		{
-		    p = eval (request.responseText.substring (cursor, next));
+		    p = eval (request.responseText.substring (cursor, next - 1));
+		    if (p == undefined) alert (request.responseText.substring (cursor, next - 1));
 		    if (p["type"] == "ok") {
 			Ok ();
 		    } else if (p["type"] == "error") {
