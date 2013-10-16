@@ -126,9 +126,10 @@ function StateChanged ()
 	        var p;
 		while ((next = request.responseText.indexOf (";", cursor) + 1) != 0)
 		{
-		    p = eval (request.responseText.substring (cursor, next - 1));
-		    if (p == undefined) alert (request.responseText.substring (cursor, next - 1));
-		    if (p["type"] == "ok") {
+		    p = eval (request.responseText.substring (cursor, next));
+		    if (p == undefined) {
+			SpawnError (91923, "Invalid JSON: " + request.responseText.substring (cursor, next), "receive.js", 131);
+		    } else if (p["type"] == "ok") {
 			Ok ();
 		    } else if (p["type"] == "error") {
 			SpawnError(p["number"], p["description"], p["file"], p["line"]);
