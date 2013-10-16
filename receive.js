@@ -123,10 +123,12 @@ function StateChanged ()
 	if (request.readyState >= 3)
 	{
 		var next;
+	        var p;
 		while ((next = request.responseText.indexOf (";", cursor) + 1) != 0)
 		{
-		    var p;
 		    p = eval (request.responseText.substring (cursor, next - 1));
+		    alert(p);
+		    alert(request.responseText.substring (cursor, next - 1));
 		    AddPost(p["id"], p["name"] + ((p["anonym"] == "1") ? " (anonym)" : ""),
 			    p["message"], p["date"], p["ip"], p["delay"],
 			    p["color"], p["bottag"]);
