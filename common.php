@@ -89,6 +89,8 @@ if (empty($session_not_close))
 			return format_post_javascript ($coloredarray) . "\n";
 		else if ($type == "xml")
 			return "\t" . format_post_xml ($coloredarray) . "\n";
+		else if ($type == "json")
+              	        return format_post_json($coloredarray) . "\n";
 		else
 			return "\"" . $type . "\"\ttyp kenn ich nicht \n";
 	}
@@ -195,9 +197,30 @@ if (empty($session_not_close))
 		        . '" channel="'. $channel .'" />';
 	}
 
+        function format_post_json ($array) {
+	  /* notice: for the chat to work, it MUST be delimited with a semicolon! */
+	  $color = $array["color"];
+	  $name = rawurlencode ($array["name"]);
+	  $message = rawurlencode ($array["message"]);
+	  $channel = rawurlencode ($array["channel"]);
+	  $ip = $array["ip"];
+
+	  return
+	    '{ "id" : ' . $array["id"] .
+	    ', "name" : "' . $name .
+	    '", "anonym" : "' . !(@$array["user_id"]) .
+	    '", "message" : "' . $message .
+	    '", "date" : "' . $array["date"] .
+	    '", "ip" : "' . $ip .
+            '", "delay" : "' . $array["delay"] .
+	    '", "color" : "' . $color .
+	    '", "bottag" : "' . $array["bottag"] .
+	    '", "channel" : "' . $channel . '" };';
+        }
+
 	function format_post_javascript ($array)
 	{
-	  /* TODO: Brauchen wir das noch? - CSS */
+	  /* TODO: Brauchen wir das noch? - CSS - leider ja, aber wohl bald nicht mehr - auch CSS */
 		return 'AddPost (' . $array["id"] . ', "' . rawurlencode ($array["name"]) . (@$array["user_id"]?'':' (anonym)') .'", "' .rawurlencode ($array["message"]) . '", "' . $array["date"] . '", "' . $array["ip"] . '", "' . $array["delay"] . '", "' . (!empty($array["hollow"]) ? "555555" : $array["color"]) . '", "'.$array['bottag'].'");';
 	}
 

@@ -5,7 +5,7 @@ var posts = new Array ();
 var position = -1;
 var options;
 var from = 0;
-var noXml;
+var noXml; /* TODO: Kein Mensch verwendet das mehr! */
 var timeWait;
 var lastposition = -1;
 
@@ -101,10 +101,12 @@ function ReceiveInternal ()
 
 function ReceiveNoXml ()
 {
+    /* TODO: Weg damit! - CSS */
 	var iframe = document.getElementById ("iframe");
 	iframe.src = "view.php?type=html&feedback=1&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "");
 	msieInterval = setInterval ("MsieCheck ()", 500);
 }
+
 
 function ReceiveXml ()
 {
