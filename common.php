@@ -22,6 +22,8 @@ if (empty($session_not_close))
 			header ("Content-Type: text/plain; charset=utf-8");
 		else if ($type == "xml")
 			header ("Content-Type: text/xml; charset=utf-8");
+		else if ($type == "json")
+		  header ("Content-Type: text/plain; charset=utf-8");
 	}
 
 	function output_prefix ($type)
@@ -66,6 +68,8 @@ if (empty($session_not_close))
 		else if ($type == "xml")
 			echo "\t<error number=\"$number\" description=\"$description\" file=\"$file\" line=\"$line\"/>\n"
 				. "</content>\n";
+		else if ($type == "json")
+		  echo '{"type" : "error", "number" : ' . $number . ', "description" : "' . rawurlencode($description) . '", "file" : "' . $file . '", line : ' . $line . '};';
 	}
 
 	function output_feedback ($type)
@@ -76,6 +80,8 @@ if (empty($session_not_close))
 			echo "Ok ();\n";
 		else if ($type == "xml")
 			echo "\t<ok/>\n";
+		else if ($type == "json")
+		  echo '{"type" : "ok"};';
 	}
 
 	function output_line ($type, $array)
@@ -215,7 +221,8 @@ if (empty($session_not_close))
             '", "delay" : ' . $array["delay"] .
 	    ', "color" : "' . $color .
 	    '", "bottag" : ' . $array["bottag"] .
-	    ', "channel" : "' . $channel . '" };';
+	    ', "channel" : "' . $channel .
+	    '", "type" : "post" };';
         }
 
 	function format_post_javascript ($array)

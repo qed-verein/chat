@@ -126,12 +126,18 @@ function StateChanged ()
 	        var p;
 		while ((next = request.responseText.indexOf (";", cursor) + 1) != 0)
 		{
-		    p = eval (request.responseText.substring (cursor, next - 1));
-		    alert(p);
-		    alert(request.responseText.substring (cursor, next - 1));
-		    AddPost(p["id"], p["name"] + ((p["anonym"] == "1") ? " (anonym)" : ""),
-			    p["message"], p["date"], p["ip"], p["delay"],
-			    p["color"], p["bottag"]);
+		    p = eval (request.responseText.substring (cursor, next));
+		    if (p["type"] == "ok") {
+			Ok ();
+		    } else if (p["type"] == "error") {
+			SpawnError(p["number"], p["description"], p["file"], p["line"]);
+		    } else if (p["type"] == "post") {
+			AddPost(p["id"], p["name"] + ((p["anonym"] == "1") ? " (anonym)" : ""),
+				p["message"], p["date"], p["ip"], p["delay"],
+				p["color"], p["bottag"]);
+		    } else {
+			SpawnError(91922, "Unknown Type", "receive.js", 139);
+		    }
 		    cursor = next;
 		}
 
