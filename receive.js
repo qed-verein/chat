@@ -125,10 +125,11 @@ function StateChanged ()
 		var next;
 		while ((next = request.responseText.indexOf (";", cursor) + 1) != 0)
 		{
-		    var post = eval (request.responseText.substring (cursor, next - 1));
-		    AddPost(post["id"], post["name"] + ((post["anonym"] == "1") ? " (anonym)" : ""),
-			    post["message"], post["date"], post["ip"], post["delay"],
-			    post["color"], post["bottag"]);
+		    var p;
+		    p = eval (request.responseText.substring (cursor, next - 1));
+		    AddPost(p["id"], p["name"] + ((p["anonym"] == "1") ? " (anonym)" : ""),
+			    p["message"], p["date"], p["ip"], p["delay"],
+			    p["color"], p["bottag"]);
 		    cursor = next;
 		}
 
