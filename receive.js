@@ -30,7 +30,7 @@ function Init ()
 		options["links"] = 1;
 		options["old"] = 0;
 		options["last"] = 20;
-		options["redirect"] = "http:www.stud.uni-muenchen.de/~christian.sattler/redirect.html?";
+		// obsolete options["redirect"] = "http:www.stud.uni-muenchen.de/~christian.sattler/redirect.html?";
 		options["limit"] = "256";
 		options["patient"] = false;
 		options["method"] = "detect";
