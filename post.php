@@ -35,11 +35,6 @@
 
 		/* TODO: Little Bobby Tables laesst gruessen ... - CSS */
 
-		/*$sql = 'INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag, channel) VALUES ("' . $post["date"]
-			. '", ' . $post["delay"] . ', "' . $post["ip"] . '", "' . escape_string($post["name"]) . '", "' 
-			. escape_string ($post["message"])
-			. '", ' . intval($post['userid']) .','.$bottag.', "'.$post["channel"].'")';*/
-
 		$sql = sprintf('INSERT INTO %s (date, delay, ip, name, message, user_id, bottag, channel) VALUES ("%s", %d, "%s", "%s", "%s", %d, %d, "%s")',
 					SQL_TABLE,
 			       mysql_real_escape_string($post["date"]),
