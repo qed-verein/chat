@@ -43,11 +43,17 @@ function flushOutput() {
 mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
 mysql_select_db(SQL_DATABASE);
 
-$count = get_query_value(mysql_query("SELECT MAX(id) FROM " . SQL_TABLE . " WHERE channel = \"" . mysql_real_escape_string($channel) . "\""));
+//$count = get_query_value(mysql_query("SELECT MAX(id) FROM " . SQL_TABLE . " WHERE channel = \"" . mysql_real_escape_string($channel) . "\""));
 
-$last24sql = sprintf("SELECT MIN(id) FROM (SELECT * FROM %s WHERE channel = \"%s\" ORDER BY id DESC LIMIT 0, 24) AS bla",
+$last24sql = sprintf("SELECT MAX(id), MIN(id) FROM (SELECT * FROM %s WHERE channel = \"%s\" ORDER BY id DESC LIMIT 0, 24) AS bla",
 						SQL_TABLE, mysql_real_escape_string($channel));
-$countm24 = get_query_value(mysql_query($last24sql));
+
+$l24res = get_query_value(mysql_query($last24sql));				
+
+$count = $l24res[0];
+$countm24 = $l24res[1];					
+						
+//$countm24 = get_query_value(mysql_query($last24sql));
 
 $position = ($position < 0 ? $countm24 : min ($position, $count));
 
