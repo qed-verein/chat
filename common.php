@@ -236,6 +236,7 @@ if (empty($session_not_close))
 
 	function get_query_value ($resource)
 	{
+	/* TODO: Diese Funktion macht keinen Sinn! Weg damit! */
 		$temp = mysql_fetch_array ($resource);
 		return $temp[0];
 	}
