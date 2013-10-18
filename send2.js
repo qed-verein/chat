@@ -113,7 +113,7 @@ function Send ()
 				request.setRequestHeader ("Content-Type", "application/x-www-form-urlencoded");
 				request.setRequestHeader ("Content-Encoding", "utf-8");
 				//%%user \neq bot
-				alert(options["channel"]);
+				//alert(options["channel"]);
 				var content = 
 					"delay=" + position + "&channel=" + /*options["channel"] +*/ "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value)+"&bottag="+zero;
 				if (generator)
