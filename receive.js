@@ -275,16 +275,16 @@ function CreatePost (post)
 	scrollBy (0, 999999);
 }
 
-function AddPost (id, name, message, date, ip, delay, color,bottag)
+function AddPost (id, name, message, date, ip, delay, color, bottag)
 {
 //%%bottag added
 	/**************************************CSSHACK****************************/
 	if (id > position )
 	{
-		if (position != -1 && id != position + 1)
+		/*if (position != -1 && id != position + 1)
 			alert ("Fehler des Chat-Systems");
 		else
-		{
+		{*/
 			position = id;
 
 			var post = new Object ();
@@ -326,7 +326,7 @@ function AddPost (id, name, message, date, ip, delay, color,bottag)
 					parent.send.document.getElementById ("sound").innerHTML = '<embed src="' + options["sound_post"] + '" hidden=true autostart=true loop=false>';
 				else
 					document.getElementById ("sound").innerHTML = '<embed src="' + options["sound_post"] + '" hidden=true autostart=true loop=false>';
-		}
+		//}
 		//else { position=id; }
 	}
 	else{position=id;}
