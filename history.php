@@ -4,7 +4,7 @@
 	require_once ("common.php");
 	
 	$channel = uriParamString('channel', '');
-	$chanEsc = mysql_real_escape_string($chanEsc);
+	$chanEsc = mysql_real_escape_string($channel);
 
 	$reverse_output = false; //reverse output of posts?
 	if (!empty($_GET['reverse']) && $_GET['reverse'] == "true")
