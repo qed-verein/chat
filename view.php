@@ -45,7 +45,7 @@ mysql_select_db(SQL_DATABASE);
 
 $count = get_query_value(mysql_query("SELECT MAX(id) FROM " . SQL_TABLE . " WHERE channel = \"" . mysql_real_escape_string($channel) . "\""));
 
-$last24sql = sprintf("SELECT id FROM %s WHERE channel = \"%s\" ORDER BY id DESC LIMIT 24, 1",
+$last24sql = sprintf("SELECT MIN(id) FROM (SELECT * FROM %s WHERE channel = \"%s\" ORDER BY id DESC LIMIT 0, 24)",
 						SQL_TABLE, mysql_real_escape_string($channel));
 $countm24 = get_query_value(mysql_query($last24sql));
 
