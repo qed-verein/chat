@@ -144,11 +144,6 @@ if (empty($session_not_close))
 		return $string;
 	}
 
-	function escape_string ($string)
-	{
-		return strtr (addslashes ($string), array ("\n" => '\n', "\r" => '\r'));
-	}
-
 	function get_color ($name)
 	{
 		$r = hexdec(substr(md5("a" . $name . "a"), -7)) % 156 + 100;
