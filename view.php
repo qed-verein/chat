@@ -49,10 +49,18 @@ $last24sql = sprintf("SELECT MIN(id) FROM (SELECT * FROM %s WHERE channel = \"%s
 
 $l24res = mysql_fetch_array(mysql_query($last24sql));				
 
-//$count = $l24res[0];
-$countm24 = $l24res[0];					
+$countm24 = $l24res[0];				
+
+// TEMP FIX
+$last24sql2 = sprintf("SELECT MAX(id) FROM (SELECT * FROM %s WHERE channel = \"%s\" ORDER BY id DESC LIMIT 0, 24) AS bla",
+						SQL_TABLE, mysql_real_escape_string($channel));
 						
-$position = ($position < 0 ? $countm24 : $position)); //min ($position, $count));
+$l24res2 = mysql_fetch_array(mysql_query($last24sql2));				
+						
+$count = $l24res2[0];
+
+						
+$position = ($position < 0 ? $countm24 : min ($position, $count));
 
 if (isset ($_GET["feedback"]) && $_GET["feedback"])
 	output_feedback ($type);
