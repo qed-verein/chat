@@ -26,7 +26,8 @@ function Init ()
 		options["botblock"] = 1;
 		options["ip"] = 1;
 		options["delay"] = 1;
-                options["laghack"] = false;
+		options["channel"] = "";
+        options["laghack"] = false;
 		options["links"] = 1;
 		options["old"] = 0;
 		options["last"] = 20;
@@ -112,7 +113,7 @@ function ReceiveXml ()
 {
 	cursor = 0;
 	request.onreadystatechange = StateChanged;
-    request.open ("GET", "view.php?type=json&feedback=1&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
+    request.open ("GET", "view.php?type=json&feedback=1&channel=" + options["channel"] + "&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
 	request.send ("");
 	if (!options["patient"])
 		setTimeout ("OnTimeout (" + from + ")", timeWait);

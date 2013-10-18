@@ -29,6 +29,7 @@ function Init ()
 		options["name"] = "";
 		options["wait"] = 60;
 		options["urgent"] = true;
+		options["channel"] = "";
 		InitRemote (options);
 	}
 }
@@ -113,7 +114,7 @@ function Send ()
 				request.setRequestHeader ("Content-Encoding", "utf-8");
 				//%%user \neq bot
 				var content = 
-					"delay=" + position + "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value)+"&bottag="+zero;
+					"delay=" + position + "&channel=" + options["channel"] + "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value)+"&bottag="+zero;
 				if (generator)
 					content += "&key=" + GetKey (generator++);
 				request.send (content);

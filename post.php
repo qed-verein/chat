@@ -82,7 +82,7 @@
 	$post['date'] = date ('Y-m-d H-i-s');
 	$post['delay'] = uriParamInteger('delay', 'NULL');
 	$post['bottag'] = uriParamInteger('bottag', 0);
-        $post['channel'] = uriParamString('channel', '');
+    $post['channel'] = uriParamString('channel', '');
 
 	if(strlen($post["message"])>10009)
 		$post["message"]="zu lang";

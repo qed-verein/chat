@@ -66,6 +66,7 @@
 		var options = new Object ();
 
 		<?php
+		echo "\t\t\toptions[\"channel\"] = \"" . ((isset ($_GET["channel"]))? rawurldecode (demagicalize_string ($_GET["channel"])) : "\";\n";
 		echo "\t\t\toptions[\"redirect\"] = \"" . ((isset ($_GET["redirect"]) && 0 )? rawurlencode (demagicalize_string ($_GET["redirect"])) : URL_REDIRECT) . "\";\n";
 		echo "\t\t\toptions[\"laghack\"] = " . ((isset ($_GET["laghack"])) ? "true" : "false") . ";\n";
 		echo "\t\t\toptions[\"name\"] = \"" . (isset($_GET["name"])?$_GET["name"]:'') . "\";\n";
