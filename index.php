@@ -31,7 +31,7 @@
 		mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 		mysql_select_db (SQL_DATABASE);
 		$pw=userhash($_REQUEST['username'],$_REQUEST['password']);
-		$user=mysql_escape_string($_REQUEST['username']);
+		$user=mysql_real_escape_string($_REQUEST['username']);
 		//echo $pw;
 		mysql_query('SET NAMES "utf8"');
 		$userid=@mysql_result(mysql_query('SELECT id FROM user WHERE username="'.$user.'" AND password="'.$pw.'"'),0,0);

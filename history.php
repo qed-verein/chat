@@ -2,6 +2,9 @@
 
 	require_once ("data.php");
 	require_once ("common.php");
+	
+	$channel = uriParamString('channel', '');
+	$chanEsc = mysql_real_escape_string($chanEsc);
 
 	$reverse_output = false; //reverse output of posts?
 	if (!empty($_GET['reverse']) && $_GET['reverse'] == "true")
@@ -15,7 +18,7 @@
 	if (!empty($_GET['last']) && is_numeric($_GET['last']) &&$_GET["last"] > 0)
 	{
 		$count = get_query_value (mysql_query ("SELECT COUNT(*) FROM " . SQL_TABLE));
-		$query = "SELECT * FROM " . SQL_TABLE . " WHERE id > ($count - " . $_GET["last"] . ")". $botblocksql. " LIMIT 0,10000";
+		$query = "SELECT * FROM " . SQL_TABLE . " WHERE id > ($count - " . $_GET["last"] . ")". $botblocksql. " AND channel = \"" . $chanEsc . "\" LIMIT 0,10000";
 	}
 	else
 	{
@@ -28,9 +31,9 @@
 	    else
 		$to="";
 	    if (!empty($_GET['mode']) && $_GET["mode"] == "posts") {
-	    	$query = "SELECT * FROM " . SQL_TABLE . " WHERE id > " . $from . " && id <= " . $to. $botblocksql . " LIMIT 0,10000";
+	    	$query = "SELECT * FROM " . SQL_TABLE . " WHERE id > " . $from . " && id <= " . $to. $botblocksql . " AND channel = \"" . $chanEsc . "\" LIMIT 0,10000";
 	    } else
-		$query = "SELECT * FROM " . SQL_TABLE . " WHERE date >= \"" . get_date ($from) . "\" && date < \"" . get_date ($to) . "\"". $botblocksql. "LIMIT 0,10000";
+		$query = "SELECT * FROM " . SQL_TABLE . " WHERE date >= \"" . get_date ($from) . "\" && date < \"" . get_date ($to) . "\"". $botblocksql. " AND channel = \"" . $chanEsc . "\" LIMIT 0,10000";
 	}
 	if (!empty($_GET['reverse']))
 	    $query = 'SELECT * FROM ('.$query.') AS blubb ORDER BY id DESC';
