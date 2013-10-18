@@ -47,7 +47,7 @@ $count = get_query_value(mysql_query("SELECT MAX(id) FROM " . SQL_TABLE . " WHER
 
 $last24sql = sprintf("SELECT MIN(id) FROM %s WHERE channel = \"%s\" ORDER BY id DESC LIMIT 0, 24",
 						SQL_TABLE, mysql_real_escape_string($channel));
-$countm24 = get_query_value($last24sql);
+$countm24 = get_query_value(mysql_query($last24sql));
 
 $position = ($position < 0 ? $countm24 : min ($position, $count));
 
