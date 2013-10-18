@@ -17,7 +17,7 @@
 	    $botblocksql=' AND bottag=0';
 	if (!empty($_GET['last']) && is_numeric($_GET['last']) &&$_GET["last"] > 0)
 	{
-		$count = get_query_value (mysql_query ("SELECT COUNT(*) FROM " . SQL_TABLE));
+		$count = get_query_value (mysql_query ("SELECT COUNT(*) FROM " . SQL_TABLE . " WHERE channel = \"" . $chanEsc . "\""));
 		$query = "SELECT * FROM " . SQL_TABLE . " WHERE id > ($count - " . $_GET["last"] . ")". $botblocksql. " AND channel = \"" . $chanEsc . "\" LIMIT 0,10000";
 	}
 	else
