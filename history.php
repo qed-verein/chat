@@ -3,7 +3,7 @@
 	require_once ("data.php");
 	require_once ("common.php");
 	
-	$channel = isset($_GET['channel']) ? $_GET['channel'] : '';
+	$channel = !empty($_GET['channel']) ? $_GET['channel'] : '';
 	$chanEsc = mysql_real_escape_string($channel);
 
 	$reverse_output = false; //reverse output of posts?
