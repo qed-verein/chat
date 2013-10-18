@@ -1,6 +1,8 @@
 <?php
 	ignore_user_abort (true);
 
+// TODO: ExceptionHandler!
+
 	set_error_handler ('ErrorHandler');
 
 	function ErrorHandler ($number, $description, $file, $line)
@@ -29,20 +31,22 @@
 
 	function do_post ($post)
 	{
-	        mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
-		mysql_select_db (SQL_DATABASE);
-		$bottag=!empty($post['bottag'])?1:0;
+	  try {
+	    $dbcon = new PDO('mysql:host=' . SQL_HOST . ";dbname=" . SQL_DATABASE, SQL_USER, SQL_PASSWORD);
+	    $bottag=!empty($post['bottag'])?1:0;
 
-		/* TODO: Little Bobby Tables laesst gruessen ... - CSS */
+		$dbcon->exec('INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag, channel) VALUES ("' . $post["date"]
+	      . '", ' . $post["delay"] . ', "' . $post["ip"] . '", "' . escape_string($post["name"]) . '", "' . escape_string ($post["message"])
+	      . '", ' . intval($post['userid']) .','.$bottag.', "'.$post["channel"].'")');
 
-		$sql = 'INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag, channel) VALUES ("' . $post["date"]
-			. '", ' . $post["delay"] . ', "' . $post["ip"] . '", "' . escape_string($post["name"]) . '", "' . escape_string ($post["message"])
-			. '", ' . intval($post['userid']) .','.$bottag.', "'.$post["channel"].'")';
-		mysql_query ($sql);
-		mysql_close();
-
-		$recorded = true;
-		touch (TOUCH_FILE);
+	    $dbcon = null;
+	    $recorded = true;
+	    touch (TOUCH_FILE);
+	  } catch (PDOException $e) {
+	    ErrorHandler(0, "PDO Exception: " . $e->getMessage(), "post.php", -1);
+	  } finally {
+	    $dbcon = null;
+	  }
 	}
 
 
@@ -125,6 +129,8 @@
         }
 
 	}
+	
+	
 	        mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
                 mysql_select_db (SQL_DATABASE);
 
