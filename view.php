@@ -40,20 +40,19 @@ function flushOutput() {
 	ob_flush();
 }
 
-//////
 
 mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
 mysql_select_db(SQL_DATABASE);
 
-$last24sql = sprintf("SELECT MAX(id), MIN(id) FROM (SELECT * FROM %s WHERE channel = \"%s\" ORDER BY id DESC LIMIT 0, 24) AS bla",
+$last24sql = sprintf("SELECT MIN(id) FROM (SELECT * FROM %s WHERE channel = \"%s\" ORDER BY id DESC LIMIT 0, 24) AS bla",
 						SQL_TABLE, mysql_real_escape_string($channel));
 
 $l24res = mysql_fetch_array(mysql_query($last24sql));				
 
-$count = $l24res[0];
-$countm24 = $l24res[1];					
+//$count = $l24res[0];
+$countm24 = $l24res[0];					
 						
-$position = ($position < 0 ? $countm24 : min ($position, $count));
+$position = ($position < 0 ? $countm24 : $position)); //min ($position, $count));
 
 if (isset ($_GET["feedback"]) && $_GET["feedback"])
 	output_feedback ($type);
