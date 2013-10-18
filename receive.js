@@ -122,23 +122,26 @@ function StateChanged ()
 {
 	if (request.readyState >= 3)
 	{
-		var next;
-		while ((next = request.responseText.indexOf (";", cursor) + 1) != 0)
+	    var next, p;
+		readloop: while ((next = request.responseText.indexOf (";", cursor) + 1) != 0)
 		{
-		    /* TODO: Bessere JSON-Parse-Methode hier */
-		    var p = eval ('(' + request.responseText.substring (cursor, next - 1) + ')');
-		    if (p == undefined) {
-			SpawnError (91923, "Invalid JSON: " + request.responseText.substring (cursor, next - 1), "receive.js", 131);
-		    } else if (p["type"] == "ok") {
-			Ok ();
+			try {
+				p = $.parseJSON(request.responseText.substring (cursor, next - 1));
+			} catch (e) {
+				SpawnError (91923, "Invalid JSON: " + request.responseText.substring (cursor, next - 1), "receive.js", 131);
+				continue readloop;
+			}
+			
+			if (p["type"] == "ok") {
+				Ok ();
 		    } else if (p["type"] == "error") {
-			SpawnError(p["number"], p["description"], p["file"], p["line"]);
+				SpawnError(p["number"], p["description"], p["file"], p["line"]);
 		    } else if (p["type"] == "post") {
-			AddPost(p["id"], p["name"] + ((p["anonym"] == "1") ? " (anonym)" : ""),
+				AddPost(p["id"], p["name"] + ((p["anonym"] == "1") ? " (anonym)" : ""),
 				p["message"], p["date"], p["ip"], p["delay"],
 				p["color"], p["bottag"]);
 		    } else {
-			SpawnError(91922, "Unknown Type", "receive.js", 139);
+				SpawnError(91922, "Unknown Type", "receive.js", 139);
 		    }
 		    cursor = next;
 		}
