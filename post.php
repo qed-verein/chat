@@ -1,8 +1,5 @@
 <?php
-
 	ignore_user_abort (true);
-
-// TODO: ExceptionHandler!
 
 	set_error_handler ('ErrorHandler');
 
@@ -32,20 +29,20 @@
 
 	function do_post ($post)
 	{
-	  try {
-	    $dbcon = new PDO('mysql:host=' . SQL_HOST . ";dbname=" . SQL_DATABASE, SQL_USER, SQL_PASSWORD);
-	    $bottag=!empty($post['bottag'])?1:0;
+	        mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
+		mysql_select_db (SQL_DATABASE);
+		$bottag=!empty($post['bottag'])?1:0;
 
-		$dbcon->exec('INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag, channel) VALUES ("' . $post["date"]
-	      . '", ' . $post["delay"] . ', "' . $post["ip"] . '", "' . escape_string($post["name"]) . '", "' . escape_string ($post["message"])
-	      . '", ' . intval($post['userid']) .','.$bottag.', "'.$post["channel"].'")');
+		/* TODO: Little Bobby Tables laesst gruessen ... - CSS */
 
-	    $dbcon = null;
-	    $recorded = true;
-	    touch (TOUCH_FILE);
-	  } catch (PDOException $e) {
-	    ErrorHandler(0, "PDO Exception: " . $e->getMessage(), "post.php", -1);
-	  }
+		$sql = 'INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag, channel) VALUES ("' . $post["date"]
+			. '", ' . $post["delay"] . ', "' . $post["ip"] . '", "' . escape_string($post["name"]) . '", "' . escape_string ($post["message"])
+			. '", ' . intval($post['userid']) .','.$bottag.', "'.$post["channel"].'")';
+		mysql_query ($sql);
+		mysql_close();
+
+		$recorded = true;
+		touch (TOUCH_FILE);
 	}
 
 
@@ -77,7 +74,7 @@
 	$post['date'] = date ('Y-m-d H-i-s');
 	$post['delay'] = uriParamInteger('delay', 'NULL');
 	$post['bottag'] = uriParamInteger('bottag', 0);
-    $post['channel'] = uriParamString('channel', '');
+        $post['channel'] = uriParamString('channel', '');
 
 	if(strlen($post["message"])>10009)
 		$post["message"]="zu lang";
@@ -128,15 +125,13 @@
         }
 
 	}
-	
-	
-	/*        mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
-                mysql_select_db (SQL_DATABASE);*/
+	        mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
+                mysql_select_db (SQL_DATABASE);
 
 		//Floodschutz
-		//$post['ip']=mysql_real_escape_string($post['ip']);
-		//$post['userid']=$userid;
-/*		$IPhalb=explode('.',$post['ip']);
+		$post['ip']=mysql_real_escape_string($post['ip']);
+		$post['userid']=$userid;
+		$IPhalb=explode('.',$post['ip']);
 		$IPhalb=$IPhalb[0] . '.' . $IPhalb[1];
 		if (mysql_result(mysql_query('SELECT COUNT(*) FROM flood WHERE DATE_SUB(NOW(),INTERVAL 5 SECOND) <= date AND (IP="'.$post['ip'].'" OR IPhalb="'.$post['ip'].'")'),0) >3 ) {
 			header ("HTTP/1.1 403 Forbidden");
@@ -170,7 +165,7 @@
 			//alles ok
 			mysql_query('INSERT INTO getestet SET zeit=NOW(), IP="'.mysql_real_escape_string($post['ip']).'"');
 
-		}*/
+		}
 
 	do_post ($post);
 ?>
