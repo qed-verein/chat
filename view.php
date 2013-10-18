@@ -40,6 +40,8 @@ function flushOutput() {
 	ob_flush();
 }
 
+//////
+
 mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
 mysql_select_db(SQL_DATABASE);
 

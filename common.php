@@ -233,6 +233,8 @@ if (empty($session_not_close))
 		sscanf ($string, "%d_%d_%d_%d_%d", $n, $h, $d, $m, $y);
 		return date ("Y-m-d H-i-s", mktime ($h, $n, 0, $m, $d, $y));
 	}
+	
+	// quuuuu
 
 	function get_query_value ($resource)
 	{
