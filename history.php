@@ -2,9 +2,6 @@
 
 	require_once ("data.php");
 	require_once ("common.php");
-	
-	$channel = !empty($_GET['channel']) ? $_GET['channel'] : '';
-	$chanEsc = mysql_real_escape_string($channel);
 
 	$reverse_output = false; //reverse output of posts?
 	if (!empty($_GET['reverse']) && $_GET['reverse'] == "true")
@@ -12,6 +9,9 @@
 
 	mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 	mysql_select_db (SQL_DATABASE);
+	$channel = !empty($_GET['channel']) ? $_GET['channel'] : '';
+	$chanEsc = mysql_real_escape_string($channel);
+
 	$botblocksql='';
 	if (!empty($_GET['botblock']))
 	    $botblocksql=' AND bottag=0';
