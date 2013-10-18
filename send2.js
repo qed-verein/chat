@@ -1,4 +1,4 @@
-var createRequest, request, position, from = 0, timeWait, generator = 0,zero=0;
+var createRequest, request, options, position, from = 0, timeWait, generator = 0,zero=0;
 
 function GetKey (gen)
 {
@@ -25,7 +25,7 @@ function Init ()
 		parent.InitSend (self);
 	else
 	{
-		var options = new Object ();
+		options = new Object ();
 		options["name"] = "";
 		options["wait"] = 60;
 		options["urgent"] = true;
