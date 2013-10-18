@@ -42,8 +42,14 @@ function flushOutput() {
 
 mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
 mysql_select_db(SQL_DATABASE);
+
 $count = get_query_value(mysql_query("SELECT MAX(id) FROM " . SQL_TABLE . " WHERE channel = \"" . mysql_real_escape_string($channel) . "\""));
-$position = ($position < 0 ? max (0, $count - 24) : min ($position, $count));
+
+$last24sql = sprintf("SELECT MIN(id) FROM %s WHERE channel = \"%s\" ORDER BY id DESC LIMIT 0, 24",
+						SQL_TABLE, mysql_real_escape_string($channel));
+$countm24 = get_query_value($last24sql);
+
+$position = ($position < 0 ? $countm24 : min ($position, $count));
 
 if (isset ($_GET["feedback"]) && $_GET["feedback"])
 	output_feedback ($type);
