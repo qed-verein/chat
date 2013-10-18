@@ -33,7 +33,7 @@
 	function do_post ($post)
 	{
 	  try {
-	    $dbcon = new PDO::PDO('mysql:host=' . SQL_HOST . ";dbname=" . SQL_DATABASE, SQL_USER, SQL_PASSWORD);
+	    $dbcon = new PDO('mysql:host=' . SQL_HOST . ";dbname=" . SQL_DATABASE, SQL_USER, SQL_PASSWORD);
 	    $bottag=!empty($post['bottag'])?1:0;
 
 		$dbcon->exec('INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag, channel) VALUES ("' . $post["date"]
@@ -43,10 +43,8 @@
 	    $dbcon = null;
 	    $recorded = true;
 	    touch (TOUCH_FILE);
-	  } catch (PDO::PDOException $e) {
+	  } catch (PDOException $e) {
 	    ErrorHandler(0, "PDO Exception: " . $e->getMessage(), "post.php", -1);
-	  } finally {
-	    $dbcon = null;
 	  }
 	}
 
