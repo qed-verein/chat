@@ -1,4 +1,4 @@
-var createRequest, request, options, position, from = 0, timeWait, generator = 0,zero=0;
+var createRequest, request, channel, position, from = 0, timeWait, generator = 0,zero=0;
 
 function GetKey (gen)
 {
@@ -37,6 +37,8 @@ function Init ()
 function InitRemote (options)
 {
 	timeWait = 6000 * options["wait"];
+	
+	channel = options["channel"];
 
 	document.getElementById ("name").value = options["name"];
 
@@ -115,7 +117,7 @@ function Send ()
 				//%%user \neq bot
 				//alert(options["channel"]);
 				var content = 
-					"delay=" + position + "&channel=" + options["channel"] + "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value)+"&bottag="+zero;
+					"delay=" + position + "&channel=" + channel + "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value)+"&bottag="+zero;
 				if (generator)
 					content += "&key=" + GetKey (generator++);
 				request.send (content);
