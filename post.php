@@ -1,4 +1,5 @@
 <?php
+
 	ignore_user_abort (true);
 
 // TODO: ExceptionHandler!
@@ -32,7 +33,7 @@
 	function do_post ($post)
 	{
 	  try {
-	    $dbcon = new PDO('mysql:host=' . SQL_HOST . ";dbname=" . SQL_DATABASE, SQL_USER, SQL_PASSWORD);
+	    $dbcon = new PDO::PDO('mysql:host=' . SQL_HOST . ";dbname=" . SQL_DATABASE, SQL_USER, SQL_PASSWORD);
 	    $bottag=!empty($post['bottag'])?1:0;
 
 		$dbcon->exec('INSERT INTO ' . SQL_TABLE . ' (date, delay, ip, name, message, user_id, bottag, channel) VALUES ("' . $post["date"]
@@ -42,7 +43,7 @@
 	    $dbcon = null;
 	    $recorded = true;
 	    touch (TOUCH_FILE);
-	  } catch (PDOException $e) {
+	  } catch (PDO::PDOException $e) {
 	    ErrorHandler(0, "PDO Exception: " . $e->getMessage(), "post.php", -1);
 	  } finally {
 	    $dbcon = null;
@@ -78,7 +79,7 @@
 	$post['date'] = date ('Y-m-d H-i-s');
 	$post['delay'] = uriParamInteger('delay', 'NULL');
 	$post['bottag'] = uriParamInteger('bottag', 0);
-        $post['channel'] = uriParamString('channel', '');
+    $post['channel'] = uriParamString('channel', '');
 
 	if(strlen($post["message"])>10009)
 		$post["message"]="zu lang";
@@ -135,8 +136,8 @@
                 mysql_select_db (SQL_DATABASE);*/
 
 		//Floodschutz
-		$post['ip']=mysql_real_escape_string($post['ip']);
-		$post['userid']=$userid;
+		//$post['ip']=mysql_real_escape_string($post['ip']);
+		//$post['userid']=$userid;
 /*		$IPhalb=explode('.',$post['ip']);
 		$IPhalb=$IPhalb[0] . '.' . $IPhalb[1];
 		if (mysql_result(mysql_query('SELECT COUNT(*) FROM flood WHERE DATE_SUB(NOW(),INTERVAL 5 SECOND) <= date AND (IP="'.$post['ip'].'" OR IPhalb="'.$post['ip'].'")'),0) >3 ) {
