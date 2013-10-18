@@ -13,6 +13,7 @@ touch(TOUCH_FILE);
 $type = uriParamString('type');
 $position = uriParamInteger('position', -1);
 $limit = uriParamInteger('limit', 256);
+$channel = uriParamString('channel', '');
 
 output_header($type);
 output_prefix($type);
@@ -41,7 +42,7 @@ function flushOutput() {
 
 mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
 mysql_select_db(SQL_DATABASE);
-$count = get_query_value(mysql_query("SELECT COUNT(*) FROM " . SQL_TABLE));
+$count = get_query_value(mysql_query("SELECT MAX(id) FROM " . SQL_TABLE . " WHERE channel = \"" . mysql_real_escape_string($channel) . "\""));
 $position = ($position < 0 ? max (0, $count - 24) : min ($position, $count));
 
 if (isset ($_GET["feedback"]) && $_GET["feedback"])
@@ -80,7 +81,7 @@ $messageCounter = 0;
 
 while(waitForMessages())
 {
-	$sql = sprintf("SELECT * FROM %s WHERE id > %d", SQL_TABLE, $position + $messageCounter);
+	$sql = sprintf("SELECT * FROM %s WHERE id > %d, channel = \"%s\"", SQL_TABLE, $position + $messageCounter, mysql_real_escape_string($channel));
 	$query = mysql_query($sql);
 	while($array = mysql_fetch_assoc($query))
 	{
