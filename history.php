@@ -65,7 +65,7 @@
 			. "\t\t<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n"
 			. "\t\t<meta http-equiv=\"cache-control\" content=\"no-cache\">\n"
 			. "\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"chat.css\">"
-			. "\t\t<title>QED-Chat: Log of Channel " . $channel . " </title>\n"
+			. "\t\t<title>QED-Chat: Log of Channel " . $channel . "/" . $chanEsc . " </title>\n"
 			. "\t</head>\n"
 			. "\t<body>\n"
 			. "\t\t<table>\n";
