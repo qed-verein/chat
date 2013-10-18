@@ -131,13 +131,13 @@
 	}
 	
 	
-	        mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
-                mysql_select_db (SQL_DATABASE);
+	/*        mysql_pconnect (SQL_HOST, SQL_USER, SQL_PASSWORD);
+                mysql_select_db (SQL_DATABASE);*/
 
 		//Floodschutz
 		$post['ip']=mysql_real_escape_string($post['ip']);
 		$post['userid']=$userid;
-		$IPhalb=explode('.',$post['ip']);
+/*		$IPhalb=explode('.',$post['ip']);
 		$IPhalb=$IPhalb[0] . '.' . $IPhalb[1];
 		if (mysql_result(mysql_query('SELECT COUNT(*) FROM flood WHERE DATE_SUB(NOW(),INTERVAL 5 SECOND) <= date AND (IP="'.$post['ip'].'" OR IPhalb="'.$post['ip'].'")'),0) >3 ) {
 			header ("HTTP/1.1 403 Forbidden");
@@ -171,7 +171,7 @@
 			//alles ok
 			mysql_query('INSERT INTO getestet SET zeit=NOW(), IP="'.mysql_real_escape_string($post['ip']).'"');
 
-		}
+		}*/
 
 	do_post ($post);
 ?>
