@@ -30,7 +30,7 @@ function ErrorHandler($number, $description, $file, $line)
 	}
 }
 
-function keepAlive() {
+function keepAlive($type) {
     //echo "\n";
     output_feedback($type);
     flushOutput();
@@ -74,7 +74,7 @@ function waitForMessages()
 			break;
 
 		if($keepAliveCounter >= KEEP_ALIVE_NL_POLL_NUM) {
-			keepAlive();
+			keepAlive($type);
 			$keepAliveCounter = 0;
 		}
 
