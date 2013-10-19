@@ -40,4 +40,7 @@
 define ("POLL_MICROSECONDS", 100000);
 define ("TIMEOUT_POLL_NUM",600);
 define ("KEEP_ALIVE_NL_POLL_NUM",50);
+
+// Login
+define ("REQUIRE_LOGIN", false);
 ?>
