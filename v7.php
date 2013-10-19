@@ -40,9 +40,7 @@ header("Content-Type: application/xhtml+xml");
 				$userid = do_login($_REQUEST['username'],$_REQUEST['password']);
 				if ($userid == 0) { ?>
 					<p> Entschuldigung, aber die Logindaten waren nicht korrekt. </p>
-					<p> <a href="javascript:history.back()">Zurück</a> </p>
 				<?php
-					exit ();
 				} else {
 					$_SESSION['userid'] = $userid;
 					$_SESSION['anonym'] = 0;
@@ -53,7 +51,7 @@ header("Content-Type: application/xhtml+xml");
 			// Ask for login, if activated and not having access yet
 			if (!$_SESSION['access']) { ?>
 				<p>
-					<form action="v7.php">
+					<form action="v7.php" method="post">
 						<input name="username" placeholder="Name" />
 						<input name="password" placeholder="Password" type="password" />
 						<input type="submit" value="Login" />
@@ -63,7 +61,7 @@ header("Content-Type: application/xhtml+xml");
 				<p>Sonst: <a href="v7.php?anonym=1">Anonymer Zugang</a>.</p>
 					<?php }
 			} else { ?>
-				<a href="v7.php?logout=1">Ausloggen.</a>
+				<p>Du bist drin :3 - <a href="v7.php?logout=1">Ausloggen.</a></p>
 			<?php }
 		?>
 	</body>
