@@ -13,6 +13,9 @@ header("Content-Type: application/xhtml+xml");
 	<head>
 		<meta name="robots" content="noindex, nofollow" />
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="jquery-2.0.2.js"></script>
+		<script type="text/javascript" src="v7.js"></script>
+
 	</head>
 	<body>
 		<?php
@@ -57,10 +60,14 @@ header("Content-Type: application/xhtml+xml");
 						<input type="submit" value="Login" />
 					</form>
 				</p>
-				<?php if (!REQUIRE_LOGIN) { ?>
-				<p>Sonst: <a href="v7.php?anonym=1">Anonymer Zugang</a>.</p>
-					<?php }
+				<?php if (!REQUIRE_LOGIN) { 
+					echo '<p>Sonst: <a href="v7.php?' . myUrlSetOption("anonym", "1").  '">Anonymer Zugang</a></p>';
+				}
 			} else { ?>
+				<div id="messages"></div>
+				<div id="post"></div>
+				<div id="channel"></div>
+				<div id="config"></div>
 				<p>Du bist drin :3 - <a href="v7.php?logout=1">Ausloggen.</a></p>
 			<?php }
 		?>

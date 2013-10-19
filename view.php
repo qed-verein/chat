@@ -31,7 +31,8 @@ function ErrorHandler($number, $description, $file, $line)
 }
 
 function keepAlive() {
-    echo "\n";
+    //echo "\n";
+    output_feedback($type);
     flushOutput();
 }
 
