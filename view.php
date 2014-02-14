@@ -103,4 +103,6 @@ while(waitForMessages())
 	flushOutput();
 }
 
+output_suffix($type);
+
 ?>
