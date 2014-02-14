@@ -93,7 +93,7 @@ $messageCounter = 0;
 
 while(waitForMessages())
 {
-	$sql = sprintf("SELECT * FROM %s WHERE id > %d AND channel = \"%s\" LIMIT 0, 100", SQL_TABLE, $position, mysql_real_escape_string($channel));
+	$sql = sprintf("SELECT * FROM %s WHERE id > %d AND channel = \"%s\" LIMIT 0, %d", SQL_TABLE, $position, mysql_real_escape_string($channel), $limit - $messageCounter);
 	$query = mysql_query($sql);
 	while($array = mysql_fetch_assoc($query))
 	{
