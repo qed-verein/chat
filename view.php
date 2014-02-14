@@ -88,6 +88,7 @@ function waitForMessages()
 
 $keepAliveCounter = KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durchlauf gleich was gesendet wird
 $timeoutCounter = 0;
+$messageCounter = 0;
 
 while(waitForMessages())
 {
@@ -95,6 +96,7 @@ while(waitForMessages())
 	$query = mysql_query($sql);
 	while($array = mysql_fetch_assoc($query))
 	{
+		$messageCounter++;
 		$position = $array["id"];
 		echo output_line($type, $array);
 	}
