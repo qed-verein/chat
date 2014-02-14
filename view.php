@@ -49,11 +49,11 @@ mysql_select_db(SQL_DATABASE);
 $last24sql = sprintf("SELECT MIN(id), MAX(id) FROM (SELECT * FROM %s WHERE channel = \"%s\" ORDER BY id DESC LIMIT 0, 24) AS bla",
 						SQL_TABLE, mysql_real_escape_string($channel));
 
-$l24res = mysql_fetch_array(mysql_query($last24sql));				
+$l24res = mysql_fetch_array(mysql_query($last24sql));
 
 $countm24 = $l24res[0];
 $count = $l24res[1];
-						
+
 $position = ($position < 0 ? $countm24 : min ($position, $count));
 
 if (isset ($_GET["feedback"]) && $_GET["feedback"])
@@ -91,7 +91,7 @@ $timeoutCounter = 0;
 
 while(waitForMessages())
 {
-	$sql = sprintf("SELECT * FROM %s WHERE id > %d AND channel = \"%s\"", SQL_TABLE, $position, mysql_real_escape_string($channel));
+	$sql = sprintf("SELECT * FROM %s WHERE id > %d AND channel = \"%s\" LIMIT 0, 100", SQL_TABLE, $position, mysql_real_escape_string($channel));
 	$query = mysql_query($sql);
 	while($array = mysql_fetch_assoc($query))
 	{
