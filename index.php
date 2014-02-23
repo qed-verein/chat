@@ -56,7 +56,6 @@
 	}
 	if (!empty($_SESSION['userid']) || !empty($_SESSION['anonym'])) {
 		//HACK für fcgi
-		$_GET['limit']=1;
 		$_GET['patient']=true;
 		unset($_GET['redirect']);
 
@@ -81,7 +80,7 @@
 		echo "\t\t\toptions[\"sound\"] = " . (isset ($_GET["sound"]) ? intval ($_GET["sound"]) : 0) . ";\n";
 		echo "\t\t\toptions[\"sound_post\"] = \"" . (isset ($_GET["sound_post"]) ? demagicalize_string ($_GET["sound_post"]) : "spam.wav") . "\";\n";
 		echo "\t\t\toptions[\"method\"] = \"" . (isset ($_GET["method"]) ? demagicalize_string ($_GET["method"]) : "detect") . "\";\n";
-		echo "\t\t\toptions[\"limit\"] = \"" . (isset ($_GET["limit"]) ? intval ($_GET["limit"]) : "256000") . "\";\n";
+		echo "\t\t\toptions[\"limit\"] = \"" . (isset ($_GET["limit"]) ? intval ($_GET["limit"]) : "256") . "\";\n";
 		echo "\t\t\toptions[\"patient\"] = \"" . (isset ($_GET["patient"]) ? intval ($_GET["patient"]) : 0) . "\";\n";
 		echo "\t\t\toptions[\"wait\"] = \"" . (isset ($_GET["wait"]) ? intval ($_GET["wait"]) : 10) . "\";\n";
 		echo "\t\t\toptions[\"target\"] = \"" . (isset ($_GET["target"]) ? demagicalize_string ($_GET["target"]) : "_blank") . "\";\n";
