@@ -1,9 +1,10 @@
 <?php
 
 session_start();
-/*if (empty($ignore_no_login) && empty($_SESSION['userid'])) {
+//if (empty($ignore_no_login) && empty($_SESSION['userid'])) {
+if (empty($ignore_no_login) && empty($_SESSION['userid'])) {
 	die("Du musst dich erst einloggen");
-}*/
+}
 if (!empty($_SESSION['userid']))
 	$userid=$_SESSION['userid'];
 else {
