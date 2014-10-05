@@ -124,28 +124,31 @@ function StateChanged ()
 	if (request.readyState >= 3)
 	{
 	    var next, p;
-		readloop: while ((next = request.responseText.indexOf (";", cursor) + 1) != 0)
-		{
-			try {
-				p = $.parseJSON(request.responseText.substring (cursor, next - 1));
-			} catch (e) {
-				SpawnError (91923, "Invalid JSON: " + request.responseText.substring (cursor, next - 1), "receive.js", 131);
-				continue readloop;
-			}
-			
-			if (p["type"] == "ok") {
-				Ok ();
-		    } else if (p["type"] == "error") {
-				SpawnError(p["number"], p["description"], p["file"], p["line"]);
-		    } else if (p["type"] == "post") {
-				AddPost(p["id"], p["name"] + ((p["anonym"] == "1") ? " (anonym)" : ""),
-				p["message"], p["date"], p["ip"], p["delay"],
-				p["color"], p["bottag"]);
-		    } else {
-				SpawnError(91922, "Unknown Type", "receive.js", 139);
-		    }
-		    cursor = next;
+	    readloop: while ((next = request.responseText.indexOf (";", cursor) + 1) != 0)
+	    {
+		try {
+		    p = $.parseJSON(request.responseText.substring (cursor, next - 1));
+		} catch (e) {
+		    SpawnError (91923, "Invalid JSON: " + request.responseText.substring (cursor, next - 1), "receive.js", 131);
+		    // hat sich bei Fehler in einem busy loop verfangen - CSS
+		    // continue readloop;
 		}
+		
+		if (p["type"] == "ok") {
+		    Ok ();
+		} else if (p["type"] == "error") {
+		    SpawnError(p["number"], p["description"], p["file"], p["line"]);
+		} else if (p["type"] == "post") {
+		    AddPost(p["id"], p["name"] + ((p["anonym"] == "1") ? " (anonym)" : ""),
+			    p["message"], p["date"], p["ip"], p["delay"],
+			    p["color"], p["bottag"]);
+		} else {
+		    SpawnError(91922, "Unknown Type", "receive.js", 139);
+		}
+		cursor = next;
+	    }
+
+	    ReadLoop(request.responseText.indexOf (";", cursor) + 1);
 
 		if (request.readyState == 4)
 			Disconnected ();
@@ -189,6 +192,7 @@ function SpawnError (number, description, file, line)
 function InsertLinks (text)
 {
 	//return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g, '<a href="' + options["redirect"] + '$1$2" target="' + options["target"] + '">$1$2</a>');
+
 	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g,
 			     '<a rel="noreferrer" target="_blank" href=\'data:text/html;charset=utf-8, <html><meta http-equiv="refresh" content="0;URL=&#39;$1$2&#39;">$1$2</html>\'>$1$2</a>');
 
