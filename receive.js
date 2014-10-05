@@ -178,9 +178,11 @@ function Ok ()
 
 function SpawnError (number, description, file, line)
 {
-	SetStatus ("Ein Verbindungsfehler trat auf:<br>(" + number + ", " + HtmlEscape (description, false) + ", " + file + ", " + line + ")<br>Verbinde erneut ...");
+	SetStatus ("Ein Verbindungsfehler trat auf:<br>(" + number + ", " + HtmlEscape (description, false) + ", " + file + ", " + line + ")<br>Warte 10 Sekunden und verbinde erneut ...");
 	request.abort ();
-	ReceiveInternal ();
+
+    // hat sich auch in einem endlessloop verfangen - CSS
+	setTimeout("ReceiveInternal ()", 10000);
 }
 
 function InsertLinks (text)
