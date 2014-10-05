@@ -22,7 +22,6 @@ function Init ()
 	else
 	{
 		var options = new Object ();
-		//%%botblock option added
 		options["botblock"] = 1;
 		options["ip"] = 1;
 		options["delay"] = 1;
@@ -31,12 +30,10 @@ function Init ()
 		options["links"] = 1;
 		options["old"] = 0;
 		options["last"] = 20;
-		// obsolete options["redirect"] = "http:www.stud.uni-muenchen.de/~christian.sattler/redirect.html?";
 		options["limit"] = "256";
 		options["patient"] = false;
 		options["method"] = "detect";
 		options["wait"] = 10;
-		//obsolete options["target"] = "_blank";
 		options["urgent"] = true;
 		InitRemote (options);
 	}
@@ -188,10 +185,10 @@ function SpawnError (number, description, file, line)
 
 function InsertLinks (text)
 {
-	//return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g, '<a href="' + options["redirect"] + '$1$2" target="' + options["target"] + '">$1$2</a>');
-
 	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g,
-			     '<a rel="noreferrer" target="_blank" href=\'data:text/html;charset=utf-8, <html><meta http-equiv="refresh" content="0;URL=&#39;$1$2&#39;">$1$2</html>\'>$1$2</a>');
+			     '<a rel="noreferrer" target="_blank" href="$1$2">$1$2</a>');
+    /*return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g,
+			     '<a rel="noreferrer" target="_blank" href=\'data:text/html;charset=utf-8, <html><meta http-equiv="refresh" content="0;URL=&#39;$1$2&#39;">$1$2</html>\'>$1$2</a>');*/
 
 }
 
