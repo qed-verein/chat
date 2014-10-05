@@ -61,8 +61,3 @@ function ChangeLast (value)
 {
 	recv.ChangeLast (value);
 }
-
-function EnableSound (value)
-{
-	recv.EnableSound (value);
-}

@@ -77,8 +77,6 @@
 		echo "\t\t\toptions[\"logIp\"] = " . (isset ($_GET["logIp"]) ? intval ($_GET["logIp"]) : 1) . ";\n";
 		echo "\t\t\toptions[\"logDelay\"] = " . (isset ($_GET["logDelay"]) ? intval ($_GET["logDelay"]) : 0) . ";\n";
 		echo "\t\t\toptions[\"logLinks\"] = " . (isset ($_GET["logLinks"]) ? intval ($_GET["logLinks"]) : 1) . ";\n";
-		echo "\t\t\toptions[\"sound\"] = " . (isset ($_GET["sound"]) ? intval ($_GET["sound"]) : 0) . ";\n";
-		echo "\t\t\toptions[\"sound_post\"] = \"" . (isset ($_GET["sound_post"]) ? demagicalize_string ($_GET["sound_post"]) : "spam.wav") . "\";\n";
 		echo "\t\t\toptions[\"method\"] = \"" . (isset ($_GET["method"]) ? demagicalize_string ($_GET["method"]) : "detect") . "\";\n";
 		echo "\t\t\toptions[\"limit\"] = \"" . (isset ($_GET["limit"]) ? intval ($_GET["limit"]) : "256") . "\";\n";
 		echo "\t\t\toptions[\"patient\"] = \"" . (isset ($_GET["patient"]) ? intval ($_GET["patient"]) : 0) . "\";\n";

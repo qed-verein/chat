@@ -325,17 +325,9 @@ function AddPost (id, name, message, date, ip, delay, color, bottag)
 				else
 					top.document.title = post["message"].substr (0, 252) + "...";
 
-			if (options["sound"])
-				if (parent != self)
-					parent.send.document.getElementById ("sound").innerHTML = '<embed src="' + options["sound_post"] + '" hidden=true autostart=true loop=false>';
-				else
-					document.getElementById ("sound").innerHTML = '<embed src="' + options["sound_post"] + '" hidden=true autostart=true loop=false>';
-		//}
-		//else { position=id; }
 	}
 	else{position=id;}
 
-//	setTimeout ("PingTimeout (" + position + ")", 120000);
 }
 
 function PingTimeout (lastpos)
@@ -388,9 +380,4 @@ function ChangeLast (value)
 {
 	options["last"] = value;
 	RecreatePosts ();
-}
-
-function EnableSound (value)
-{
-	options["sound"] = value;
 }
