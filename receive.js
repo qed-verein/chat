@@ -124,14 +124,13 @@ function StateChanged ()
 	if (request.readyState >= 3)
 	{
 	    var next, p;
-	    readloop: while ((next = request.responseText.indexOf (";", cursor) + 1) != 0)
+	    while ((next = request.responseText.indexOf (";", cursor) + 1) != 0)
 	    {
 		try {
 		    p = $.parseJSON(request.responseText.substring (cursor, next - 1));
 		} catch (e) {
 		    SpawnError (91923, "Invalid JSON: " + request.responseText.substring (cursor, next - 1), "receive.js", 131);
-		    // hat sich bei Fehler in einem busy loop verfangen - CSS
-		    // continue readloop;
+		    break;
 		}
 		
 		if (p["type"] == "ok") {
@@ -148,10 +147,8 @@ function StateChanged ()
 		cursor = next;
 	    }
 
-	    ReadLoop(request.responseText.indexOf (";", cursor) + 1);
-
-		if (request.readyState == 4)
-			Disconnected ();
+	    if (request.readyState == 4)
+		Disconnected ();
 	}
 }
 
