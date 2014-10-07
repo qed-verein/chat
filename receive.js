@@ -86,7 +86,8 @@ function MsieCheck ()
 function Receive ()
 {
 //	fgci SetStatus ("Verbindung wird hergestellt (" + ++numTries + ". Versuch) ...");
-	ReceiveInternal ();
+    ++numTries; /* gute guete wie fuerchterlich ist dieser code ... */
+    ReceiveInternal ();
 }
 
 function ReceiveInternal ()
@@ -158,13 +159,13 @@ function OnTimeout (to)
 function Disconnected ()
 {
 	request.abort ();
-	if (numTries == 3)
+	/*if (numTries == 3)
 	{
 		SetStatus ("Verbindung konnte in drei Versuchen nicht hergestellt werden.<br>Hast du es schon mit <a href=\"index.php?patient=true&limit=1\" target=\"" + options["target"] + "\">index.php?patient=true&limit=1</a> versucht?");
 		top.document.title = "Fehler: Chat-Server konnte nicht erreicht werden.";
 	}
-	else
-		Receive ();
+	else*/
+    setTimeout("Receive ()", 10000);
 }
 
 function Ok ()
