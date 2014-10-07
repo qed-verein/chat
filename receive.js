@@ -5,7 +5,7 @@ var posts = new Array ();
 var position = -1;
 var options;
 var from = 0;
-var noXml; /* TODO: Kein Mensch verwendet das mehr! */
+//var noXml; /* TODO: Kein Mensch verwendet das mehr! */
 var timeWait;
 var lastposition = -1;
 
@@ -32,7 +32,7 @@ function Init ()
 		options["last"] = 20;
 		options["limit"] = "256";
 		options["patient"] = false;
-		options["method"] = "detect";
+	        options["method"] = "detect";
 		options["wait"] = 10;
 		options["urgent"] = true;
 		InitRemote (options);
@@ -54,12 +54,12 @@ function Debug (message)
 
 function InitRemote (opt)
 {
-	options = opt;
-	(window.XMLHttpRequest ? false : true);
+    options = opt;
+	//(window.XMLHttpRequest ? false : true); was soll das tun?
 
 	timeWait = 1000 * options["wait"];
 
-	if (options["method"] == "xml")
+	/*if (options["method"] == "xml")
 		noXml = false;
 	else if (options["method"] == "iframe")
 		noXml = true;
@@ -68,9 +68,8 @@ function InitRemote (opt)
 
 	if (noXml)
 		document.body.innerHTML += '<iframe id="iframe" style="border:0px; width:0px; height:0px;"></iframe>';
-	else
-		request = new XMLHttpRequest ();
-
+	else*/
+    request = new XMLHttpRequest ();
 	Receive ();
 }
 
@@ -92,29 +91,19 @@ function Receive ()
 
 function ReceiveInternal ()
 {
-	if (noXml)
-		ReceiveNoXml ();
-	else
-		ReceiveXml ();
-}
+    /*if (noXml) {
+	    var iframe = document.getElementById ("iframe");
+	    iframe.src = "view.php?type=html&feedback=1&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "");
+	    msieInterval = setInterval ("MsieCheck ()", 500);
 
-function ReceiveNoXml ()
-{
-    /* TODO: Weg damit! - CSS */
-	var iframe = document.getElementById ("iframe");
-	iframe.src = "view.php?type=html&feedback=1&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "");
-	msieInterval = setInterval ("MsieCheck ()", 500);
-}
-
-
-function ReceiveXml ()
-{
-	cursor = 0;
-	request.onreadystatechange = StateChanged;
-    request.open ("GET", "view.php?type=json&feedback=1&channel=" + options["channel"] + "&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
-	request.send ("");
-	if (!options["patient"])
+	} else {*/
+	    cursor = 0;
+	    request.onreadystatechange = StateChanged;
+	    request.open ("GET", "view.php?type=json&feedback=1&channel=" + options["channel"] + "&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
+	    request.send ("");
+	    if (!options["patient"])
 		setTimeout ("OnTimeout (" + from + ")", timeWait);
+	//}
 }
 
 function StateChanged ()
@@ -173,8 +162,8 @@ function Ok ()
 	SetStatus ("");
 	numTries = 0;
 
-	if (!noXml)
-		++from;
+/*	if (!noXml)
+		++from;*/
 }
 
 function SpawnError (number, description, file, line)
