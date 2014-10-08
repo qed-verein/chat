@@ -74,7 +74,7 @@ function waitForMessages()
 	{
 	  /*if(inotify_read($touchme) !== FALSE)
 	    return TRUE;*/
-	  if (fgets($sock,1) != FALSE) return TRUE;
+	  if (fgets($sock,1) !== FALSE) return TRUE;
 
 		$keepAliveCounter++;
 		$timeoutCounter++;
