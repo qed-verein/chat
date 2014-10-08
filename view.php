@@ -5,10 +5,14 @@ ignore_user_abort(true);
 require_once("data.php");
 require_once("common.php");
 
-$touchme = inotify_init();
+/*$touchme = inotify_init();
 inotify_add_watch($touchme, TOUCH_FILE, IN_ATTRIB);
 stream_set_blocking($touchme, 0);
-touch(TOUCH_FILE);
+touch(TOUCH_FILE);*/
+
+$sock = stream_socket_client(SOCKET_PATH);
+$sock or die;
+/* TODO: fehlerbehandlung */
 
 $type = uriParamString('type');
 $position = uriParamInteger('position', -1);
@@ -61,12 +65,13 @@ if (isset ($_GET["feedback"]) && $_GET["feedback"])
 
 function waitForMessages()
 {
-	global $keepAliveCounter, $timeoutCounter, $messageCounter, $touchme, $limit;
+  global $keepAliveCounter, $timeoutCounter, $messageCounter, $sock, /*$touchme,*/ $limit;
 
-	while(!connection_aborted())
+  while(!connection_aborted() && !feof($sock))
 	{
-		if(inotify_read($touchme) !== FALSE)
-			return TRUE;
+	  /*if(inotify_read($touchme) !== FALSE)
+	    return TRUE;*/
+	  if (fgets($sock,1) != FALSE) return TRUE;
 
 		$keepAliveCounter++;
 		$timeoutCounter++;

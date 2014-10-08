@@ -9,8 +9,10 @@
     define ("SQL_TABLE", "content"); // name of table to be used (if changed init.php has to be called)
 
     //CSS, der sockets nicht mag
-    define ("TOUCH_FILE", "sockets/touchthis");
-    //define ("TOUCH_FILE", "/run/lock/qedchat");
+    //define ("TOUCH_FILE", "sockets/touchthis");
+    //CSS, der Sockets doch ganz nett findet
+    define ("SOCKET_PATH", "unix:///tmp/chat.sock");
+
 
     // redirection parameters
     define ("URL_REDIRECT", "http://uxul.de/redirect.php?"); // default redirection service (for hiding the referer [sic])
