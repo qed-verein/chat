@@ -8,10 +8,12 @@
     define ("SQL_DATABASE", "spam"); // database name  (if changed init.php has to be called)
     define ("SQL_TABLE", "content"); // name of table to be used (if changed init.php has to be called)
 
+    // CSS, der sich nicht entscheiden kann
+    define("NOTIFICATION_METHOD", "inotify");
     //CSS, der sockets nicht mag
     define ("TOUCH_FILE", "sockets/touchthis");
     //CSS, der Sockets doch ganz nett findet
-    //define ("SOCKET_PATH", "unix:///tmp/chat.sock");
+    define ("SOCKET_PATH", "unix:///tmp/chat.sock");
 
 
     // redirection parameters
