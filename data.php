@@ -9,9 +9,9 @@
     define ("SQL_TABLE", "content"); // name of table to be used (if changed init.php has to be called)
 
     //CSS, der sockets nicht mag
-    //define ("TOUCH_FILE", "sockets/touchthis");
+    define ("TOUCH_FILE", "sockets/touchthis");
     //CSS, der Sockets doch ganz nett findet
-    define ("SOCKET_PATH", "unix:///tmp/chat.sock");
+    //define ("SOCKET_PATH", "unix:///tmp/chat.sock");
 
 
     // redirection parameters

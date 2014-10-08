@@ -17,6 +17,22 @@ static void handle_usr1 () {
   }
 }
 
+static void dead_child (int signum) {
+  int pid;
+  int status;
+  while (1)
+    {
+      pid = waitpid (-1, &status, WNOHANG);
+      if (pid < 0)
+        {
+          perror ("waitpid");
+          break;
+        }
+      if (pid == 0)
+        break;
+    }
+}
+
 static void handle_usr1_central () {
   fprintf(stderr, "post\n");
 }
@@ -25,6 +41,8 @@ int handle_connection (int connection_fd) {
   /* we are now in another process, so we can add a signal handler */
   conn_fd = connection_fd;
   signal(SIGUSR1, handle_usr1);
+
+  signal(SIGCHLD, dead_child);
 
   ssize_t rd;
   char ignore[1];
