@@ -70,11 +70,12 @@ function waitForMessages()
 {
   global $keepAliveCounter, $timeoutCounter, $messageCounter, $sock, /*$touchme,*/ $limit;
 
-  while(!connection_aborted() && !feof($sock))
+  while(!connection_aborted())
 	{
 	  /*if(inotify_read($touchme) !== FALSE)
 	    return TRUE;*/
-	  if (fgets($sock,1) !== FALSE) return TRUE;
+	  $rd = fgets($sock, 1);
+	  if (($rd !== FALSE) && ($rd !== '')) return TRUE;
 
 		$keepAliveCounter++;
 		$timeoutCounter++;
