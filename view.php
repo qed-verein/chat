@@ -10,10 +10,6 @@ inotify_add_watch($touchme, TOUCH_FILE, IN_ATTRIB);
 stream_set_blocking($touchme, 0);
 touch(TOUCH_FILE);*/
 
-$sock = stream_socket_client(SOCKET_PATH);
-$sock or die;
-/* TODO: fehlerbehandlung */
-
 $type = uriParamString('type');
 $position = uriParamInteger('position', -1);
 $limit = uriParamInteger('limit', 256);
@@ -59,6 +55,13 @@ $countm24 = $l24res[0];
 $count = $l24res[1];
 
 $position = ($position < 0 ? $countm24 : min ($position, $count));
+
+
+$sock = stream_socket_client(SOCKET_PATH);
+
+if (!$sock) {
+  exit(-1);
+}
 
 if (isset ($_GET["feedback"]) && $_GET["feedback"])
 	output_feedback ($type);
