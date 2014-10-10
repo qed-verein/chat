@@ -15,7 +15,6 @@ case "inotify":
 case "socket":
   $sock = stream_socket_client(SOCKET_PATH) or die;
   if (!$sock) exit(-1);
-  stream_set_blocking($sock, 0);
   break;
 }
 
@@ -72,39 +71,67 @@ function waitForMessages()
 {
   global $keepAliveCounter, $timeoutCounter, $messageCounter, $sock, $touchme, $limit;
 
-  while(!connection_aborted())
-	{
-	  switch (NOTIFICATION_METHOD) {
-	  case "inotify":
-	    $read = array($touchme);
-	    $write = NULL;
-	    $except = NULL;
-	    if (false === ($num_changed_streams = stream_select($read, $write, $except, 0, POLL_MICROSECONDS))) {
-	      // TODO: error.
-	    } else if ($num_changed_streams > 0) {
-	      if(inotify_read($touchme) !== FALSE)
-		return TRUE;
-	    }
-	    break;
-	  case "socket":
-	    $rd = fgets($sock, 1);
-	    if (($rd !== FALSE) && (strlen($rd) > 0)) return TRUE;
-	    break;
-	  }
+  $keepAlives = 0;
 
-		$keepAliveCounter++;
-		$timeoutCounter++;
+  switch (NOTIFICATION_METHOD) {
+  case "inotify":
+    while(!connection_aborted()) {
+      $read = array($touchme);
+      $write = NULL;
+      $except = NULL;
+      if (false === ($num_changed_streams = stream_select($read, $write, $except, 30))) {
+	// TODO: error.
+      } else if ($num_changed_streams > 0) {
+	if(inotify_read($touchme) !== FALSE)
+	  return TRUE;
+      } else {
+	$keepAlives++;
+	if ($keepAlives > 10) return FALSE;
+	keepAlive();
+      }
+    }
+    break;
+  case "socket":
+    // TODO
+  }
 
-		if($messageCounter >= $limit || $timeoutCounter > TIMEOUT_POLL_NUM)
-			break;
+  /* while(!connection_aborted()) */
+  /* 	{ */
+  /* 	  switch (NOTIFICATION_METHOD) { */
+  /* 	  case "inotify": */
+  /* 	    $read = array($touchme); */
+  /* 	    $write = NULL; */
+  /* 	    $except = NULL; */
+  /* 	    if (false === ($num_changed_streams = stream_select($read, $write, $except, 0, POLL_MICROSECONDS))) { */
+  /* 	      // TODO: error. */
+  /* 	    } else if ($num_changed_streams > 0) { */
+  /* 	      if(inotify_read($touchme) !== FALSE) */
+  /* 		return TRUE; */
+  /* 	    } */
+  /* 	    break; */
+  /* 	  case "socket": */
+  /* 	    $read = array($sock); */
+  /* 	    $write = NULL; */
+  /* 	    $except = NULL; */
+  /* 	    if (false === ($num_changed_streams = stream_select($read, $write, $except, 0, POLL_MICROSECONDS))) { */
+  /* 	      // TODO: error. */
+  /* 	    } */
+  /* 	    if (fgets($sock, 1) !== FALSE) return TRUE; */
+	  
 
-		if($keepAliveCounter >= KEEP_ALIVE_NL_POLL_NUM) {
-			keepAlive();
-			$keepAliveCounter = 0;
-		}
+  /* 		$keepAliveCounter++; */
+  /* 		$timeoutCounter++; */
 
-		//usleep(POLL_MICROSECONDS);
-	}
+  /* 		if($messageCounter >= $limit || $timeoutCounter > TIMEOUT_POLL_NUM) */
+  /* 			break; */
+
+  /* 		if($keepAliveCounter >= KEEP_ALIVE_NL_POLL_NUM) { */
+  /* 			keepAlive(); */
+  /* 			$keepAliveCounter = 0; */
+  /* 		} */
+  /* 	  } */
+  /* 		//usleep(POLL_MICROSECONDS); */
+  /* 	} */
 
 	return FALSE;
 }
