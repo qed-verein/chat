@@ -135,6 +135,8 @@ int main (void) {
 	  sockets[rsockets] = sockets[j];
 	  ack_sockets[rsockets] = ack_sockets[j];
 	  ++rsockets;
+	} else {
+	  rm_sockets[j] = false;
 	}
       }
       nsockets = rsockets;
