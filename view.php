@@ -81,7 +81,7 @@ function waitForMessages()
 	    break;
 	  case "socket":
 	    $rd = fgets($sock, 1);
-	    if (($rd !== FALSE) && (len($rd) > 0)) return TRUE;
+	    if (($rd !== FALSE) && (strlen($rd) > 0)) return TRUE;
 	    break;
 	  }
 
