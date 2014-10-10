@@ -33,11 +33,13 @@ function do_notification() {
     touch (TOUCH_FILE);
     break;
   case "socket":
-  $sock = stream_socket_client(SOCKET_PATH);
+    $sock = stream_socket_client(SOCKET_PATH);
   /* TODO: fehlerbehandlung */
-  if ($sock) {
-    fwrite($sock, ".");
-    fclose($sock);
+    if ($sock) {
+      fwrite($sock, ".");
+      fclose($sock);
+    }
+    break;
   }
 }
 
