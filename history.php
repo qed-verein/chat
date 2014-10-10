@@ -10,7 +10,7 @@
 $sqltable = SQL_TABLE;
 
 /* alter log */
-if (!empty($_GET('old'))) {
+if (!empty($_GET['old'])) {
   $sqltable = OLD_SQL_TABLE;
 }
 
