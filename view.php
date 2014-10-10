@@ -67,9 +67,13 @@ $position = ($position < 0 ? $countm24 : min ($position, $count));
 if (isset ($_GET["feedback"]) && $_GET["feedback"])
 	output_feedback ($type);
 
+$firsttime_hack = true;
+
 function waitForMessages()
 {
-  global $keepAliveCounter, $timeoutCounter, $messageCounter, $sock, $touchme, $limit;
+  global $keepAliveCounter, $timeoutCounter, $messageCounter, $sock, $touchme, $limit, $firsttime_hack;
+
+  if ($firsttime_hack) return TRUE;
 
   $keepAlives = 0;
 
@@ -96,7 +100,7 @@ function waitForMessages()
       $read = array($sock);
       $write = NULL;
       $except = array($sock);
-      if (false === ($num_changed_streams = stream_select($read, $write, $except, 1))) {
+      if (false === ($num_changed_streams = stream_select($read, $write, $except, 30))) {
 	// TODO: error.
       } else if ($num_changed_streams > 0) {
 	if (count($except) > 0) {
