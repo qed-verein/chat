@@ -9,7 +9,7 @@ switch (NOTIFICATION_METHOD) {
 case "inotify":
   $touchme = inotify_init();
   inotify_add_watch($touchme, TOUCH_FILE, IN_ATTRIB);
-  stream_set_blocking($touchme, 0);
+  //  stream_set_blocking($touchme, 0); da wir stream_select verwenden sollte das nicht mehr notwendig sein
   touch(TOUCH_FILE);
   break;
 case "socket":
