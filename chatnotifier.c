@@ -96,7 +96,7 @@ int main (void) {
 
     bool ack = false;
     bool rm = false;
-    for (j = 0; (j < nsockets); ++j) {
+    for (j = 0; j < nsockets; ++j) {
       if (sel == 0) break;
       if (FD_ISSET(sockets[j], &exceptfds)) {
 	fprintf(stderr, "exceptfds from %d\n", sockets[j]);
@@ -111,7 +111,7 @@ int main (void) {
 	if (read (sockets[j], &rd, 1) <= 0) {
 	  fprintf(stderr, "stream %d ends.\n", sockets[j]);
 	  rm_sockets[j] = rm = true;
-	  if (close(rm_sockets[j]) == -1) {
+	  if (close(sockets[j]) == -1) {
 	    perror("close()");
 	  }
 	}
