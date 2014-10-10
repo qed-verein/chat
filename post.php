@@ -161,7 +161,7 @@ function do_notification() {
 			echo "Floodschutz aktiv - WARNUNG, bei weiteren Versuchen wird DAUERHAFT gebannt!!!";
 			die ();
 		}
-//mysql_query('INSERT INTO flood SET date=NOW(), IP="'.$post['ip'].'", IPhalb="'.$IPhalb.'"');
+                mysql_query('INSERT INTO flood SET date=NOW(), IP="'.$post['ip'].'", IPhalb="'.$IPhalb.'"');
 
 		//schon in whitelist?
 		if (!mysql_result(mysql_query('SELECT COUNT(*) FROM getestet WHERE IP="'.mysql_real_escape_string($post['ip']).'"'),0)) {
