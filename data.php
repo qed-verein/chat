@@ -9,7 +9,7 @@
     define ("SQL_TABLE", "content"); // name of table to be used (if changed init.php has to be called)
 
     // CSS, der sich nicht entscheiden kann
-    define("NOTIFICATION_METHOD", "socket");
+define("NOTIFICATION_METHOD", "inotify"); /* inotify, socket */
     //CSS, der sockets nicht mag
     define ("TOUCH_FILE", "sockets/touchthis");
     //CSS, der Sockets doch ganz nett findet
