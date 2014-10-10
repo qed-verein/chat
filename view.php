@@ -80,6 +80,8 @@ function waitForMessages()
   switch (NOTIFICATION_METHOD) {
   case "inotify":
     while(!connection_aborted()) {
+      if ($messageCounter >= $limit) return FALSE;
+
       $read = array($touchme);
       $write = NULL;
       $except = NULL;
