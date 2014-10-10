@@ -111,6 +111,9 @@ int main (void) {
 	if (read (sockets[j], &rd, 1) <= 0) {
 	  fprintf(stderr, "stream %d ends.\n", sockets[j]);
 	  rm_sockets[j] = rm = true;
+	  if (close(rm_sockets[j]) == -1) {
+	    perror("close()");
+	  }
 	}
 	ack = true;
       }
