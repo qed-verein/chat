@@ -18,19 +18,8 @@ static void handle_usr1 () {
 }
 
 static void dead_child (int signum) {
-  int pid;
-  int status;
-  while (1)
-    {
-      pid = waitpid (-1, &status, WNOHANG);
-      if (pid < 0)
-        {
-          perror ("waitpid");
-          break;
-        }
-      if (pid == 0)
-        break;
-    }
+  /* fuck it before it gets cold */
+  wait();
 }
 
 static void handle_usr1_central () {
@@ -42,7 +31,11 @@ int handle_connection (int connection_fd) {
   conn_fd = connection_fd;
   signal(SIGUSR1, handle_usr1);
 
-  signal(SIGCHLD, dead_child);
+  /* struct sigaction fuck; */
+  /* memset (&fuck, 0, sizeof(fuck)); */
+  /* fuck.sa_handler = SIG_IGN; */
+  /* fuck.sa_flags = SA_NOCLDWAIT; */
+  /* sigaction(SIGCHLD, &fuck, &fuck); */
 
   ssize_t rd;
   char ignore[1];
@@ -59,6 +52,7 @@ int handle_connection (int connection_fd) {
 int main (void) {
 
   signal(SIGUSR1, handle_usr1_central);
+  signal(SIGCHLD, dead_child);
 
   if (setpgid(0,0) != 0) {
     fprintf(stderr, "setpgid() failed\n");
