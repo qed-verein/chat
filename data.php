@@ -23,7 +23,7 @@ define("NOTIFICATION_METHOD", "inotify"); /* inotify, socket */
     define ("FLOOD", max (MAX_PROTECTION, 0)); // setting this to 1 activates flooding protection
     define ("FLOOD_FILE", "flood.txt"); // file to store POST requests
     define ("FLOOD_INTERVAL", 60); // in INTERVAL seconds ...
-    define ("FLOOD_MAX_POSTS", 10); // ... a maximum of MAX_POSTS is allowed
+define ("FLOOD_MAX_POSTS", /*10*/ 100000000); // ... a maximum of MAX_POSTS is allowed
     
     // bot posting protection parameters
     define ("SECURE_POSTS", max (MAX_PROTECTION, 0)); // setting this to 1 activates bot protection using obscure javascript code
