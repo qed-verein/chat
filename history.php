@@ -7,6 +7,13 @@
 	if (!empty($_GET['reverse']) && $_GET['reverse'] == "true")
 	   $reverse_output = true;
 
+$sqltable = SQL_TABLE;
+
+/* alter log */
+if (!empty($_GET('old'))) {
+  $sqltable = OLD_SQL_TABLE;
+}
+
 	mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 	mysql_select_db (SQL_DATABASE);
 	$channel = !empty($_GET['channel']) ? $_GET['channel'] : '';
@@ -17,8 +24,8 @@
 	    $botblocksql=' AND bottag=0';
 	if (!empty($_GET['last']) && is_numeric($_GET['last']) &&$_GET["last"] > 0)
 	{
-		$count = get_query_value (mysql_query ("SELECT MAX(id) FROM " . SQL_TABLE . " WHERE channel = \"" . $chanEsc . "\""));
-		$query = "SELECT * FROM " . SQL_TABLE . " WHERE id > ($count - " . $_GET["last"] . ")". $botblocksql. " AND channel = \"" . $chanEsc . "\" LIMIT 0,10000";
+		$count = get_query_value (mysql_query ("SELECT MAX(id) FROM " . $sqltable . " WHERE channel = \"" . $chanEsc . "\""));
+		$query = "SELECT * FROM " . $sqltable . " WHERE id > ($count - " . $_GET["last"] . ")". $botblocksql. " AND channel = \"" . $chanEsc . "\" LIMIT 0,10000";
 	}
 	else
 	{
@@ -31,9 +38,9 @@
 	    else
 		$to="";
 	    if (!empty($_GET['mode']) && $_GET["mode"] == "posts") {
-	    	$query = "SELECT * FROM " . SQL_TABLE . " WHERE id > " . $from . " && id <= " . $to. $botblocksql . " && channel = \"" . $chanEsc . "\" LIMIT 0,10000";
+	    	$query = "SELECT * FROM " . $sqltable . " WHERE id > " . $from . " && id <= " . $to. $botblocksql . " && channel = \"" . $chanEsc . "\" LIMIT 0,10000";
 	    } else
-		$query = "SELECT * FROM " . SQL_TABLE . " WHERE date >= \"" . get_date ($from) . "\" && date < \"" . get_date ($to) . "\"". $botblocksql. " && channel = \"" . $chanEsc . "\" LIMIT 0,10000";
+		$query = "SELECT * FROM " . $sqltable . " WHERE date >= \"" . get_date ($from) . "\" && date < \"" . get_date ($to) . "\"". $botblocksql. " && channel = \"" . $chanEsc . "\" LIMIT 0,10000";
 	}
 	if (!empty($_GET['reverse']))
 	    $query = 'SELECT * FROM ('.$query.') AS blubb ORDER BY id DESC';

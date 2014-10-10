@@ -6,7 +6,8 @@
     define ("SQL_USER", "chat"); // user name
     define ("SQL_PASSWORD", "spa!spa123"); // user password
     define ("SQL_DATABASE", "spam"); // database name  (if changed init.php has to be called)
-    define ("SQL_TABLE", "content"); // name of table to be used (if changed init.php has to be called)
+    define ("SQL_TABLE", "content2"); // name of table to be used (if changed init.php has to be called)
+    define ("OLD_SQL_TABLE", "content");
 
     // CSS, der sich nicht entscheiden kann
 define("NOTIFICATION_METHOD", "socket"); /* inotify, socket */

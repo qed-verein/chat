@@ -49,7 +49,6 @@ int main (void) {
 
   fd_set readfds, writefds, exceptfds;
 
-
   while (1) {
     FD_ZERO(&readfds); FD_ZERO(&writefds); FD_ZERO(&exceptfds);
 
