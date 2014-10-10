@@ -13,7 +13,7 @@ case "inotify":
   touch(TOUCH_FILE);
   break;
 case "socket":
-  $sock = stream_socket_client(SOCKET_PATH);
+  $sock = stream_socket_client(SOCKET_PATH) or die;
   if (!$sock) exit(-1);
   stream_set_blocking($sock, 0);
   break;
