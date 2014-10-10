@@ -1,67 +1,27 @@
 #include <stdio.h>
+#include <sys/select.h>
+#include <stdbool.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <linux/un.h>
 #include <unistd.h>
-#include <string.h>
 #include <stdlib.h>
-#include <signal.h>
-#include <stdbool.h>
+#include <string.h>
 
-int conn_fd;
+#define MAX_CONNS (4096)
 
-static void handle_usr1 () {
-  ssize_t wr;
-  while ((wr = write(conn_fd, ".", 1)) != 1) {
-    if (wr < 0) exit(EXIT_FAILURE);
-  }
-}
-
-static void dead_child (int signum) {
-  /* fuck it before it gets cold */
-  wait();
-}
-
-static void handle_usr1_central () {
-  fprintf(stderr, "post\n");
-}
-
-int handle_connection (int connection_fd) {
-  /* we are now in another process, so we can add a signal handler */
-  conn_fd = connection_fd;
-  signal(SIGUSR1, handle_usr1);
-
-  /* struct sigaction fuck; */
-  /* memset (&fuck, 0, sizeof(fuck)); */
-  /* fuck.sa_handler = SIG_IGN; */
-  /* fuck.sa_flags = SA_NOCLDWAIT; */
-  /* sigaction(SIGCHLD, &fuck, &fuck); */
-
-  ssize_t rd;
-  char ignore[1];
-  while ((rd = read(conn_fd, ignore, sizeof(ignore))) > 0) {
-    killpg(0, SIGUSR1);
-  }
-  if (rd < 0) {
-    exit(EXIT_FAILURE);
-  } else {
-    exit(EXIT_SUCCESS);
-  }
-}
+static int sockets[MAX_CONNS]; /* open sockets */
+static bool ack_sockets[MAX_CONNS]; /* sockets that still need to be notified */
+static bool rm_sockets[MAX_CONNS]; /* sockets that need to be removed */
+static int nsockets;
+static int socket_fd; /* listening socket */
 
 int main (void) {
 
-  signal(SIGUSR1, handle_usr1_central);
-  signal(SIGCHLD, dead_child);
-
-  if (setpgid(0,0) != 0) {
-    fprintf(stderr, "setpgid() failed\n");
-    exit(EXIT_FAILURE);
-  }
-
   struct sockaddr_un address;
   memset(&address, 0, sizeof(struct sockaddr_un));
-  int socket_fd, connection_fd;
+  int connection_fd;
   socklen_t address_length;
   char* socketpath = "/tmp/chat.sock";
   pid_t child;
@@ -87,21 +47,94 @@ int main (void) {
     exit(EXIT_FAILURE);
   }
 
+  fd_set readfds, writefds, exceptfds;
 
-  while ((connection_fd = accept(socket_fd, (struct sockaddr*) &address,
-  				 &address_length)) > -1) {
-    child = fork();
-    if (child < 0) {
-      fprintf(stderr, "fork() failed\n");
-      exit(EXIT_FAILURE);
-    } else if (child == 0) {
-      return handle_connection(connection_fd);
+
+  while (1) {
+    FD_ZERO(&readfds); FD_ZERO(&writefds); FD_ZERO(&exceptfds);
+
+    if (nsockets < MAX_CONNS) {
+      /* dont accept if too many connections */
+      FD_SET(socket_fd, &readfds);
+      FD_SET(socket_fd, &exceptfds);
     }
-    close(connection_fd);
-  }
 
-  /* TODO: atexit */
-  close(socket_fd);
-  unlink(socketpath);
-  return EXIT_SUCCESS;
+    int i, j, sel, nfds = socket_fd;
+    for (i = 0; i < nsockets; ++i) {
+      FD_SET(sockets[i], &readfds);
+      FD_SET(sockets[i], &exceptfds);
+      if (ack_sockets[i]) FD_SET(sockets[i], &writefds);
+      nfds = nfds < sockets[i] ? sockets[i] : nfds;
+    }
+
+    fprintf(stderr, "selecting ... ");
+
+    sel = select(nfds+1, &readfds, &writefds, &exceptfds, NULL);
+    if (sel == -1) perror("select() failed\n");
+
+    fprintf(stderr, "returned %d events\n", sel);
+
+
+    if (FD_ISSET(socket_fd, &exceptfds)) {
+      fprintf(stderr, "Error in listening socket. Aborting.\n");
+      exit(EXIT_FAILURE);
+    }
+
+    if (FD_ISSET(socket_fd, &readfds)) {
+      fprintf(stderr, "new connection?\n");
+      --sel;
+      int connection_fd;
+      if ((connection_fd = accept(socket_fd,
+				  (struct sockaddr*) &address,
+				  &address_length)) > -1) {
+	fprintf(stderr, "new connection: %d\n", connection_fd);
+	sockets[nsockets] = connection_fd;
+	ack_sockets[nsockets] = false;
+	nsockets++;
+      }
+    }
+
+    bool ack = false;
+    bool rm = false;
+    for (j = 0; (j < nsockets); ++j) {
+      if (sel == 0) break;
+      if (FD_ISSET(sockets[j], &exceptfds)) {
+	fprintf(stderr, "exceptfds from %d\n", sockets[j]);
+	rm_sockets[j] = rm = true;
+	continue;
+      }
+      if (sel == 0) break;
+      if (FD_ISSET(sockets[j], &readfds)) {
+	fprintf(stderr, "read from %d\n", sockets[j]);
+	--sel;
+	char rd;
+	if (read (sockets[j], &rd, 1) <= 0) {
+	  fprintf(stderr, "stream %d ends.\n", sockets[j]);
+	  rm_sockets[j] = rm = true;
+	}
+	ack = true;
+      }
+      if (sel == 0) break;
+      if (ack_sockets[j] && FD_ISSET(sockets[j], &writefds)) {
+	fprintf(stderr, "write to %d\n", sockets[j]);
+	--sel;
+	write(sockets[j], ".", 1);
+	ack_sockets[j] = false;
+      }
+    }
+    if (ack) {
+      for (j = 0; j < nsockets; ++j) ack_sockets[j] = true;
+    }
+    if (rm) {
+      int rsockets = 0;
+      for (j = 0; j < nsockets; ++j) {
+	if (!rm_sockets[j]) {
+	  sockets[rsockets] = sockets[j];
+	  ack_sockets[rsockets] = ack_sockets[j];
+	  ++rsockets;
+	}
+      }
+      nsockets = rsockets;
+    }
+  }
 }
