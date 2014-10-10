@@ -28,13 +28,17 @@
 	require_once ("common.php");
 
 function do_notification() {
-  /* $sock = stream_socket_client(SOCKET_PATH); */
-  /* /\* TODO: fehlerbehandlung *\/ */
-  /* if ($sock) { */
-  /*   fwrite($sock, "."); */
-  /*   fclose($sock); */
-  /* } */
-touch (TOUCH_FILE);
+  switch (NOTIFICATION_METHOD) {
+  case "inotify":
+    touch (TOUCH_FILE);
+    break;
+  case "socket":
+  $sock = stream_socket_client(SOCKET_PATH);
+  /* TODO: fehlerbehandlung */
+  if ($sock) {
+    fwrite($sock, ".");
+    fclose($sock);
+  }
 }
 
 	function do_post ($post)
