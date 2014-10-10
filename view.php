@@ -76,8 +76,15 @@ function waitForMessages()
 	{
 	  switch (NOTIFICATION_METHOD) {
 	  case "inotify":
-	    if(inotify_read($touchme) !== FALSE)
-	      return TRUE;
+	    $read = array($touchme);
+	    $write = NULL;
+	    $except = NULL;
+	    if (false === ($num_changed_streams = stream_select($read, $write, $except, 0))) {
+	      // TODO: error.
+	    } else if ($num_changed_streams > 0) {
+	      if(inotify_read($touchme) !== FALSE)
+		return TRUE;
+	    }
 	    break;
 	  case "socket":
 	    $rd = fgets($sock, 1);
