@@ -101,7 +101,8 @@ function waitForMessages()
       $write = NULL;
       $except = array($sock);
       if (false === ($num_changed_streams = stream_select($read, $write, $except, 30))) {
-	// TODO: error.
+	echo("select_stream ging nicht");
+	exit(-1);
       } else if ($num_changed_streams > 0) {
 	if (count($except) > 0) {
 	  return FALSE;
