@@ -79,7 +79,7 @@ function waitForMessages()
 	    $read = array($touchme);
 	    $write = NULL;
 	    $except = NULL;
-	    if (false === ($num_changed_streams = stream_select($read, $write, $except, 0))) {
+	    if (false === ($num_changed_streams = stream_select($read, $write, $except, 0, 1000 * POLL_MICROSECONDS))) {
 	      // TODO: error.
 	    } else if ($num_changed_streams > 0) {
 	      if(inotify_read($touchme) !== FALSE)
@@ -103,7 +103,7 @@ function waitForMessages()
 			$keepAliveCounter = 0;
 		}
 
-		usleep(POLL_MICROSECONDS);
+		//usleep(POLL_MICROSECONDS);
 	}
 
 	return FALSE;
