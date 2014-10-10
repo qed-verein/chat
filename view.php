@@ -92,7 +92,23 @@ function waitForMessages()
     }
     break;
   case "socket":
-    // TODO
+    while(!connection_aborted()) {
+      $read = array($sock);
+      $write = NULL;
+      $except = array($sock);
+      if (false === ($num_changed_streams = stream_select($read, $write, $except, 30))) {
+	// TODO: error.
+      } else if ($num_changed_streams > 0) {
+	if (count($except) > 0) {
+	  return FALSE;
+	}
+	if(freads($sock, 1) !== FALSE) return TRUE;
+      } else {
+	$keepAlives++;
+	if ($keepAlives > 10) return FALSE;
+	keepAlive();
+      }
+    }
   }
 
   /* while(!connection_aborted()) */
