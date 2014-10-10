@@ -102,7 +102,7 @@ function waitForMessages()
 	if (count($except) > 0) {
 	  return FALSE;
 	}
-	if(freads($sock, 1) !== FALSE) return TRUE;
+	if(fread($sock, 1) !== FALSE) return TRUE;
       } else {
 	$keepAlives++;
 	if ($keepAlives > 10) return FALSE;
