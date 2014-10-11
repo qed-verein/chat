@@ -2,7 +2,7 @@ var request;
 var cursor = 0;
 var numTries = 0;
 var posts = new Array ();
-var position = -1;
+var position = -24;
 var options;
 var from = 0;
 //var noXml; /* TODO: Kein Mensch verwendet das mehr! */
@@ -119,7 +119,7 @@ function StateChanged ()
 		    SpawnError (91923, "Invalid JSON: " + request.responseText.substring (cursor, next - 1), "receive.js", 131);
 		    break;
 		}
-		
+
 		if (p["type"] == "ok") {
 		    Ok ();
 		} else if (p["type"] == "error") {
@@ -278,7 +278,7 @@ function AddPost (id, name, message, date, ip, delay, color, bottag)
 			alert ("Fehler des Chat-Systems");
 		else
 		{*/
-			position = id;
+			position = id + 1;
 
 			var post = new Object ();
 			post["id"] = id - 1;

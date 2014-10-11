@@ -54,15 +54,10 @@ function flushOutput() {
 mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
 mysql_select_db(SQL_DATABASE);
 
-$last24sql = sprintf("SELECT MIN(id), MAX(id) FROM (SELECT * FROM %s WHERE channel = \"%s\" ORDER BY id DESC LIMIT 0, 25) AS bla",
-						SQL_TABLE, mysql_real_escape_string($channel));
-
-$l24res = mysql_fetch_array(mysql_query($last24sql));
-
-$countm24 = $l24res[0];
-$count = $l24res[1];
-
-$position = ($position < 0 ? $countm24 : min ($position, $count));
+$sqlNextId = sprintf("SELECT MAX(id) + 1 FROM %s WHERE channel '%s'",
+	SQL_TABLE, mysql_real_escape_string($channel));
+$nextId = mysql_fetch_array(mysql_query($sqlNextId));
+if($position <= 0) $position += $nextId;
 
 if (isset ($_GET["feedback"]) && $_GET["feedback"])
 	output_feedback ($type);
@@ -140,7 +135,7 @@ function waitForMessages()
   /* 	      // TODO: error. */
   /* 	    } */
   /* 	    if (fgets($sock, 1) !== FALSE) return TRUE; */
-	  
+
 
   /* 		$keepAliveCounter++; */
   /* 		$timeoutCounter++; */
