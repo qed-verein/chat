@@ -1,5 +1,7 @@
 <?php
 
+ignore_user_abort(true);
+
 require_once("data.php");
 require_once("common.php");
 
