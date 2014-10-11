@@ -272,7 +272,7 @@ function AddPost (id, name, message, date, ip, delay, color, bottag)
 {
 //%%bottag added
 	/**************************************CSSHACK****************************/
-	if (id > position )
+	if (id >= position )
 	{
 		/*if (position != -1 && id != position + 1)
 			alert ("Fehler des Chat-Systems");
