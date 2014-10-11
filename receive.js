@@ -99,7 +99,7 @@ function ReceiveInternal ()
 	} else {*/
 	    cursor = 0;
 	    request.onreadystatechange = StateChanged;
-	    request.open ("GET", "view.php?type=json&feedback=1&channel=" + options["channel"] + "&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
+	    request.open ("GET", "viewneu.php?type=json&feedback=1&channel=" + options["channel"] + "&position=" + position + "&limit=" + options["limit"] + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
 	    request.send ("");
 	    if (!options["patient"])
 		setTimeout ("OnTimeout (" + from + ")", timeWait);
@@ -281,7 +281,7 @@ function AddPost (id, name, message, date, ip, delay, color, bottag)
 			position = id + 1;
 
 			var post = new Object ();
-			post["id"] = id - 1;
+			post["id"] = id;
 			post["name"] = decodeURIComponent (name);
 			post["message"] = decodeURIComponent (message);
 			post["date"] = date;
