@@ -70,7 +70,7 @@ if (empty($session_not_close))
 			echo "\t<error number=\"$number\" description=\"$description\" file=\"$file\" line=\"$line\"/>\n"
 				. "</content>\n";
 		else if ($type == "json")
-		  echo '{"type" : "error", "number" : ' . $number . ', "description" : "' . rawurlencode($description) . '", "file" : "' . $file . '", line : ' . $line . '};';
+		  echo '{"type" : "error", "number" : ' . $number . ', "description" : "' . rawurlencode($description) . '", "file" : "' . $file . '", "line" : ' . $line . '};';
 	}
 
 	function output_feedback ($type)
@@ -234,7 +234,7 @@ if (empty($session_not_close))
 		sscanf ($string, "%d_%d_%d_%d_%d", $n, $h, $d, $m, $y);
 		return date ("Y-m-d H-i-s", mktime ($h, $n, 0, $m, $d, $y));
 	}
-	
+
 	// quuuuu
 
 	function get_query_value ($resource)
