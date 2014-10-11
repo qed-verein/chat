@@ -70,7 +70,10 @@ function waitForMessages()
 
   if ($messageCounter >= $limit) return FALSE;
 
-  if ($firsttime_hack) return TRUE;
+  if ($firsttime_hack) {
+    $firsttime_hack = false;
+    return TRUE;
+  }
 
   $keepAlives = 0;
 
