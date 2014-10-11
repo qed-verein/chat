@@ -42,14 +42,8 @@ function keepAlive() {
     //echo "\n";
     global $type;
     output_feedback($type);
-    flushOutput();
+    flush();
 }
-
-function flushOutput() {
-	flush();
-	ob_flush();
-}
-
 
 mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
 mysql_select_db(SQL_DATABASE);
@@ -165,7 +159,7 @@ do
 		$position = $array["id"] + 1;
 		echo output_line($type, $array);
 	}
-	flushOutput();
+	flush();
 }
 while(waitForMessages());
 
