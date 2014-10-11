@@ -54,7 +54,7 @@ function flushOutput() {
 mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
 mysql_select_db(SQL_DATABASE);
 
-$sqlNextId = sprintf("SELECT MAX(id) + 1 FROM %s WHERE channel '%s'",
+$sqlNextId = sprintf("SELECT MAX(id) + 1 FROM %s WHERE channel = '%s'",
 	SQL_TABLE, mysql_real_escape_string($channel));
 $nextId = mysql_fetch_array(mysql_query($sqlNextId));
 if($position <= 0) $position += $nextId;
