@@ -68,6 +68,8 @@ function waitForMessages()
 {
   global $keepAliveCounter, $timeoutCounter, $messageCounter, $sock, $touchme, $limit, $firsttime_hack;
 
+  if ($messageCounter >= $limit) return FALSE;
+
   if ($firsttime_hack) return TRUE;
 
   $keepAlives = 0;
@@ -75,8 +77,6 @@ function waitForMessages()
   switch (NOTIFICATION_METHOD) {
   case "inotify":
     while(!connection_aborted()) {
-      if ($messageCounter >= $limit) return FALSE;
-
       $read = array($touchme);
       $write = NULL;
       $except = NULL;
