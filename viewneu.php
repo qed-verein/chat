@@ -62,18 +62,11 @@ if($position <= 0) $position += $nextId;
 if (isset ($_GET["feedback"]) && $_GET["feedback"])
 	output_feedback ($type);
 
-$firsttime_hack = true;
-
 function waitForMessages()
 {
-  global $keepAliveCounter, $timeoutCounter, $messageCounter, $sock, $touchme, $limit, $firsttime_hack;
+  global $keepAliveCounter, $timeoutCounter, $messageCounter, $sock, $touchme, $limit;
 
   if ($messageCounter >= $limit) return FALSE;
-
-  if ($firsttime_hack) {
-    $firsttime_hack = false;
-    return TRUE;
-  }
 
   $keepAlives = 0;
 
@@ -162,8 +155,7 @@ $keepAliveCounter = KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durchlauf gleich
 $timeoutCounter = 0;
 $messageCounter = 0;
 
-
-while(waitForMessages())
+do
 {
 	$sql = sprintf("SELECT * FROM %s WHERE id >= %d AND channel = \"%s\" LIMIT 0, %d", SQL_TABLE, $position, mysql_real_escape_string($channel), $limit - $messageCounter);
 	$query = mysql_query($sql);
@@ -175,6 +167,7 @@ while(waitForMessages())
 	}
 	flushOutput();
 }
+while(waitForMessages());
 
 output_suffix($type);
 
