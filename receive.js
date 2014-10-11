@@ -97,10 +97,10 @@ function ReceiveInternal ()
 	    msieInterval = setInterval ("MsieCheck ()", 500);
 
 	} else {*/
-		limitParameter = (position <= 0) ? 24 : options["limit"];
+
 	    cursor = 0;
 	    request.onreadystatechange = StateChanged;
-	    request.open ("GET", "viewneu.php?type=json&feedback=1&channel=" + options["channel"] + "&position=" + position + "&limit=" + limitParameter  + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
+	    request.open ("GET", "viewneu.php?type=json&feedback=1&channel=" + options["channel"] + "&position=" + position + "&limit=" + options["limit"]  + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
 	    request.send ("");
 	    if (!options["patient"])
 		setTimeout ("OnTimeout (" + from + ")", timeWait);
