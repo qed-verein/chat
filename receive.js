@@ -272,7 +272,7 @@ function AddPost (id, name, message, date, ip, delay, color, bottag)
 {
 //%%bottag added
 	/**************************************CSSHACK****************************/
-	if (id >= position )
+	if (id >= position || position <= 0)
 	{
 		/*if (position != -1 && id != position + 1)
 			alert ("Fehler des Chat-Systems");
@@ -315,8 +315,6 @@ function AddPost (id, name, message, date, ip, delay, color, bottag)
 					top.document.title = post["message"].substr (0, 252) + "...";
 
 	}
-	else{position=id;}
-
 }
 
 function PingTimeout (lastpos)
