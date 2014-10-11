@@ -10,7 +10,7 @@
     define ("OLD_SQL_TABLE", "content");
 
     // CSS, der sich nicht entscheiden kann
-define("NOTIFICATION_METHOD", "inotify"); /* inotify, socket */
+define("NOTIFICATION_METHOD", "socket"); /* inotify, socket */
     //CSS, der sockets nicht mag
     define ("TOUCH_FILE", "sockets/touchthis");
     //CSS, der Sockets doch ganz nett findet
