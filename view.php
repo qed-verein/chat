@@ -92,7 +92,7 @@ function waitForMessages()
 	  return TRUE;
       } else {
 	$keepAlives++;
-	if ($keepAlives > 10) return FALSE;
+	if ($keepAlives > 60) return FALSE;
 	keepAlive();
       }
     }
@@ -112,7 +112,7 @@ function waitForMessages()
 	if(fread($sock, 1) !== FALSE) return TRUE;
       } else {
 	$keepAlives++;
-	if ($keepAlives > 10) return FALSE;
+	if ($keepAlives > 60) return FALSE;
 	keepAlive();
       }
     }
