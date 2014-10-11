@@ -56,7 +56,7 @@ mysql_select_db(SQL_DATABASE);
 
 $sqlNextId = sprintf("SELECT MAX(id) + 1 FROM %s WHERE channel = '%s'",
 	SQL_TABLE, mysql_real_escape_string($channel));
-$nextId = mysql_fetch_array(mysql_query($sqlNextId));
+$nextId = mysql_fetch_array(mysql_query($sqlNextId))[0];
 if($position <= 0) $position += $nextId;
 
 if (isset ($_GET["feedback"]) && $_GET["feedback"])
