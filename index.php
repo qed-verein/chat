@@ -1,4 +1,9 @@
 <?php
+	$ignore_no_login=true;
+	$session_not_close=true;
+	require_once ("data.php");
+	require_once ("common.php");
+
 	if ($_SERVER['SERVER_NAME']!='chat.qed-verein.de' && $_SERVER['SERVER_NAME']!='qedchat.qed-verein.de')
 		die ("grml");
 	function userhash($username, $password) {
@@ -23,10 +28,6 @@
 		      } ?>
 
 <?php
-	$ignore_no_login=true;
-	$session_not_close=true;
-	require_once ("data.php");
-	require_once ("common.php");
 	if (!empty($_REQUEST['username']) && !empty($_REQUEST['password'])) {
 		mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 		mysql_select_db (SQL_DATABASE);
