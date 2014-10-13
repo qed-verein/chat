@@ -16,16 +16,18 @@ define("NOTIFICATION_METHOD", "socket"); /* inotify, socket */
     //CSS, der Sockets doch ganz nett findet
     define ("SOCKET_PATH", "unix:///tmp/chat.sock");
 
+    define ("CHAT_VERSION", "20141013214200");
+
 
     // redirection parameters
     define ("URL_REDIRECT", "http://uxul.de/redirect.php?"); // default redirection service (for hiding the referer [sic])
-    
+
     // flooding protection parameters ... die scheinbar ignoriert werden - TODO
     define ("FLOOD", max (MAX_PROTECTION, 0)); // setting this to 1 activates flooding protection
     define ("FLOOD_FILE", "flood.txt"); // file to store POST requests
     define ("FLOOD_INTERVAL", 60); // in INTERVAL seconds ...
 define ("FLOOD_MAX_POSTS", 10); // ... a maximum of MAX_POSTS is allowed
-    
+
     // bot posting protection parameters
     define ("SECURE_POSTS", max (MAX_PROTECTION, 0)); // setting this to 1 activates bot protection using obscure javascript code
     define ("SECURE_POSTS_GENERATOR_FILE", "secure_posts_generator.txt"); // file used to store the generator index
@@ -37,7 +39,7 @@ define ("FLOOD_MAX_POSTS", 10); // ... a maximum of MAX_POSTS is allowed
     define ("POST_LIMITS_MAX_LENGTH", 4096); // maximum number of character, 4096 is standard for ICQ
     define ("POST_LIMITS_MAX_LINES", 8); // maximum number of lines
     define ("POST_LIMITS_MAX_CONTIGUOS_NWSPS", 4096); // BUGGY, DO NOT CHANGE; maximum number of contiguos non-whitespace characters
-    
+
     // history DOS protection, including preventing bots from accessing the history (bot recognition still n00bish - via user agent)
     define ("SECURE_HISTORY", max (MAX_PROTECTION, 0)); // setting this to 1 activates history DOS protection
     define ("SECURE_HISTORY_MAX_POSTS", 500); // maximum number of posts possible to retrieve

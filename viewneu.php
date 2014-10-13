@@ -20,6 +20,7 @@ $type = uriParamString('type');
 $position = uriParamInteger('position', -1);
 $limit = uriParamInteger('limit', 256);
 $channel = uriParamString('channel', '');
+$version = uriParamString('version', '');
 
 output_header($type);
 output_prefix($type);
@@ -37,11 +38,14 @@ function ErrorHandler($number, $description, $file, $line)
 }
 
 function keepAlive() {
-    //echo "\n";
     global $type;
     output_feedback($type);
     flush();
 }
+
+
+if($version != CHAT_VERSION)
+	trigger_error("Chat-Client benutzt ungültige Versionsnummer. Bitte Fenster neuladen", E_USER_ERROR);
 
 mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
 mysql_select_db(SQL_DATABASE);
