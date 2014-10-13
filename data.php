@@ -16,6 +16,7 @@ define("NOTIFICATION_METHOD", "socket"); /* inotify, socket */
     //CSS, der Sockets doch ganz nett findet
     define ("SOCKET_PATH", "unix:///tmp/chat.sock");
 
+	// Muss in der Javascript-Datei ebenfalls geändert werden
     define ("CHAT_VERSION", "20141013214200");
 
 
