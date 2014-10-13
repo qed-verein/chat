@@ -33,7 +33,7 @@ function Init ()
 		options["limit"] = "256";
 		options["patient"] = false;
 	        options["method"] = "detect";
-		options["wait"] = 10;
+		options["wait"] = 300;
 		options["urgent"] = true;
 		InitRemote (options);
 	}
