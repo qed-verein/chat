@@ -16,6 +16,9 @@ case "socket":
   break;
 }
 
+$errorline_of_select = -1;
+
+
 $type = uriParamString('type');
 $position = uriParamInteger('position', -1);
 $limit = uriParamInteger('limit', 256);
@@ -31,6 +34,10 @@ if($version != CHAT_VERSION)
 
 function ErrorHandler($number, $description, $file, $line)
 {
+  global $errorline_of_select;
+  if ($line == $errorline_of_select) return; /* TODO: HACK! */
+
+
 	if (error_reporting() & $number)
 	{
 		global $type;
@@ -58,7 +65,7 @@ if (isset ($_GET["feedback"]) && $_GET["feedback"])
 
 function waitForMessages()
 {
-  global $keepAliveCounter, $timeoutCounter, $messageCounter, $sock, $touchme, $limit;
+  global $keepAliveCounter, $timeoutCounter, $messageCounter, $sock, $touchme, $limit, $errorline_of_select;
 
   if ($messageCounter >= $limit) return FALSE;
 
@@ -70,6 +77,7 @@ function waitForMessages()
       $read = array($touchme);
       $write = NULL;
       $except = NULL;
+      $errorline_of_select = __LINE__ + 1; /* TODO: HACK! */
       if (false === ($num_changed_streams = stream_select($read, $write, $except, 30))) {
 	// TODO: error.
       } else if ($num_changed_streams > 0) {
@@ -87,6 +95,7 @@ function waitForMessages()
       $read = array($sock);
       $write = NULL;
       $except = array($sock);
+      $errorline_of_select = __LINE__ + 1; /* TODO: HACK! */
       if (false === ($num_changed_streams = stream_select($read, $write, $except, 30))) {
 	echo("select_stream ging nicht");
 	exit(-1);
