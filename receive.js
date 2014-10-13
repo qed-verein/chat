@@ -1,4 +1,4 @@
-var version = "1413231405"; // muss in data ebenfalls geaendert werden
+var version = "1413235752"; // muss in data ebenfalls geaendert werden
 
 var request;
 var cursor = 0;
@@ -10,6 +10,8 @@ var from = 0;
 //var noXml; /* TODO: Kein Mensch verwendet das mehr! */
 var timeWait;
 var lastposition = -1;
+
+var reconnect = true; /* reconnect after call of Disconnect ()? Set to false by SpawnError. */
 
 function SetStatus (text)
 {
@@ -157,7 +159,7 @@ function Disconnected ()
 		top.document.title = "Fehler: Chat-Server konnte nicht erreicht werden.";
 	}
 	else*/
-    setTimeout("Receive ()", 10000);
+    if (reconnect) setTimeout("Receive ()", 10000);
 }
 
 function Ok ()
@@ -169,11 +171,9 @@ function Ok ()
 
 function SpawnError (number, description, file, line)
 {
-	SetStatus ("Ein Verbindungsfehler trat auf:<br>(" + number + ", " + HtmlEscape (description, false) + ", " + file + ", " + line + ")<br>Warte 10 Sekunden und verbinde erneut ...");
-	request.abort ();
-
-    // hat sich auch in einem endlessloop verfangen - CSS
-	setTimeout("ReceiveInternal ()", 10000);
+	SetStatus ("Ein Verbindungsfehler trat auf:<br>(" + number + ", " + HtmlEscape (description, false) + ", " + file + ", " + line + ")<br>Bitte Seite neu laden.");
+    request.abort ();
+    reconnect = false;
 }
 
 function InsertLinks (text)
