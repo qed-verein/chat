@@ -1,3 +1,5 @@
+var version = "1413231405"; // muss in data ebenfalls geaendert werden
+
 var request;
 var cursor = 0;
 var numTries = 0;
@@ -100,7 +102,7 @@ function ReceiveInternal ()
 
 	    cursor = 0;
 	    request.onreadystatechange = StateChanged;
-	    request.open ("GET", "viewneu.php?version=20141013214200&type=json&feedback=1&channel=" + options["channel"] + "&position=" + position + "&limit=" + options["limit"]  + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
+	    request.open ("GET", "viewneu.php?version=" + version + "&type=json&feedback=1&channel=" + options["channel"] + "&position=" + position + "&limit=" + options["limit"]  + (options["unl33t"] != 0 ? "&unl33t=1" : "") + (options["laghack"] ? "&laghack=1" : ""), true);
 	    request.send ("");
 	    if (!options["patient"])
 		setTimeout ("OnTimeout (" + from + ")", timeWait);
@@ -160,11 +162,9 @@ function Disconnected ()
 
 function Ok ()
 {
-	SetStatus ("");
-	numTries = 0;
-
-/*	if (!noXml)
-		++from;*/
+    SetStatus ("");
+    numTries = 0;
+    ++from;
 }
 
 function SpawnError (number, description, file, line)

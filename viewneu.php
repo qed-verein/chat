@@ -3,6 +3,11 @@
 require_once("data.php");
 require_once("common.php");
 
+$version = uriParamString('version', '');
+
+if($version != CHAT_VERSION)
+  trigger_error("Chat-Client benutzt ungültige Versionsnummer. Bitte Fenster neuladen", E_USER_ERROR);
+
 switch (NOTIFICATION_METHOD) {
 case "inotify":
   $touchme = inotify_init();
@@ -20,7 +25,6 @@ $type = uriParamString('type');
 $position = uriParamInteger('position', -1);
 $limit = uriParamInteger('limit', 256);
 $channel = uriParamString('channel', '');
-$version = uriParamString('version', '');
 
 output_header($type);
 output_prefix($type);
@@ -42,10 +46,6 @@ function keepAlive() {
     output_feedback($type);
     flush();
 }
-
-
-if($version != CHAT_VERSION)
-	trigger_error("Chat-Client benutzt ungültige Versionsnummer. Bitte Fenster neuladen", E_USER_ERROR);
 
 mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
 mysql_select_db(SQL_DATABASE);
