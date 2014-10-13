@@ -35,7 +35,7 @@ function Init ()
 		options["old"] = 0;
 		options["last"] = 20;
 		options["limit"] = "256";
-		options["patient"] = false;
+		options["patient"] = true;
 	        options["method"] = "detect";
 		options["wait"] = 60;
 		options["urgent"] = true;
@@ -159,7 +159,7 @@ function Disconnected ()
 		top.document.title = "Fehler: Chat-Server konnte nicht erreicht werden.";
 	}
 	else*/
-    if (reconnect) setTimeout("Receive ()", 60000);
+    if (reconnect) setTimeout("Receive ()", 10000);
 }
 
 function Ok ()
