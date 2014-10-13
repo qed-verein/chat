@@ -37,7 +37,7 @@ function Init ()
 		options["limit"] = "256";
 		options["patient"] = false;
 	        options["method"] = "detect";
-		options["wait"] = 300;
+		options["wait"] = 60;
 		options["urgent"] = true;
 		InitRemote (options);
 	}
@@ -159,7 +159,7 @@ function Disconnected ()
 		top.document.title = "Fehler: Chat-Server konnte nicht erreicht werden.";
 	}
 	else*/
-    if (reconnect) setTimeout("Receive ()", 10000);
+    if (reconnect) setTimeout("Receive ()", 60000);
 }
 
 function Ok ()
