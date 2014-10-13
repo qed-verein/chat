@@ -26,8 +26,8 @@ output_header($type);
 output_prefix($type);
 
 set_error_handler('ErrorHandler');
-//if($version != CHAT_VERSION)
-  //trigger_error("Chat-Client benutzt ungültige Versionsnummer. Bitte Fenster neuladen", E_USER_ERROR);
+if($version != CHAT_VERSION)
+  trigger_error("Chat-Client benutzt ungültige Versionsnummer. Bitte Fenster neuladen", E_USER_ERROR);
 
 function ErrorHandler($number, $description, $file, $line)
 {
