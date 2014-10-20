@@ -171,7 +171,7 @@ function Ok ()
 
 function SpawnError (number, description, file, line)
 {
-	SetStatus ("Ein Verbindungsfehler trat auf:<br>(" + number + ", " + HtmlEscape (description, false) + ", " + file + ", " + line + ")<br>Bitte Seite neu laden.");
+	SetStatus ("Ein Verbindungsfehler trat auf:<br>(" + number + ", " + HtmlEscape (description, false) + ", " + file + ", " + line + ")<br>Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).");
     request.abort ();
     reconnect = false;
 }
