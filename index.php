@@ -10,7 +10,8 @@
 		return sha1($username . $password);
 	}
 
-	$mobile = isset($_GET["mobile"]) ? true : false;
+	//$mobile = isset($_GET["mobile"]) ? true : false;
+	$mobile = false; // mobil ist momentan nicht funktionsfähig
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
