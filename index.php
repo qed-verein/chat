@@ -63,9 +63,10 @@
 
 		?>
 		<script type="text/javascript">
+
+		var options = new Object ();
+
 		<?php
-		echo "function initOptions() {\n";
-		echo "var options = new Object ();\n";
 		echo "\t\t\toptions[\"channel\"] = \"" . ((isset ($_GET["channel"]))? rawurldecode (demagicalize_string ($_GET["channel"])) : "") . "\";\n";
 		echo "\t\t\toptions[\"redirect\"] = \"" . ((isset ($_GET["redirect"]) && 0 )? rawurlencode (demagicalize_string ($_GET["redirect"])) : URL_REDIRECT) . "\";\n";
 		echo "\t\t\toptions[\"laghack\"] = " . ((isset ($_GET["laghack"])) ? "true" : "false") . ";\n";
@@ -87,7 +88,6 @@
 		echo "\t\t\toptions[\"css\"] = \"" . (isset ($_GET["css"]) ? htmlentities ($_GET["css"]) : "chat.css") . "\";\n";
 		echo "\t\t\toptions[\"unl33t\"] = " . (isset ($_GET["unl33t"]) ? 1 : 0) . ";\n";
 		echo "\t\t\toptions[\"urgent\"] = " . (isset ($_GET["no_urgency"]) ? "false" : "true") . ";\n";
-
 		if (SECURE_POSTS)
 			echo "\t\t\toptions[\"generator\"] = " . (SECURE_POSTS_GENERATOR_NUM_USES * get_key_generator ()) . ";\n";
 
@@ -97,8 +97,7 @@
 		$sizeSend1 = (isset ($_GET["sizeSend1"]) ? demagicalize_string ($_GET["sizeSend1"]) : "40%");
 		$sizeHelp0 = (isset ($_GET["sizeHelp0"]) ? demagicalize_string ($_GET["sizeHelp0"]) : "50%");
 		$sizeHelp1 = (isset ($_GET["sizeHelp1"]) ? demagicalize_string ($_GET["sizeHelp1"]) : "50%");
-		echo "}\n";
-		echo "options = initOptions();\n";
+
 		?>
 		</script>
 		<script type="text/javascript" src="index.js"></script>
