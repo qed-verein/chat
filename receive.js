@@ -60,7 +60,7 @@ function QueryForMessages()
 	request.send();
 }
 
-// Wird aufgerufen, falls neue Nachrichten angekommen sind.
+// Wird aufgerufen, falls der Server eine Antwort geschickt hat.
 function ServerResponse()
 {
 	if(request.readyState < 3)
@@ -177,6 +177,7 @@ function CreatePost (post)
 	scrollBy (0, 999999);
 }
 
+// Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
 function RecreatePosts ()
 {
 	var display = document.getElementById ("display");
@@ -199,14 +200,6 @@ function ErrorHandler(description, filename, line)
 	request.abort();
 	return false;
 }
-
-
-
-
-
-
-
-
 
 function InsertLinks (text)
 {
@@ -237,12 +230,7 @@ function NickEscape (text)
 function HtmlEscape (text, links)
 {
 	text = text.replace (/&/g, "&amp;").replace (/</g, "&lt;").replace (/>/g, "&gt;").replace (/\"/g, "&quot;");
-	//text = text.replace (/&/g, "&amp").replace (/</g, ";&lt").replace (/>/g, ";&gt").replace (/\"/g, ";&quot");
-    //text = text.replace ("]]>", "]]]]><![CDATA[>");
-	if (links)
-		text = InsertLinks (text);
-	//text = text.replace (/&amp/g, "&amp;").replace (/;&lt/g, "&lt;").replace (/;&gt/g, "&gt;").replace (/;&quot/g, "&quot;");
-	//text = text.replace (/ /g,"&nbsp;");
+	if (links) text = InsertLinks (text);
 	return text.replace (/\n/g, "<br>");
 
 }
