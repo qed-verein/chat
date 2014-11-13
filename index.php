@@ -10,8 +10,7 @@
 		return sha1($username . $password);
 	}
 
-	//$mobile = isset($_GET["mobile"]) ? true : false;
-	$mobile = false; // mobil ist momentan nicht funktionsfähig
+	$mobile = isset($_GET["mobile"]) ? true : false;
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
@@ -114,7 +113,7 @@
 	if($mobile) {
 		echo '<frameset rows="' . $sizeRecv0 . ', ' . $sizeRecv1 . '">';
 		echo '<frame name="recv" src="receive-mobile.html" />';
-		echo '<frame name="send" src="send-mobile.html" />';
+		echo '<frame name="send" src="send2.html" />';
 		echo '</frameset>';
 	} else if (!empty($_SESSION['userid']) || !empty($_SESSION['anonym'])) { ?>
 	<?php echo '<frameset rows="' . $sizeRecv0 . ', ' . $sizeRecv1 . '">';?>
