@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+	<head>
+		<meta name="robots" content="noindex, nofollow">
+		<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+		<link rel="stylesheet" type="text/css" href="chat.css">
+	        <script type="text/javascript" src="jquery-2.0.2.js"></script>
+            <script type="text/javascript" src="receive.js"></script>
+
+		<title>Anzeigefenster</title>
+	</head>
+
+	<body onload="Init ()">
+		<table>
+			<tbody id="display">
+				<tr><td></td></tr>
+			</tbody>
+		</table>
+		<p id="status"></p>
+	</body>
+
+</html>
