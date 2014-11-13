@@ -70,13 +70,12 @@ function ServerResponse()
     while((end = request.responseText.indexOf(";", cursor)) >= 0)
     {
 		obj = $.parseJSON(request.responseText.substring(cursor, end));
-		alert(obj["type"]);
+
 		if(obj["type"] == "post")
 			ProcessPost(obj);
 		else if(obj["type"] == "error")
 			throw new Error(obj["description"], obj["file"], obj["line"]);
 		else if(obj["type"] != "ok")
-			KeepAlive();
 			throw new Error("Unknown Type");
 
 		SetStatus("");
