@@ -92,9 +92,9 @@ function ProcessPost(post)
 	if(post['id'] < position)
 		return;
 
-	position = id + 1;
-	post["name"] = decodeURIComponent(name) + (post["anonym"] == "1") ? " (anonym)" : "";
-	post["message"] = decodeURIComponent(message);
+	position = post['id'] + 1;
+	post['name'] = decodeURIComponent(post['name']) + (post['anonym'] == "1") ? " (anonym)" : "";
+	post['message'] = decodeURIComponent(post['message']);
 	posts.push(post);
 
 	if (parent != self)
