@@ -70,7 +70,7 @@ function ServerResponse()
     while((end = request.responseText.indexOf(";", cursor)) >= 0)
     {
 		obj = $.parseJSON(request.responseText.substring(cursor, end));
-
+		alert(obj["type"]);
 		if(obj["type"] == "post")
 			ProcessPost(obj);
 		else if(obj["type"] == "error")
