@@ -67,7 +67,7 @@ function ServerResponse()
 		return;
 
     var end, obj;
-    while((end = request.responseText.indexOf("\n", cursor)) >= 0)
+    while((end = request.responseText.indexOf(";", cursor)) >= 0)
     {
 		obj = $.parseJSON(request.responseText.substring(cursor, end));
 
