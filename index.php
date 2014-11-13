@@ -65,7 +65,7 @@
 		<script type="text/javascript">
 		<?php
 		echo "function initOptions() {\n";
-		echoh "var options = new Object ();\n";
+		echo "var options = new Object ();\n";
 		echo "\t\t\toptions[\"channel\"] = \"" . ((isset ($_GET["channel"]))? rawurldecode (demagicalize_string ($_GET["channel"])) : "") . "\";\n";
 		echo "\t\t\toptions[\"redirect\"] = \"" . ((isset ($_GET["redirect"]) && 0 )? rawurlencode (demagicalize_string ($_GET["redirect"])) : URL_REDIRECT) . "\";\n";
 		echo "\t\t\toptions[\"laghack\"] = " . ((isset ($_GET["laghack"])) ? "true" : "false") . ";\n";
