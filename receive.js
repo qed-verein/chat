@@ -93,7 +93,7 @@ function ProcessPost(post)
 		return;
 
 	position = post['id'] + 1;
-	post['name'] = decodeURIComponent(post['name']) + (post['anonym'] == "1") ? " (anonym)" : "";
+	post['name'] = decodeURIComponent(post['name']) + ((post['anonym'] == "1") ? " (anonym)" : "");
 	post['message'] = decodeURIComponent(post['message']);
 	posts.push(post);
 
