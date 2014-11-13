@@ -75,7 +75,9 @@ function ServerResponse()
 			ProcessPost(obj);
 		else if(obj["type"] == "error")
 			throw new Error(obj["description"], obj["file"], obj["line"]);
-		else throw new Error("Unknown Type");
+		else if(obj["type"] != "ok")
+			KeepAlive();
+			throw new Error("Unknown Type");
 
 		SetStatus("");
 		cursor = end + 1;
@@ -118,6 +120,8 @@ function ProcessPost(post)
 			top.document.title = post["message"];
 		else
 			top.document.title = post["message"].substr (0, 252) + "...";
+
+	SetStatus("");
 }
 
 // Zeige eine Nachricht im Chatfenster an
@@ -173,7 +177,6 @@ function CreatePost (post)
 
 	scrollBy (0, 999999);
 }
-
 
 function RecreatePosts ()
 {
