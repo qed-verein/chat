@@ -134,7 +134,11 @@
 		echo "Falsches PW";
 	}
 	?>
-	<!-- Anonym: <a href="index.php?anonym=1">hier</a><br />--> <b>Warnung:</b> Missbrauch jeglicher Art kann durch IP-Sperre, Meldung bei dem Provider, Hausverbot oder Deaktivierung des anonymen Zugangs geandet werden.
+	<!-- Anonym: <a href="index.php?anonym=1">hier</a><br />-->
+
+	<b>Regeln:</b> Die Nutzung des Chats verpflichtet zur Einhaltung geltenden Rechts sowie der üblichen Netiquette.
+	Bei Verstößen kann eine Sperrung des Zugangs erfolgen.
+
 	<form action="" method="post">
 		Username: <input name="username" /><br />
 		Passwort: <input name="password" type="password" /> <br />
