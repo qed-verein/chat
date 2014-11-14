@@ -1,4 +1,4 @@
-body, input, textarea, td, frame
+body, input, textarea, frame
 {
 	background-color: #555555;
 	color: #cccccc;
@@ -54,3 +54,23 @@ a:visited
 {
 	color: #000000;
 }
+
+
+
+.box, .box input, .box textarea
+{
+	border: 1px #222 solid;
+	background-color: #666;
+}
+
+.box
+{
+	padding: 2mm;
+	margin: 10px;
+}
+
+.settings
+{
+	line-height: 150%;
+}
+
