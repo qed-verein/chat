@@ -13,7 +13,8 @@ var reconnect = true; /* reconnect after call of Disconnect ()? Set to false by 
 function SetStatus (text)
 {
     document.getElementById ("status").innerHTML = text;
-    scrollBy (0, 999999);
+	var node = document.getElementById("messagearea");
+	node.scrollTop = objDiv.scrollHeight;
 }
 
 function Init ()
@@ -176,7 +177,8 @@ function CreatePost (post)
 
 	document.getElementById ("display").appendChild (tr);
 
-	scrollBy (0, 999999);
+	node = document.getElementById("messagearea");
+	node.scrollTop = objDiv.scrollHeight;
 }
 
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
