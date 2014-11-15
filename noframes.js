@@ -473,7 +473,7 @@ function InitSend ()
 	timeWait = 6000 * options["wait"];
 	channel = options["channel"];
 	document.getElementById ("name").value = options["name"];
-	sendRequest = new XMLHttpRequest();
+	sendRequest = null;
 
 	generator = options["generator"];
 }
@@ -515,6 +515,7 @@ function Send ()
 	if (sendRequest == null)
 	{
 		SetStatus ("Sende Post ...");
+		sendRequest = new XMLHttpRequest();
 		sendRequest.onreadystatechange = StateChanged;
 		sendRequest.open ("POST", "post.php", true);
 		sendRequest.setRequestHeader ("Content-Type", "application/x-www-form-urlencoded");
