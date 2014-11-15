@@ -39,8 +39,8 @@ function Init ()
 	options["channel"] = "";
 
 	InitReceiver();
-	//InitLogs();
-	//InitHelp();
+	InitLogs();
+	InitHelp();
 	//InitSend();
 }
 
