@@ -452,7 +452,7 @@ function Increase ()
 
 
 
-var request, channel, from = 0, timeWait, generator = 0;
+var sendRequest, channel, from = 0, timeWait, generator = 0;
 
 function GetKey (gen)
 {
@@ -473,7 +473,7 @@ function InitSend ()
 	timeWait = 6000 * options["wait"];
 	channel = options["channel"];
 	document.getElementById ("name").value = options["name"];
-	request = new XMLHttpRequest();
+	sendRequest = new XMLHttpRequest();
 
 	generator = options["generator"];
 }
@@ -481,9 +481,9 @@ function InitSend ()
 
 function StateChanged ()
 {
-	if (request.readyState == 4)
+	if (sendRequest.readyState == 4)
 	{
-		if (request.status >= 200 && request.status < 300)
+		if (sendRequest.status >= 200 && sendRequest.status < 300)
 		{
 			SetStatus ("");
 			var
@@ -492,9 +492,9 @@ function StateChanged ()
 			message.focus ();
 		}
 		else
-			SetStatus ("Dein Post konnte nicht übertragen werden (" + request.status + ", " + request.statusText + ").<br>" + request.responseText);
+			SetStatus ("Dein Post konnte nicht übertragen werden (" + sendRequest.status + ", " + sendRequest.statusText + ").<br>" + sendRequest.responseText);
 
-		request = null;
+		sendRequest = null;
 		++from;
 	}
 }
@@ -505,27 +505,27 @@ function OnTimeout (to)
 	{
 		SetStatus ("Der Server antwortete nicht innerhalb von " + (timeWait / 1000) + " Sekunden auf deine Postsendung.");
 
-		request.abort ();
-		request = null;
+		sendRequest.abort ();
+		sendRequest = null;
 	}
 }
 
 function Send ()
 {
-	if (request == null)
+	if (sendRequest == null)
 	{
 		SetStatus ("Sende Post ...");
-		request.onreadystatechange = StateChanged;
-		request.open ("POST", "post.php", true);
-		request.setRequestHeader ("Content-Type", "application/x-www-form-urlencoded");
-		request.setRequestHeader ("Content-Encoding", "utf-8");
+		sendRequest.onreadystatechange = StateChanged;
+		sendRequest.open ("POST", "post.php", true);
+		sendRequest.setRequestHeader ("Content-Type", "application/x-www-form-urlencoded");
+		sendRequest.setRequestHeader ("Content-Encoding", "utf-8");
 		//%%user \neq bot
 		//alert(options["channel"]);
 		var content =
 			"delay=" + position + "&channel=" + channel + "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value)+"&bottag=0";
 		if (generator)
 			content += "&key=" + GetKey (generator++);
-		request.send (content);
+		sendRequest.send (content);
 		setTimeout ("OnTimeout (" + from + ")", timeWait);
 	}
 	else
