@@ -13,7 +13,7 @@ var reconnect = true; /* reconnect after call of Disconnect ()? Set to false by 
 function SetStatus (text)
 {
     document.getElementById ("status").innerHTML = text;
-    scrollBy (0, 999999);
+    document.getElementById ("display").scrollBy (0, 999999);
 }
 
 function Init ()
@@ -176,7 +176,7 @@ function CreatePost (post)
 
 	document.getElementById ("display").appendChild (tr);
 
-	scrollBy (0, 999999);
+	document.getElementById ("display").scrollBy (0, 999999);
 }
 
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
