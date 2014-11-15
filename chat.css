@@ -65,7 +65,7 @@ a:visited
 
 .box
 {
-	padding: 2mm;
+	padding: 3mm;
 	margin: 10px;
 }
 
@@ -77,4 +77,47 @@ a:visited
 body
 {
 	margin: 5px;
+}
+
+
+
+#messagearea {
+	position: fixed;
+	left: 0%;
+	top: 0%;
+	right: 0%;
+	bottom: 40%;
+	margin-bottom: 0em;
+	overflow-y: scroll;
+}
+
+#inputarea {
+	position: fixed;
+	left: 0%;
+	top: 60%;
+	right: 45%;
+	bottom: 0%;
+	margin-right: 0em;
+}
+
+
+#inputarea table {
+	width: 100%;
+}
+
+
+#settingarea {
+	position: fixed;
+	left: 55%;
+	top: 60%;
+	right: 0%;
+	bottom: 20%;
+}
+
+#logarea {
+	position: fixed;
+	left: 55%;
+	top: 80%;
+	right: 0%;
+	bottom: 0%;
 }
