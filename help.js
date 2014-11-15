@@ -32,32 +32,32 @@ function InitRemote (options)
 
 function ShowIp ()
 {
-	if (parent != self)
-		parent.ShowIp (document.getElementById ("ip").checked);	
+	options["ip"] = document.getElementById("ip").checked;
+	RecreatePosts();
 }
 
 function ShowDelay ()
 {
-	if (parent != self)
-		parent.ShowDelay (document.getElementById ("delay").checked);
+	options["delay"] = document.getElementById("delay").checked;
+	RecreatePosts();
 }
 
 function ShowLinks ()
 {
-	if (parent != self)
-		parent.ShowLinks (document.getElementById ("links").checked);
+	options["links"] = document.getElementById("links").checked;
+	RecreatePosts();
 }
 
 function ShowOld()
 {
-	if (parent != self)
-		parent.ShowOld (document.getElementById ("old").checked);
+	options["old"] = document.getElementById("old").checked;
+	RecreatePosts();
 }
 
 function NotShowBot()
 {
-	if (parent != self)
-		parent.NotShowBot (document.getElementById ("botblock").checked);
+	options["botblock"] = document.getElementById("botblock").checked;
+	RecreatePosts();
 }
 
 function CheckSize ()
@@ -75,8 +75,8 @@ function CheckSize ()
 		else
 			input.value = last = value;
 
-		if (parent != self)
-			parent.ChangeLast (last);
+		options["last"] = last;
+		RecreatePosts ();
 	}
 }
 
@@ -85,8 +85,8 @@ function Decrease ()
 	var input = document.getElementById ("last");
 	input.value = last = Math.max (4, parseInt (input.value) - 1);
 
-	if (parent != self)
-		parent.ChangeLast (last);
+	options["last"] = last;
+	RecreatePosts ();
 }
 
 function Increase ()
@@ -94,6 +94,6 @@ function Increase ()
 	var input = document.getElementById ("last");
 	input.value = last = Math.min (24, parseInt (input.value) + 1);
 
-	if (parent != self)
-		parent.ChangeLast (last);
+	options["last"] = last;
+	RecreatePosts ();
 }
