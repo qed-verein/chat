@@ -11,17 +11,23 @@
 </head>
 <body onload="Init ()">
 
-<div class="box">
+<div style="position: absolute; left: 0px; right: 0px; top: 5px; bottom: 0px">
+<div class="box" style="height: 60%">
 <table>
 <tbody id="display">
 </tbody>
 </table>
-</div>
+
 <p id="status"></p>
+</div>
+
+
+<div style="height: 35%">
 
 
 
-<div class="box settings">
+<div style="float: right; width: 50em">
+<div class="box settings" style="margin-left: 0px; margin-top: 0px">
 	<input type="checkbox" id="ip" onclick="ShowIp ()" />IPs anzeigen
 	<input type="checkbox" id="delay" onclick="ShowDelay ()" />Delays anzeigen
 	<input type="checkbox" id="links" onclick="ShowLinks ()" />Links anzeigen
@@ -35,7 +41,7 @@
 </div>
 
 
-<div class="box settings">
+<div class="box settings" style="margin-left: 0px">
 <div style="float: left; margin: 2mm">
 	<a id="lastHour">letzte Stunde</a><br />
 	<a id="thisDay">aktueller Tag</a><br />
@@ -67,27 +73,34 @@
 	<input type="checkbox" id="logLinks" onclick="RenewLinks ()">Links
 	<a style="margin-left: 2mm" id="log">Log anzeigen</a>
 </div>
+
 <div style="clear: both"></div>
 </div>
+</div>
 
-
-
-
+<div style="margin-right: 50em">
 <form id="input">
-<fieldset class='box' style="width: 20em; margin: auto">
+<fieldset class='box'>
 <table>
 	<tr>
 		<td><label for="inputname">Name:</label></td>
-		<td><input class="text" id="inputname"></td>
+		<td><input class="text" id="inputname" size="30"></td>
 	</tr>
 	<tr>
 		<td><label for="inputtext">Text:</label></td>
-		<td><textarea class="text" id="inputtext"></textarea></td>
+		<td><textarea class="text" id="inputtext" rows="8" cols="50"></textarea></td>
 	</tr>
-	<tr><td colspan="2" style="text-align: center"><input type="submit" value="Senden" onclick="Send()"></td></tr>
+	<tr>
+		<td colspan="2" style="text-align: center"><input type="submit" value="Senden" onclick="Send()"></td>
+	</tr>
 </table>
 </fieldset>
 </form>
+</div>
+
+</div>
+
+</div>
 
 
 </body>
