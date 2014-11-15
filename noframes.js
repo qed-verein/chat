@@ -466,7 +466,7 @@ function GetKey (gen)
 	return genString + DoWhateverNeedToBeDone (string);
 }
 
-function InitSend (options)
+function InitSend ()
 {
 	timeWait = 6000 * options["wait"];
 	channel = options["channel"];
