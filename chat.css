@@ -65,8 +65,8 @@ a:visited
 
 .box
 {
-	padding: 3mm;
-	margin: 3px;
+	padding: 1em;
+	margin: 0.5em;
 }
 
 .settings
@@ -86,7 +86,7 @@ body
 	left: 0%;
 	top: 0%;
 	right: 0%;
-	bottom: 40%;
+	bottom: 17.5em;
 	margin-bottom: 0em;
 	overflow-y: scroll;
 }
@@ -94,8 +94,8 @@ body
 #inputarea {
 	position: fixed;
 	left: 0%;
-	top: 60%;
-	right: 45%;
+	height: 14.5em;
+	right: 48em;
 	bottom: 0%;
 	margin-right: 0em;
 }
@@ -108,16 +108,16 @@ body
 
 #settingarea {
 	position: fixed;
-	left: 55%;
-	top: 60%;
+	width: 45em;
+	height: 6em;
 	right: 0%;
-	bottom: 20%;
+	bottom: 8.5em;
 }
 
 #logarea {
 	position: fixed;
-	left: 55%;
-	top: 80%;
+	width: 45em;
+	height: 6em;
 	right: 0%;
 	bottom: 0%;
 }
