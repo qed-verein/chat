@@ -14,7 +14,7 @@ function SetStatus (text)
 {
     document.getElementById ("status").innerHTML = text;
 	var node = document.getElementById("messagearea");
-	node.scrollTop = objDiv.scrollHeight;
+	node.scrollTop = node.scrollHeight;
 }
 
 function Init ()
@@ -178,7 +178,7 @@ function CreatePost (post)
 	document.getElementById ("display").appendChild (tr);
 
 	node = document.getElementById("messagearea");
-	node.scrollTop = objDiv.scrollHeight;
+	node.scrollTop = node.scrollHeight;
 }
 
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
