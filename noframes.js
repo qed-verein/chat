@@ -41,7 +41,7 @@ function Init ()
 	InitReceiver();
 	InitLogs();
 	InitHelp();
-	//InitSend();
+	InitSend();
 }
 
 // Initialisiere das Skript
