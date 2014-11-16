@@ -21,7 +21,7 @@ function renderOptions()
 	$html .= "options['logLinks'] = " . (isset ($_GET["logLinks"]) ? intval ($_GET["logLinks"]) : 1) . ";\n";
 
 	$html .= "options['limit'] = '" . (isset ($_GET["limit"]) ? intval ($_GET["limit"]) : "256") . "';\n";
-	$html .= "options['wait'] = '" . (isset ($_GET["wait"]) ? intval ($_GET["wait"]) : 60) . "';\n";
+	$html .= "options['wait'] = '" . (isset ($_GET["wait"]) ? intval ($_GET["wait"]) : 10) . "';\n";
 	$html .= "options['target'] = '" . (isset ($_GET["target"]) ? demagicalize_string ($_GET["target"]) : "_blank") . "';\n";
 	$html .= "options['title'] = " . (isset ($_GET["title"]) ? intval ($_GET["title"]) : 1) . ";\n";
 	$html .= "options['patient'] = " . (isset ($_GET["patient"]) ? "1" : "0") . ";\n";
