@@ -94,7 +94,10 @@ function ServerResponse()
 	}
 
 	if(request.readyState == 4 && options["patient"] == 1)
+	{
+		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
 		setTimeout("QueryForMessages()", options["wait"] * 1000);
+	}
 }
 
 // Wird für jede ankommende Nachricht aufgerufen
