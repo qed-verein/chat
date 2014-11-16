@@ -37,7 +37,7 @@ function Init ()
 // *****************
 
 
-var recvAlive, recvRequest, position, textpos, posts, timeout;
+var firstReconnect, recvRequest, position, textpos, posts, timeout;
 
 function InitReceiver()
 {
@@ -53,7 +53,7 @@ function InitReceiver()
 function ReceiverConnnect()
 {
 	textpos = 0;
-
+	firstReconnect = false;
 	timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
 
 	uri = "../viewneu.php?" + URIQueryParameters({
@@ -88,15 +88,17 @@ function OnReceiverResponse()
 
 		SetStatus("");
 		textpos = end + 1;
+		firstReconnect = true;
 
 		clearTimeout(timeout);
 		timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
 	}
 
-	if(recvRequest.readyState == 4)
+	// Beim ersten Versuch ohne Wartezeiten neu verbinden.
+	if(recvRequest.readyState == 4 && firstReconnect)
 	{
 		clearTimeout(timeout);
-		timeout = setTimeout("OnReceiverTimeout()", 2000);
+		timeout = setTimeout("OnReceiverTimeout()", 500);
 	}
 }
 
