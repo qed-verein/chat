@@ -1,9 +1,6 @@
 var options = new Object();
 var version = "1413235752"; // muss in data ebenfalls geaendert werden
 
-var request, reconnect, position, textpos, posts;
-
-
 // Initialisiere das Skript
 function Init ()
 {
@@ -23,7 +20,7 @@ function Init ()
 	options["target"] = "_blank";
 
 	options["name"] = "";
-	options["wait"] = 60;
+	options["wait"] = 10;
 	userOptions();
 
 	InitReceiver();
@@ -40,13 +37,14 @@ function Init ()
 // *****************
 
 
+var recvAlive, recvRequest, position, textpos, posts;
+
 function InitReceiver()
 {
 	window.onerror = ErrorHandler;
 	recvRequest = new XMLHttpRequest();
 	posts = Array();
 	position = -24;
-	textpos = 0;
 	QueryForMessages();
 }
 
@@ -55,6 +53,8 @@ function InitReceiver()
 function QueryForMessages()
 {
 	textpos = 0;
+	recvAlive = false;
+
 	uri = "../viewneu.php?" + URIQueryParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],
 	    version: version, type: 'json', feedback: 1});
@@ -64,6 +64,8 @@ function QueryForMessages()
 	recvRequest.onreadystatechange = OnReceiverResponse;
 	recvRequest.open('GET', uri, true);
 	recvRequest.send();
+
+	setInterval("ReceiverWatchdog()", options["wait"] * 1000);
 }
 
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
@@ -84,14 +86,15 @@ function OnReceiverResponse()
 		else if(obj["type"] == "error")
 			throw new Error(obj["description"], obj["file"], obj["line"]);
 		else if(obj["type"] != "ok")
-			throw new Error("Unknown Type");
+			throw new Error("Unbekannter Typ");
 
 		SetStatus("");
 		textpos = end + 1;
+		recvAlive = true;
 	}
 
-	if(recvRequest.readyState == 4 && reconnect)
-		setTimeout("QueryForMessages()", 10000);
+	//if(recvRequest.readyState == 4)
+		//setTimeout("QueryForMessages()", options["wait"] * 1000);
 }
 
 // Wird für jede ankommende Nachricht aufgerufen
@@ -191,6 +194,16 @@ function RecreatePosts ()
 		CreatePost (posts[cursor]);
 }
 
+function ReceiverWatchdog()
+{
+	if(recvAlive)
+		recvAlive = false;
+	else
+	{
+		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
+		QueryForMessages();
+	}
+}
 
 function ErrorHandler(description, filename, line)
 {
