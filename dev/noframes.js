@@ -1,11 +1,7 @@
 var options = new Object();
 var version = "1413235752"; // muss in data ebenfalls geaendert werden
 
-var request;
-var cursor = 0;
-var reconnect = true;
-var posts = new Array();
-var position = -24;
+var request, reconnect, position, textpos, posts;
 
 
 // Initialisiere das Skript
@@ -13,13 +9,13 @@ function Init ()
 {
 	options["botblock"] = 1;
 	options["ip"] = 1;
-	options["delay"] = 1;
+	options["delay"] = 0;
 	options["channel"] = "";
 	options["links"] = 1;
-	options["old"] = 0;
+	options["old"] = 1;
 	options["last"] = 20;
-	options["limit"] = "256";
-	options["title"] = "1";
+	options["limit"] = 256;
+	options["title"] = 1;
 
 	options["logIp"] = 1;
 	options["logDelay"] = 0;
@@ -28,7 +24,7 @@ function Init ()
 
 	options["name"] = "";
 	options["wait"] = 60;
-	userOptions();
+	//userOptions();
 
 	InitReceiver();
 	InitSender();
@@ -47,7 +43,10 @@ function Init ()
 function InitReceiver()
 {
 	window.onerror = ErrorHandler;
-	request = new XMLHttpRequest();
+	recvRequest = new XMLHttpRequest();
+	posts = Array();
+	position = -24;
+	textpos = 0;
 	QueryForMessages();
 }
 
@@ -55,28 +54,30 @@ function InitReceiver()
 // Schicke dem Server eine Anfrage, ob neue Nachrichten angekommen sind.
 function QueryForMessages()
 {
-	cursor = 0;
+	textpos = 0;
 	uri = "../viewneu.php?" + URIQueryParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],
 	    version: version, type: 'json', feedback: 1});
 	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
 	uri += "&random=" + (Math.random() * 1000000);
 
-	request.onreadystatechange = OnReceiverResponse;
-	request.open('GET', uri, true);
-	request.send();
+	recvRequest.onreadystatechange = OnReceiverResponse;
+	recvRequest.open('GET', uri, true);
+	recvRequest.send();
 }
 
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
 function OnReceiverResponse()
 {
-	if(request.readyState < 3)
+	if(recvRequest.readyState < 3)
 		return;
 
     var end, obj;
-    while((end = request.responseText.indexOf(";", cursor)) >= 0)
+    while((end = recvRequest.responseText.indexOf(";", textpos)) >= 0)
     {
-		obj = JSON.parse(request.responseText.substring(cursor, end));
+		obj = JSON.parse(recvRequest.responseText.substring(textpos, end));
+		for(var key in obj)
+			obj[key] = decodeURIComponent(obj[key]);
 
 		if(obj["type"] == "post")
 			ProcessPost(obj);
@@ -86,9 +87,10 @@ function OnReceiverResponse()
 			throw new Error("Unknown Type");
 
 		SetStatus("");
-		cursor = end + 1;
+		textpos = end + 1;
 	}
-	if(request.readyState == 4 && reconnect)
+
+	if(recvRequest.readyState == 4 && reconnect)
 		setTimeout("QueryForMessages()", 10000);
 }
 
@@ -99,8 +101,6 @@ function ProcessPost(post)
 		return;
 
 	position = post['id'] + 1;
-	post['name'] = decodeURIComponent(post['name']) + ((post['anonym'] == "1") ? " (anonym)" : "");
-	post['message'] = decodeURIComponent(post['message']);
 	posts.push(post);
 
 	if (!options["old"])
@@ -118,10 +118,8 @@ function ProcessPost(post)
 	CreatePost (post);
 
 	if (options["title"])
-		if (post["message"].length < 256)
-			top.document.title = post["message"];
-		else
-			top.document.title = post["message"].substr (0, 252) + "...";
+		top.document.title = (post["message"].length < 256) ? post["message"] :
+			top.document.title = post["message"].substr(0, 252) + "...";
 
 	SetStatus("");
 }
@@ -160,11 +158,11 @@ function CreatePost (post)
 	node.setAttribute ("class", "info");
 	tr.appendChild (node);
 
-        if (options["ip"])
-	    tr.appendChild (GetNodeIp (post));
+	if (options["ip"])
+		tr.appendChild (GetNodeIp (post));
 
-        node = document.createElement ("td");
-        node.innerHTML =  NickEscape (post["name"] + ":");
+	node = document.createElement ("td");
+	node.innerHTML =  NickEscape (post["name"] + ((post['anonym'] == "1") ? " (anonym)" : "") + ":");
 	node.setAttribute ("class", "name");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);
@@ -188,7 +186,8 @@ function RecreatePosts ()
 	while (display.hasChildNodes ())
 		display.removeChild (display.lastChild);
 
-	for (var cursor = (options["old"] ? 0 : Math.max (0, posts.length - options["last"])); cursor != posts.length; ++cursor)
+	var from = (options["old"] ? 0 : Math.max (0, posts.length - options["last"]));
+	for (var cursor = from; cursor != posts.length; ++cursor)
 		CreatePost (posts[cursor]);
 }
 
@@ -200,7 +199,7 @@ function ErrorHandler(description, filename, line)
 	message += "In Datei " + filename + ", Zeile " + line + ".<br>";
 	message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
 	SetStatus(message);
-	request.abort();
+	recvRequest.abort();
 	return false;
 }
 
@@ -239,10 +238,7 @@ function NickEscape (text)
 function GetValue (value)
 {
 	var temp = parseInt (value);
-	if (isNaN (temp))
-		return "";
-	else
-		return temp;
+	return isNan(temp) ? "" : temp;
 }
 
 function GetDateString (prefix)
@@ -312,7 +308,6 @@ function InitSettings()
 	document.getElementById("old").checked = options["old"];
 	document.getElementById("last").value = count = options["last"];
 	document.getElementById("botblock").checked = options["botblock"];
-	RenewLinks();
 }
 
 function UpdateSettings()
