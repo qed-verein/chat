@@ -81,7 +81,7 @@ function OnReceiverResponse()
 		obj = JSON.parse(recvRequest.responseText.substring(textpos, end));
 		for(var key in obj)
 			obj[key] = decodeURIComponent(obj[key]);
-
+		alert(position);
 		if(obj["type"] == "post")
 			ProcessPost(obj);
 		else if(obj["type"] == "error")
@@ -197,7 +197,6 @@ function RecreatePosts ()
 
 function ReceiverWatchdog()
 {
-	alert(position);
 	if(recvAlive)
 		recvAlive = false;
 	else
