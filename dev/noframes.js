@@ -20,7 +20,7 @@ function Init ()
 	options["target"] = "_blank";
 
 	options["name"] = "";
-	options["wait"] = 10;
+	options["wait"] = 60;
 	userOptions();
 
 	InitReceiver();
@@ -37,7 +37,7 @@ function Init ()
 // *****************
 
 
-var recvAlive, recvRequest, position, textpos, posts;
+var recvAlive, recvRequest, position, textpos, posts, watchdog;
 
 function InitReceiver()
 {
@@ -46,6 +46,9 @@ function InitReceiver()
 	posts = Array();
 	position = -24;
 	QueryForMessages();
+
+	clearInterval(watchdog);
+	watchdog = setInterval("ReceiverWatchdog()", options["wait"] * 1000);
 }
 
 
@@ -64,8 +67,6 @@ function QueryForMessages()
 	recvRequest.onreadystatechange = OnReceiverResponse;
 	recvRequest.open('GET', uri, true);
 	recvRequest.send();
-
-	setInterval("ReceiverWatchdog()", options["wait"] * 1000);
 }
 
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
