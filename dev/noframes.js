@@ -58,6 +58,9 @@ function InitReceiver()
 // Schicke dem Server eine Anfrage, ob neue Nachrichten angekommen sind.
 function QueryForMessages()
 {
+	recvRequest.onreadystatechange = null;
+	recvRequest.abort();
+
 	textpos = 0;
 	recvAlive = false;
 
@@ -206,7 +209,6 @@ function ReceiverWatchdog()
 	else
 	{
 		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
-		recvRequest.onreadystatechange = null;
 		QueryForMessages();
 	}
 }
@@ -218,6 +220,8 @@ function ErrorHandler(description, filename, line)
 	message += "In Datei " + filename + ", Zeile " + line + ".<br>";
 	message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
 	SetStatus(message);
+	clearInterval(watchdog);
+	recvRequest.onreadystatechange = null;
 	recvRequest.abort();
 	return false;
 }
