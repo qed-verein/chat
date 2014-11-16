@@ -238,7 +238,7 @@ function NickEscape (text)
 function GetValue (value)
 {
 	var temp = parseInt (value);
-	return isNan(temp) ? "" : temp;
+	return isNaN(temp) ? "" : temp;
 }
 
 function GetDateString (prefix)
