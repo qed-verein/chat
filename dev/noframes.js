@@ -101,7 +101,7 @@ function OnReceiverResponse()
 	}
 
 	if(recvRequest.readyState == 4)
-		setTimeout("QueryForMessages()", 1000);
+		setTimeout("QueryForMessages()", options["wait"] * 1000);
 }
 
 // Wird für jede ankommende Nachricht aufgerufen
