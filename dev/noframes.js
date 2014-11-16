@@ -202,6 +202,7 @@ function RecreatePosts ()
 		CreatePost (posts[cursor]);
 }
 
+// Wird in einem regelmäßigen Intervall aufgerufen, um zu für prüfen, ob die Verbindung noch lebt
 function ReceiverWatchdog()
 {
 	if(recvAlive)

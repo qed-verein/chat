@@ -2,13 +2,11 @@ var version = "1413235752"; // muss in data ebenfalls geaendert werden
 
 var request;
 var cursor = 0;
-var reconnect = true;
 var posts = new Array();
 var position = -24;
 var options;
+var watchdog, recvAlive;
 
-
-var reconnect = true; /* reconnect after call of Disconnect ()? Set to false by SpawnError. */
 
 function SetStatus (text)
 {
@@ -44,13 +42,22 @@ function InitRemote(opt)
 	window.onerror = ErrorHandler;
 	request = new XMLHttpRequest();
 	QueryForMessages();
+
+	clearInterval(watchdog);
+	if(options['patient'] == 0)
+		watchdog = setInterval("ReceiverWatchdog()", options["wait"] * 1000);
 }
 
 
 // Schicke dem Server eine Anfrage, ob neue Nachrichten angekommen sind.
 function QueryForMessages()
 {
+	request.onreadystatechange = null;
+	request.abort();
+
 	cursor = 0;
+	recvAlive = false;
+
 	uri = "viewneu.php?channel=" + options["channel"] +
 		"&position=" + position + "&limit=" + options["limit"] +
 		"&version=" + version + "&type=json&feedback=1";
@@ -75,17 +82,19 @@ function ServerResponse()
 
 		if(obj["type"] == "post")
 			ProcessPost(obj);
+		else if(obj["type"] != "ok")
+			recvAlive = true;
 		else if(obj["type"] == "error")
 			throw new Error(obj["description"], obj["file"], obj["line"]);
-		else if(obj["type"] != "ok")
+		else
 			throw new Error("Unknown Type");
 
 		SetStatus("");
 		cursor = end + 1;
 	}
 
-	if(request.readyState == 4 && reconnect)
-		setTimeout("QueryForMessages()", 10000);
+	if(request.readyState == 4)
+		setTimeout("QueryForMessages()", 1000);
 }
 
 // Wird für jede ankommende Nachricht aufgerufen
@@ -190,6 +199,17 @@ function RecreatePosts ()
 		CreatePost (posts[cursor]);
 }
 
+// Wird in einem regelmäßigen Intervall aufgerufen, um zu für prüfen, ob die Verbindung noch lebt
+function ReceiverWatchdog()
+{
+	if(recvAlive)
+		recvAlive = false;
+	else
+	{
+		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
+		QueryForMessages();
+	}
+}
 
 function ErrorHandler(description, filename, line)
 {
@@ -198,7 +218,8 @@ function ErrorHandler(description, filename, line)
 	message += "In Datei " + filename + ", Zeile " + line + ".<br>";
 	message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
 	SetStatus(message);
-	reconnect = false;
+	clearInterval(watchdog);
+	request.onreadystatechange = null;
 	request.abort();
 	return false;
 }
