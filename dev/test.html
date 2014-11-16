@@ -9,8 +9,9 @@ var cursor = 0;
 function Init()
 {
 	request = new XMLHttpRequest();
+	var now = new Date();
 	uri = "http://chat.qed-verein.de/viewneu.php?channel=&position=-20&limit=1000" +
-		"&version=1413235752&type=json&feedback=1";
+		"&version=1413235752&type=json&feedback=1&test=" + now.getSeconds();
 	request.onreadystatechange = ServerResponse;
 	request.open("GET", uri, true);
 	request.send();
