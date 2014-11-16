@@ -57,7 +57,7 @@ mysql_select_db(SQL_DATABASE);
 
 if($position <= 0)
 {
-	$sqlNextId = sprintf("SELECT id + 1 FROM %s WHERE channel = '%s' ORDER BY id DESC LIMIT 1, %d",
+	$sqlNextId = sprintf("SELECT id + 1 FROM %s WHERE channel = '%s' ORDER BY id DESC LIMIT %d, 1",
 		SQL_TABLE, mysql_real_escape_string($channel), -$position + 1);
 	$position = mysql_fetch_array(mysql_query($sqlNextId))[0];
 }
