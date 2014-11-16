@@ -100,7 +100,7 @@ function OnReceiverResponse()
 		recvAlive = true;
 	}
 
-	if(recvRequest.readyState == 4)
+	if(recvRequest.readyState == 4 && options["patient"] == 1)
 		setTimeout("QueryForMessages()", options["wait"] * 1000);
 }
 
