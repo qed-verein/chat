@@ -55,10 +55,12 @@ function keepAlive() {
 mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
 mysql_select_db(SQL_DATABASE);
 
-$sqlNextId = sprintf("SELECT MAX(id) + 1 FROM %s WHERE channel = '%s'",
-	SQL_TABLE, mysql_real_escape_string($channel));
-$nextId = mysql_fetch_array(mysql_query($sqlNextId))[0];
-if($position <= 0) $position += $nextId;
+if($position <= 0)
+{
+	$sqlNextId = sprintf("SELECT id + 1 FROM %s WHERE channel = '%s' ORDER BY id DESC LIMIT 1, %d",
+		SQL_TABLE, mysql_real_escape_string($channel), -$position + 1);
+	$position = mysql_fetch_array(mysql_query($sqlNextId))[0];
+}
 
 if (isset ($_GET["feedback"]) && $_GET["feedback"])
 	output_feedback ($type);
