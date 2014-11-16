@@ -7,7 +7,6 @@ require_once('../common.php');
 require_once('layout.php');
 
 $errorMessage = null;
-$action = uriParamString('action', '');
 
 if(isset($_REQUEST['login']))
 {

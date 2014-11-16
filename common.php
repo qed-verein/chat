@@ -306,9 +306,12 @@ if (empty($session_not_close))
 		exit;
 	}
 
-	function urlLogin() {return 'account.php?action=login';}
-	function urlLogout() {return 'account.php?action=logout';}
-	function urlChat() {return '../index.php';}
+	function urlLogin() {
+		return 'account.php';}
+	function urlLogout() {
+		return 'account.php?logout=1';}
+	function urlChat() {
+		return '../index.php';}
 
 
 ?>
