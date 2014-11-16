@@ -54,6 +54,6 @@ define ("KEEP_ALIVE_NL_POLL_NUM",50);
 define ("REQUIRE_LOGIN", false);
 
 
-define(ADMIN_EMAIL, "webmaster@qed-verein.de");
+define("ADMIN_EMAIL", "webmaster@qed-verein.de");
 
 ?>
