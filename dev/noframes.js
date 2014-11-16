@@ -64,18 +64,19 @@ function InitReceiver()
 function QueryForMessages()
 {
 	cursor = 0;
-	uri = "../viewneu.php?channel=" + options["channel"] +
-		"&position=" + position + "&limit=" + options["limit"] +
-		"&version=" + version + "&type=json&feedback=1";
+	uri = "../viewneu.php?" + URIQueryParameters({
+	    channel: options["channel"], position: position, limit: options["limit"],
+	    version: version, type: 'json', feedback: 1});
 	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
 	uri += "&random=" + (Math.random() * 1000000);
-	request.onreadystatechange = ServerResponse;
+
+	request.onreadystatechange = OnReceiverResponse;
 	request.open('GET', uri, true);
 	request.send();
 }
 
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
-function ServerResponse()
+function OnReceiverResponse()
 {
 	if(request.readyState < 3)
 		return;
