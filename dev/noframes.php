@@ -24,6 +24,8 @@ function renderOptions()
 	$html .= "options['wait'] = '" . (isset ($_GET["wait"]) ? intval ($_GET["wait"]) : 60) . "';\n";
 	$html .= "options['target'] = '" . (isset ($_GET["target"]) ? demagicalize_string ($_GET["target"]) : "_blank") . "';\n";
 	$html .= "options['title'] = " . (isset ($_GET["title"]) ? intval ($_GET["title"]) : 1) . ";\n";
+	$html .= "options['patient'] = " . (isset ($_GET["patient"]) ? "1" : "0") . ";\n";
+
 
 	if (SECURE_POSTS)
 		$html .= "options['generator'] = " . (SECURE_POSTS_GENERATOR_NUM_USES * get_key_generator ()) . ";\n";
