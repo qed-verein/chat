@@ -291,7 +291,7 @@ if (empty($session_not_close))
 
 	function uriParamInteger($name, $default = null)
 	{
-		if(!isset($_REQUEST[$name]) && is_numeric($_REQUEST[$name]))
+		if(!isset($_REQUEST[$name]) || !is_numeric($_REQUEST[$name]))
 		{
 			if(is_null($default)) exit(sprintf("Fehler: Parameter %s fehlt", $name));
 			else return $default;
