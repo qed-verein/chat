@@ -76,7 +76,6 @@
 		echo "\t\t\toptions[\"logLinks\"] = " . (isset ($_GET["logLinks"]) ? intval ($_GET["logLinks"]) : 1) . ";\n";
 		echo "\t\t\toptions[\"method\"] = \"" . (isset ($_GET["method"]) ? demagicalize_string ($_GET["method"]) : "detect") . "\";\n";
 		echo "\t\t\toptions[\"limit\"] = \"" . (isset ($_GET["limit"]) ? intval ($_GET["limit"]) : "256") . "\";\n";
-		echo "\t\t\toptions[\"patient\"] = \"" . (isset ($_GET["patient"]) ? intval ($_GET["patient"]) : 0) . "\";\n";
 		echo "\t\t\toptions[\"wait\"] = \"" . (isset ($_GET["wait"]) ? intval ($_GET["wait"]) : 10) . "\";\n";
 		echo "\t\t\toptions[\"target\"] = \"" . (isset ($_GET["target"]) ? demagicalize_string ($_GET["target"]) : "_blank") . "\";\n";
 		echo "\t\t\toptions[\"title\"] = " . (isset ($_GET["title"]) ? intval ($_GET["title"]) : 1) . ";\n";

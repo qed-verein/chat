@@ -43,9 +43,7 @@ function InitRemote(opt)
 	request = new XMLHttpRequest();
 	QueryForMessages();
 
-	clearInterval(watchdog);
-	if(options['patient'] == 0)
-		watchdog = setInterval("ReceiverWatchdog()", options["wait"] * 1000);
+	watchdog = setInterval("ReceiverWatchdog()", options["wait"] * 1000);
 }
 
 
@@ -91,12 +89,6 @@ function ServerResponse()
 
 		SetStatus("");
 		cursor = end + 1;
-	}
-
-	if(request.readyState == 4 && options["patient"] == 1)
-	{
-		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
-		setTimeout("QueryForMessages()", options["wait"] * 1000);
 	}
 }
 

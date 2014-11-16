@@ -19,8 +19,6 @@ function Init ()
 	options["logLinks"] = 1;
 	options["target"] = "_blank";
 
-	options["patient"] = 0;
-
 	options["name"] = "";
 	options["wait"] = 60;
 	userOptions();
@@ -49,9 +47,7 @@ function InitReceiver()
 	position = -24;
 	QueryForMessages();
 
-	clearInterval(watchdog);
-	if(options['patient'] == 0)
-		watchdog = setInterval("ReceiverWatchdog()", options["wait"] * 1000);
+	watchdog = setInterval("ReceiverWatchdog()", options["wait"] * 1000);
 }
 
 
@@ -98,12 +94,6 @@ function OnReceiverResponse()
 		SetStatus("");
 		textpos = end + 1;
 		recvAlive = true;
-	}
-
-	if(recvRequest.readyState == 4 && options["patient"] == 1)
-	{
-		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
-		setTimeout("QueryForMessages()", options["wait"] * 1000);
 	}
 }
 
