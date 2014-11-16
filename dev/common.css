@@ -42,12 +42,10 @@ td.name
 	overflow: hidden;
 }
 
-/*
-table
+#messagearea table
 {
 	border-collapse: collapse;
 }
-*/
 
 td.text
 {
