@@ -54,6 +54,8 @@ function QueryForMessages()
 	uri = "viewneu.php?channel=" + options["channel"] +
 		"&position=" + position + "&limit=" + options["limit"] +
 		"&version=" + version + "&type=json&feedback=1";
+	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
+	uri += "&random=" + (Math.random() * 1000000);
 
 	request.onreadystatechange = ServerResponse;
 	request.open('GET', uri, true);
