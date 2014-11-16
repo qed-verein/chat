@@ -82,7 +82,7 @@ function ServerResponse()
 
 		if(obj["type"] == "post")
 			ProcessPost(obj);
-		else if(obj["type"] != "ok")
+		else if(obj["type"] == "ok")
 			recvAlive = true;
 		else if(obj["type"] == "error")
 			throw new Error(obj["description"], obj["file"], obj["line"]);
