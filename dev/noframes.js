@@ -24,7 +24,7 @@ function Init ()
 
 	options["name"] = "";
 	options["wait"] = 60;
-	//userOptions();
+	userOptions();
 
 	InitReceiver();
 	InitSender();
