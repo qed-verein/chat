@@ -244,6 +244,40 @@ if (empty($session_not_close))
 		return $temp[0];
 	}
 
+
+
+
+
+
+
+	function htmlEscape($text)
+	{
+		return htmlspecialchars($text, ENT_NOQUOTES);
+	}
+
+	function userAuthenticate($username, $password)
+	{
+		mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
+		mysql_select_db(SQL_DATABASE);
+		mysql_query('SET NAMES "utf8"');
+		$pwhash = sha1($username, $password);
+
+		$sql = sprintf("SELECT id FROM user WHERE username='%s' password='%s'",
+			mysql_real_escape_string($username), mysql_real_escape_string($pwhash));
+		$userid = @mysql_result(mysql_query($sql), 0, 0);
+
+		if($userid)
+			return $userid;
+		else
+			return null;
+	}
+
+	function userLoginCheck()
+	{
+		if(!isset($_SESSION['userid']))
+			die("Du musst dich erst einloggen");
+	}
+
 	function uriParamString($name, $default = null)
 	{
 		if(!isset($_REQUEST[$name]))
@@ -265,5 +299,10 @@ if (empty($session_not_close))
 
 		return intval($_REQUEST[$name]);
 	}
+
+	function urlLogin() {return '/dev/account.php?action=login';}
+	function urlLogout() {return '/dev/account.php?action=logout';}
+	function urlChat() {return '/index.php';}
+
 
 ?>
