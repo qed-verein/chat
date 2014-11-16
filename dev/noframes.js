@@ -7,22 +7,8 @@ var reconnect = true;
 var posts = new Array();
 var position = -24;
 
-function SetStatus(text)
-{
-    document.getElementById("status").innerHTML = text;
-	var node = document.getElementById("messagearea");
-	node.scrollTop = node.scrollHeight;
-}
 
-function URIQueryParameters(params)
-{
-	var result = [];
-	for(var key in params)
-		result.push(encodeURIComponent(key) + "=" + encodeURIComponent(params[key]));
-	return result.join("&");
-}
-
-
+// Initialisiere das Skript
 function Init ()
 {
 	options["botblock"] = 1;
@@ -51,7 +37,13 @@ function Init ()
 
 }
 
-// Initialisiere das Skript
+
+
+// *****************
+// *   Empfänger   *
+// *****************
+
+
 function InitReceiver()
 {
 	window.onerror = ErrorHandler;
@@ -215,10 +207,7 @@ function ErrorHandler(description, filename, line)
 function InsertLinks (text)
 {
 	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g,
-			     '<a rel="noreferrer" target="_blank" href="$1$2">$1$2</a>');
-    /*return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g,
-			     '<a rel="noreferrer" target="_blank" href=\'data:text/html;charset=utf-8, <html><meta http-equiv="refresh" content="0;URL=&#39;$1$2&#39;">$1$2</html>\'>$1$2</a>');*/
-
+		'<a rel="noreferrer" target="_blank" href="$1$2">$1$2</a>');
 }
 
 function GetNodeIp (post)
@@ -238,16 +227,13 @@ function NickEscape (text)
     return ret;
 }
 
-function HtmlEscape (text, links)
-{
-	text = text.replace (/&/g, "&amp;").replace (/</g, "&lt;").replace (/>/g, "&gt;").replace (/\"/g, "&quot;");
-	if (links) text = InsertLinks (text);
-	return text.replace (/\n/g, "<br>");
-
-}
 
 
 
+
+// ************
+// *   Logs   *
+// ************
 
 
 function GetValue (value)
@@ -314,110 +300,55 @@ function InitLogs()
 
 
 
+// *********************
+// *   Einstellungen   *
+// *********************
 
-
-function InitSettings ()
+function InitSettings()
 {
-	document.getElementById ("ip").checked = options["ip"];
-	document.getElementById ("delay").checked = options["delay"];
-	document.getElementById ("links").checked = options["links"];
-	document.getElementById ("old").checked = options["old"];
-	document.getElementById ("last").value = count = options["last"];
-	document.getElementById ("botblock").checked = options["botblock"];
+	document.getElementById("ip").checked = options["ip"];
+	document.getElementById("delay").checked = options["delay"];
+	document.getElementById("links").checked = options["links"];
+	document.getElementById("old").checked = options["old"];
+	document.getElementById("last").value = count = options["last"];
+	document.getElementById("botblock").checked = options["botblock"];
 	RenewLinks();
 }
 
-function ShowIp ()
+function UpdateSettings()
 {
 	options["ip"] = document.getElementById("ip").checked;
-	RecreatePosts();
-}
-
-function ShowDelay ()
-{
 	options["delay"] = document.getElementById("delay").checked;
-	RecreatePosts();
-}
-
-function ShowLinks ()
-{
 	options["links"] = document.getElementById("links").checked;
-	RecreatePosts();
-}
-
-function ShowOld()
-{
 	options["old"] = document.getElementById("old").checked;
-	RecreatePosts();
-}
-
-function NotShowBot()
-{
 	options["botblock"] = document.getElementById("botblock").checked;
+
+	var input = document.getElementById("last");
+	var num = parseInt(input.value);
+	if(isNaN(num)) num = options["last"];
+	input.value = options["last"] = Math.min(Math.max(num, 1), 1000);
 	RecreatePosts();
 }
 
-function ChangeLast (value)
+
+function Decrease()
 {
-	options["last"] = value;
-	RecreatePosts ();
+	var input = document.getElementById("last");
+	input.value = options['last'] = Math.max(1, parseInt(input.value) - 1);
+	RecreatePosts();
+}
+
+function Increase()
+{
+	var input = document.getElementById("last");
+	input.value = options['last'] = Math.min(1000, parseInt(input.value) + 1);
+	RecreatePosts();
 }
 
 
-function CheckSize ()
-{
-	var input = document.getElementById ("last");
-	var value = parseInt (input.value);
-	if (value == "NaN")
-		input.value = last;
-	else
-	{
-		if (value < 4)
-			input.value = last = 4;
-		else if (value > 1000)
-			input.value = last = 1000;
-		else
-			input.value = last = value;
-
-		options["last"] = last;
-		RecreatePosts ();
-	}
-}
-
-function Decrease ()
-{
-	var input = document.getElementById ("last");
-	input.value = last = Math.max (4, parseInt (input.value) - 1);
-
-	options["last"] = last;
-	RecreatePosts ();
-}
-
-function Increase ()
-{
-	var input = document.getElementById ("last");
-	input.value = last = Math.min (24, parseInt (input.value) + 1);
-
-	options["last"] = last;
-	RecreatePosts ();
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// **************
+// *   Sender   *
+// **************
 
 var sendRequest;
 
@@ -472,4 +403,32 @@ function OnSenderResponse()
 	}
 
 	sendRequest = null;
+}
+
+
+
+// *****************
+// *   Sonstiges   *
+// *****************
+
+function SetStatus(text)
+{
+    document.getElementById("status").innerHTML = text;
+	var node = document.getElementById("messagearea");
+	node.scrollTop = node.scrollHeight;
+}
+
+function URIQueryParameters(params)
+{
+	var result = [];
+	for(var key in params)
+		result.push(encodeURIComponent(key) + "=" + encodeURIComponent(params[key]));
+	return result.join("&");
+}
+
+function HtmlEscape (text, links)
+{
+	text = text.replace (/&/g, "&amp;").replace (/</g, "&lt;").replace (/>/g, "&gt;").replace (/\"/g, "&quot;");
+	if (links) text = InsertLinks (text);
+	return text.replace (/\n/g, "<br>");
 }

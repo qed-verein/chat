@@ -81,15 +81,15 @@ function renderOptions()
 
 
 <div id="settingarea" class="box settings">
-	<input type="checkbox" id="ip" onclick="ShowIp()">IPs anzeigen
-	<input type="checkbox" id="delay" onclick="ShowDelay()">Delays anzeigen
-	<input type="checkbox" id="links" onclick="ShowLinks()">Links anzeigen
+	<input type="checkbox" id="ip" onclick="UpdateSettings()">IPs anzeigen
+	<input type="checkbox" id="delay" onclick="UpdateSettings()">Delays anzeigen
+	<input type="checkbox" id="links" onclick="UpdateSettings()">Links anzeigen
 	<br>
-	<input type="checkbox" id="botblock" onclick="NotShowBot()">Sinn anzeigen
+	<input type="checkbox" id="botblock" onclick="UpdateSettings()">Sinn anzeigen
 	<br>
-	<input type="checkbox" id="old" onclick="ShowOld()">Alle empf. Posts anzeigen, sonst
+	<input type="checkbox" id="old" onclick="UpdateSettings()">Alle empf. Posts anzeigen, sonst
 	<input type="button" onclick="Decrease()" value="<">
-	<input type="text" id="last" onchange="CheckSize()" size="2" value="24">
+	<input type="text" id="last" onchange="UpdateSettings()" size="2" value="24">
 	<input type="button" onclick="Increase()" value=">">
 </div>
 
