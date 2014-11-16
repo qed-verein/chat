@@ -61,6 +61,7 @@ function QueryForMessages()
 	uri = "../viewneu.php?" + URIQueryParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],
 	    version: version, type: 'json', feedback: 1});
+	alert(uri);
 	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
 	uri += "&random=" + (Math.random() * 1000000);
 
@@ -81,7 +82,7 @@ function OnReceiverResponse()
 		obj = JSON.parse(recvRequest.responseText.substring(textpos, end));
 		for(var key in obj)
 			obj[key] = decodeURIComponent(obj[key]);
-		alert(recvRequest.responseText.substring(textpos, end));
+
 		if(obj["type"] == "post")
 			ProcessPost(obj);
 		else if(obj["type"] == "error")
@@ -201,7 +202,6 @@ function ReceiverWatchdog()
 		recvAlive = false;
 	else
 	{
-		alert("Reconnect");
 		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
 		QueryForMessages();
 	}
