@@ -55,8 +55,6 @@
 		unset($_SESSION['userid']);
 	}
 	if (!empty($_SESSION['userid']) || !empty($_SESSION['anonym'])) {
-		//HACK für fcgi
-		$_GET['patient']=true;
 		unset($_GET['redirect']);
 
 		?>
