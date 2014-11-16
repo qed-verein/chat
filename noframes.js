@@ -92,9 +92,9 @@ function ServerResponse()
 		cursor = end + 1;
 	}
 	if(request.readyState == 4)
-		setStatus("Verbindung wurde geschlossen");
+		SetStatus("Verbindung wurde geschlossen");
 	if(request.readyState == 4 && reconnect)
-		setTimeout("QueryForMessages()", 10000);
+		SetTimeout("QueryForMessages()", 10000);
 }
 
 // Wird für jede ankommende Nachricht aufgerufen
@@ -532,7 +532,7 @@ function Send ()
 		if (generator)
 			content += "&key=" + GetKey (generator++);
 		sendRequest.send (content);
-		setTimeout ("OnTimeout (" + from + ")", timeWait);
+		SetTimeout ("OnTimeout (" + from + ")", timeWait);
 	}
 	else
 		SetStatus ("Dein alter Post wird noch gesendet ...");
