@@ -91,8 +91,6 @@ function ServerResponse()
 		SetStatus("");
 		cursor = end + 1;
 	}
-	if(request.readyState == 4)
-		SetStatus("Verbindung wurde geschlossen");
 	if(request.readyState == 4 && reconnect)
 		setTimeout("QueryForMessages()", 10000);
 }
