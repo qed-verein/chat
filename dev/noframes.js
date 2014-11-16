@@ -5,7 +5,7 @@ var cursor = 0;
 var reconnect = true;
 var posts = new Array();
 var position = -24;
-var options = new Object ();
+var options = new Object();
 
 
 var reconnect = true; /* reconnect after call of Disconnect ()? Set to false by SpawnError. */
@@ -37,6 +37,7 @@ function Init ()
 	options["name"] = "";
 	options["wait"] = 60;
 	options["channel"] = "";
+	userOptions();
 
 	InitReceiver();
 	InitLogs();

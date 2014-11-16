@@ -7,8 +7,7 @@ require_once("../common.php");
 function renderOptions()
 {
 	$html = "<script type='text/javascript'>\n";
-
-	$html .= "var options = new Object ();\n";
+	$html .= "function userOptions() {\n";
 	$html .= "options['channel'] = '" . ((isset ($_GET["channel"]))? rawurldecode (demagicalize_string ($_GET["channel"])) : "") . "';\n";
 	$html .= "options['redirect'] = '" . ((isset ($_GET["redirect"]) && 0 )? rawurlencode (demagicalize_string ($_GET["redirect"])) : URL_REDIRECT) . "';\n";
 	$html .= "options['laghack'] = " . ((isset ($_GET["laghack"])) ? "true" : "false") . ";\n";
@@ -33,6 +32,7 @@ function renderOptions()
 
 	if (SECURE_POSTS)
 		$html .= "options['generator'] = " . (SECURE_POSTS_GENERATOR_NUM_USES * get_key_generator ()) . ";\n";
+	$html .= "}\n";
 	$html .= "</script>\n";
 	return $html;
 }
