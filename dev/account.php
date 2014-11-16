@@ -14,10 +14,6 @@ if(isset($_REQUEST['login']))
 	$username = uriParamString('username');
 	$password = uriParamString('password');
 	$userId = userAuthenticate($username, $password);
-	echo $username;
-	echo $password;
-	echo sha1($username . $password);
-	echo $userId;
 
 	if(is_null($userId))
 		$errorMessage = "Logindaten sind nicht gültig";
