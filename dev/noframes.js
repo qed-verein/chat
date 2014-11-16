@@ -54,7 +54,7 @@ function ReceiverConnnect()
 {
 	textpos = 0;
 
-	timeout = setTimeout("ReceiverTimeout()", options['wait'] * 1000);
+	timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
 
 	uri = "../viewneu.php?" + URIQueryParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],
@@ -85,17 +85,17 @@ function OnReceiverResponse()
 			throw new Error(obj["description"], obj["file"], obj["line"]);
 		else if(obj["type"] != "ok")
 			throw new Error("Unbekannter Typ");
-
+		alert(recvRequest.responseText.substring(textpos, end));
 		SetStatus("");
 		textpos = end + 1;
 
 		clearTimeout(timeout);
-		timeout = setTimeout("ReceiverTimeout()", options['wait'] * 1000);
+		timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
 	}
 }
 
 // Wird aufgerufen, falls zu lange keine Antwort vom Server gekommen ist
-function ReceiverTimeout()
+function OnReceiverTimeout()
 {
 	ReceiverDisconnect();
 	SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
