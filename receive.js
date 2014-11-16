@@ -93,7 +93,7 @@ function ServerResponse()
 		cursor = end + 1;
 	}
 
-	if(request.readyState == 4)
+	if(request.readyState == 4 && options["patient"] == 1)
 		setTimeout("QueryForMessages()", options["wait"] * 1000);
 }
 
