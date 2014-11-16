@@ -37,7 +37,7 @@ function Init ()
 // *****************
 
 
-var recvAlive, recvRequest, position, textpos, posts, watchdog;
+var recvAlive, recvRequest, position, textpos, posts, timeout;
 
 function InitReceiver()
 {
@@ -45,27 +45,22 @@ function InitReceiver()
 	recvRequest = new XMLHttpRequest();
 	posts = Array();
 	position = -24;
-	QueryForMessages();
-
-	watchdog = setInterval("ReceiverWatchdog()", options["wait"] * 1000);
+	ReceiverConnnect();
 }
 
 
 // Schicke dem Server eine Anfrage, ob neue Nachrichten angekommen sind.
-function QueryForMessages()
+function ReceiverConnnect()
 {
-	recvRequest.onreadystatechange = null;
-	recvRequest.abort();
-
 	textpos = 0;
-	recvAlive = false;
+
+	timeout = setTimeout("ReceiverTimeout()", option['wait'] * 1000);
 
 	uri = "../viewneu.php?" + URIQueryParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],
 	    version: version, type: 'json', feedback: 1});
 	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
 	uri += "&random=" + (Math.random() * 1000000);
-
 	recvRequest.onreadystatechange = OnReceiverResponse;
 	recvRequest.open('GET', uri, true);
 	recvRequest.send();
@@ -93,8 +88,26 @@ function OnReceiverResponse()
 
 		SetStatus("");
 		textpos = end + 1;
-		recvAlive = true;
+
+		clearTimeout(timeout);
+		timeout = setTimeout("ReceiverTimeout()", option['wait'] * 1000);
 	}
+}
+
+// Wird aufgerufen, falls zu lange keine Antwort vom Server gekommen ist
+function ReceiverTimeout()
+{
+	ReceiverDisconnect();
+	SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
+	ReceiverConnnect();
+}
+
+// Schließe die Verbindung
+function ReceiverDisconnect()
+{
+	clearTimeout(timeout);
+	recvRequest.onreadystatechange = null;
+	recvRequest.abort();
 }
 
 // Wird für jede ankommende Nachricht aufgerufen
@@ -195,17 +208,6 @@ function RecreatePosts ()
 		CreatePost (posts[cursor]);
 }
 
-// Wird in einem regelmäßigen Intervall aufgerufen, um zu für prüfen, ob die Verbindung noch lebt
-function ReceiverWatchdog()
-{
-	if(recvAlive)
-		recvAlive = false;
-	else
-	{
-		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
-		QueryForMessages();
-	}
-}
 
 function ErrorHandler(description, filename, line)
 {
@@ -214,9 +216,7 @@ function ErrorHandler(description, filename, line)
 	message += "In Datei " + filename + ", Zeile " + line + ".<br>";
 	message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
 	SetStatus(message);
-	clearInterval(watchdog);
-	recvRequest.onreadystatechange = null;
-	recvRequest.abort();
+	ReceiverDisconnect();
 	return false;
 }
 
