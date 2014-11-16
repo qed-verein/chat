@@ -15,6 +15,7 @@ function Init()
 	request.onreadystatechange = ServerResponse;
 	request.open("GET", uri, true);
 	request.send();
+	setTimeout("request.abort()", 10000);
 }
 
 
