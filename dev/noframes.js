@@ -79,7 +79,7 @@ function ServerResponse()
     var end, obj;
     while((end = request.responseText.indexOf(";", cursor)) >= 0)
     {
-		obj = $.parseJSON(request.responseText.substring(cursor, end));
+		obj = JSON.parse(request.responseText.substring(cursor, end));
 
 		if(obj["type"] == "post")
 			ProcessPost(obj);
