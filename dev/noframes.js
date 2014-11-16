@@ -57,7 +57,7 @@ function InitReceiver()
 function QueryForMessages()
 {
 	cursor = 0;
-	uri = "viewneu.php?channel=" + options["channel"] +
+	uri = "../viewneu.php?channel=" + options["channel"] +
 		"&position=" + position + "&limit=" + options["limit"] +
 		"&version=" + version + "&type=json&feedback=1";
 	request.onreadystatechange = ServerResponse;
@@ -319,17 +319,17 @@ function RenewLinks ()
 		+ "&delay=" + (document.getElementById ("logDelay").checked ? 1 : 0)
 		+ "&links=" + (document.getElementById ("logLinks").checked ? 1 : 0);
 
-	document.getElementById ("lastHour").href = "history.php?from=-60" + parameters;
-	document.getElementById ("thisDay").href = "history.php?from=0_0" + parameters;
-	document.getElementById ("lastDay").href = "history.php?from=0_-24" + parameters;
-	document.getElementById ("threeDays").href = "history.php?from=0_-72" + parameters;
+	document.getElementById ("lastHour").href = "../history.php?from=-60" + parameters;
+	document.getElementById ("thisDay").href = "../history.php?from=0_0" + parameters;
+	document.getElementById ("lastDay").href = "../history.php?from=0_-24" + parameters;
+	document.getElementById ("threeDays").href = "../history.php?from=0_-72" + parameters;
 
-	document.getElementById ("last100").href = "history.php?last=100" + parameters;
-	document.getElementById ("last200").href = "history.php?last=200" + parameters;
-	document.getElementById ("last500").href = "history.php?last=500" + parameters;
-	document.getElementById ("last1000").href = "history.php?last=1000" + parameters;
+	document.getElementById ("last100").href = "../history.php?last=100" + parameters;
+	document.getElementById ("last200").href = "../history.php?last=200" + parameters;
+	document.getElementById ("last500").href = "../history.php?last=500" + parameters;
+	document.getElementById ("last1000").href = "../history.php?last=1000" + parameters;
 
-	document.getElementById ("log").href = "history.php?" + "from=" + GetDateString ("fr") + "&to=" + GetDateString ("to") + parameters;
+	document.getElementById ("log").href = "../history.php?" + "from=" + GetDateString ("fr") + "&to=" + GetDateString ("to") + parameters;
 }
 
 
@@ -520,7 +520,7 @@ function Send ()
 		SetStatus ("Sende Post ...");
 		sendRequest = new XMLHttpRequest();
 		sendRequest.onreadystatechange = StateChanged;
-		sendRequest.open ("POST", "post.php", true);
+		sendRequest.open ("POST", "../post.php", true);
 		sendRequest.setRequestHeader ("Content-Type", "application/x-www-form-urlencoded");
 		sendRequest.setRequestHeader ("Content-Encoding", "utf-8");
 		//%%user \neq bot
