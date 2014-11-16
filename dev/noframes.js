@@ -1,3 +1,4 @@
+var options = new Object();
 var version = "1413235752"; // muss in data ebenfalls geaendert werden
 
 var request;
@@ -5,10 +6,6 @@ var cursor = 0;
 var reconnect = true;
 var posts = new Array();
 var position = -24;
-var options = new Object();
-
-
-var reconnect = true; /* reconnect after call of Disconnect ()? Set to false by SpawnError. */
 
 function SetStatus (text)
 {
@@ -36,12 +33,11 @@ function Init ()
 
 	options["name"] = "";
 	options["wait"] = 60;
-	options["channel"] = "";
 	userOptions();
 
 	InitReceiver();
 	InitLogs();
-	InitHelp();
+	InitSettings();
 	InitSend();
 }
 
@@ -206,7 +202,6 @@ function ErrorHandler(description, filename, line)
 	message += "In Datei " + filename + ", Zeile " + line + ".<br>";
 	message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
 	SetStatus(message);
-	reconnect = false;
 	request.abort();
 	return false;
 }
@@ -363,7 +358,7 @@ function InitLogs()
 
 
 
-function InitHelp ()
+function InitSettings ()
 {
 	document.getElementById ("ip").checked = options["ip"];
 	document.getElementById ("delay").checked = options["delay"];
@@ -371,6 +366,7 @@ function InitHelp ()
 	document.getElementById ("old").checked = options["old"];
 	document.getElementById ("last").value = count = options["last"];
 	document.getElementById ("botblock").checked = options["botblock"];
+	RenewLinks();
 }
 
 function ShowIp ()
