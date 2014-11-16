@@ -262,7 +262,7 @@ if (empty($session_not_close))
 		mysql_query('SET NAMES "utf8"');
 		$pwhash = sha1($username . $password);
 
-		$sql = sprintf("SELECT id FROM user WHERE username='%s' password='%s'",
+		$sql = sprintf("SELECT id FROM user WHERE username='%s' AND password='%s'",
 			mysql_real_escape_string($username), mysql_real_escape_string($pwhash));
 		var_dump($sql);
 		$userid = @mysql_result(mysql_query($sql), 0, 0);
