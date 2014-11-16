@@ -477,9 +477,9 @@ function Send()
 
 	SetStatus("Sende Post ...");
 	sendRequest = new XMLHttpRequest();
-	sendRequest.timeout = 3000;
+	sendRequest.timeout = 10000;
 	sendRequest.onreadystatechange = OnSenderResponse;
-	sendRequest.ontimeout = OnSenderTimeout;
+	sendRequest.ontimeout = OnSenderResponse;
 	sendRequest.open("POST", "../post.php", true);
 	sendRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	sendRequest.setRequestHeader("Content-Encoding", "utf-8");
@@ -506,17 +506,10 @@ function OnSenderResponse()
 	}
 	else
 	{
-		SetStatus("Dein Post konnte nicht übertragen werden (" +
+		alert("Dein Post konnte nicht übertragen werden (" +
 			sendRequest.status + ", " + HtmlEscape(sendRequest.statusText) +
 			").<br>" + HtmlEscape(sendRequest.responseText));
 	}
 
-	sendRequest = null;
-}
-
-function OnSenderTimeout()
-{
-	SetStatus("Der Server antwortete nicht innerhalb von 10 Sekunden auf deine Postsendung.");
-	sendRequest.abort();
 	sendRequest = null;
 }
