@@ -92,6 +92,12 @@ function OnReceiverResponse()
 		clearTimeout(timeout);
 		timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
 	}
+
+	if(recvRequest.readyState == 4)
+	{
+		clearTimeout(timeout);
+		timeout = setTimeout("OnReceiverTimeout()", 2000);
+	}
 }
 
 // Wird aufgerufen, falls zu lange keine Antwort vom Server gekommen ist
