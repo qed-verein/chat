@@ -60,10 +60,10 @@ function QueryForMessages()
 	uri = "viewneu.php?channel=" + options["channel"] +
 		"&position=" + position + "&limit=" + options["limit"] +
 		"&version=" + version + "&type=json&feedback=1";
-
 	request.onreadystatechange = ServerResponse;
 	request.open('GET', uri, true);
 	request.send();
+	SetStatus("Frage neue Nachrichten vom Server ab.");
 }
 
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
