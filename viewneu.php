@@ -80,14 +80,14 @@ function waitForMessages()
       $write = NULL;
       $except = NULL;
       $errorline_of_select = __LINE__ + 1; /* TODO: HACK! */
-      if (false === ($num_changed_streams = stream_select($read, $write, $except, 5))) {
+      if (false === ($num_changed_streams = stream_select($read, $write, $except, 30))) {
 	// TODO: error.
       } else if ($num_changed_streams > 0) {
 	if(inotify_read($touchme) !== FALSE)
 	  return TRUE;
       } else {
 	$keepAlives++;
-	if ($keepAlives > 360) return FALSE;
+	if ($keepAlives > 120) return FALSE;
 	keepAlive();
       }
     }
@@ -98,7 +98,7 @@ function waitForMessages()
       $write = NULL;
       $except = array($sock);
       $errorline_of_select = __LINE__ + 1; /* TODO: HACK! */
-      if (false === ($num_changed_streams = stream_select($read, $write, $except, 5))) {
+      if (false === ($num_changed_streams = stream_select($read, $write, $except, 30))) {
 	echo("select_stream ging nicht");
 	exit(-1);
       } else if ($num_changed_streams > 0) {
@@ -108,7 +108,7 @@ function waitForMessages()
 	if(fread($sock, 1) !== FALSE) return TRUE;
       } else {
 	$keepAlives++;
-	if ($keepAlives > 360) return FALSE;
+	if ($keepAlives > 120) return FALSE;
 	keepAlive();
       }
     }
