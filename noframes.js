@@ -94,7 +94,7 @@ function ServerResponse()
 	if(request.readyState == 4)
 		SetStatus("Verbindung wurde geschlossen");
 	if(request.readyState == 4 && reconnect)
-		SetTimeout("QueryForMessages()", 10000);
+		setTimeout("QueryForMessages()", 10000);
 }
 
 // Wird für jede ankommende Nachricht aufgerufen
@@ -532,7 +532,7 @@ function Send ()
 		if (generator)
 			content += "&key=" + GetKey (generator++);
 		sendRequest.send (content);
-		SetTimeout ("OnTimeout (" + from + ")", timeWait);
+		setTimeout ("OnTimeout (" + from + ")", timeWait);
 	}
 	else
 		SetStatus ("Dein alter Post wird noch gesendet ...");
