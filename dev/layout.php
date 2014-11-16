@@ -46,4 +46,4 @@ function renderSimpleLayout($title, $content)
 	return $html;
 }
 
-?>;
+?>
