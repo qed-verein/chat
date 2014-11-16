@@ -69,6 +69,10 @@ function QueryForMessages()
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
 function ServerResponse()
 {
+	if(request.readyState == 1)
+		SetStatus("Verbindung wurde aufgebaut");
+	if(request.readyState == 2)
+		SetStatus("Anfrage wurde an den Server geschickt");
 	if(request.readyState < 3)
 		return;
 
