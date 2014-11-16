@@ -260,7 +260,7 @@ if (empty($session_not_close))
 		mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
 		mysql_select_db(SQL_DATABASE);
 		mysql_query('SET NAMES "utf8"');
-		$pwhash = sha1($username, $password);
+		$pwhash = sha1($username . $password);
 
 		$sql = sprintf("SELECT id FROM user WHERE username='%s' password='%s'",
 			mysql_real_escape_string($username), mysql_real_escape_string($pwhash));
