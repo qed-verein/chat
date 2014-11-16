@@ -85,7 +85,7 @@ function OnReceiverResponse()
 			throw new Error(obj["description"], obj["file"], obj["line"]);
 		else if(obj["type"] != "ok")
 			throw new Error("Unbekannter Typ");
-		alert(recvRequest.responseText.substring(textpos, end));
+
 		SetStatus("");
 		textpos = end + 1;
 
