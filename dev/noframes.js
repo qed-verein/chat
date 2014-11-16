@@ -197,6 +197,7 @@ function RecreatePosts ()
 
 function ReceiverWatchdog()
 {
+	alert(position);
 	if(recvAlive)
 		recvAlive = false;
 	else
@@ -407,8 +408,8 @@ function OnSenderResponse()
 	else
 	{
 		alert("Dein Post konnte nicht übertragen werden (" +
-			sendRequest.status + ", " + HtmlEscape(sendRequest.statusText) +
-			").<br>" + HtmlEscape(sendRequest.responseText));
+			sendRequest.status + ", '" + HtmlEscape(sendRequest.statusText) + "').<br>" +
+				HtmlEscape(sendRequest.responseText));
 	}
 
 	sendRequest = null;
