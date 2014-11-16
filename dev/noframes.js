@@ -96,10 +96,7 @@ function OnReceiverResponse()
 
 	// Beim ersten Versuch ohne Wartezeiten neu verbinden.
 	if(recvRequest.readyState == 4 && firstReconnect)
-	{
-		clearTimeout(timeout);
-		timeout = setTimeout("OnReceiverTimeout()", 500);
-	}
+		OnReceiverTimeout();
 }
 
 // Wird aufgerufen, falls zu lange keine Antwort vom Server gekommen ist
