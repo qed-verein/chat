@@ -1,9 +1,3 @@
-.box, .box input, .box textarea
-{
-	border: 1px #222 solid;
-	background-color: #666;
-}
-
 .box
 {
 	padding: 1em;

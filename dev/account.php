@@ -7,7 +7,7 @@ require_once('../common.php');
 require_once('layout.php');
 
 $errorMessage = null;
-$action = paramString('action', '');
+$action = uriParamString('action', '');
 
 if(isset($_REQUEST['login']))
 {
@@ -30,6 +30,6 @@ elseif(isset($_REQUEST['logout']))
 }
 
 $content = renderLoginForm($errorMessage);
-echo renderSimpleLayout('Login', $content);
+echo renderSimpleLayout("Login", $content);
 
 ?>

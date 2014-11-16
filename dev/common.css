@@ -2,9 +2,16 @@ body, input, textarea, frame
 {
 	background-color: #555555;
 	color: #cccccc;
-	font-family: Verdana,Arial;
+	font-family: sans-serif;
 	font-size: 9pt;
 }
+
+.box, .box input, .box textarea
+{
+	border: 1px #222 solid;
+	background-color: #666;
+}
+
 
 td.info, td.ip
 {
@@ -35,10 +42,12 @@ td.name
 	overflow: hidden;
 }
 
+/*
 table
 {
 	border-collapse: collapse;
 }
+*/
 
 td.text
 {
