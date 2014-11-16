@@ -68,7 +68,7 @@ if (isset ($_GET["feedback"]) && $_GET["feedback"])
 
 function waitForMessages()
 {
-  global $keepAliveCounter, $timeoutCounter, $messageCounter, $sock, $touchme, $limit, $errorline_of_select;
+  global $keepAliveCounter, $feedback, $messageCounter, $sock, $touchme, $limit, $errorline_of_select;
 
   if ($messageCounter >= $limit) return FALSE;
 
@@ -81,7 +81,7 @@ function waitForMessages()
       $write = NULL;
       $except = NULL;
       $errorline_of_select = __LINE__ + 1; /* TODO: HACK! */
-      if (false === ($num_changed_streams = stream_select($read, $write, $except, $feedback))) {
+      if (false === ($num_changed_streams = stream_select($read, $write, $except, $feedback + 1))) {
 	// TODO: error.
       } else if ($num_changed_streams > 0) {
 	if(inotify_read($touchme) !== FALSE)
@@ -99,7 +99,7 @@ function waitForMessages()
       $write = NULL;
       $except = array($sock);
       $errorline_of_select = __LINE__ + 1; /* TODO: HACK! */
-      if (false === ($num_changed_streams = stream_select($read, $write, $except, $feedback))) {
+      if (false === ($num_changed_streams = stream_select($read, $write, $except, $feedback + 1))) {
 	echo("select_stream ging nicht");
 	exit(-1);
       } else if ($num_changed_streams > 0) {
@@ -158,7 +158,6 @@ function waitForMessages()
 
 
 $keepAliveCounter = KEEP_ALIVE_NL_POLL_NUM - 1; //damit beim 1. Durchlauf gleich was gesendet wird
-$timeoutCounter = 0;
 $messageCounter = 0;
 
 do
