@@ -264,9 +264,7 @@ if (empty($session_not_close))
 
 		$sql = sprintf("SELECT id FROM user WHERE username='%s' AND password='%s'",
 			mysql_real_escape_string($username), mysql_real_escape_string($pwhash));
-		var_dump($sql);
 		$userid = @mysql_result(mysql_query($sql), 0, 0);
-		var_dump($userid);
 
 		if($userid)
 			return $userid;
@@ -300,6 +298,12 @@ if (empty($session_not_close))
 		}
 
 		return intval($_REQUEST[$name]);
+	}
+
+	function redirect($url)
+	{
+		header('Location: ' . $url);
+		exit;
 	}
 
 	function urlLogin() {return 'account.php?action=login';}
