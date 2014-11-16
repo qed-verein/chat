@@ -54,7 +54,7 @@ function ReceiverConnnect()
 {
 	textpos = 0;
 
-	timeout = setTimeout("ReceiverTimeout()", option['wait'] * 1000);
+	timeout = setTimeout("ReceiverTimeout()", options['wait'] * 1000);
 
 	uri = "../viewneu.php?" + URIQueryParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],
@@ -90,7 +90,7 @@ function OnReceiverResponse()
 		textpos = end + 1;
 
 		clearTimeout(timeout);
-		timeout = setTimeout("ReceiverTimeout()", option['wait'] * 1000);
+		timeout = setTimeout("ReceiverTimeout()", options['wait'] * 1000);
 	}
 }
 
