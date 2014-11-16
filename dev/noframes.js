@@ -81,7 +81,7 @@ function OnReceiverResponse()
 		obj = JSON.parse(recvRequest.responseText.substring(textpos, end));
 		for(var key in obj)
 			obj[key] = decodeURIComponent(obj[key]);
-		alert(position);
+		alert(recvRequest.responseText.substring(textpos, end));
 		if(obj["type"] == "post")
 			ProcessPost(obj);
 		else if(obj["type"] == "error")
