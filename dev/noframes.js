@@ -61,7 +61,6 @@ function QueryForMessages()
 	uri = "../viewneu.php?" + URIQueryParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],
 	    version: version, type: 'json', feedback: 1});
-	alert(uri);
 	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
 	uri += "&random=" + (Math.random() * 1000000);
 
@@ -102,6 +101,7 @@ function OnReceiverResponse()
 // Wird für jede ankommende Nachricht aufgerufen
 function ProcessPost(post)
 {
+	post['id'] = parseInt(post['id']);
 	if(post['id'] < position)
 		return;
 
