@@ -19,6 +19,8 @@ function Init ()
 	options["logLinks"] = 1;
 	options["target"] = "_blank";
 
+	options["patient"] = 0;
+
 	options["name"] = "";
 	options["wait"] = 60;
 	userOptions();
@@ -48,7 +50,8 @@ function InitReceiver()
 	QueryForMessages();
 
 	clearInterval(watchdog);
-	watchdog = setInterval("ReceiverWatchdog()", options["wait"] * 1000);
+	if(options['patient'] == 0)
+		watchdog = setInterval("ReceiverWatchdog()", options["wait"] * 1000);
 }
 
 
@@ -94,8 +97,8 @@ function OnReceiverResponse()
 		recvAlive = true;
 	}
 
-	//if(recvRequest.readyState == 4)
-		//setTimeout("QueryForMessages()", options["wait"] * 1000);
+	if(recvRequest.readyState == 4)
+		setTimeout("QueryForMessages()", 1000);
 }
 
 // Wird für jede ankommende Nachricht aufgerufen
@@ -203,6 +206,7 @@ function ReceiverWatchdog()
 	else
 	{
 		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
+		recvRequest.onreadystatechange = null;
 		QueryForMessages();
 	}
 }
