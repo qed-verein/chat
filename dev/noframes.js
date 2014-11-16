@@ -202,6 +202,7 @@ function ReceiverWatchdog()
 		recvAlive = false;
 	else
 	{
+		alert("Reconnect");
 		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
 		QueryForMessages();
 	}
