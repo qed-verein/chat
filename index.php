@@ -97,7 +97,7 @@
 		$sizeHelp1 = (isset ($_GET["sizeHelp1"]) ? demagicalize_string ($_GET["sizeHelp1"]) : "50%");
 		echo "\t\t\treturn options;\n";
 		echo "}\n";
-		echo "options = initOptions();\n";
+		echo "var options = initOptions();\n";
 		?>
 		</script>
 		<script type="text/javascript" src="index.js"></script>
