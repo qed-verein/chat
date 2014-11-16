@@ -24,6 +24,7 @@ $position = uriParamInteger('position', -1);
 $limit = uriParamInteger('limit', 256);
 $channel = uriParamString('channel', '');
 $version = uriParamString('version', '');
+$feedback = uriParamInteger('feedback', 60);
 
 output_header($type);
 output_prefix($type);
@@ -47,8 +48,8 @@ function ErrorHandler($number, $description, $file, $line)
 }
 
 function keepAlive() {
-    global $type;
-    output_feedback($type);
+    global $type, $feedback;
+    if($feedback > 0) output_feedback($type);
     flush();
 }
 
@@ -80,7 +81,7 @@ function waitForMessages()
       $write = NULL;
       $except = NULL;
       $errorline_of_select = __LINE__ + 1; /* TODO: HACK! */
-      if (false === ($num_changed_streams = stream_select($read, $write, $except, 5))) {
+      if (false === ($num_changed_streams = stream_select($read, $write, $except, $feedback))) {
 	// TODO: error.
       } else if ($num_changed_streams > 0) {
 	if(inotify_read($touchme) !== FALSE)
@@ -98,7 +99,7 @@ function waitForMessages()
       $write = NULL;
       $except = array($sock);
       $errorline_of_select = __LINE__ + 1; /* TODO: HACK! */
-      if (false === ($num_changed_streams = stream_select($read, $write, $except, 5))) {
+      if (false === ($num_changed_streams = stream_select($read, $write, $except, $feedback))) {
 	echo("select_stream ging nicht");
 	exit(-1);
       } else if ($num_changed_streams > 0) {
