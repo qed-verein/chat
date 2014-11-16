@@ -245,54 +245,6 @@ function HtmlEscape (text, links)
 
 }
 
-function ShowIp (value)
-{
-	options["ip"] = value;
-	RecreatePosts ();
-}
-
-function ShowDelay (value)
-{
-	options["delay"] = value;
-	RecreatePosts ();
-}
-
-function ShowLinks (value)
-{
-	options["links"] = value;
-	RecreatePosts ();
-}
-
-function NotShowBot (value)
-{
-	options["botblock"] = value;
-	RecreatePosts ();
-}
-
-function ShowOld (value)
-{
-	options["old"] = value;
-	RecreatePosts ();
-}
-
-function ChangeLast (value)
-{
-	options["last"] = value;
-	RecreatePosts ();
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -403,6 +355,13 @@ function NotShowBot()
 	options["botblock"] = document.getElementById("botblock").checked;
 	RecreatePosts();
 }
+
+function ChangeLast (value)
+{
+	options["last"] = value;
+	RecreatePosts ();
+}
+
 
 function CheckSize ()
 {
