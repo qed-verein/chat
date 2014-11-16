@@ -10,7 +10,6 @@ function renderOptions()
 	$html .= "function userOptions() {\n";
 	$html .= "options['channel'] = '" . ((isset ($_GET["channel"]))? rawurldecode (demagicalize_string ($_GET["channel"])) : "") . "';\n";
 	$html .= "options['redirect'] = '" . ((isset ($_GET["redirect"]) && 0 )? rawurlencode (demagicalize_string ($_GET["redirect"])) : URL_REDIRECT) . "';\n";
-	$html .= "options['laghack'] = " . ((isset ($_GET["laghack"])) ? "true" : "false") . ";\n";
 	$html .= "options['name'] = '" . (isset($_GET["name"])?$_GET["name"]:'') . "';\n";
 	$html .= "options['last'] = " . (isset ($_GET["last"]) ? max (4, min (24, intval ($_GET["last"]))) : 20) . ";\n";
 	$html .= "options['old'] = " . (isset ($_GET["old"]) ? intval ($_GET["old"]) : 0) . ";\n";
@@ -20,15 +19,11 @@ function renderOptions()
 	$html .= "options['logIp'] = " . (isset ($_GET["logIp"]) ? intval ($_GET["logIp"]) : 1) . ";\n";
 	$html .= "options['logDelay'] = " . (isset ($_GET["logDelay"]) ? intval ($_GET["logDelay"]) : 0) . ";\n";
 	$html .= "options['logLinks'] = " . (isset ($_GET["logLinks"]) ? intval ($_GET["logLinks"]) : 1) . ";\n";
-	$html .= "options['method'] = '" . (isset ($_GET["method"]) ? demagicalize_string ($_GET["method"]) : "detect") . "';\n";
+
 	$html .= "options['limit'] = '" . (isset ($_GET["limit"]) ? intval ($_GET["limit"]) : "256") . "';\n";
-	$html .= "options['patient'] = '" . (isset ($_GET["patient"]) ? intval ($_GET["patient"]) : 0) . "';\n";
 	$html .= "options['wait'] = '" . (isset ($_GET["wait"]) ? intval ($_GET["wait"]) : 10) . "';\n";
 	$html .= "options['target'] = '" . (isset ($_GET["target"]) ? demagicalize_string ($_GET["target"]) : "_blank") . "';\n";
 	$html .= "options['title'] = " . (isset ($_GET["title"]) ? intval ($_GET["title"]) : 1) . ";\n";
-	$html .= "options['css'] = '" . (isset ($_GET["css"]) ? htmlentities ($_GET["css"]) : "chat.css") . "';\n";
-	$html .= "options['unl33t'] = " . (isset ($_GET["unl33t"]) ? 1 : 0) . ";\n";
-	$html .= "options['urgent'] = " . (isset ($_GET["no_urgency"]) ? "false" : "true") . ";\n";
 
 	if (SECURE_POSTS)
 		$html .= "options['generator'] = " . (SECURE_POSTS_GENERATOR_NUM_USES * get_key_generator ()) . ";\n";

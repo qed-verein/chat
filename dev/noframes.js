@@ -7,12 +7,21 @@ var reconnect = true;
 var posts = new Array();
 var position = -24;
 
-function SetStatus (text)
+function SetStatus(text)
 {
-    document.getElementById ("status").innerHTML = text;
+    document.getElementById("status").innerHTML = text;
 	var node = document.getElementById("messagearea");
 	node.scrollTop = node.scrollHeight;
 }
+
+function URIQueryParameters(params)
+{
+	var result = [];
+	for(var key in params)
+		result.push(encodeURIComponent(key) + "=" + encodeURIComponent(params[key]));
+	return result.join("&");
+}
+
 
 function Init ()
 {
@@ -36,9 +45,10 @@ function Init ()
 	userOptions();
 
 	InitReceiver();
+	InitSender();
 	InitLogs();
 	InitSettings();
-	InitSend();
+
 }
 
 // Initialisiere das Skript
@@ -62,16 +72,11 @@ function QueryForMessages()
 	request.onreadystatechange = ServerResponse;
 	request.open('GET', uri, true);
 	request.send();
-	SetStatus("Frage neue Nachrichten vom Server ab.");
 }
 
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
 function ServerResponse()
 {
-	if(request.readyState == 1)
-		SetStatus("Verbindung wurde aufgebaut");
-	if(request.readyState == 2)
-		SetStatus("Anfrage wurde an den Server geschickt");
 	if(request.readyState < 3)
 		return;
 
@@ -198,7 +203,7 @@ function RecreatePosts ()
 function ErrorHandler(description, filename, line)
 {
 	message = "Ein Fehler trat auf:<br>";
-	message += HtmlEscape(description, false) + "<br>";
+	message += HtmlEscape(description) + "<br>";
 	message += "In Datei " + filename + ", Zeile " + line + ".<br>";
 	message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
 	SetStatus(message);
@@ -454,84 +459,64 @@ function Increase ()
 
 
 
-var sendRequest, channel, from = 0, timeWait, generator = 0;
+var sendRequest;
 
-function GetKey (gen)
+function InitSender()
 {
-	var genString = gen.toString (16);
-	while (genString.length != 8)
-		genString = "0" + genString;
-
-	var string = genString
-		+ parent.recv.document.getElementById ("display").name
-		+ document.getElementById ("hiddenHook")
-		+ document.title
-		+ parent.help.document.entity;
-	return genString + DoWhateverNeedToBeDone (string);
-}
-
-function InitSend ()
-{
-	timeWait = 6000 * options["wait"];
-	channel = options["channel"];
-	document.getElementById ("name").value = options["name"];
+	document.getElementById("name").value = options["name"];
 	sendRequest = null;
-
-	generator = options["generator"];
 }
 
-
-function StateChanged ()
+function Send()
 {
-	if (sendRequest.readyState == 4)
+	if(sendRequest != null)
 	{
-		if (sendRequest.status >= 200 && sendRequest.status < 300)
-		{
-			SetStatus ("");
-			var
-			message = document.getElementById ("message");
-			message.value = "";
-			message.focus ();
-		}
-		else
-			SetStatus ("Dein Post konnte nicht übertragen werden (" + sendRequest.status + ", " + sendRequest.statusText + ").<br>" + sendRequest.responseText);
-
-		sendRequest = null;
-		++from;
+		SetStatus("Dein alter Post wird noch gesendet ...");
+		return;
 	}
+
+	SetStatus("Sende Post ...");
+	sendRequest = new XMLHttpRequest();
+	sendRequest.timeout = 3000;
+	sendRequest.onreadystatechange = OnSenderResponse;
+	sendRequest.ontimeout = OnSenderTimeout;
+	sendRequest.open("POST", "../post.php", true);
+	sendRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	sendRequest.setRequestHeader("Content-Encoding", "utf-8");
+
+	uri = URIQueryParameters({
+	    channel: options["channel"],
+	    name: document.getElementById ("name").value,
+	    message: document.getElementById ("message").value,
+	    delay: position});
+	sendRequest.send(uri);
 }
 
-function OnTimeout (to)
-{
-	if (from == to)
-	{
-		SetStatus ("Der Server antwortete nicht innerhalb von " + (timeWait / 1000) + " Sekunden auf deine Postsendung.");
 
-		sendRequest.abort ();
-		sendRequest = null;
-	}
-}
-
-function Send ()
+function OnSenderResponse()
 {
-	if (sendRequest == null)
+	if(sendRequest.readyState != 4)
+		return;
+
+	if(sendRequest.status >= 200 && sendRequest.status < 300)
 	{
-		SetStatus ("Sende Post ...");
-		sendRequest = new XMLHttpRequest();
-		sendRequest.onreadystatechange = StateChanged;
-		sendRequest.open ("POST", "../post.php", true);
-		sendRequest.setRequestHeader ("Content-Type", "application/x-www-form-urlencoded");
-		sendRequest.setRequestHeader ("Content-Encoding", "utf-8");
-		//%%user \neq bot
-		//alert(options["channel"]);
-		var content =
-			"delay=" + position + "&channel=" + channel + "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value)+"&bottag=0";
-		if (generator)
-			content += "&key=" + GetKey (generator++);
-		sendRequest.send (content);
-		setTimeout ("OnTimeout (" + from + ")", timeWait);
+		SetStatus("");
+		document.getElementById("message").value = "";
+		document.getElementById("message").focus();
 	}
 	else
-		SetStatus ("Dein alter Post wird noch gesendet ...");
+	{
+		SetStatus("Dein Post konnte nicht übertragen werden (" +
+			sendRequest.status + ", " + HtmlEscape(sendRequest.statusText) +
+			").<br>" + HtmlEscape(sendRequest.responseText));
+	}
 
+	sendRequest = null;
+}
+
+function OnSenderTimeout()
+{
+	SetStatus("Der Server antwortete nicht innerhalb von 10 Sekunden auf deine Postsendung.");
+	sendRequest.abort();
+	sendRequest = null;
 }
