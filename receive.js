@@ -292,3 +292,13 @@ function ChangeLast (value)
 	options["last"] = value;
 	RecreatePosts ();
 }
+
+
+
+function URIQueryParameters(params)
+{
+	var result = [];
+	for(var key in params)
+		result.push(encodeURIComponent(key) + "=" + encodeURIComponent(params[key]));
+	return result.join("&");
+}
