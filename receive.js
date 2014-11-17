@@ -1,12 +1,5 @@
 var version = "1413235752"; // muss in data ebenfalls geaendert werden
-
-var request;
-var cursor = 0;
-var posts = new Array();
-var position = -24;
 var options;
-var watchdog, recvAlive;
-
 
 function SetStatus (text)
 {
@@ -35,76 +28,101 @@ function Init ()
 	}
 }
 
-// Initialisiere das Skript
-function InitRemote(opt)
+
+// *****************
+// *   Empfänger   *
+// *****************
+
+
+var firstReconnect, recvRequest, position, textpos, posts, timeout;
+
+function InitRemote (opt)
 {
 	options = opt;
-	window.onerror = ErrorHandler;
-	request = new XMLHttpRequest();
-	QueryForMessages();
 
-	watchdog = setInterval("ReceiverWatchdog()", options["wait"] * 1000);
+	window.onerror = ErrorHandler;
+	recvRequest = new XMLHttpRequest();
+	posts = Array();
+	position = -24;
+	ReceiverConnnect();
 }
 
 
 // Schicke dem Server eine Anfrage, ob neue Nachrichten angekommen sind.
-function QueryForMessages()
+function ReceiverConnnect()
 {
-	request.onreadystatechange = null;
-	request.abort();
+	textpos = 0;
+	firstReconnect = false;
+	timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
 
-	cursor = 0;
-	recvAlive = false;
-
-	uri = "viewneu.php?channel=" + options["channel"] +
-		"&position=" + position + "&limit=" + options["limit"] +
-		"&version=" + version + "&type=json&feedback=" + options["wait"] / 2;
+	uri = "../viewneu.php?" + URIQueryParameters({
+	    channel: options["channel"], position: position, limit: options["limit"],
+	    version: version, type: 'json', feedback: options["wait"] / 2});
 	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
 	uri += "&random=" + (Math.random() * 1000000);
-
-	request.onreadystatechange = ServerResponse;
-	request.open('GET', uri, true);
-	request.send();
+	recvRequest.onreadystatechange = OnReceiverResponse;
+	recvRequest.open('GET', uri, true);
+	recvRequest.send();
 }
 
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
-function ServerResponse()
+function OnReceiverResponse()
 {
-	if(request.readyState < 3)
+	if(recvRequest.readyState < 3)
 		return;
 
     var end, obj;
-    while((end = request.responseText.indexOf(";", cursor)) >= 0)
+    while((end = recvRequest.responseText.indexOf(";", textpos)) >= 0)
     {
-		obj = $.parseJSON(request.responseText.substring(cursor, end));
+		obj = JSON.parse(recvRequest.responseText.substring(textpos, end));
+		for(var key in obj)
+			obj[key] = decodeURIComponent(obj[key]);
 
 		if(obj["type"] == "post")
 			ProcessPost(obj);
-		else if(obj["type"] == "ok")
-			recvAlive = true;
 		else if(obj["type"] == "error")
 			throw new Error(obj["description"], obj["file"], obj["line"]);
-		else
-			throw new Error("Unknown Type");
+		else if(obj["type"] != "ok")
+			throw new Error("Unbekannter Typ");
 
 		SetStatus("");
-		cursor = end + 1;
+		textpos = end + 1;
+		firstReconnect = true;
+
+		clearTimeout(timeout);
+		timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
 	}
+
+	// Beim ersten Versuch ohne Wartezeiten neu verbinden.
+	if(recvRequest.readyState == 4 && firstReconnect)
+		OnReceiverTimeout();
+}
+
+// Wird aufgerufen, falls zu lange keine Antwort vom Server gekommen ist
+function OnReceiverTimeout()
+{
+	ReceiverDisconnect();
+	SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
+	ReceiverConnnect();
+}
+
+// Schließe die Verbindung
+function ReceiverDisconnect()
+{
+	clearTimeout(timeout);
+	recvRequest.onreadystatechange = null;
+	recvRequest.abort();
 }
 
 // Wird für jede ankommende Nachricht aufgerufen
 function ProcessPost(post)
 {
+	post['id'] = parseInt(post['id']);
 	if(post['id'] < position)
 		return;
 
 	position = post['id'] + 1;
-	post['name'] = decodeURIComponent(post['name']) + ((post['anonym'] == "1") ? " (anonym)" : "");
-	post['message'] = decodeURIComponent(post['message']);
 	posts.push(post);
-
-	if (parent != self)
-		parent.SetPosition (position);
 
 	if (!options["old"])
 	{
@@ -121,10 +139,8 @@ function ProcessPost(post)
 	CreatePost (post);
 
 	if (options["title"])
-		if (post["message"].length < 256)
-			top.document.title = post["message"];
-		else
-			top.document.title = post["message"].substr (0, 252) + "...";
+		top.document.title = (post["message"].length < 256) ? post["message"] :
+			top.document.title = post["message"].substr(0, 252) + "...";
 
 	SetStatus("");
 }
@@ -163,11 +179,11 @@ function CreatePost (post)
 	node.setAttribute ("class", "info");
 	tr.appendChild (node);
 
-        if (options["ip"])
-	    tr.appendChild (GetNodeIp (post));
+	if (options["ip"])
+		tr.appendChild (GetNodeIp (post));
 
-        node = document.createElement ("td");
-        node.innerHTML =  NickEscape (post["name"] + ":");
+	node = document.createElement ("td");
+	node.innerHTML =  NickEscape (post["name"] + ((post['anonym'] == "1") ? " (anonym)" : "") + ":");
 	node.setAttribute ("class", "name");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);
@@ -180,7 +196,8 @@ function CreatePost (post)
 
 	document.getElementById ("display").appendChild (tr);
 
-	scrollBy (0, 999999);
+	node = document.getElementById("messagearea");
+	node.scrollTop = node.scrollHeight;
 }
 
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
@@ -190,42 +207,27 @@ function RecreatePosts ()
 	while (display.hasChildNodes ())
 		display.removeChild (display.lastChild);
 
-	for (var cursor = (options["old"] ? 0 : Math.max (0, posts.length - options["last"])); cursor != posts.length; ++cursor)
+	var from = (options["old"] ? 0 : Math.max (0, posts.length - options["last"]));
+	for (var cursor = from; cursor != posts.length; ++cursor)
 		CreatePost (posts[cursor]);
 }
 
-// Wird in einem regelmäßigen Intervall aufgerufen, um zu für prüfen, ob die Verbindung noch lebt
-function ReceiverWatchdog()
-{
-	if(recvAlive)
-		recvAlive = false;
-	else
-	{
-		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
-		QueryForMessages();
-	}
-}
 
 function ErrorHandler(description, filename, line)
 {
 	message = "Ein Fehler trat auf:<br>";
-	message += HtmlEscape(description, false) + "<br>";
+	message += HtmlEscape(description) + "<br>";
 	message += "In Datei " + filename + ", Zeile " + line + ".<br>";
 	message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
 	SetStatus(message);
-	clearInterval(watchdog);
-	request.onreadystatechange = null;
-	request.abort();
+	ReceiverDisconnect();
 	return false;
 }
 
 function InsertLinks (text)
 {
 	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g,
-			     '<a rel="noreferrer" target="_blank" href="$1$2">$1$2</a>');
-    /*return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g,
-			     '<a rel="noreferrer" target="_blank" href=\'data:text/html;charset=utf-8, <html><meta http-equiv="refresh" content="0;URL=&#39;$1$2&#39;">$1$2</html>\'>$1$2</a>');*/
-
+		'<a rel="noreferrer" target="_blank" href="$1$2">$1$2</a>');
 }
 
 function GetNodeIp (post)
@@ -244,6 +246,8 @@ function NickEscape (text)
     }
     return ret;
 }
+
+
 
 function HtmlEscape (text, links)
 {
