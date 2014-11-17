@@ -123,7 +123,7 @@ function ProcessPost(post)
 
 	position = post['id'] + 1;
 	posts.push(post);
-	send.SetPosition(position);
+	bla.SetPosition(position);
 	if (!options["old"])
 	{
 		var display = document.getElementById ("display");
