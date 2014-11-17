@@ -5,7 +5,7 @@ var version = "1413235752"; // muss in data ebenfalls geaendert werden
 function Init ()
 {
 	defaults = {
-		channel: "", name: "Namenlos",
+		channel: "", name: "",
 		last: 24, botblock: 1, old: 0, ip: 0, delay: 0,	links: 1, title: 1, mobile: 1,
 		logIp: 1, logDelay: 0, logLinks: 1,	target: "_blank",
 		limit: 256,	wait: 60,
@@ -414,7 +414,8 @@ var sendRequest;
 
 function InitSender()
 {
-	document.getElementById("name").value = options["name"];
+	if(options['name'] != '')
+		document.getElementById("name").value = options["name"];
 	sendRequest = null;
 }
 
