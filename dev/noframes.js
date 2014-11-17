@@ -236,7 +236,10 @@ function FormatMobilePost(post)
 	info.setAttribute('class', 'info');
 	info.appendChild(document.createTextNode(post['date']));
 	if(options['ip'] == 1)
+	{
+		info.appendChild(document.createElement('br'));
 		info.appendChild(ip);
+	}
 	li.appendChild(info);
 
 	var message = document.createElement('span');
