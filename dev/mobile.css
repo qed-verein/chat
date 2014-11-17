@@ -60,7 +60,7 @@ li.post .name
 	overflow: hidden;
 }
 
-li.post .info
+li.post .info, li.post .ip
 {
 	position: relative;
 	float: right;
