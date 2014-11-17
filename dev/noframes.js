@@ -31,7 +31,7 @@ function Init ()
 		logIp: 1,
 		logDelay: 0,
 		logLinks: 1,
-		target: "_blank"
+		target: "_blank",
 
 		limit: 256,
 		wait: 60,
