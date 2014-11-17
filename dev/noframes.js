@@ -1,27 +1,47 @@
 var options = new Object();
 var version = "1413235752"; // muss in data ebenfalls geaendert werden
 
+
+/* Originally from http://papermashup.com/read-url-get-variables-withjavascript/, but adapted. */
+function getUriVariables() {
+	var vars = {}, k, v;
+	location.search.replace(/[?&]+([^=&]+)=([^&#]*)/gi, function(m,key,value) {
+		k = decodeURIComponent(key);
+		v = decodeURIComponent(value);
+		vars[k] = v;
+	});
+	return vars;
+}
+
 // Initialisiere das Skript
 function Init ()
 {
-	options["botblock"] = 1;
-	options["ip"] = 1;
-	options["delay"] = 0;
-	options["channel"] = "";
-	options["links"] = 1;
-	options["old"] = 1;
-	options["last"] = 20;
-	options["limit"] = 256;
-	options["title"] = 1;
+	defaults = {
+		channel: "",
+		name: "Namenlos",
 
-	options["logIp"] = 1;
-	options["logDelay"] = 0;
-	options["logLinks"] = 1;
-	options["target"] = "_blank";
+		last: 24,
+		botblock: 1,
+		old: 0,
+		ip: 0,
+		delay: 0,
+		links: 1,
+		title: 1,
 
-	options["name"] = "";
-	options["wait"] = 60;
-	userOptions();
+		logIp: 1,
+		logDelay: 0,
+		logLinks: 1,
+		target: "_blank"
+
+		limit: 256,
+		wait: 60,
+
+		redirect: "http://uxul.de/redirect.php?"
+	};
+
+	params = getUriVariables()
+	for(var key in obj)
+		options[key] = params.hasOwnProperty(key) ? params[key] : options[key];
 
 	InitReceiver();
 	InitSender();

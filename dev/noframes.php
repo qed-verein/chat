@@ -3,34 +3,6 @@ $ignore_no_login = true;
 $session_not_close = true;
 require_once("../data.php");
 require_once("../common.php");
-
-function renderOptions()
-{
-	$html = "<script type='text/javascript'>\n";
-	$html .= "function userOptions() {\n";
-	$html .= "options['channel'] = '" . ((isset ($_GET["channel"]))? rawurldecode (demagicalize_string ($_GET["channel"])) : "") . "';\n";
-	$html .= "options['redirect'] = '" . ((isset ($_GET["redirect"]) && 0 )? rawurlencode (demagicalize_string ($_GET["redirect"])) : URL_REDIRECT) . "';\n";
-	$html .= "options['name'] = '" . (isset($_GET["name"])?$_GET["name"]:'') . "';\n";
-	$html .= "options['last'] = " . (isset ($_GET["last"]) ? max (4, min (24, intval ($_GET["last"]))) : 20) . ";\n";
-	$html .= "options['old'] = " . (isset ($_GET["old"]) ? intval ($_GET["old"]) : 0) . ";\n";
-	$html .= "options['ip'] = " . (isset ($_GET["ip"]) ? intval ($_GET["ip"]) : 0) . ";\n";
-	$html .= "options['delay'] = " . (isset ($_GET["delay"]) ? intval ($_GET["delay"]) : 0) . ";\n";
-	$html .= "options['links'] = " . (isset ($_GET["links"]) ? intval ($_GET["links"]) : 1) . ";\n";
-	$html .= "options['logIp'] = " . (isset ($_GET["logIp"]) ? intval ($_GET["logIp"]) : 1) . ";\n";
-	$html .= "options['logDelay'] = " . (isset ($_GET["logDelay"]) ? intval ($_GET["logDelay"]) : 0) . ";\n";
-	$html .= "options['logLinks'] = " . (isset ($_GET["logLinks"]) ? intval ($_GET["logLinks"]) : 1) . ";\n";
-
-	$html .= "options['limit'] = '" . (isset ($_GET["limit"]) ? intval ($_GET["limit"]) : "256") . "';\n";
-	$html .= "options['wait'] = '" . (isset ($_GET["wait"]) ? intval ($_GET["wait"]) : 60) . "';\n";
-	$html .= "options['target'] = '" . (isset ($_GET["target"]) ? demagicalize_string ($_GET["target"]) : "_blank") . "';\n";
-	$html .= "options['title'] = " . (isset ($_GET["title"]) ? intval ($_GET["title"]) : 1) . ";\n";
-
-	if (SECURE_POSTS)
-		$html .= "options['generator'] = " . (SECURE_POSTS_GENERATOR_NUM_USES * get_key_generator ()) . ";\n";
-	$html .= "}\n";
-	$html .= "</script>\n";
-	return $html;
-}
 ?>
 
 <!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
@@ -43,7 +15,6 @@ function renderOptions()
 <link rel="stylesheet" type="text/css" href="screen.css" media="screen">
 <link rel="stylesheet" type="text/css" href="mobile.css" media="handheld">
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-<?php echo renderOptions(); ?>
 <script type="text/javascript" src="noframes.js"></script>
 <title>QED-Chat</title>
 </head>
