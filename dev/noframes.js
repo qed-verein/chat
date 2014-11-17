@@ -1,18 +1,6 @@
 var options = new Object();
 var version = "1413235752"; // muss in data ebenfalls geaendert werden
 
-
-/* Originally from http://papermashup.com/read-url-get-variables-withjavascript/, but adapted. */
-function getUriVariables() {
-	var vars = {}, k, v;
-	location.search.replace(/[?&]+([^=&]+)=([^&#]*)/gi, function(m,key,value) {
-		k = decodeURIComponent(key);
-		v = decodeURIComponent(value);
-		vars[k] = v;
-	});
-	return vars;
-}
-
 // Initialisiere das Skript
 function Init ()
 {
@@ -26,7 +14,7 @@ function Init ()
 
 	stringOptions = ['redirect', 'channel', 'name', 'target'];
 
-	params = getUriVariables()
+	params = URIDecodeParameters()
 	for(var key in defaults)
 	{
 		options[key] = params.hasOwnProperty(key) ? params[key] : defaults[key];
@@ -67,7 +55,7 @@ function ReceiverConnnect()
 	firstReconnect = false;
 	timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
 
-	uri = "../viewneu.php?" + URIQueryParameters({
+	uri = "../viewneu.php?" + URIEncodeParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],
 	    version: version, type: 'json', feedback: options["wait"] / 2});
 	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
@@ -403,7 +391,7 @@ function Send()
 	sendRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	sendRequest.setRequestHeader("Content-Encoding", "utf-8");
 
-	uri = URIQueryParameters({
+	uri = URIEncodeParameters({
 	    channel: options["channel"],
 	    name: document.getElementById ("name").value,
 	    message: document.getElementById ("message").value,
@@ -446,13 +434,27 @@ function SetStatus(text)
 	node.scrollTop = node.scrollHeight;
 }
 
-function URIQueryParameters(params)
+function URIEncodeParameters(params)
 {
 	var result = [];
 	for(var key in params)
 		result.push(encodeURIComponent(key) + "=" + encodeURIComponent(params[key]));
 	return result.join("&");
 }
+
+
+
+/* Originally from http://papermashup.com/read-url-get-variables-withjavascript/, but adapted. */
+function URIDecodeParameters() {
+	var vars = {}, k, v;
+	location.search.replace(/[?&]+([^=&]+)=([^&#]*)/gi, function(m,key,value) {
+		k = decodeURIComponent(key);
+		v = decodeURIComponent(value);
+		vars[k] = v;
+	});
+	return vars;
+}
+
 
 function HtmlEscape (text, links)
 {

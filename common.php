@@ -272,10 +272,9 @@ if (empty($session_not_close))
 			return null;
 	}
 
-	function userLoginCheck()
+	function userLoggedIn()
 	{
-		if(!isset($_SESSION['userid']))
-			die("Du musst dich erst einloggen");
+		return isset($_SESSION['userid']));
 	}
 
 	function uriParamString($name, $default = null)
