@@ -62,7 +62,6 @@ li.post .name
 
 li.post .info, li.post .ip
 {
-	position: relative;
 	float: right;
 	top: 0.5em;
 	color: gray;
