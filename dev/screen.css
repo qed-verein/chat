@@ -1,3 +1,76 @@
+body, input, textarea, frame
+{
+	background-color: #444;
+	color: #cccccc;
+	font-family: sans-serif;
+	font-size: 9pt;
+}
+
+.box, .box input, .box textarea
+{
+	border: 1px #222 solid;
+	background-color: #555;
+}
+
+
+td.info, td.ip
+{
+	border-top: thin dotted #dddddd;
+	border-bottom: thin dotted #dddddd;
+	border-right: thin dotted #888888;
+	border-width: 1px;
+	padding-left: 4px;
+	white-space: nowrap;
+	vertical-align: top;
+}
+
+td.info
+{
+	text-align: right;
+}
+
+td.ip
+{
+	text-align: center;
+}
+
+td.name
+{
+	font-weight: bold;
+	vertical-align: top;
+	max-width: 15em;
+	overflow: hidden;
+}
+
+#messagebox table
+{
+	border-collapse: collapse;
+}
+
+td.text
+{
+	vertical-align: top;
+}
+
+a:link
+{
+	color: #FFFFFF;
+}
+
+a:visited
+{
+	color: #000000;
+}
+
+
+
+
+
+
+
+
+
+
 .box
 {
 	padding: 1em;
@@ -15,7 +88,7 @@ body
 }
 
 
-#messagearea {
+#messagebox {
 	position: fixed;
 	left: 0%;
 	top: 0%;
@@ -25,7 +98,7 @@ body
 	overflow-y: scroll;
 }
 
-#inputarea {
+#inputbox {
 	position: fixed;
 	left: 0%;
 	height: 14.5em;
@@ -35,12 +108,12 @@ body
 }
 
 
-#inputarea table {
+#inputbox table {
 	width: 100%;
 }
 
 
-#settingarea {
+#settingbox {
 	position: fixed;
 	width: 45em;
 	height: 6em;
@@ -48,7 +121,7 @@ body
 	bottom: 8.5em;
 }
 
-#logarea {
+#logbox {
 	position: fixed;
 	width: 45em;
 	height: 6em;

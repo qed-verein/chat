@@ -6,7 +6,7 @@ function Init ()
 {
 	defaults = {
 		channel: "", name: "Namenlos",
-		last: 24, botblock: 1, old: 0, ip: 0, delay: 0,	links: 1, title: 1,
+		last: 24, botblock: 1, old: 0, ip: 0, delay: 0,	links: 1, title: 1, mobile: 1,
 		logIp: 1, logDelay: 0, logLinks: 1,	target: "_blank",
 		limit: 256,	wait: 60,
 		redirect: "http://uxul.de/redirect.php?"
@@ -136,7 +136,7 @@ function ProcessPost(post)
 		}
 	}
 
-	CreatePost (post);
+	CreatePost(post);
 
 	if (options["title"])
 		top.document.title = (post["message"].length < 256) ? post["message"] :
@@ -145,8 +145,24 @@ function ProcessPost(post)
 	SetStatus("");
 }
 
-// Zeige eine Nachricht im Chatfenster an
-function CreatePost (post)
+// Erstellt einen HTML-Knoten für diese Nachricht
+function CreatePost(post)
+{
+	var node;
+
+	if(options['mobile'] == 1)
+		node = FormatMobilePost(post);
+	else
+		node = FormatScreenPost(post);
+
+	document.getElementById("display").appendChild(node);
+
+	node = document.getElementById("display");
+	node.scrollTop = node.scrollHeight;
+}
+
+// Stellt eine Nachricht als HTML dar (Version für große Bildschrime)
+function FormatScreen(post)
 {
 	var tr = document.createElement ("tr");
 
@@ -194,10 +210,36 @@ function CreatePost (post)
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);
 
-	document.getElementById ("display").appendChild (tr);
+	return tr;
+}
 
-	node = document.getElementById("messagebox");
-	node.scrollTop = node.scrollHeight;
+// Stellt eine Nachricht als HTML dar (Version für kleine Bildschrime)
+function FormatMobilePost(post)
+{
+	var li = document.createElement('li');
+	li.setAttribute('id', 'post' + post['id']);
+	li.setAttribute('class', 'span');
+	li.setAttribute('style', 'color:#' + post['color']);
+
+	var name = document.createElement('span');
+	name.innerHTML = NickEscape(post["name"] + ((post['anonym'] == "1") ? " (anonym)" : "") + ":");
+	name.setAttribute('class', 'name');
+	li.appendChild(name);
+
+	var info = document.createElement('span');
+	info.setAttribute('class', 'info');
+	info.appendChild(document.createTextNode(post['date']));
+	li.appendChild(info);
+
+	if(options['ip'] == 1)
+		li.appendChild(GetNodeIp(post));
+
+	var message = document.createElement('span');
+	message.innerHTML = HtmlEscape(post['message'], options['links']);
+	message.setAttribute('class', 'message');
+	li.appendChild(message);
+
+	return li;
 }
 
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
@@ -432,7 +474,7 @@ function OnSenderError()
 function SetStatus(text)
 {
     document.getElementById("status").innerHTML = text;
-	var node = document.getElementById("messagebox");
+	var node = document.getElementById("display");
 	node.scrollTop = node.scrollHeight;
 }
 
