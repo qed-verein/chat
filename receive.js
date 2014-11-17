@@ -123,6 +123,8 @@ function ProcessPost(post)
 
 	position = post['id'] + 1;
 	posts.push(post);
+	if(parent != self)
+		parent.SetPosition(position)
 
 	if (!options["old"])
 	{
