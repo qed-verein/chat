@@ -24,9 +24,11 @@ function Init ()
 
 	InitReceiver();
 	InitSender();
-	InitLogs();
-	InitSettings();
-
+	if(options['mobile'] == 0)
+	{
+		InitLogs();
+		InitSettings();
+	}
 }
 
 
