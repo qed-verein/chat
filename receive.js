@@ -196,8 +196,7 @@ function CreatePost (post)
 
 	document.getElementById ("display").appendChild (tr);
 
-	node = document.getElementById("messagearea");
-	node.scrollTop = node.scrollHeight;
+    scrollBy (0, 999999);
 }
 
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
