@@ -17,31 +17,22 @@ function getUriVariables() {
 function Init ()
 {
 	defaults = {
-		channel: "",
-		name: "Namenlos",
-
-		last: 24,
-		botblock: 1,
-		old: 0,
-		ip: 0,
-		delay: 0,
-		links: 1,
-		title: 1,
-
-		logIp: 1,
-		logDelay: 0,
-		logLinks: 1,
-		target: "_blank",
-
-		limit: 256,
-		wait: 60,
-
+		channel: "", name: "Namenlos",
+		last: 24, botblock: 1, old: 0, ip: 0, delay: 0,	links: 1, title: 1,
+		logIp: 1, logDelay: 0, logLinks: 1,	target: "_blank",
+		limit: 256,	wait: 60,
 		redirect: "http://uxul.de/redirect.php?"
 	};
 
+	stringOptions = ['redirect', 'channel', 'name', 'target'];
+
 	params = getUriVariables()
-	for(var key in obj)
-		options[key] = params.hasOwnProperty(key) ? params[key] : options[key];
+	for(var key in defaults)
+	{
+		options[key] = params.hasOwnProperty(key) ? params[key] : defaults[key];
+		if(stringOptions.indexOf(key) < 0)
+			options[key] = parseInt(options[key]);
+	}
 
 	InitReceiver();
 	InitSender();
