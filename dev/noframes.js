@@ -229,7 +229,7 @@ function FormatMobilePost(post)
 	li.appendChild(name);
 
 	var ip = document.createElement('span');
-	ip.appendChild(document.createTextNode("[" + post['ip'] + "]");
+	ip.appendChild(document.createTextNode("[" + post['ip'] + "]"));
 	ip.setAttribute('class', 'ip');
 
 	var info = document.createElement('span');
