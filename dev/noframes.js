@@ -159,7 +159,7 @@ function CreatePost(post)
 
 	document.getElementById("display").appendChild(node);
 
-	node = document.getElementById("display").parent;
+	node = document.getElementById("messagebox");
 	node.scrollTop = node.scrollHeight;
 }
 
@@ -476,7 +476,7 @@ function OnSenderError()
 function SetStatus(text)
 {
     document.getElementById("status").innerHTML = text;
-	var node = document.getElementById("display").parent;
+	var node = document.getElementById("messagebox");
 	node.scrollTop = node.scrollHeight;
 }
 
