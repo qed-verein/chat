@@ -220,7 +220,7 @@ function FormatMobilePost(post)
 {
 	var li = document.createElement('li');
 	li.setAttribute('id', 'post' + post['id']);
-	li.setAttribute('class', 'span');
+	li.setAttribute('class', 'post');
 	li.setAttribute('style', 'color:#' + post['color']);
 
 	var name = document.createElement('span');
