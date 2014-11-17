@@ -60,9 +60,11 @@ li.post .name
 	overflow: hidden;
 }
 
-li.post .info, li.post .ip
+li.post .info
 {
+	margin-left: 1em;
 	float: right;
+	position: relative;
 	top: 0.5em;
 	color: gray;
 	font-size: xx-small;

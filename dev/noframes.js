@@ -164,7 +164,7 @@ function CreatePost(post)
 }
 
 // Stellt eine Nachricht als HTML dar (Version für große Bildschrime)
-function FormatScreen(post)
+function FormatScreenPost(post)
 {
 	var tr = document.createElement ("tr");
 
@@ -228,13 +228,16 @@ function FormatMobilePost(post)
 	name.setAttribute('class', 'name');
 	li.appendChild(name);
 
+	var ip = document.createElement('span');
+	ip.appendChild(document.createTextNode("[" + post['ip'] + "]");
+	ip.setAttribute('class', 'ip');
+
 	var info = document.createElement('span');
 	info.setAttribute('class', 'info');
 	info.appendChild(document.createTextNode(post['date']));
-	li.appendChild(info);
-
 	if(options['ip'] == 1)
-		li.appendChild(GetNodeIp(post));
+		info.appendChild(GetNodeIp(ip));
+	li.appendChild(info);
 
 	var message = document.createElement('span');
 	message.innerHTML = HtmlEscape(post['message'], options['links']);
