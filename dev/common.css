@@ -1,6 +1,6 @@
 body, input, textarea, frame
 {
-	background-color: #555555;
+	background-color: #444;
 	color: #cccccc;
 	font-family: sans-serif;
 	font-size: 9pt;
@@ -9,7 +9,7 @@ body, input, textarea, frame
 .box, .box input, .box textarea
 {
 	border: 1px #222 solid;
-	background-color: #666;
+	background-color: #555;
 }
 
 
