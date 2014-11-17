@@ -175,20 +175,7 @@ function FormatScreenPost(post)
 	}
 	if (options["delay"])
 	{
-		var delay;
-		var dif = post["id"] - post["delay"];
-		if (post["delay"] == "")
-			delay = "(?) ";
-		else if (dif == 0)
-			delay = "";
-		else if (dif < 0)
-			delay = "(x) ";
-		else if (dif <= 9)
-			delay = "(" + dif + ") ";
-		else
-			delay = "(9+) ";
-
-		info = delay + info;
+		info = DelayString(post) + info;
 	}
 
 	var node = document.createElement ("td");
@@ -228,18 +215,25 @@ function FormatMobilePost(post)
 	name.setAttribute('class', 'name');
 	li.appendChild(name);
 
+	var date = document.createElement('span');
+	date.setAttribute('class', 'date');
+	date.appendChild(document.createTextNode(post['date']));
+
 	var ip = document.createElement('span');
 	ip.appendChild(document.createTextNode("[" + post['ip'] + "]"));
 	ip.setAttribute('class', 'ip');
 
+	var delay = document.createElement('span');
+	delay.appendChild(document.createTextNode(DelayString(post)));
+	delay.setAttribute('class', 'delay');
+
 	var info = document.createElement('span');
 	info.setAttribute('class', 'info');
-	info.appendChild(document.createTextNode(post['date']));
+	info.appendChild(date);
 	if(options['ip'] == 1)
-	{
-		info.appendChild(document.createElement('br'));
 		info.appendChild(ip);
-	}
+	if(options['delay'] == 1)
+		info.appendChild(delay);
 	li.appendChild(info);
 
 	var message = document.createElement('span');
@@ -248,6 +242,23 @@ function FormatMobilePost(post)
 	li.appendChild(message);
 
 	return li;
+}
+
+function DelayString(post)
+{
+	var delay;
+	var dif = post["id"] - post["delay"];
+	if (post["delay"] == "")
+		delay = "(?) ";
+	else if (dif == 0)
+		delay = "";
+	else if (dif < 0)
+		delay = "(x) ";
+	else if (dif <= 9)
+		delay = "(" + dif + ") ";
+	else
+		delay = "(9+) ";
+	return delay;
 }
 
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)

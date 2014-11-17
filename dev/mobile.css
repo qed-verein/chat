@@ -62,13 +62,18 @@ li.post .name
 
 li.post .info
 {
-	margin-left: 1em;
 	float: right;
 	position: relative;
 	top: 0.5em;
 	color: gray;
 	font-size: xx-small;
 }
+
+li.post .ip, li.post .date, li.post .delay
+{
+	display: block;
+}
+
 
 li.post .message
 {
