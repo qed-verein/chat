@@ -306,11 +306,11 @@ if (empty($session_not_close))
 	}
 
 	function urlLogin() {
-		return 'account.php';}
+		return 'https://chat.qed-verein.de/dev/account.php';}
 	function urlLogout() {
-		return 'account.php?logout=1';}
+		return 'https://chat.qed-verein.de/dev/account.php?logout=1';}
 	function urlChat() {
-		return '../index.php';}
+		return 'https://chat.qed-verein.de/index.php';}
 
 
 ?>
