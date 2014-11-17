@@ -274,7 +274,7 @@ if (empty($session_not_close))
 
 	function userLoggedIn()
 	{
-		return isset($_SESSION['userid']));
+		return isset($_SESSION['userid']);
 	}
 
 	function uriParamString($name, $default = null)
