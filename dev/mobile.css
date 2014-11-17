@@ -1,43 +1,99 @@
-body, input, textarea, td, frame
+body
 {
-	background-color: #000000;
-	color: #cccccc;
-/*	font-family: Verdana,Arial;
-	font-size: 9pt; */
+	margin: 1em;
 }
 
-li.info, li.ip
+body, input, textarea
 {
-	border-top: thin dotted #dddddd;
-	border-bottom: thin dotted #dddddd;
-	border-right: thin dotted #888888;
-/*	border-width: 1px;
-	padding-left: 4px;
-	white-space: nowrap; */
-	vertical-align: top;
+	font-family: sans-serif;
+	font-size: 10pt;
+	color: #ccc;
+	background-color: #000;
 }
 
-li.info
+input, textarea
 {
-	text-align: right;
-	background-color: #cccccc;
-	color: #555555;
-	font-size: xx-small
+	border: 1px #444 solid;
 }
 
-li.ip
+.box
 {
-	text-align: center;
-}
-
-li.name
-{
-	font-weight: bold;
-	vertical-align: top;
+	background-color: #111;
+	border: 1px #444 solid;
+	padding: 1em;
+	margin: 1em auto;
 	overflow: hidden;
 }
 
-li.text
+
+
+ul#display
 {
-	vertical-align: top;
+	list-style-type: none;
+}
+
+li.post
+{
+	color: #C70;
+}
+
+li.post .name
+{
+	font-weight: bold;
+	overflow: hidden;
+}
+
+li.post .info
+{
+	position: relative;
+	float: right;
+	top: 0.5em;
+	color: gray;
+	font-size: xx-small;
+}
+
+li.post .message
+{
+	display: block;
+	margin-left: 1em;
+	margin-bottom: 0.3em;
+}
+
+
+#messagebox
+{
+	min-width: 15em;
+	overflow-y: auto;
+}
+
+#inputbox
+{
+	margin: auto;
+	min-width: 15em;
+	max-width: 50em;
+	text-align: center;
+}
+
+#message
+{
+	margin: 0.5em 0em;
+	width: 100%;
+}
+
+#name
+{
+	width: 100%;
+}
+
+#send
+{
+	cursor: pointer;
+}
+
+a:link {
+	color: #FFFFFF;
+}
+
+a:visited {
+	color: #000000;
 }

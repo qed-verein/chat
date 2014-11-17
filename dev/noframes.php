@@ -15,7 +15,9 @@ if(!userLoggedIn())
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link rel="stylesheet" type="text/css" href="common.css">
 <link rel="stylesheet" type="text/css" href="screen.css" media="screen">
+<!--
 <link rel="stylesheet" type="text/css" href="mobile.css" media="handheld">
+-->
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 <script type="text/javascript" src="noframes.js"></script>
 <title>QED-Chat</title>
@@ -23,7 +25,7 @@ if(!userLoggedIn())
 <body onload="Init()">
 
 
-<div id="messagearea" class="box">
+<div id="messagebox" class="box">
 
 <table>
 <tbody id="display">
@@ -35,7 +37,7 @@ if(!userLoggedIn())
 
 
 
-<div id="inputarea" class="box">
+<div id="inputbox" class="box">
 <table>
 	<tr>
 		<td><label for="name">Name:</label></td>
@@ -53,7 +55,7 @@ if(!userLoggedIn())
 
 
 
-<div id="settingarea" class="box settings">
+<div id="settingbox" class="box settings">
 	<input type="checkbox" id="ip" onclick="UpdateSettings()">IPs anzeigen
 	<input type="checkbox" id="delay" onclick="UpdateSettings()">Delays anzeigen
 	<input type="checkbox" id="links" onclick="UpdateSettings()">Links anzeigen
@@ -66,7 +68,7 @@ if(!userLoggedIn())
 	<input type="button" onclick="Increase()" value=">">
 </div>
 
-<div id="logarea" class="box settings" style="margin-top: 0px">
+<div id="logbox" class="box settings" style="margin-top: 0px">
 <div style="float: left">
 	<a id="lastHour">letzte Stunde</a><br>
 	<a id="thisDay">aktueller Tag</a><br>
