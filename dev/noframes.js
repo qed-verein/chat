@@ -22,13 +22,12 @@ function Init ()
 			options[key] = parseInt(options[key]);
 	}
 
+	options['mobile'] = 1; // Das andere ist grad in Bau
+
 	InitReceiver();
 	InitSender();
-	if(options['mobile'] == 0)
-	{
-		InitLogs();
-		InitSettings();
-	}
+	InitLogs();
+	InitSettings();
 }
 
 
