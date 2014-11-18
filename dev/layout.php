@@ -3,7 +3,7 @@
 
 function renderLoginForm($errorMessage = null)
 {
-	//$html = "<p style='margin: 1cm auto; width: 20cm'>\n";
+	//$html = "<p style='margin: 1cm auto; text-align: center'>\n";
 	//$html .= "<b>Regeln:</b> Die Nutzung des Chats verpflichtet zur Einhaltung geltenden Rechts ";
 	//$html .= "sowie der üblichen Netiquette. Bei Verstößen kann eine Sperrung des Zugangs erfolgen.\n";
 	//$html .= "</p>\n";
@@ -27,7 +27,7 @@ function renderLoginForm($errorMessage = null)
 	$html .= "</fieldset>\n";
 	$html .= "</form>\n";
 
-	$html .= "<p style='margin: 1cm auto; width: 20cm'>\n";
+	$html .= "<p style='margin: 1cm auto; text-align: center'>\n";
 	$html .= "<b>Hinweis:</b> Der Username und das Passwort ist dasselbe wie für die QED-Datenbank. <br />";
 	$html .= sprintf("Bei Problemen bitte an <a href='mailto:%s'>%s</a> schreiben.\n", htmlEscape(ADMIN_EMAIL),
 		htmlEscape(ADMIN_EMAIL));
