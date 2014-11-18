@@ -120,8 +120,9 @@ li.post .message
 .popup
 {
 	z-index: 1;
-	position: absolute;
-	right: 10px;
-	bottom: 10px;
+	position: fixed;
+	margin: 1em;
+	right: 0em;
+	bottom: 0em;
 	display: none;
 }
