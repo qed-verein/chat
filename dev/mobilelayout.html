@@ -18,9 +18,69 @@
 </div>
 
 <div id="inputbox" class="box">
-<input id="name" size="50" placeholder="Name">
-<textarea id="message" rows="3" cols="50" placeholder="Nachricht"></textarea>
-<input id="send" type="submit" value="Senden" onclick="Send()">
+	<input id="name" size="50" placeholder="Name">
+	<textarea id="message" rows="3" cols="50" placeholder="Nachricht"></textarea>
+	<input id="send" type="submit" value="Senden" onclick="Send()">
+	<div style="float: right">
+		<input type="button" value="Einstellen"
+			onclick="document.getElementById('settingbox').style.display = 'block'">
+		<input type="button" value="Logs"
+			onclick="document.getElementById('logbox').style.display = 'block'">
+	</div>
+</div>
+
+
+<div id="settingbox" class="box popup">
+	<input type="checkbox" id="ip" onclick="UpdateSettings()">IPs anzeigen<br>
+	<input type="checkbox" id="delay" onclick="UpdateSettings()">Delays anzeigen<br>
+	<input type="checkbox" id="links" onclick="UpdateSettings()">Links anzeigen<br>
+	<input type="checkbox" id="botblock" onclick="UpdateSettings()">Sinn anzeigen<br>
+	<input type="checkbox" id="old" onclick="UpdateSettings()">Alle empf. Posts anzeigen, <br>
+	sonst <input type="button" onclick="Decrease()" value="<">
+	<input type="text" id="last" onchange="UpdateSettings()" size="2" value="24">
+	<input type="button" onclick="Increase()" value=">">
+	<p style="text-align: center">
+		<input type="button" value="Schließen"
+			 onclick="document.getElementById('settingbox').style.display = 'none'">
+	</p>
+</div>
+
+<div id="logbox" class="box popup">
+	<div style="float: left">
+		<a id="lastHour">letzte Stunde</a><br>
+		<a id="thisDay">aktueller Tag</a><br>
+		<a id="lastDay">letzter Tag</a><br>
+		<a id="threeDays">letzte drei Tage</a>
+	</div>
+	<div style="float: left; margin-left: 2mm">
+		<a id="last100">letzte 100 Posts</a><br>
+		<a id="last200">letzte 200 Posts</a><br>
+		<a id="last500">letzte 500 Posts</a><br>
+		<a id="last1000">letzte 1000 Posts</a>
+	</div>
+	<div style="float: left; margin-left: 2mm">
+		<table><tr><td>von:</td><td>
+		<input type="text" id="frDay" onchange="RenewLinks()" size="2"> .
+		<input type="text" id="frMonth" onchange="RenewLinks()" size="2"> .
+		20<input type="text" id="frYear" onchange="RenewLinks()" size="2"> ,
+		<input type="text" id="frHour" onchange="RenewLinks()" size="2"> :
+		<input type="text" id="frMinute" onchange="RenewLinks()" size="2"></td>
+		<tr><td>bis:</td><td>
+		<input type="text" id="toDay" onchange="RenewLinks()" size="2"> .
+		<input type="text" id="toMonth" onchange="RenewLinks()" size="2"> .
+		20<input type="text" id="toYear" onchange="RenewLinks()" size="2"> ,
+		<input type="text" id="toHour" onchange="RenewLinks()" size="2"> :
+		<input type="text" id="toMinute" onchange="RenewLinks()" size="2"></td>
+		</tr></table>
+		<input type="checkbox" id="logIp" onclick="RenewLinks()">IPs
+		<input type="checkbox" id="logDelay" onclick="RenewLinks()">Delays
+		<input type="checkbox" id="logLinks" onclick="RenewLinks()">Links
+		<a style="margin-left: 2mm" id="log">Log anzeigen</a>
+	</div>
+	<div style="clear: both; text-align: center">
+		<input type="button" value="Schließen"
+			onclick="document.getElementById('logbox').style.display = 'none'">
+	</div>
 </div>
 
 </body>
