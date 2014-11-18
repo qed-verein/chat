@@ -45,8 +45,8 @@ a:visited
 	left: 0em;
 	right: 0em;
 	bottom: 0em;
-	height: 9em;
-	min-width: 10em;
+	height: 8em;
+	min-width: 20em;
 }
 
 
@@ -56,9 +56,9 @@ a:visited
 	position: absolute;
 	left: 0em;
 	right: 0em;
-	bottom: 11em;
+	bottom: 10em;
 	top: 0em;
-	min-width: 10em;
+	min-width: 20em;
 }
 
 
@@ -107,6 +107,7 @@ li.post .message
 {
 	margin: 0.5em 0em;
 	width: 98%;
+	overflow-x: hidden;
 	resize: none;
 }
 
