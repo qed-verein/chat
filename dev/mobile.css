@@ -14,12 +14,12 @@ input, textarea
 
 a:link
 {
-	color: #FFFFFF;
+	color: white;
 }
 
 a:visited
 {
-	color: #000000;
+	color: #484;
 }
 
 .box
