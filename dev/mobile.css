@@ -11,6 +11,13 @@ input, textarea
 	border: 1px #666 solid;
 }
 
+input[type=button]:hover {
+	border-color: darkred;
+	background-color: orange;
+	color: darkred;
+	cursor: pointer;
+}
+
 
 a:link
 {
@@ -105,10 +112,6 @@ li.post .message
 	width: 98%;
 }
 
-#send
-{
-	cursor: pointer;
-}
 
 .popup
 {
