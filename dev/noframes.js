@@ -424,7 +424,7 @@ function Increase()
 // *   Sender   *
 // **************
 
-var sendRequest;
+var sendRequest, sendTimeout;
 
 function InitSender()
 {
@@ -442,13 +442,13 @@ function Send()
 	}
 
 	SetStatus("Sende Post ...");
-	setTimeout("OnSenderError()", options["wait"] * 1000);
-
 	sendRequest = new XMLHttpRequest();
 	sendRequest.onreadystatechange = OnSenderResponse;
 	sendRequest.open("POST", "../post.php", true);
 	sendRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	sendRequest.setRequestHeader("Content-Encoding", "utf-8");
+
+	sendTimeout = setTimeout("OnSenderError()", options["wait"] * 1000);
 
 	uri = URIEncodeParameters({
 	    channel: options["channel"],
@@ -469,6 +469,7 @@ function OnSenderResponse()
 		SetStatus("");
 		document.getElementById("message").value = "";
 		document.getElementById("message").focus();
+		clearTimeout(sendTimeout);
 		sendRequest = null;
 	}
 	else OnSenderError();
