@@ -28,7 +28,8 @@ function renderLoginForm($errorMessage = null)
 	$html .= "</form>\n";
 
 	$html .= "<p style='margin: 1cm auto; text-align: center'>\n";
-	$html .= "<b>Hinweis:</b> Der Username und das Passwort ist dasselbe wie für die QED-Datenbank. <br />";
+	$html .= "<b>Hinweise:</b> Der Username und das Passwort ist dasselbe wie für die QED-Datenbank. <br>";
+	$html .= "Zum Benutzen des Chats muss JavaScript aktiviert sein.";
 	$html .= sprintf("Bei Problemen bitte an <a href='mailto:%s'>%s</a> schreiben.\n", htmlEscape(ADMIN_EMAIL),
 		htmlEscape(ADMIN_EMAIL));
 	$html .= "</p>\n";

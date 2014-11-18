@@ -23,8 +23,7 @@
 		<?php if ($mobile) {
 		       echo '<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>';
 		      }?>
-		<link rel="stylesheet" type="text/css" href="chat-mobile.css" media="handheld" />
-		<link rel="stylesheet" type="text/css" href="chat.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="chat.css" />
 
 <?php
 	if (!empty($_REQUEST['username']) && !empty($_REQUEST['password'])) {
