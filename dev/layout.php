@@ -27,7 +27,7 @@ function renderLoginForm($errorMessage = null)
 	$html .= "</fieldset>\n";
 	$html .= "</form>\n";
 
-	$html .= "<div style='margin: 1cm auto; text-align: center'>\n";
+	$html .= "<div style='margin: 1cm auto'>\n";
 	$html .= "<b>Hinweise:</b>\n";
 	$html .= "<ul>\n";
 	$html .= "<li>Der Username und das Passwort ist dasselbe wie für die QED-Datenbank.</li>\n";
