@@ -12,6 +12,7 @@ function jsonError($message, $file, $line)
 
 function jsonPost($post)
 {
+	echo $post['name'];
 	$post['type'] = 'post';
 	$post['color'] = get_color($post['name']);
 	return json_encode($post) . "\n";
@@ -32,7 +33,7 @@ set_exception_handler('ExceptionHandler');
 //{
     //throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 //}
-//set_error_handler('ErrorHandler');
+//set_error_handler('ErrorHandler', );
 
 function keepAliveSignal()
 {
@@ -53,10 +54,11 @@ function waitForMessages()
 	{
 		$read = array($touchme); $write = $except = NULL;
 		$changed = stream_select($read, $write, $except, 60);
-		if($changed === false) return false;
 		jsonAlive("A" . $changed . "-" . strftime("%X"));
-		if($changed > 0 && inotify_read($touchme) !== false) return true;
+		if($changed === false) return false;
 		jsonAlive("B" . $changed . "-" . strftime("%X"));
+		if($changed > 0 && inotify_read($touchme) !== false) return true;
+		jsonAlive("C" . $changed . "-" . strftime("%X"));
 		keepAliveSignal();
 	}
 
