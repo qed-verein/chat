@@ -93,7 +93,8 @@ function waitForMessages()
       } else {
 	$keepAlives++;
 	if ($keepAlives > 120) return FALSE;
-	//keepAlive();
+	echo "C";
+	keepAlive();
       }
     }
     break;
