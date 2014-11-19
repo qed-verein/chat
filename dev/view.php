@@ -25,6 +25,13 @@ function ExceptionHandler($e)
 {
 	echo jsonError($e->getMessage(), $e->getFile(), $e->getLine());
 }
+set_exception_handler('ExceptionHandler');
+
+function ErrorHandler($errno, $errstr, $errfile, $errline )
+{
+    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+}
+set_error_handler('ErrorHandler');
 
 function keepAliveSignal()
 {
@@ -77,7 +84,6 @@ if($position <= 0)
 
 
 
-set_exception_handler('ExceptionHandler');
 if($version != CHAT_VERSION)
 	throw new Exception("Der Chat-Client benützt eine ungültige Versionsnummer. Bitte Fenster neuladen.");
 
