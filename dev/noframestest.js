@@ -56,7 +56,7 @@ function ReceiverConnnect()
 
 	uri = "view.php?" + URIEncodeParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],
-	    version: version, keepalive: (options["wait"] + 1) / 2});
+	    version: version, keepalive: Math.ceil(options["wait"] / 2)});
 	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
 	uri += "&random=" + (Math.random() * 1000000);
 	recvRequest.onreadystatechange = OnReceiverResponse;
