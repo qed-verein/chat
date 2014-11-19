@@ -4,7 +4,6 @@ chdir("..");
 require_once('common.php');
 require_once('data.php');
 
-
 function jsonError($message, $file, $line)
 {
 	return json_encode(array('type' => 'error', 'description' => $message,
@@ -29,26 +28,25 @@ function ExceptionHandler($e)
 
 function waitForMessages()
 {
-	global $counter, $limit, $touchme, $feedback, $type;
+	global $counter, $limit, $touchme, $keepalive, $type;
 
 	if($counter >= $limit) return false;
 	for($time = 0; $time <= 300; ++$time)
 	{
+		if($keepalive > 0 && $time % $keepalive == 0)
+			echo jsonAlive();
 		$read = array($touchme); $write = $except = NULL;
 		$changed = stream_select($read, $write, $except, 1);
-		if($changed === false) throw new Exception('Fehler bei stream_select.');
+		if($changed === false) throw new Exception("Fehler bei stream_select.");
 		if($changed > 0) return true;
-		if($feedback > 0 && $time % $feedback == 0)
-			echo jsonAlive();
 	}
 }
-
 
 $position = uriParamInteger('position', -1);
 $limit = uriParamInteger('limit', 256);
 $channel = uriParamString('channel', '');
 $version = uriParamString('version', '');
-$feedback = uriParamInteger('feedback', 60);
+$keepalive = uriParamInteger('keepalive', 60);
 
 ignore_user_abort(false);
 $db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
@@ -71,8 +69,8 @@ if($version != CHAT_VERSION)
 	throw new Exception("Der Chat-Client benützt eine ungültige Versionsnummer. Bitte Fenster neuladen.");
 
 header('Content-Type: text/plain; charset=utf-8');
-if($feedback > 0) echo jsonAlive();
-$counter = 0;
+if($keepalive > 0) echo jsonAlive();
+$keepalive = 0;
 
 
 do
