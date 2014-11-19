@@ -60,7 +60,7 @@ function ExceptionHandler($e)
 	echo jsonError($e->getMessage(), $e->getFile(), $e->getLine());
 }
 
-ini_set('display_errors', '0');
+//ini_set('display_errors', '0');
 set_exception_handler('ExceptionHandler');
 
 $position = uriParamInteger('position', -1);
