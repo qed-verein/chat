@@ -45,7 +45,7 @@ function waitForMessages()
 	{
 		$read = array($touchme); $write = $except = NULL;
 		$timeout = $keepalive > 0 ? $keepalive : NULL;
-		$changed = stream_select($read, $write, $except, $timeout);
+		$changed = @stream_select($read, $write, $except, $timeout);
 		if($changed === false) return false;
 		if($changed > 0 && inotify_read($touchme) !== false) return true;
 		signalAlive();
@@ -60,7 +60,6 @@ function ExceptionHandler($e)
 	echo jsonError($e->getMessage(), $e->getFile(), $e->getLine());
 }
 
-//ini_set('display_errors', '0');
 set_exception_handler('ExceptionHandler');
 
 $position = uriParamInteger('position', -1);
