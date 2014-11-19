@@ -79,7 +79,7 @@ function waitForMessages()
       $read = array($touchme);
       $write = NULL;
       $except = NULL;
-      $timeout = 60;
+      $timeout = $feedback > 0 ? $feedback : 60;
       $errorline_of_select = __LINE__ + 1; /* TODO: HACK! */
       if (false === ($num_changed_streams = stream_select($read, $write, $except, $timeout))) {
 	// TODO: error.
