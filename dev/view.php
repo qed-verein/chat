@@ -12,6 +12,7 @@ function jsonError($message, $file, $line)
 
 function jsonPost($post)
 {
+	$post['type'] = 'post';
 	$post['color'] = get_color($post['name']);
 	return json_encode($post) . "\n";
 }
