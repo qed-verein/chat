@@ -38,8 +38,8 @@ function keepAliveSignal()
 }
 
 function waitForMessages()
-{-
-	global $counter, $limit, $touchme ;
+{
+	global $counter, $limit, $touchme, $seconds;
 
 	while(!connection_aborted())
 	{
