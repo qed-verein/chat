@@ -80,7 +80,10 @@ function waitForMessages()
       $except = NULL;
       $timeout = $feedback > 0 ? $feedback : 60;
       $errorline_of_select = __LINE__ + 1; /* TODO: HACK! */
-      if (false === ($num_changed_streams = stream_select($read, $write, $except, $timeout))) {
+      keepAlive();
+      $num_changed_streams = stream_select($read, $write, $except, $timeout);
+      keepAlive();
+      if (false === ($num_changed_streams)) {
 	// TODO: error.
       } else if ($num_changed_streams > 0) {
 	if(inotify_read($touchme) !== FALSE)
@@ -88,31 +91,10 @@ function waitForMessages()
       } else {
 	$keepAlives++;
 	if ($keepAlives > 120) return FALSE;
-	keepAlive();
+	//keepAlive();
       }
     }
     break;
-  case "socket":
-    while(!connection_aborted()) {
-      $read = array($sock);
-      $write = NULL;
-      $except = array($sock);
-      $timeout = $feedback == 0 || $feedback >= 30 ? 30 : $feedback;
-      $errorline_of_select = __LINE__ + 1; /* TODO: HACK! */
-      if (false === ($num_changed_streams = stream_select($read, $write, $except, $timeout))) {
-	echo("select_stream ging nicht");
-	exit(-1);
-      } else if ($num_changed_streams > 0) {
-	if (count($except) > 0) {
-	  return FALSE;
-	}
-	if(fread($sock, 1) !== FALSE) return TRUE;
-      } else {
-	$keepAlives++;
-	if ($keepAlives > 120) return FALSE;
-	keepAlive();
-      }
-    }
   }
 
   /* while(!connection_aborted()) */
