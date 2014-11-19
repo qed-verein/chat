@@ -28,9 +28,10 @@ function ExceptionHandler($e)
 
 function keepAliveSignal()
 {
-	global $time, $keepalive;
-	if($keepalive > 0 && $time % $keepalive == 0)
+	global $seconds, $keepalive;
+	if($keepalive > 0 && $seconds % $keepalive == 0)
 	{
+		++$seconds;
 		echo jsonAlive();
 		flush();
 	}
@@ -38,11 +39,10 @@ function keepAliveSignal()
 
 function waitForMessages()
 {
-	global $counter, $limit, $touchme;
+	global $counter, $limit, $touchme ;
 
 	while(!connection_aborted())
 	{
-		++$time;
 		$read = array($touchme); $write = $except = NULL;
 		$changed = stream_select($read, $write, $except, 1);
 		if($changed === false) throw new Exception("Fehler bei stream_select.");
@@ -80,7 +80,7 @@ if($version != CHAT_VERSION)
 
 header('Content-Type: text/plain; charset=utf-8');
 $counter = 0;
-$time = 0;
+$seconds = 0;
 
 keepAliveSignal();
 do
