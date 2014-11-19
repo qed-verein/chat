@@ -33,6 +33,7 @@ function ErrorHandler($errno, $errstr, $errfile, $errline)
     throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 }
 set_error_handler('ErrorHandler');
+ini_set('display_errors', '0');
 
 function keepAliveSignal()
 {
