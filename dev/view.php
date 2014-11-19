@@ -57,7 +57,7 @@ function waitForMessages()
 
 function ExceptionHandler($e)
 {
-	echo jsonError($e->getMessage(), $e->getFile(), $e->getLine());
+	die(jsonError($e->getMessage(), $e->getFile(), $e->getLine()));
 }
 
 set_exception_handler('ExceptionHandler');
