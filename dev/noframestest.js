@@ -79,7 +79,7 @@ function OnReceiverResponse()
 			ProcessPost(obj);
 		else if(obj["type"] == "error")
 			throw new Error(obj["description"], obj["file"], obj["line"]);
-		else if(obj["type"] != "ok")
+		else if(obj["type"] != "ok" && obj["type"] != "debug")
 			throw new Error("Unbekannter Typ");
 
 		SetStatus("");
