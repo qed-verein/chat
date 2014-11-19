@@ -38,7 +38,7 @@ function keepAliveSignal()
 }
 
 function waitForMessages()
-{
+{-
 	global $counter, $limit, $touchme ;
 
 	while(!connection_aborted())
@@ -47,7 +47,7 @@ function waitForMessages()
 		$read = array($touchme); $write = $except = NULL;
 		$changed = stream_select($read, $write, $except, 60);
 		if($changed === false) throw new Exception("Fehler bei stream_select.");
-		if($changed > 0) return true;
+		if($changed > 0 && inotify_read($touchme) !== false) return true;
 		keepAliveSignal();
 	}
 
@@ -64,6 +64,7 @@ $db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
 
 touch(TOUCH_FILE);
 $touchme = inotify_init();
+stream_set_blocking($touchme, false);
 inotify_add_watch($touchme, TOUCH_FILE, IN_ATTRIB);
 
 if($position <= 0)
