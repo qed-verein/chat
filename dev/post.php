@@ -41,14 +41,14 @@ $db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
 $sql = sprintf("INSERT INTO %s (name, message, channel, date, ip, user_id, delay, bottag)" .
 	"VALUES (:name, :message, :channel, :date, :ip, :user_id, :delay, :bottag)", SQL_TABLE);
 $stm = $db->prepare($sql);
-$stm->bindParameter(':name',    $post['name'],    PDO::PARAM_STR);
-$stm->bindParameter(':message', $post['message'], PDO::PARAM_STR);
-$stm->bindParameter(':channel', $post['channel'], PDO::PARAM_STR);
-$stm->bindParameter(':date',    $post['date'],    PDO::PARAM_STR);
-$stm->bindParameter(':ip',      $post['ip'],      PDO::PARAM_STR);
-$stm->bindParameter(':user_id', $post['userid'],  PDO::PARAM_INT);
-$stm->bindParameter(':delay',   $post['delay'],   PDO::PARAM_INT);
-$stm->bindParameter(':bottag',  $post['bottag'],  PDO::PARAM_BOOL);
+$stm->bindParam(':name',    $post['name'],    PDO::PARAM_STR);
+$stm->bindParam(':message', $post['message'], PDO::PARAM_STR);
+$stm->bindParam(':channel', $post['channel'], PDO::PARAM_STR);
+$stm->bindParam(':date',    $post['date'],    PDO::PARAM_STR);
+$stm->bindParam(':ip',      $post['ip'],      PDO::PARAM_STR);
+$stm->bindParam(':user_id', $post['userid'],  PDO::PARAM_INT);
+$stm->bindParam(':delay',   $post['delay'],   PDO::PARAM_INT);
+$stm->bindParam(':bottag',  $post['bottag'],  PDO::PARAM_BOOL);
 $stm->execute();
 $recorded = true;
 
