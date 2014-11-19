@@ -31,7 +31,7 @@ function renderLoginForm($errorMessage = null)
 	$html .= "<b>Hinweise:</b>\n";
 	$html .= "<ul style='margin-top: 0cm'>\n";
 	$html .= "<li>Der Username und das Passwort ist dasselbe wie für die ";
-	$html .= "<a href='https://qeddb.qed-verein.de/'>QED-Datenbank.</a></li>\n";
+	$html .= "<a href='https://qeddb.qed-verein.de/'>QED-Datenbank</a>.</li>\n";
 	$html .= "<li>Zum Benutzen des Chats muss JavaScript aktiviert sein.</li>\n";
 	$html .= sprintf("<li>Bei Problemen bitte an <a href='mailto:%s'>%s</a> schreiben.</li>\n",
 		htmlEscape(ADMIN_EMAIL), htmlEscape(ADMIN_EMAIL));
