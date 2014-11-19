@@ -17,9 +17,9 @@ function jsonPost($post)
 	return json_encode($post) . "\n";
 }
 
-function jsonAlive($seconds = 0)
+function jsonAlive()
 {
-	return json_encode(array('type' => 'ok', 'seconds' => $seconds)) . "\n";
+	return json_encode(array('type' => 'ok')) . "\n";
 }
 
 function ExceptionHandler($e)
@@ -41,7 +41,7 @@ function keepAliveSignal()
 	if($keepalive > 0 && $seconds % $keepalive == 0)
 	{
 		++$seconds;
-		echo jsonAlive($seconds);
+		echo jsonAlive();
 		flush();
 	}
 }
