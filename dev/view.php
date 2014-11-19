@@ -56,11 +56,11 @@ function waitForMessages()
 	{
 		$read = array($touchme); $write = $except = NULL;
 		$changed = stream_select($read, $write, $except, 60);
-		jsonAlive("A" . $changed . "-" . strftime("%X"));
+		echo jsonAlive("A" . $changed . "-" . strftime("%X"));
 		if($changed === false) return false;
-		jsonAlive("B" . $changed . "-" . strftime("%X"));
+		echo jsonAlive("B" . $changed . "-" . strftime("%X"));
 		if($changed > 0 && inotify_read($touchme) !== false) return true;
-		jsonAlive("C" . $changed . "-" . strftime("%X"));
+		echo jsonAlive("C" . $changed . "-" . strftime("%X"));
 		keepAliveSignal();
 	}
 
