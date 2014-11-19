@@ -70,7 +70,7 @@ if($version != CHAT_VERSION)
 
 header('Content-Type: text/plain; charset=utf-8');
 if($keepalive > 0) echo jsonAlive();
-$keepalive = 0;
+$counter = 0;
 
 
 do
