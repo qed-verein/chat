@@ -44,6 +44,7 @@ function waitForMessages()
 	while(!connection_aborted())
 	{
 		echo $seconds . "\n";
+		flush();
 		$read = array($touchme); $write = $except = NULL;
 		$changed = stream_select($read, $write, $except, 60);
 		if($changed === false) throw new Exception("Fehler bei stream_select.");
