@@ -86,14 +86,18 @@ function waitForMessages()
       echo "B";
       keepAlive();
       if (false === ($num_changed_streams)) {
+		echo "Error";
+      keepAlive();
 	// TODO: error.
       } else if ($num_changed_streams > 0) {
+		echo "C";
+      keepAlive();
 	if(inotify_read($touchme) !== FALSE)
 	  return TRUE;
       } else {
 	$keepAlives++;
 	if ($keepAlives > 120) return FALSE;
-	echo "C";
+	echo "D";
 	keepAlive();
       }
     }
