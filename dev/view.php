@@ -4,6 +4,7 @@ chdir("..");
 require_once('common.php');
 require_once('data.php');
 
+
 function jsonError($message, $file, $line)
 {
 	return json_encode(array('type' => 'error', 'description' => $message,
@@ -60,7 +61,6 @@ if($position <= 0)
 {
 	$sqlNextId = sprintf("SELECT id + 1 FROM %s WHERE channel = %s ORDER BY id DESC LIMIT %d, 1",
 		SQL_TABLE, $db->quote($channel), -$position);
-	echo $sqlNextId;
 	$position = $db->query($sqlNextId)->fetchColumn();
 }
 
