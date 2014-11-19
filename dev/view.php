@@ -72,7 +72,7 @@ $version = uriParamString('version', '');
 $keepalive = uriParamInteger('keepalive', 60);
 
 $db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD,
-	array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'; SET CHARACTER SET 'UTF8'"));
+	array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"));
 
 touch(TOUCH_FILE);
 $touchme = inotify_init();
