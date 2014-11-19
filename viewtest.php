@@ -80,8 +80,10 @@ function waitForMessages()
       $except = NULL;
       $timeout = $feedback > 0 ? $feedback : 60;
       $errorline_of_select = __LINE__ + 1; /* TODO: HACK! */
+      echo "A";
       keepAlive();
       $num_changed_streams = stream_select($read, $write, $except, $timeout);
+      echo "B";
       keepAlive();
       if (false === ($num_changed_streams)) {
 	// TODO: error.
