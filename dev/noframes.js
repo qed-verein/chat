@@ -54,9 +54,9 @@ function ReceiverConnnect()
 	firstReconnect = false;
 	timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
 
-	uri = "../viewneu.php?" + URIEncodeParameters({
+	uri = "view.php?" + URIEncodeParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],
-	    version: version, type: 'json', feedback: options["wait"] / 2});
+	    version: version, keepalive: Math.ceil(options["wait"] / 2)});
 	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
 	uri += "&random=" + (Math.random() * 1000000);
 	recvRequest.onreadystatechange = OnReceiverResponse;
@@ -71,17 +71,15 @@ function OnReceiverResponse()
 		return;
 
     var end, obj;
-    while((end = recvRequest.responseText.indexOf(";", textpos)) >= 0)
+    while((end = recvRequest.responseText.indexOf("\n", textpos)) >= 0)
     {
 		obj = JSON.parse(recvRequest.responseText.substring(textpos, end));
-		for(var key in obj)
-			obj[key] = decodeURIComponent(obj[key]);
 
 		if(obj["type"] == "post")
 			ProcessPost(obj);
 		else if(obj["type"] == "error")
 			throw new Error(obj["description"], obj["file"], obj["line"]);
-		else if(obj["type"] != "ok")
+		else if(obj["type"] != "ok" && obj["type"] != "debug")
 			throw new Error("Unbekannter Typ");
 
 		SetStatus("");
