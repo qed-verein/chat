@@ -16,9 +16,9 @@ function jsonPost($post)
 	return json_encode($post) . "\n";
 }
 
-function jsonAlive()
+function jsonAlive($seconds = 0)
 {
-	return json_encode(array('type' => 'ok')) . "\n";
+	return json_encode(array('type' => 'ok', 'seconds' => $seconds)) . "\n";
 }
 
 function ExceptionHandler($e)
@@ -32,7 +32,7 @@ function keepAliveSignal()
 	if($keepalive > 0 && $seconds % $keepalive == 0)
 	{
 		++$seconds;
-		echo jsonAlive();
+		echo jsonAlive($seconds);
 		flush();
 	}
 }
@@ -43,12 +43,12 @@ function waitForMessages()
 
 	while(!connection_aborted())
 	{
-		echo $seconds . "\n";
-		flush();
 		$read = array($touchme); $write = $except = NULL;
 		$changed = stream_select($read, $write, $except, 60);
 		if($changed === false) throw new Exception("Fehler bei stream_select.");
+		jsonAlive("A");
 		if($changed > 0 && inotify_read($touchme) !== false) return true;
+		jsonAlive("B");
 		keepAliveSignal();
 	}
 
