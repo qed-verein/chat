@@ -74,7 +74,7 @@ function OnReceiverResponse()
     while((end = recvRequest.responseText.indexOf("\n", textpos)) >= 0)
     {
 		obj = JSON.parse(recvRequest.responseText.substring(textpos, end));
-		alert(obj["type"]);
+		alert(recvRequest.responseText.substring(textpos, end));
 
 		if(obj["type"] == "post")
 			ProcessPost(obj);
