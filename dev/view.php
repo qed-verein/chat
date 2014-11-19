@@ -28,11 +28,11 @@ function ExceptionHandler($e)
 }
 set_exception_handler('ExceptionHandler');
 
-function ErrorHandler($errno, $errstr, $errfile, $errline )
-{
-    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-}
-set_error_handler('ErrorHandler');
+//function ErrorHandler($errno, $errstr, $errfile, $errline)
+//{
+    //throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+//}
+//set_error_handler('ErrorHandler');
 
 function keepAliveSignal()
 {
@@ -52,7 +52,7 @@ function waitForMessages()
 	while(!connection_aborted())
 	{
 		$read = array($touchme); $write = $except = NULL;
-		$changed = stream_select($read, $write, $except, 1);
+		$changed = stream_select($read, $write, $except, 60);
 		if($changed === false) return false;
 		jsonAlive("A" . $changed . "-" . strftime("%X"));
 		if($changed > 0 && inotify_read($touchme) !== false) return true;
