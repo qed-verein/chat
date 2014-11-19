@@ -22,6 +22,7 @@ function jsonAlive()
 	return json_encode(array('type' => 'ok')) . "\n";
 }
 
+// Sende dem JavaScript ein Lebenszeichen
 function signalAlive()
 {
 	global $keepalive;
@@ -32,9 +33,10 @@ function signalAlive()
 	}
 }
 
+// Warte bis jemand neue Nachrichten versendet
 function waitForMessages()
 {
-	global $counter, $limit, $touchme;
+	global $counter, $limit, $touchme, $keepalive;
 
 	if($counter == $limit)
 		return false;
@@ -67,6 +69,9 @@ $channel = uriParamString('channel', '');
 $version = uriParamString('version', '');
 $keepalive = uriParamInteger('keepalive', 60);
 
+if($version != CHAT_VERSION)
+	throw new Exception("Der Chat-Client besitzt eine ungültige Versionsnummer.");
+
 $db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
 
 if(!file_exists(TOUCH_FILE)) touch(TOUCH_FILE);
@@ -80,9 +85,6 @@ if($position <= 0)
 		SQL_TABLE, $db->quote($channel), -$position);
 	$position = $db->query($sqlNextId)->fetchColumn();
 }
-
-if($version != CHAT_VERSION)
-	throw new Exception("Der Chat-Client benützt eine ungültige Versionsnummer. Bitte Fenster neuladen.");
 
 header('Content-Type: text/plain; charset=utf-8');
 $counter = 0;
