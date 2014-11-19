@@ -6,7 +6,7 @@ require_once('../common.php');
 if(!userLoggedIn())
 	redirect(urlLogin());
 if(!isset($_GET['mobile']) || $_GET['mobile'] == 1)
-	readfile('mobilelayout.html');
+	readfile('mobilelayoutmustertest.html');
 else
 	readfile('screenlayout.html');
 ?>
