@@ -26,20 +26,31 @@ function ExceptionHandler($e)
 	echo jsonError($e->getMessage(), $e->getFile(), $e->getLine());
 }
 
+function keepAliveSignal()
+{
+	global $time, $keepalive;
+	if($keepalive > 0 && $time % $keepalive == 0)
+	{
+		echo jsonAlive();
+		flush();
+	}
+}
+
 function waitForMessages()
 {
-	global $counter, $limit, $touchme, $keepalive, $type;
+	global $counter, $limit, $touchme;
 
-	if($counter >= $limit) return false;
-	for($time = 0; $time <= 300; ++$time)
+	while(!connection_aborted())
 	{
-		if($keepalive > 0 && $time % $keepalive == 0)
-			echo jsonAlive();
+		++$time;
 		$read = array($touchme); $write = $except = NULL;
 		$changed = stream_select($read, $write, $except, 1);
 		if($changed === false) throw new Exception("Fehler bei stream_select.");
 		if($changed > 0) return true;
+		keepAliveSignal();
 	}
+
+	return false;
 }
 
 $position = uriParamInteger('position', -1);
@@ -48,7 +59,6 @@ $channel = uriParamString('channel', '');
 $version = uriParamString('version', '');
 $keepalive = uriParamInteger('keepalive', 60);
 
-ignore_user_abort(false);
 $db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
 
 touch(TOUCH_FILE);
@@ -69,10 +79,10 @@ if($version != CHAT_VERSION)
 	throw new Exception("Der Chat-Client benützt eine ungültige Versionsnummer. Bitte Fenster neuladen.");
 
 header('Content-Type: text/plain; charset=utf-8');
-if($keepalive > 0) echo jsonAlive();
 $counter = 0;
+$time = 0;
 
-
+keepAliveSignal();
 do
 {
 	$sql = sprintf("SELECT * FROM %s WHERE id >= %d AND channel = %s LIMIT 0, %d",
