@@ -7,7 +7,8 @@
     define ("SQL_PASSWORD", "spa!spa123"); // user password
     define ("SQL_DATABASE", "spam"); // database name  (if changed init.php has to be called)
     define ("SQL_TABLE", "content2"); // name of table to be used (if changed init.php has to be called)
-    define('SQL_DSN', 'mysql:host=127.0.0.1;port=3306;dbname=spam;charset=UTF8'); // PDO Data Source Name
+    define('SQL_DSN', 'mysql:host=127.0.0.1;port=3306;dbname=spam'); // PDO Data Source Name
+
     define ("OLD_SQL_TABLE", "content");
 
     // CSS, der sich nicht entscheiden kann
