@@ -49,6 +49,9 @@ function waitForMessages()
 {
 	global $counter, $limit, $touchme, $seconds;
 
+	if($counter == $limit)
+		return false;
+
 	while(!connection_aborted())
 	{
 		$read = array($touchme); $write = $except = NULL;
