@@ -62,8 +62,7 @@ if($position <= 0)
 	$position = mysql_fetch_array(mysql_query($sqlNextId))[0];
 }
 
-if (isset ($_GET["feedback"]) && $_GET["feedback"])
-	output_feedback ($type);
+keepAlive();
 
 function waitForMessages()
 {
