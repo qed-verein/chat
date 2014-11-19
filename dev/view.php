@@ -46,9 +46,9 @@ function waitForMessages()
 		$read = array($touchme); $write = $except = NULL;
 		$changed = stream_select($read, $write, $except, 60);
 		if($changed === false) throw new Exception("Fehler bei stream_select.");
-		jsonAlive("A");
+		jsonAlive("A" . $changed);
 		if($changed > 0 && inotify_read($touchme) !== false) return true;
-		jsonAlive("B");
+		jsonAlive("B" . $changed);
 		keepAliveSignal();
 	}
 
