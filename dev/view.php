@@ -4,12 +4,6 @@ chdir("..");
 require_once('common.php');
 require_once('data.php');
 
-function jsonError($message, $file, $line)
-{
-	return json_encode(array('type' => 'error', 'description' => $message,
-		'file' => $file, 'line' => $line)) . "\n";
-}
-
 function jsonPost($post)
 {
 	$post['type'] = 'post';
@@ -17,30 +11,22 @@ function jsonPost($post)
 	return json_encode($post) . "\n";
 }
 
+function jsonError($message, $file, $line)
+{
+	return json_encode(array('type' => 'error', 'description' => $message,
+		'file' => $file, 'line' => $line)) . "\n";
+}
+
 function jsonAlive()
 {
 	return json_encode(array('type' => 'ok')) . "\n";
 }
 
-function ExceptionHandler($e)
+function signalAlive()
 {
-	echo jsonError($e->getMessage(), $e->getFile(), $e->getLine());
-}
-set_exception_handler('ExceptionHandler');
-
-function ErrorHandler($errno, $errstr, $errfile, $errline)
-{
-    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-}
-set_error_handler('ErrorHandler');
-ini_set('display_errors', '0');
-
-function keepAliveSignal()
-{
-	global $seconds, $keepalive;
-	if($keepalive > 0 && $seconds % $keepalive == 0)
+	global $keepalive;
+	if($keepalive != 0)
 	{
-		++$seconds;
 		echo jsonAlive();
 		flush();
 	}
@@ -48,7 +34,7 @@ function keepAliveSignal()
 
 function waitForMessages()
 {
-	global $counter, $limit, $touchme, $seconds;
+	global $counter, $limit, $touchme;
 
 	if($counter == $limit)
 		return false;
@@ -56,7 +42,8 @@ function waitForMessages()
 	while(!connection_aborted())
 	{
 		$read = array($touchme); $write = $except = NULL;
-		$changed = stream_select($read, $write, $except, 1);
+		$timeout = $keepalive > 0 ? $keepalive : NULL;
+		$changed = stream_select($read, $write, $except, $timeout);
 		if($changed === false) return false;
 		if($changed > 0 && inotify_read($touchme) !== false) return true;
 		keepAliveSignal();
@@ -64,6 +51,15 @@ function waitForMessages()
 
 	return false;
 }
+
+
+function ExceptionHandler($e)
+{
+	echo jsonError($e->getMessage(), $e->getFile(), $e->getLine());
+}
+
+ini_set('display_errors', '0');
+set_exception_handler('ExceptionHandler');
 
 $position = uriParamInteger('position', -1);
 $limit = uriParamInteger('limit', 256);
@@ -73,7 +69,7 @@ $keepalive = uriParamInteger('keepalive', 60);
 
 $db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
 
-touch(TOUCH_FILE);
+if(!file_exists(TOUCH_FILE)) touch(TOUCH_FILE);
 $touchme = inotify_init();
 stream_set_blocking($touchme, false);
 inotify_add_watch($touchme, TOUCH_FILE, IN_ATTRIB);
@@ -84,8 +80,6 @@ if($position <= 0)
 		SQL_TABLE, $db->quote($channel), -$position);
 	$position = $db->query($sqlNextId)->fetchColumn();
 }
-
-
 
 if($version != CHAT_VERSION)
 	throw new Exception("Der Chat-Client benützt eine ungültige Versionsnummer. Bitte Fenster neuladen.");
