@@ -12,6 +12,7 @@ if(isset($_REQUEST['login']))
 	$username = uriParamString('username');
 	$password = uriParamString('password');
 	$pwhash = encryptedPassword($username, $password);
+	echo $pwhash;
 
 	if(validPassword(userByName($username), $pwhash))
 	{
