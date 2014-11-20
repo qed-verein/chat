@@ -28,7 +28,7 @@ function htmlEscape($text)
 function userAuthenticate($username, $password)
 {
 	$db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD,
-		array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'");
+		array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
 
 	$pwhash = sha1($username . $password);
 	$sql = "SELECT id FROM user WHERE username=:username AND password=:password";
