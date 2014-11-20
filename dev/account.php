@@ -11,10 +11,9 @@ if(isset($_REQUEST['login']))
 {
 	$username = uriParamString('username');
 	$password = uriParamString('password');
-	$pwhash = encryptedPassword($username, $password)
-	$success = validPassword(userByName($username), $pwhash);
+	$pwhash = encryptedPassword($username, $password);
 
-	if($success)
+	if(validPassword(userByName($username), $pwhash))
 	{
 		 $_SESSION['userid'] = $userId;
 		 setcookie('userid', $userid, time() + (86400 * 30), "/");
@@ -25,8 +24,8 @@ if(isset($_REQUEST['login']))
 elseif(isset($_REQUEST['logout']))
 {
 	session_destroy();
-	setcookie('userid', '', time() - 86400, "/");
-	setcookie('pwhash', '', time() - 86400, "/");
+	setcookie('userid', '', 1, "/");
+	setcookie('pwhash', '', 1, "/");
 	redirect(urlLogin());
 }
 
