@@ -33,7 +33,7 @@ $post['userid']  = $_SESSION['userid'];
 $post['delay']   = isset($_REQUEST['delay']) ? uriParamInteger('delay') : null;
 $post['bottag']  = uriParamInteger('bottag', 0);
 
-if(strlen($post['message']) > 10000)
+if(strlen($post['message']) > 1000)
 	throw Exception("Nachricht ist zu lang!");
 
 /* TODO: Little Bobby Tables laesst gruessen ... - CSS */
