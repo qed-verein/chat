@@ -14,7 +14,7 @@ if(isset($_REQUEST['login']))
 	$pwhash = encryptedPassword($username, $password);
 	$user = userByName($username);
 
-	if(validPassword($user['id'], $pwhash))
+	if(validPassword($user, $pwhash))
 	{
 		 $_SESSION['userid'] = $user['id'];
 		 setcookie('userid', $userid, time() + (86400 * 30), "/");
