@@ -23,6 +23,7 @@ function Init ()
 		options["last"] = 20;
 		options["limit"] = "256";
 		options["title"] = "1";
+		options["wait"] = "60";
 
 		InitRemote (options);
 	}

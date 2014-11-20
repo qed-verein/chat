@@ -1,6 +1,8 @@
 <?php
 
 session_start();
+date_default_timezone_set('Europe/Berlin');
+
 //if (empty($ignore_no_login) && empty($_SESSION['userid'])) {
 if (empty($ignore_no_login) && empty($_SESSION['userid'])) {
 	die("Du musst dich erst einloggen");
