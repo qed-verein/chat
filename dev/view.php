@@ -61,8 +61,8 @@ function ExceptionHandler($e)
 set_exception_handler('ExceptionHandler');
 
 versionCheck();
-$position = uriParamInteger('position', -1);
-$limit = uriParamInteger('limit', 256);
+$position = uriParamInteger('position', 0);
+$limit = uriParamInteger('limit', 200);
 $channel = uriParamString('channel', '');
 $keepalive = uriParamInteger('keepalive', 60);
 
