@@ -43,6 +43,8 @@ function encryptedPassword($username, $password)
 
 function validPassword($user, $password)
 {
+	echo $user['password'];
+	echo $password;
 	if(!preg_match('/^[0-9a-f]{40}$/', $user['password'])) return false;
 	return $user['password'] === $password;
 }
