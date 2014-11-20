@@ -147,7 +147,7 @@ function CreatePost(post)
 {
 	var node;
 
-	if(options['botblock'] && post['bottag'])
+	if(options['botblock'] && post['bottag'] == '1')
 		return;
 
 	if(options['mobile'])
