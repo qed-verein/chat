@@ -6,7 +6,7 @@ session_start();
 date_default_timezone_set('Europe/Berlin');
 //ini_set('display_errors', '0');
 
-authenticateWithCookie();
+// authenticateWithCookie();
 
 if(empty($ignore_no_login) && !userLoggedIn())
 	die("Du musst dich erst einloggen");
