@@ -309,22 +309,6 @@ function NickEscape (text)
 // ************
 
 
-function GetValue (value)
-{
-	var temp = parseInt (value);
-	return isNaN(temp) ? "" : temp;
-}
-
-function GetDateString (prefix)
-{
-	var year = GetValue (document.getElementById (prefix + "Year").value);
-	return GetValue (document.getElementById (prefix + "Minute").value) + "_"
-		+ GetValue (document.getElementById (prefix + "Hour").value) + "_"
-		+ GetValue (document.getElementById (prefix + "Day").value) + "_"
-		+ GetValue (document.getElementById (prefix + "Month").value) + "_"
-		+ (year == "" ? "" : 2000 + year);
-}
-
 function RenewLinks ()
 {
 	parameters = "&ip=" + (document.getElementById ("logIp").checked ? 1 : 0)
@@ -341,7 +325,9 @@ function RenewLinks ()
 	document.getElementById ("last500").href = "../history.php?last=500" + parameters;
 	document.getElementById ("last1000").href = "../history.php?last=1000" + parameters;
 
-	document.getElementById ("log").href = "../history.php?" + "from=" + GetDateString ("fr") + "&to=" + GetDateString ("to") + parameters;
+	document.getElementById("log").href = "../history.php?" + URIEncodeParameters({
+		from : document.getElementById("logFrom").value,
+		to : document.getElementById("logTo").value}) + parameters;
 }
 
 

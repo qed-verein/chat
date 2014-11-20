@@ -2,13 +2,14 @@
 
 require_once('data.php');
 
-session_set_cookie_params(0, '/', '.qed-verein.de');
-session_name('qedcommon');
+//session_set_cookie_params(0, '/', '.qed-verein.de');
+//session_name('qedcommon');
 session_start();
+// authenticateWithCookie();
+
 date_default_timezone_set('Europe/Berlin');
 //ini_set('display_errors', '0');
 
-// authenticateWithCookie();
 
 if(empty($ignore_no_login) && !userLoggedIn())
 	die("Du musst dich erst einloggen");
