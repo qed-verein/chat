@@ -17,16 +17,16 @@ if(isset($_REQUEST['login']))
 	if(validPassword($user, $pwhash))
 	{
 		 $_SESSION['userid'] = $user['id'];
-		 setcookie('userid', $user['id'], time() + (86400 * 30), "/");
-		 setcookie('pwhash', $pwhash, time() + (86400 * 30), "/");
+		 //setcookie('qeduserid', $user['id'], time() + (86400 * 30), "/",  ".qed-verein.de");
+		 //setcookie('qedpassword', $pwhash, time() + (86400 * 30), "/", ".qed-verein.de");
 	}
 	else $errorMessage = "Logindaten sind nicht gültig";
 }
 elseif(isset($_REQUEST['logout']))
 {
 	session_destroy();
-	setcookie('userid', '', 1, "/");
-	setcookie('pwhash', '', 1, "/");
+	//setcookie('qeduserid', '', 1, "/", ".qed-verein.de");
+	//setcookie('qedpassword', '', 1, "/", ".qed-verein.de");
 	redirect(urlLogin());
 }
 
