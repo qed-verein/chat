@@ -1,8 +1,7 @@
 <?php
 
-chdir("..");
-require_once('common.php');
 require_once('data.php');
+require_once('common.php');
 
 function jsonPost($post)
 {

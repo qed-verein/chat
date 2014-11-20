@@ -1,8 +1,5 @@
 <?php
 
-ini_set('display_errors', '0');
-chdir("..");
-
 require_once("data.php");
 require_once("common.php");
 
