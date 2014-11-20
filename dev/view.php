@@ -1,6 +1,5 @@
 <?php
 
-require_once('data.php');
 require_once('common.php');
 
 function jsonPost($post)
@@ -76,22 +75,29 @@ $db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
 
 if($position <= 0)
 {
-	$sqlNextId = sprintf("SELECT id + 1 FROM %s WHERE channel = %s ORDER BY id DESC LIMIT %d, 1",
-		SQL_TABLE, $db->quote($channel), -$position);
-	$position = $db->query($sqlNextId)->fetchColumn();
+	$sqlNextId = sprintf("SELECT id + 1 FROM %s WHERE channel = :channel " .
+		"ORDER BY id DESC LIMIT :last, 1", SQL_TABLE);
+	$stm = $db->prepare($sqlNextId);
+	$stm->bindParam('channel', $channel, PDO::PARAM_STR);
+	$stm->bindParam('last', -$position, PDO::PARAM_INT);
+	$stm->execute();
+	$position = $stm->fetchColumn();
 }
 
 header('Content-Type: text/plain; charset=utf-8');
 $counter = 0;
-$seconds = 0;
 
 signalAlive();
 do
 {
-	$sql = sprintf("SELECT * FROM %s WHERE id >= %d AND channel = %s LIMIT 0, %d",
-		SQL_TABLE, $position, $db->quote($channel), $limit - $counter);
-	$res = $db->query($sql);
-	while($row = $res->fetch())
+	$sql = sprintf("SELECT * FROM %s WHERE id >= :id AND channel = :channel " .
+		"ORDER BY id LIMIT :limit",	SQL_TABLE);
+	$stm = $db->prepare($sql);
+	$stm->bindParam('id', $position, PDO::PARAM_INT);
+	$stm->bindParam('channel', $channel, PDO::PARAM_STR);
+	$stm->bindParam('limit', $limit - $counter, PDO::PARAM_INT);
+	$stm->execute();
+	while($row = $stm->fetch())
 	{
 		++$counter;
 		$position = $row['id'] + 1;

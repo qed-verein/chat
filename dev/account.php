@@ -2,8 +2,8 @@
 
 $ignore_no_login = true;
 $session_not_close = true;
-require_once('../data.php');
-require_once('../common.php');
+
+require_once('common.php');
 require_once('layout.php');
 
 $errorMessage = null;

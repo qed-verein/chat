@@ -1,5 +1,7 @@
 <?php
 
+require_once('data.php');
+
 session_start();
 date_default_timezone_set('Europe/Berlin');
 //ini_set('display_errors', '0');
@@ -25,14 +27,16 @@ function htmlEscape($text)
 
 function userAuthenticate($username, $password)
 {
-	mysql_connect(SQL_HOST, SQL_USER, SQL_PASSWORD);
-	mysql_select_db(SQL_DATABASE);
-	mysql_query('SET NAMES "utf8"');
-	$pwhash = sha1($username . $password);
+	$db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD,
+		array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'")
 
-	$sql = sprintf("SELECT id FROM user WHERE username='%s' AND password='%s'",
-		mysql_real_escape_string($username), mysql_real_escape_string($pwhash));
-	$userid = @mysql_result(mysql_query($sql), 0, 0);
+	$pwhash = sha1($username . $password);
+	$sql = "SELECT id FROM user WHERE username=:username AND password=:password";
+	$stm = $db->prepare($sql);
+	$stm->bindParam('username', $username, PDO::PARAM_STR);
+	$stm->bindParam('password', $pwhash, PDO::PARAM_STR);
+	$stm->execute();
+	$userid = $stm->fetchColumn();
 
 	if($userid)
 		return $userid;
