@@ -477,6 +477,7 @@ function OnSenderError()
 	alert("Dein Post konnte nicht übertragen werden (" +
 		sendRequest.status + ", '" + HtmlEscape(sendRequest.statusText) + "').<br>" +
 			HtmlEscape(sendRequest.responseText));
+	clearTimeout(sendTimeout);
 	sendRequest = null;
 }
 
