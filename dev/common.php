@@ -10,6 +10,14 @@ if(empty($ignore_no_login) && empty($_SESSION['userid']))
 if(empty($session_not_close))
 	session_write_close();
 
+function colorForName($name)
+{
+	$r = hexdec(substr(md5("a" . $name . "a"), -7)) % 156 + 100;
+	$g = hexdec(substr(md5("b" . $name . "b"), -7)) % 156 + 100;
+	$b = hexdec(substr(md5("c" . $name . "c"), -7)) % 156 + 100;
+	return dechex($r) . dechex($g) . dechex($b);
+}
+
 function htmlEscape($text)
 {
 	return htmlspecialchars($text, ENT_NOQUOTES);
