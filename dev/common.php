@@ -38,7 +38,7 @@ function databaseConnection()
 
 function encryptedPassword($username, $password)
 {
-	return sha1($username + $password);
+	return sha1($username . $password);
 }
 
 function validPassword($user, $password)
