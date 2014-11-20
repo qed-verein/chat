@@ -307,6 +307,13 @@ if (empty($session_not_close))
 		exit;
 	}
 
+	function versionCheck()
+	{
+		$version = uriParamString('version', '');
+		if($version != CHAT_VERSION)
+			throw new Exception("Der Chat-Client besitzt eine ungültige Versionsnummer. Bitte neuladen!");
+	}
+
 	function urlLogin() {
 		return 'https://chat.qed-verein.de/dev/account.php';}
 	function urlLogout() {

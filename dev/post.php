@@ -22,7 +22,7 @@ $recorded = false;
 set_exception_handler('ExceptionHandler');
 ignore_user_abort(true);
 
-
+versionCheck();
 $post = array();
 $post['name']    = uriParamString('name');
 $post['message'] = uriParamString('message');

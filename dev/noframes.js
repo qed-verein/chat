@@ -147,7 +147,10 @@ function CreatePost(post)
 {
 	var node;
 
-	if(options['mobile'] == 1)
+	if(options['botblock'] && post['bottag'])
+		return;
+
+	if(options['mobile'])
 		node = FormatMobilePost(post);
 	else
 		node = FormatScreenPost(post);
@@ -164,14 +167,8 @@ function FormatScreenPost(post)
 	var tr = document.createElement ("tr");
 
 	var info = post["date"].substr (5);
-	if (options["botblock"]) {
-	    if (post["bottag"]==1)
-		return;
-	}
 	if (options["delay"])
-	{
 		info = DelayString(post) + info;
-	}
 
 	var node = document.createElement ("td");
 	node.setAttribute ("text", "ff00ff");
@@ -225,9 +222,9 @@ function FormatMobilePost(post)
 	var info = document.createElement('span');
 	info.setAttribute('class', 'info');
 	info.appendChild(date);
-	if(options['ip'] == 1)
+	if(options['ip'])
 		info.appendChild(ip);
-	if(options['delay'] == 1)
+	if(options['delay'])
 		info.appendChild(delay);
 	li.appendChild(info);
 
@@ -442,7 +439,7 @@ function Send()
 	SetStatus("Sende Post ...");
 	sendRequest = new XMLHttpRequest();
 	sendRequest.onreadystatechange = OnSenderResponse;
-	sendRequest.open("POST", "../post.php", true);
+	sendRequest.open("POST", "post.php", true);
 	sendRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	sendRequest.setRequestHeader("Content-Encoding", "utf-8");
 
@@ -452,7 +449,8 @@ function Send()
 	    channel: options["channel"],
 	    name: document.getElementById ("name").value,
 	    message: document.getElementById ("message").value,
-	    delay: position});
+	    delay: position,
+	    version: version});
 	sendRequest.send(uri);
 }
 

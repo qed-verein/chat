@@ -62,21 +62,18 @@ function ExceptionHandler($e)
 
 set_exception_handler('ExceptionHandler');
 
+versionCheck();
 $position = uriParamInteger('position', -1);
 $limit = uriParamInteger('limit', 256);
 $channel = uriParamString('channel', '');
-$version = uriParamString('version', '');
 $keepalive = uriParamInteger('keepalive', 60);
-
-if($version != CHAT_VERSION)
-	throw new Exception("Der Chat-Client besitzt eine ungültige Versionsnummer.");
-
-$db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
 
 if(!file_exists(TOUCH_FILE)) touch(TOUCH_FILE);
 $touchme = inotify_init();
 stream_set_blocking($touchme, false);
 inotify_add_watch($touchme, TOUCH_FILE, IN_ATTRIB);
+
+$db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
 
 if($position <= 0)
 {
