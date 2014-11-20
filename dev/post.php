@@ -35,7 +35,7 @@ $post['delay']   = isset($_REQUEST['delay']) ? uriParamInteger('delay') : null;
 $post['bottag']  = uriParamInteger('bottag', 0);
 
 if(strlen($post['message']) > 1000)
-	throw Exception("Nachricht ist zu lang!");
+	throw new Exception("Nachricht ist zu lang!");
 
 /* TODO: Little Bobby Tables laesst gruessen ... - CSS */
 $db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
