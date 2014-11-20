@@ -45,7 +45,7 @@ function uriParamString($name, $default = null)
 		else return $default;
 	}
 
-	return demagicalize_string($_REQUEST[$name]);
+	return $_REQUEST[$name];
 }
 
 function uriParamInteger($name, $default = null)
