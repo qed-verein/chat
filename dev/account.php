@@ -17,7 +17,7 @@ if(isset($_REQUEST['login']))
 	if(validPassword($user, $pwhash))
 	{
 		 $_SESSION['userid'] = $user['id'];
-		 setcookie('userid', $userid, time() + (86400 * 30), "/");
+		 setcookie('userid', $user['id'], time() + (86400 * 30), "/");
 		 setcookie('pwhash', $pwhash, time() + (86400 * 30), "/");
 	}
 	else $errorMessage = "Logindaten sind nicht gültig";
