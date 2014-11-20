@@ -78,8 +78,8 @@ if($position <= 0)
 	$sqlNextId = sprintf("SELECT id + 1 FROM %s WHERE channel = :channel " .
 		"ORDER BY id DESC LIMIT :last, 1", SQL_TABLE);
 	$stm = $db->prepare($sqlNextId);
-	$stm->bindParam('channel', $channel, PDO::PARAM_STR);
-	$stm->bindParam('last', -$position, PDO::PARAM_INT);
+	$stm->bindValue('channel', $channel, PDO::PARAM_STR);
+	$stm->bindValue('last', -$position, PDO::PARAM_INT);
 	$stm->execute();
 	$position = $stm->fetchColumn();
 }
@@ -93,9 +93,9 @@ do
 	$sql = sprintf("SELECT * FROM %s WHERE id >= :id AND channel = :channel " .
 		"ORDER BY id LIMIT :limit",	SQL_TABLE);
 	$stm = $db->prepare($sql);
-	$stm->bindParam('id', $position, PDO::PARAM_INT);
-	$stm->bindParam('channel', $channel, PDO::PARAM_STR);
-	$stm->bindParam('limit', $limit - $counter, PDO::PARAM_INT);
+	$stm->bindValue('id', $position, PDO::PARAM_INT);
+	$stm->bindValue('channel', $channel, PDO::PARAM_STR);
+	$stm->bindValue('limit', $limit - $counter, PDO::PARAM_INT);
 	$stm->execute();
 	while($row = $stm->fetch())
 	{
