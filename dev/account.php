@@ -2,7 +2,6 @@
 
 $ignore_no_login = true;
 $session_not_close = true;
-
 require_once('common.php');
 require_once('layout.php');
 
@@ -12,23 +11,30 @@ if(isset($_REQUEST['login']))
 {
 	$username = uriParamString('username');
 	$password = uriParamString('password');
-	$userId = userAuthenticate($username, $password);
+	$pwhash = encryptedPassword($username, $password)
+	$success = validPassword(userByName($username), $pwhash);
 
-	if(is_null($userId))
-		$errorMessage = "Logindaten sind nicht gültig";
-	else
+	if($success)
 	{
-		$_SESSION['userid'] = $userId;
-		redirect(urlChat());
+		 $_SESSION['userid'] = $userId;
+		 setcookie('userid', $userid, time() + (86400 * 30), "/");
+		 setcookie('pwhash', $pwhash, time() + (86400 * 30), "/");
 	}
+	else $errorMessage = "Logindaten sind nicht gültig";
 }
 elseif(isset($_REQUEST['logout']))
 {
 	session_destroy();
+	setcookie('userid', '', time() - 86400, "/");
+	setcookie('pwhash', '', time() - 86400, "/");
 	redirect(urlLogin());
 }
 
-$content = renderLoginForm($errorMessage);
-echo renderSimpleLayout("Login", $content);
+if(!userLoggedIn())
+{
+	$content = renderLoginForm($errorMessage);
+	echo renderSimpleLayout("Login", $content);
+}
+else redirect(urlChat());
 
 ?>
