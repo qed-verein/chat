@@ -2,7 +2,7 @@
 
 session_start();
 date_default_timezone_set('Europe/Berlin');
-ini_set('display_errors', '0');
+//ini_set('display_errors', '0');
 
 if(empty($ignore_no_login) && empty($_SESSION['userid']))
 	die("Du musst dich erst einloggen");
