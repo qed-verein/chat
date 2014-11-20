@@ -12,11 +12,11 @@ if(isset($_REQUEST['login']))
 	$username = uriParamString('username');
 	$password = uriParamString('password');
 	$pwhash = encryptedPassword($username, $password);
-	echo $pwhash;
+	$user = userByName($username);
 
-	if(validPassword(userByName($username), $pwhash))
+	if(validPassword($user['id'], $pwhash))
 	{
-		 $_SESSION['userid'] = $userId;
+		 $_SESSION['userid'] = $user['id'];
 		 setcookie('userid', $userid, time() + (86400 * 30), "/");
 		 setcookie('pwhash', $pwhash, time() + (86400 * 30), "/");
 	}
