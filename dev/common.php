@@ -35,66 +35,23 @@ function databaseConnection()
 	return $db;
 }
 
-
-//function encryptedPassword($username, $password)
-//{
-	//return sha1($username . $password);
-//}
-
-//function validPassword($user, $password)
-//{
-	//if(!preg_match('/^[0-9a-f]{40}$/', $user['password'])) return false;
-	//return $user['password'] === $password;
-//}
-
-//function authenticateWithCookie()
-//{
-	//if(isset($_COOKIE['userid']) && isset($_COOKIE['pwhash']))
-	//{
-		//$user = userByIdentifier($_COOKIE['userid']);
-		//if(validPassword($user, $_COOKIE['pwhash']))
-			//$_SESSION['userid'] = $user['id'];
-	//}
-//}
-
-//function userByName($username)
-//{
-	//$db = databaseConnection();
-	//$sql = "SELECT * FROM user WHERE username=:username";
-	//$stm = $db->prepare($sql);
-	//$stm->bindParam('username', $username, PDO::PARAM_STR);
-	//$stm->execute();
-	//return $stm->fetch();
-//}
-
-function userByIdentifier($userid)
+function userAuthenticate($username, $password)
 {
 	$db = databaseConnection();
-	$sql = "SELECT * FROM user WHERE id=:userid";
+
+	$pwhash = sha1($username . $password);
+	$sql = "SELECT id FROM user WHERE username=:username AND password=:password";
 	$stm = $db->prepare($sql);
-	$stm->bindParam('userid', $userid, PDO::PARAM_INT);
+	$stm->bindParam('username', $username, PDO::PARAM_STR);
+	$stm->bindParam('password', $pwhash, PDO::PARAM_STR);
 	$stm->execute();
-	return $stm->fetch();
+	$userid = $stm->fetchColumn();
+
+	if($userid)
+		return $userid;
+	else
+		return null;
 }
-
-//function userAuthenticate($username, $password)
-//{
-	//$db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD,
-		//array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-
-	//$pwhash = sha1($username . $password);
-	//$sql = "SELECT id FROM user WHERE username=:username AND password=:password";
-	//$stm = $db->prepare($sql);
-	//$stm->bindParam('username', $username, PDO::PARAM_STR);
-	//$stm->bindParam('password', $pwhash, PDO::PARAM_STR);
-	//$stm->execute();
-	//$userid = $stm->fetchColumn();
-
-	//if($userid)
-		//return $userid;
-	//else
-		//return null;
-//}
 
 function userLoggedIn()
 {
