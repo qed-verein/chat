@@ -274,7 +274,7 @@ function RecreatePosts(posts)
 			node.parentNode.replaceChild(container, node);
 			if(inHistoryMode)
 				SetStatus("Chatlog wurde erfolgreich geladen!");
-			scrollDown();
+			ScrollDown();
 			return;
 		}
 		AppendPost(container, posts[cursor]);
@@ -514,7 +514,7 @@ function OnSenderError()
 function SetStatus(text)
 {
     document.getElementById("status").innerHTML = text;
-    scrollDown();
+    ScrollDown();
 }
 
 function URIEncodeParameters(params)
@@ -538,7 +538,7 @@ function URIDecodeParameters() {
 	return vars;
 }
 
-function scrollDown()
+function ScrollDown()
 {
 	var node = document.getElementById("messagebox");
 	node.scrollTop = inHistoryMode ? 0 : node.scrollHeight;
@@ -551,7 +551,7 @@ function HtmlEscape (text)
 	return text.replace(/\"/g, "&quot;").replace(/\n/g, "<br>");
 }
 
-function updateTitle(message)
+function UpdateTitle(message)
 {
 	if(options["title"])
 		top.document.title = (message.length < 256) ? message :
