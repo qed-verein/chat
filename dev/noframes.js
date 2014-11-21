@@ -339,10 +339,11 @@ function OnHistoryResponse()
 	if(historyRequest.readyState != 4) return;
 	if(historyRequest.status < 200 || historyRequest.status >= 300) return;
 
+	alert(historyRequest.responseText);
 	var hposts = Array();
 	for(var line in historyRequest.responseText.split("\n"))
 	{
-		alert(line);
+
 		obj = JSON.parse(line);
 		if(obj["type"] == "post")
 			hposts.push(obj);
