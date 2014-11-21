@@ -133,7 +133,8 @@ function ProcessPost(post)
 		}
 	}
 
-	CreatePost(post);
+	if(!historyView)
+		CreatePost(post);
 
 	if (options["title"])
 		top.document.title = (post["message"].length < 256) ? post["message"] :
