@@ -311,7 +311,7 @@ function NickEscape (text)
 
 function RenewLinks()
 {
-	parameters = "";
+	parameters = URIEncodeParameters({version: version});
 	//"&ip=" + (document.getElementById ("logIp").checked ? 1 : 0)
 		//+ "&delay=" + (document.getElementById ("logDelay").checked ? 1 : 0)
 		//+ "&links=" + (document.getElementById ("logLinks").checked ? 1 : 0);
