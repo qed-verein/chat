@@ -250,41 +250,24 @@ function DelayString(post)
 	return delay;
 }
 
-var recreatePostsTimeout = null;
-
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
 function RecreatePosts(posts)
 {
-	clearTimeout(recreatePostsTimeout);
 	var container;
-	if(options['mobile'])
-		container = document.createElement('li');
-	else
-		container = document.createElement('table');
+	if(options['mobile']) container = document.createElement('li');
+	else container = document.createElement('table');
 	container.id = 'posts';
 
 	var from = (options["old"] || inHistoryMode) ? 0 : Math.max(0, posts.length - options["last"]);
-	//for (var cursor = from; cursor != posts.length; ++cursor)
-		//AppendPost(container, posts[cursor]);
-	var RecreatePostsStep = function()
-	{
-		if(cursor == posts.length)
-		{
-			var node = document.getElementById('posts');
-			node.parentNode.replaceChild(container, node);
-			if(inHistoryMode)
-				SetStatus("Chatlog wurde erfolgreich geladen!");
-			ScrollDown();
-			return;
-		}
+	for (var cursor = from; cursor != posts.length; ++cursor)
 		AppendPost(container, posts[cursor]);
-		if(cursor == posts.length - 1 && !inHistoryMode)
-			UpdateTitle(posts[cursor]['message']);
-		++cursor;
-		recreatePostsTimeout = setTimeout(RecreatePostsStep, 0);
-	}
-	cursor = from;
-	RecreatePostsStep();
+	var node = document.getElementById('posts');
+	node.parentNode.replaceChild(container, node);
+
+	if(posts.length != 0) UpdateTitle(posts[posts.length - 1]['message']);
+
+	if(inHistoryMode) SetStatus("Chatlog wurde erfolgreich geladen!");
+	ScrollDown();
 }
 
 
@@ -360,7 +343,6 @@ function ShowHistory(elt)
 function QuitHistory()
 {
 	inHistoryMode = false
-	RecreatePosts(posts);
 	ReceiverConnnect();
 }
 
