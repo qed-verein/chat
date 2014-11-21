@@ -268,8 +268,10 @@ function RecreatePosts(posts)
 		container.removeChild(container.lastChild);
 
 	var from = (options["old"] || inHistoryMode) ? 0 : Math.max(0, posts.length - options["last"]);
+	document.getElementById('posts').style = "visibility:none";
 	for (var cursor = from; cursor != posts.length; ++cursor)
 		CreatePost(posts[cursor]);
+	document.getElementById('posts').style = "visibility:visible";
 }
 
 
