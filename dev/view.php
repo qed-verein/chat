@@ -2,24 +2,6 @@
 
 require_once('common.php');
 
-function jsonPost($post)
-{
-	$post['type'] = 'post';
-	$post['color'] = colorForName($post['name']);
-	return json_encode($post) . "\n";
-}
-
-function jsonError($message, $file, $line)
-{
-	return json_encode(array('type' => 'error', 'description' => $message,
-		'file' => $file, 'line' => $line)) . "\n";
-}
-
-function jsonAlive()
-{
-	return json_encode(array('type' => 'ok')) . "\n";
-}
-
 // Sende dem JavaScript ein Lebenszeichen
 function signalAlive()
 {

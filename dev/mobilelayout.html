@@ -60,11 +60,13 @@
 		<a id="last1000">letzte 1000 Posts</a>
 	</div>
 	<div style="float: left; margin-left: 2mm">
-		von: <input type="text" id="logFrom" size="10" onchange="RenewLinks()" size="2">
-		bis: <input type="text" id="logTo" size="10" onchange="RenewLinks()" size="2"><br>
-		<input type="checkbox" id="logIp" onclick="RenewLinks()">IPs
-		<input type="checkbox" id="logDelay" onclick="RenewLinks()">Delays
-		<input type="checkbox" id="logLinks" onclick="RenewLinks()">Links
+		<table><tr>
+			<td>von:</td>
+			<td><input type="text" id="logFrom" size="12" onchange="RenewLinks()"></td>
+		</tr><tr>
+			<td>bis:</td>
+			<td><input type="text" id="logTo" size="12" onchange="RenewLinks()"></td>
+		</tr></table>
 		<a style="margin-left: 2mm" id="log">Log anzeigen</a>
 	</div>
 	<div style="clear: both; text-align: center">
