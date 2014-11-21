@@ -56,24 +56,25 @@
 
 <div id="logbox" class="box popup">
 	<div style="float: left">
-		<a id="lastHour">letzte Stunde</a><br>
-		<a id="lastDay">letzter Tag</a><br>
-		<a id="lastWeek">letzte Woche</a><br>
+		<a id="logquit" onclick="QuitHistory(posts)">normale Anzeige</a><br>
+		<a id="lastHour" onclick="ShowHistory(this)">letzte Stunde</a><br>
+		<a id="lastDay" onclick="ShowHistory(this)">letzter Tag</a><br>
+		<a id="lastWeek" onclick="ShowHistory(this)">letzte Woche</a><br>
 	</div>
 	<div style="float: left; margin-left: 2mm">
-		<a id="last100">letzte 100 Posts</a><br>
-		<a id="last300">letzte 300 Posts</a><br>
-		<a id="last1000">letzte 1000 Posts</a>
+		<a id="last100" onclick="ShowHistory(this)">letzte 100 Posts</a><br>
+		<a id="last300" onclick="ShowHistory(this)">letzte 300 Posts</a><br>
+		<a id="last1000" onclick="ShowHistory(this)">letzte 1000 Posts</a>
 	</div>
 	<div style="float: left; margin-left: 2mm">
 		<table><tr>
 			<td>von:</td>
-			<td><input type="text" id="logFrom" size="12" onchange="RenewLinks()"></td>
+			<td><input type="text" id="logFrom" size="12"></td>
 		</tr><tr>
 			<td>bis:</td>
-			<td><input type="text" id="logTo" size="12" onchange="RenewLinks()"></td>
+			<td><input type="text" id="logTo" size="12"></td>
 		</tr></table>
-		<a style="margin-left: 2mm" id="log">Log anzeigen</a>
+		<a style="margin-left: 2mm" id="log" onclick="ShowHistory(this)">Intervall anzeigen</a>
 	</div>
 	<div style="clear: both"></div>
 </div>
