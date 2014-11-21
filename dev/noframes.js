@@ -311,7 +311,7 @@ var historyRequest, inHistoryMode, historyPosts;
 
 function ShowHistory(elt)
 {
-	ReceiverDisconnnect();
+	ReceiverDisconnect();
 	parameters = "&" + URIEncodeParameters({version: version});
 	url = "history.php?";
 
