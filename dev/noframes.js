@@ -135,11 +135,7 @@ function ProcessPost(post)
 	}
 
 	AppendPost(document.getElementById('posts'), post);
-
-	if(options["title"])
-		top.document.title = (post["message"].length < 256) ? post["message"] :
-			top.document.title = post["message"].substr(0, 252) + "...";
-
+	UpdateTitle(post['message']);
 	SetStatus("");
 }
 
@@ -282,6 +278,8 @@ function RecreatePosts(posts)
 			return;
 		}
 		AppendPost(container, posts[cursor]);
+		if(cusor == posts.length - 1)
+			updateTitle(posts.last['message');
 		++cursor;
 		recreatePostsTimeout = setTimeout(RecreatePostsStep, 0);
 	}
@@ -356,8 +354,7 @@ function ShowHistory(elt)
 	historyRequest.onreadystatechange = OnHistoryResponse;
 	historyRequest.open('GET', url, true);
 	historyRequest.send();
-	//if(options["title"])
-		//top.document.title = "Chatlog: " + elt.firstChild.data;
+	UpdateTitle("Chatlog: " + elt.firstChild.data);
 }
 
 function QuitHistory()
@@ -552,4 +549,11 @@ function HtmlEscape (text)
 {
 	text = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	return text.replace(/\"/g, "&quot;").replace(/\n/g, "<br>");
+}
+
+function updateTitle()
+{
+	if(options["title"])
+		top.document.title = (post["message"].length < 256) ? post["message"] :
+			top.document.title = post["message"].substr(0, 252) + "...";
 }
