@@ -27,7 +27,7 @@ $mode = isset($_REQUEST['last']) ? 'last' : 'date';
 
 if($mode == 'date' && ($to === false || $from === false))
 	throw new Exception("Datum konnte nicht erkannt werden.");
-if($mode == 'last' && $last >= 1000)
+if($mode == 'last' && $last > 1000)
 	throw Exception("Es wurden zu viele Posts angefragt.");
 
 $db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
