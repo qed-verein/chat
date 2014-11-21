@@ -136,7 +136,7 @@ function ProcessPost(post)
 
 	AppendPost(document.getElementById('posts'), post);
 
-	if (options["title"])
+	if(options["title"])
 		top.document.title = (post["message"].length < 256) ? post["message"] :
 			top.document.title = post["message"].substr(0, 252) + "...";
 
@@ -356,7 +356,8 @@ function ShowHistory(elt)
 	historyRequest.onreadystatechange = OnHistoryResponse;
 	historyRequest.open('GET', url, true);
 	historyRequest.send();
-
+	if(options["title"])
+		top.document.title = "Chatlog: " + elt.firstChild.data;
 }
 
 function QuitHistory()
