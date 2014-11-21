@@ -18,7 +18,7 @@ versionCheck();
 header('Content-Type: text/plain; charset=utf-8');
 
 $channel = uriParamString('channel', '');
-
+$last = uriParamInteger('last', 100);
 $from = strtotime(uriParamString('from', ''));
 $to = strtotime(uriParamString('to', ''));
 
