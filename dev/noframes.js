@@ -278,7 +278,7 @@ function RecreatePosts(posts)
 			return;
 		}
 		AppendPost(container, posts[cursor]);
-		if(cursor == posts.length - 1 && !historyMode)
+		if(cursor == posts.length - 1 && !inHistoryMode)
 			UpdateTitle(posts[cursor]['message']);
 		++cursor;
 		recreatePostsTimeout = setTimeout(RecreatePostsStep, 0);
