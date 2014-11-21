@@ -272,7 +272,7 @@ function RecreatePosts(posts)
 		if(cursor == posts.length) return;
 		AppendPost(container, posts[cursor]);
 		++cursor;
-		setTimeout('RecreatePostsStep()', 1);
+		setTimeout(RecreatePostsStep, 1);
 	}
 	cursor = from;
 	RecreatePostsStep();
