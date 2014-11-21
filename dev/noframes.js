@@ -254,15 +254,15 @@ function DelayString(post)
 }
 
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
-function RecreatePosts ()
+function RecreatePosts(posts)
 {
-	var display = document.getElementById ("display");
-	while (display.hasChildNodes ())
-		display.removeChild (display.lastChild);
+	var display = document.getElementById("display");
+	while (display.hasChildNodes())
+		display.removeChild(display.lastChild);
 
-	var from = (options["old"] ? 0 : Math.max (0, posts.length - options["last"]));
+	var from = (options["old"] ? 0 : Math.max(0, posts.length - options["last"]));
 	for (var cursor = from; cursor != posts.length; ++cursor)
-		CreatePost (posts[cursor]);
+		CreatePost(posts[cursor]);
 }
 
 
@@ -308,6 +308,33 @@ function NickEscape (text)
 // *   Logs   *
 // ************
 
+var historyRequest;
+
+function ShowHistory()
+{
+	historyRequest.onreadystatechange = OnHistoryResponse;
+	historyRequest.open('GET', self.href, true);
+	historyRequest.send();
+}
+
+// Wird aufgerufen, falls der Server eine Antwort geschickt hat.
+function OnHistoryResponse()
+{
+	if(historyRequest.readyState != 4) return;
+	if(sendRequest.status < 200 || sendRequest.status >= 300) return;
+
+	for(var line in historyRequest.responseText.split("\n"))
+	{
+		obj = JSON.parse(line);
+		if(obj["type"] == "post")
+			hposts.push(obj);
+		else if(obj["type"] == "error")
+			throw new Error(obj["description"], obj["file"], obj["line"]);
+	}
+
+	RecreatePosts(hposts);
+	SetStatus("");
+}
 
 function RenewLinks()
 {
@@ -337,6 +364,8 @@ function RenewLinks()
 
 function InitLogs()
 {
+	historyRequest = new XMLHttpHistory();
+
 	document.getElementById("lastHour").target = options["target"];
 	document.getElementById("lastDay").target = options["target"];
 	document.getElementById("lastWeek").target = options["target"];
@@ -379,7 +408,7 @@ function UpdateSettings()
 	var num = parseInt(input.value);
 	if(isNaN(num)) num = options["last"];
 	input.value = options["last"] = Math.min(Math.max(num, 1), 1000);
-	RecreatePosts();
+	RecreatePosts(posts);
 }
 
 
@@ -387,14 +416,14 @@ function Decrease()
 {
 	var input = document.getElementById("last");
 	input.value = options['last'] = Math.max(1, parseInt(input.value) - 1);
-	RecreatePosts();
+	RecreatePosts(posts);
 }
 
 function Increase()
 {
 	var input = document.getElementById("last");
 	input.value = options['last'] = Math.min(1000, parseInt(input.value) + 1);
-	RecreatePosts();
+	RecreatePosts(posts);
 }
 
 
