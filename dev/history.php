@@ -22,19 +22,32 @@ $last = uriParamInteger('last', 100);
 $from = strtotime(uriParamString('from', ''));
 $to = strtotime(uriParamString('to', ''));
 
-if($to === false || $from === false)
-	throw new Exception("Ungueltiges Datum.");
+$mode = isset($_REQUEST['last']) ? 'last' : 'date';
 
-
-$sql = sprintf("SELECT * FROM %s WHERE channel = :channel AND " .
-	"date >= :from AND date <= :to  LIMIT 10000", SQL_TABLE);
+if($mode == 'date' && ($to === false || $from === false))
+	throw new Exception("Datum konnte nicht erkannt werden.");
 
 $db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
-$stm = $db->prepare($sql);
-$stm->bindValue('channel', $channel, PDO::PARAM_STR);
-$stm->bindValue('from', sqlTime($from), PDO::PARAM_STR);
-$stm->bindValue('to', sqlTime($to), PDO::PARAM_STR);
-$stm->execute();
+
+if($mode == 'date')
+{
+	$sql = sprintf("SELECT * FROM %s WHERE channel = :channel AND " .
+		"date >= :from AND date <= :to  LIMIT 10000", SQL_TABLE);
+	$stm = $db->prepare($sql);
+	$stm->bindValue('channel', $channel, PDO::PARAM_STR);
+	$stm->bindValue('from', sqlTime($from), PDO::PARAM_STR);
+	$stm->bindValue('to', sqlTime($to), PDO::PARAM_STR);
+	$stm->execute();
+}
+else
+{
+	$sql = sprintf("SELECT id FROM %s WHERE channel = :channel " .
+		"ORDER BY id DESC LIMIT :last", SQL_TABLE);
+	$stm = $db->prepare($sql);
+	$stm->bindValue('channel', $channel, PDO::PARAM_STR);
+	$stm->bindValue('last', $last, PDO::PARAM_INT);
+	$stm->execute();
+}
 
 while($row = $stm->fetch())
 	echo jsonPost($row);
