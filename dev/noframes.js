@@ -350,6 +350,7 @@ function OnHistoryResponse()
 		else if(obj["type"] == "error")
 			throw new Error(obj["description"], obj["file"], obj["line"]);
 	}
+	alert(hposts[0]);
 
 	RecreatePosts(hposts);
 	SetStatus("");
