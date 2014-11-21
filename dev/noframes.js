@@ -344,6 +344,7 @@ function OnHistoryResponse()
 	var lines = historyRequest.responseText.split("\n");
 	for(var index in lines)
 	{
+		alert(lines[index]);
 		obj = JSON.parse(lines[index]);
 		if(obj["type"] == "post")
 			hposts.push(obj);
