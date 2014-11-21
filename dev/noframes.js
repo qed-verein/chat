@@ -361,8 +361,8 @@ function OnHistoryResponse()
 	while(display.hasChildNodes())
 		display.removeChild(display.lastChild);
 
-	for(var index in posts)
-		CreatePost(posts[index]);
+	for(var index in hposts)
+		CreatePost(hposts[index]);
 
 	SetStatus("");
 }
