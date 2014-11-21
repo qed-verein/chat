@@ -272,13 +272,12 @@ function RecreatePosts(posts)
 	{
 		if(cursor == posts.length)
 		{
-
 			var node = document.getElementById('posts');
 			node.parentNode.replaceChild(container, node);
+			scrollDown();
 			return;
 		}
 		AppendPost(container, posts[cursor]);
-		scrollDown();
 		++cursor;
 		setTimeout(RecreatePostsStep, 1);
 	}
