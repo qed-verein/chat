@@ -500,7 +500,7 @@ function SetStatus(text)
 {
     document.getElementById("status").innerHTML = text;
 	var node = document.getElementById("messagebox");
-	node.scrollTop = node.scrollHeight;
+	node.scrollTop = historyView ? 0 : node.scrollHeight;
 }
 
 function URIEncodeParameters(params)
