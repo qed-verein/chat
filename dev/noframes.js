@@ -270,7 +270,13 @@ function RecreatePosts(posts)
 		//AppendPost(container, posts[cursor]);
 	var RecreatePostsStep = function()
 	{
-		if(cursor == posts.length) return;
+		if(cursor == posts.length)
+		{
+
+			var node = document.getElementById('posts');
+			node.parentNode.replaceChild(container, node);
+			return;
+		}
 		AppendPost(container, posts[cursor]);
 		scrollDown();
 		++cursor;
@@ -278,8 +284,6 @@ function RecreatePosts(posts)
 	}
 	cursor = from;
 	RecreatePostsStep();
-	var node = document.getElementById('posts');
-	node.parentNode.replaceChild(container, node);
 }
 
 
