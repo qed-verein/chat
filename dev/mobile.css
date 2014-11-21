@@ -18,6 +18,11 @@ input[type="button"]:hover, input[type="submit"]:hover{
 	cursor: pointer;
 }
 
+#logbox a
+{
+	text-decoration: underline;
+	cursor: pointer;
+}
 
 a:link
 {
