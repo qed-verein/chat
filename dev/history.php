@@ -24,13 +24,12 @@ $to = strtotime(uriParamString('to', ''));
 
 if($to === false || $from === false)
 	throw new Exception("Ungueltiges Datum.");
-echo sqlTime($to);
-echo sqlTime($from);
 
-$sql = "SELECT * FROM %s WHERE date >= :from AND date <= :to AND channel = :channel LIMIT 10000";
+
+$sql = sprintf("SELECT * FROM %s WHERE channel = :channel AND " .
+	"date >= :from AND date <= :to  LIMIT 10000", SQL_TABLE);
 
 $db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
-
 $stm = $db->prepare($sql);
 $stm->bindValue('channel', $channel, PDO::PARAM_STR);
 $stm->bindValue('from', sqlTime($from), PDO::PARAM_STR);
