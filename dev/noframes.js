@@ -124,7 +124,7 @@ function ProcessPost(post)
 	if (!options["old"])
 	{
 		var container = document.getElementById("posts");
-		for (var node = display.lastChild, i = 1; node != null; ++i)
+		for (var node = container.lastChild, i = 1; node != null; ++i)
 		{
 			var temp = node;
 			node = node.previousSibling;
