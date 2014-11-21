@@ -312,6 +312,8 @@ var historyRequest, inHistoryMode, historyPosts;
 function ShowHistory(elt)
 {
 	ReceiverDisconnect();
+	RecreatePosts(Array());
+	SetStatus("Lade den Chatlog...");
 	parameters = "&" + URIEncodeParameters({version: version});
 	url = "history.php?";
 
