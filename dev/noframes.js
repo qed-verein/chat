@@ -312,8 +312,33 @@ var historyRequest;
 
 function ShowHistory()
 {
+	url = "history.php?";
+	if(self.id == 'lastHour')
+		url += URIEncodeParameters({from: '-1 hour', to: '+0 sec'});
+	url += parameters;
+
+		//parameters = "&" + URIEncodeParameters({version: version});
+	//"&ip=" + (document.getElementById ("logIp").checked ? 1 : 0)
+		//+ "&delay=" + (document.getElementById ("logDelay").checked ? 1 : 0)
+		//+ "&links=" + (document.getElementById ("logLinks").checked ? 1 : 0);
+
+	//document.getElementById("lastHour").href =
+	//document.getElementById("lastDay").href = "history.php?" +
+		//URIEncodeParameters({from: '-1 day', to: '+0 sec'}) + parameters;
+	//document.getElementById("lastWeek").href = "history.php?" +
+		//URIEncodeParameters({from: '-7 day', to: '+0 sec'}) + parameters;
+
+
+	//document.getElementById("last100").href = "history.php?last=100" + parameters;
+	//document.getElementById("last300").href = "history.php?last=300" + parameters;
+	//document.getElementById("last1000").href = "history.php?last=1000" + parameters;
+
+	//document.getElementById("log").href = "history.php?" + URIEncodeParameters({
+		//from : document.getElementById("logFrom").value,
+		//to : document.getElementById("logTo").value}) + parameters;
+
 	historyRequest.onreadystatechange = OnHistoryResponse;
-	historyRequest.open('GET', self.href, true);
+	historyRequest.open('GET', url, true);
 	historyRequest.send();
 }
 
@@ -338,26 +363,26 @@ function OnHistoryResponse()
 
 function RenewLinks()
 {
-	parameters = "&" + URIEncodeParameters({version: version});
+	//parameters = "&" + URIEncodeParameters({version: version});
 	//"&ip=" + (document.getElementById ("logIp").checked ? 1 : 0)
 		//+ "&delay=" + (document.getElementById ("logDelay").checked ? 1 : 0)
 		//+ "&links=" + (document.getElementById ("logLinks").checked ? 1 : 0);
 
-	document.getElementById("lastHour").href = "history.php?" +
-		URIEncodeParameters({from: '-1 hour', to: '+0 sec'}) + parameters;
-	document.getElementById("lastDay").href = "history.php?" +
-		URIEncodeParameters({from: '-1 day', to: '+0 sec'}) + parameters;
-	document.getElementById("lastWeek").href = "history.php?" +
-		URIEncodeParameters({from: '-7 day', to: '+0 sec'}) + parameters;
+	//document.getElementById("lastHour").href = "history.php?" +
+		//URIEncodeParameters({from: '-1 hour', to: '+0 sec'}) + parameters;
+	//document.getElementById("lastDay").href = "history.php?" +
+		//URIEncodeParameters({from: '-1 day', to: '+0 sec'}) + parameters;
+	//document.getElementById("lastWeek").href = "history.php?" +
+		//URIEncodeParameters({from: '-7 day', to: '+0 sec'}) + parameters;
 
 
-	document.getElementById("last100").href = "history.php?last=100" + parameters;
-	document.getElementById("last300").href = "history.php?last=300" + parameters;
-	document.getElementById("last1000").href = "history.php?last=1000" + parameters;
+	//document.getElementById("last100").href = "history.php?last=100" + parameters;
+	//document.getElementById("last300").href = "history.php?last=300" + parameters;
+	//document.getElementById("last1000").href = "history.php?last=1000" + parameters;
 
-	document.getElementById("log").href = "history.php?" + URIEncodeParameters({
-		from : document.getElementById("logFrom").value,
-		to : document.getElementById("logTo").value}) + parameters;
+	//document.getElementById("log").href = "history.php?" + URIEncodeParameters({
+		//from : document.getElementById("logFrom").value,
+		//to : document.getElementById("logTo").value}) + parameters;
 
 }
 
