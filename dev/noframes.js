@@ -134,7 +134,7 @@ function ProcessPost(post)
 		}
 	}
 
-	CreatePost(post);
+	AppendPost(document.getElementById('posts'), post);
 
 	if (options["title"])
 		top.document.title = (post["message"].length < 256) ? post["message"] :
@@ -144,22 +144,15 @@ function ProcessPost(post)
 }
 
 // Erstellt einen HTML-Knoten für diese Nachricht
-function CreatePost(post)
+function AppendPost(container, post)
 {
-	var node;
-
 	if(options['botblock'] && post['bottag'] == '1')
 		return;
 
 	if(options['mobile'])
-		node = FormatMobilePost(post);
+		container.appendChild(FormatMobilePost(post));
 	else
-		node = FormatScreenPost(post);
-
-	document.getElementById("posts").appendChild(node);
-
-	node = document.getElementById("messagebox");
-	node.scrollTop = node.scrollHeight;
+		container.appendChild(FormatScreenPost(post));
 }
 
 // Stellt eine Nachricht als HTML dar (Version für große Bildschrime)
@@ -263,15 +256,19 @@ function DelayString(post)
 
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
 function RecreatePosts(posts)
-{	var container = document.getElementById("posts");
-	while(container.hasChildNodes())
-		container.removeChild(container.lastChild);
+{	var container;
+	if(options['mobile'])
+		container = document.createElement('li');
+	else
+		container = document.createElement('table');
+	container.id = 'posts';
 
 	var from = (options["old"] || inHistoryMode) ? 0 : Math.max(0, posts.length - options["last"]);
-	container.style.setAttribute("display", "none");
 	for (var cursor = from; cursor != posts.length; ++cursor)
-		CreatePost(posts[cursor]);
-	container.style.setAttribute("display", "list");
+		AppendPost(container, posts[cursor]);
+	var node = document.getElementById('posts');
+	node.parentNode.replaceChild(container, node);
+	scrollDown();
 }
 
 
@@ -501,8 +498,7 @@ function OnSenderError()
 function SetStatus(text)
 {
     document.getElementById("status").innerHTML = text;
-	var node = document.getElementById("messagebox");
-	node.scrollTop = node.scrollHeight;
+    scrollDown();
 }
 
 function URIEncodeParameters(params)
@@ -526,6 +522,11 @@ function URIDecodeParameters() {
 	return vars;
 }
 
+function scrollDown()
+{
+	var node = document.getElementById("messagebox");
+	node.scrollTop = node.scrollHeight;
+}
 
 function HtmlEscape (text)
 {
