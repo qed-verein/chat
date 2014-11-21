@@ -363,9 +363,9 @@ function OnHistoryResponse()
 			historyPosts.push(obj);
 		else if(obj["type"] == "error")
 			throw new Error(obj["description"], obj["file"], obj["line"]);
+		CreatePost(obj);
 	}
 
-	RecreatePosts(historyPosts);
 	SetStatus("");
 }
 
