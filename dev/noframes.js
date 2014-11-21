@@ -320,7 +320,7 @@ function ShowHistory(elt)
 	else if(elt.id == 'lastDay')
 		url += URIEncodeParameters({from: '-1 day', to: '+0 sec'});
 	else if(elt.id == 'lastWeek')
-		url += URIEncodeParameters({from: '-7 day', to: '+0 sec'});
+		url += URIEncodeParameters({from: '-7 days', to: '+0 sec'});
 	else if(elt.id == 'last100')
 		url += URIEncodeParameters({last: '100'});
 	else if(elt.id == 'last300')
