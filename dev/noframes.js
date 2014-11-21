@@ -123,13 +123,13 @@ function ProcessPost(post)
 
 	if (!options["old"])
 	{
-		var display = document.getElementById ("display");
+		var container = document.getElementById("posts");
 		for (var node = display.lastChild, i = 1; node != null; ++i)
 		{
 			var temp = node;
 			node = node.previousSibling;
 			if (i >= options["last"])
-				display.removeChild (temp);
+				container.removeChild(temp);
 		}
 	}
 
@@ -156,7 +156,7 @@ function CreatePost(post)
 	else
 		node = FormatScreenPost(post);
 
-	document.getElementById("display").appendChild(node);
+	document.getElementById("posts").appendChild(node);
 
 	node = document.getElementById("messagebox");
 	node.scrollTop = historyView ? 0 : node.scrollHeight;
@@ -178,7 +178,12 @@ function FormatScreenPost(post)
 	tr.appendChild (node);
 
 	if (options["ip"])
-		tr.appendChild (GetNodeIp (post));
+	{
+		var ip = document.createElement ("td");
+		ip.appendChild (document.createTextNode (post["ip"]));
+		ip.setAttribute ("class", "ip");
+		tr.appendChild (ip);
+	}
 
 	node = document.createElement ("td");
 	node.innerHTML =  NickEscape (post["name"] + ((post['anonym'] == "1") ? " (anonym)" : "") + ":");
@@ -187,7 +192,8 @@ function FormatScreenPost(post)
 	tr.appendChild (node);
 
 	node = document.createElement ("td");
-	node.innerHTML = HtmlEscape (post["message"], options["links"]);
+	node.innerHTML = HtmlEscape (post["message"]);
+	if(options["links"]) node.innerHTML = InsertLinks(node.innerHTML);
 	node.setAttribute ("class", "message");
 	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);
@@ -230,7 +236,8 @@ function FormatMobilePost(post)
 	li.appendChild(info);
 
 	var message = document.createElement('span');
-	message.innerHTML = HtmlEscape(post['message'], options['links']);
+	message.innerHTML = HtmlEscape (post["message"]);
+	if(options["links"]) message.innerHTML = InsertLinks(message.innerHTML);
 	message.setAttribute('class', 'message');
 	li.appendChild(message);
 
@@ -257,11 +264,11 @@ function DelayString(post)
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
 function RecreatePosts()
 {
-	xposts = historyView ? hposts : posts;
+	xposts = historyView ? historyPosts : posts;
 
-	var display = document.getElementById("display");
-	while (display.hasChildNodes())
-		display.removeChild(display.lastChild);
+	var container = document.getElementById("posts");
+	while(container.hasChildNodes())
+		container.removeChild(container.lastChild);
 
 	var from = (options["old"] || historyView ? 0 : Math.max(0, xposts.length - options["last"]));
 	for (var cursor = from; cursor != xposts.length; ++cursor)
@@ -286,13 +293,6 @@ function InsertLinks (text)
 		'<a rel="noreferrer" target="_blank" href="$1$2">$1$2</a>');
 }
 
-function GetNodeIp (post)
-{
-	node = document.createElement ("td");
-	node.appendChild (document.createTextNode (post["ip"]));
-	node.setAttribute ("class", "ip");
-	return node;
-}
 
 function NickEscape (text)
 {
@@ -311,7 +311,7 @@ function NickEscape (text)
 // *   Logs   *
 // ************
 
-var historyRequest, historyView, hposts;
+var historyRequest, historyView, historyPosts;
 
 function ShowHistory(elt)
 {
@@ -354,7 +354,7 @@ function OnHistoryResponse()
 	if(historyRequest.readyState != 4) return;
 	if(historyRequest.status < 200 || historyRequest.status >= 300) return;
 
-	hposts = Array();
+	historyPosts = Array();
 	var lines = historyRequest.responseText.split("\n");
 	for(var index in lines)
 	{
@@ -362,7 +362,7 @@ function OnHistoryResponse()
 
 		obj = JSON.parse(lines[index]);
 		if(obj["type"] == "post")
-			hposts.push(obj);
+			historyPosts.push(obj);
 		else if(obj["type"] == "error")
 			throw new Error(obj["description"], obj["file"], obj["line"]);
 	}
@@ -374,7 +374,7 @@ function OnHistoryResponse()
 function InitLogs()
 {
 	historyRequest = new XMLHttpRequest();
-	hposts = Array();
+	historyPosts = Array();
 }
 
 
@@ -525,9 +525,8 @@ function URIDecodeParameters() {
 }
 
 
-function HtmlEscape (text, links)
+function HtmlEscape (text)
 {
-	text = text.replace (/&/g, "&amp;").replace (/</g, "&lt;").replace (/>/g, "&gt;").replace (/\"/g, "&quot;");
-	if (links) text = InsertLinks (text);
-	return text.replace (/\n/g, "<br>");
+	text = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	return text.replace(/\"/g, "&quot;").replace(/\n/g, "<br>");
 }

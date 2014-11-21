@@ -24,12 +24,6 @@ a:link
 	color: white;
 }
 
-#logbox a
-{
-	text-decoration: underline;
-	cursor: pointer;
-}
-
 a:visited
 {
 	color: #484;
@@ -68,7 +62,7 @@ a:visited
 }
 
 
-ul#display
+ul#posts
 {
 	list-style-type: none;
 	margin: 0em;

@@ -42,7 +42,7 @@ if($mode == 'date')
 	$stm->bindValue('to', sqlTime($to), PDO::PARAM_STR);
 	$stm->execute();
 }
-else
+else if($mode == 'last')
 {
 	$sqlFrom = sprintf("SELECT id FROM %s WHERE channel = :channel " .
 		"ORDER BY id DESC LIMIT :last, 1", SQL_TABLE);

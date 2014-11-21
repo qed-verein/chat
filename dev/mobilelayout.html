@@ -12,7 +12,7 @@
 <body onload="Init()">
 
 <div id="messagebox" class="box">
-<ul id="display">
+<ul id="posts">
 </ul>
 <p id="status"></p>
 </div>
@@ -48,15 +48,15 @@
 
 <div id="logbox" class="box popup">
 	<div style="float: left">
-		<a id="logquit" onclick="QuitHistory(posts)">normale Anzeige</a><br>
-		<a id="lastHour" onclick="ShowHistory(this)">letzte Stunde</a><br>
-		<a id="lastDay" onclick="ShowHistory(this)">letzter Tag</a><br>
-		<a id="lastWeek" onclick="ShowHistory(this)">letzte Woche</a><br>
+		<a id="logquit" href="javascript:QuitHistory(this)">normale Anzeige</a><br>
+		<a id="lastHour" href="javascript:ShowHistory(this)">letzte Stunde</a><br>
+		<a id="lastDay" href="javascript:ShowHistory(this)">letzter Tag</a><br>
+		<a id="lastWeek" href="javascript:ShowHistory(this)">letzte Woche</a><br>
 	</div>
 	<div style="float: left; margin-left: 2mm">
-		<a id="last100" onclick="ShowHistory(this)">letzte 100 Posts</a><br>
-		<a id="last300" onclick="ShowHistory(this)">letzte 300 Posts</a><br>
-		<a id="last1000" onclick="ShowHistory(this)">letzte 1000 Posts</a>
+		<a id="last100" href="javascript:ShowHistory(this)">letzte 100 Posts</a><br>
+		<a id="last300" href="javascript:ShowHistory(this)">letzte 300 Posts</a><br>
+		<a id="last1000" href="javascript:ShowHistory(this)">letzte 1000 Posts</a>
 	</div>
 	<div style="float: left; margin-left: 2mm">
 		<table><tr>
@@ -66,7 +66,7 @@
 			<td>bis:</td>
 			<td><input type="text" id="logTo" size="12"></td>
 		</tr></table>
-		<a style="margin-left: 2mm" id="log" onclick="ShowHistory(this)">Intervall anzeigen</a>
+		<a style="margin-left: 2mm" id="log" href="javascript:ShowHistory(this)">Intervall anzeigen</a>
 	</div>
 	<div style="clear: both; text-align: center">
 		<input type="button" value="Schließen"
