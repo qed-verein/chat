@@ -133,8 +133,7 @@ function ProcessPost(post)
 		}
 	}
 
-	if(!historyView)
-		CreatePost(post);
+	CreatePost(post);
 
 	if (options["title"])
 		top.document.title = (post["message"].length < 256) ? post["message"] :
@@ -159,7 +158,7 @@ function CreatePost(post)
 	document.getElementById("posts").appendChild(node);
 
 	node = document.getElementById("messagebox");
-	node.scrollTop = historyView ? 0 : node.scrollHeight;
+	node.scrollTop = node.scrollHeight;
 }
 
 // Stellt eine Nachricht als HTML dar (Version für große Bildschrime)
@@ -262,17 +261,14 @@ function DelayString(post)
 }
 
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
-function RecreatePosts()
-{
-	xposts = historyView ? historyPosts : posts;
-
-	var container = document.getElementById("posts");
+function RecreatePosts(posts)
+{	var container = document.getElementById("posts");
 	while(container.hasChildNodes())
 		container.removeChild(container.lastChild);
 
-	var from = (options["old"] || historyView ? 0 : Math.max(0, xposts.length - options["last"]));
-	for (var cursor = from; cursor != xposts.length; ++cursor)
-		CreatePost(xposts[cursor]);
+	var from = (options["old"] || inHistoryMode) ? 0 : Math.max(0, posts.length - options["last"]);
+	for (var cursor = from; cursor != posts.length; ++cursor)
+		CreatePost(posts[cursor]);
 }
 
 
@@ -311,10 +307,11 @@ function NickEscape (text)
 // *   Logs   *
 // ************
 
-var historyRequest, historyView, historyPosts;
+var historyRequest, inHistoryMode, historyPosts;
 
 function ShowHistory(elt)
 {
+	ReceiverDisconnnect();
 	parameters = "&" + URIEncodeParameters({version: version});
 	url = "history.php?";
 
@@ -335,7 +332,7 @@ function ShowHistory(elt)
 			from : document.getElementById("logFrom").value,
 			to : document.getElementById("logTo").value});
 	url += parameters;
-	historyView = true;
+	inHistoryMode = true;
 	historyRequest.onreadystatechange = OnHistoryResponse;
 	historyRequest.open('GET', url, true);
 	historyRequest.send();
@@ -344,8 +341,9 @@ function ShowHistory(elt)
 
 function QuitHistory()
 {
-	historyView = false
-	RecreatePosts();
+	inHistoryMode = false
+	RecreatePosts(posts);
+	ReceiverConnnect();
 }
 
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
@@ -367,7 +365,7 @@ function OnHistoryResponse()
 			throw new Error(obj["description"], obj["file"], obj["line"]);
 	}
 
-	RecreatePosts();
+	RecreatePosts(historyPosts);
 	SetStatus("");
 }
 
@@ -406,7 +404,7 @@ function UpdateSettings()
 	var num = parseInt(input.value);
 	if(isNaN(num)) num = options["last"];
 	input.value = options["last"] = Math.min(Math.max(num, 1), 1000);
-	RecreatePosts();
+	RecreatePosts(inHistoryMode ? historyPosts : posts);
 }
 
 
@@ -414,14 +412,14 @@ function Decrease()
 {
 	var input = document.getElementById("last");
 	input.value = options['last'] = Math.max(1, parseInt(input.value) - 1);
-	RecreatePosts();
+	UpdateSettings();
 }
 
 function Increase()
 {
 	var input = document.getElementById("last");
 	input.value = options['last'] = Math.min(1000, parseInt(input.value) + 1);
-	RecreatePosts();
+	UpdateSettings();
 }
 
 
@@ -500,7 +498,7 @@ function SetStatus(text)
 {
     document.getElementById("status").innerHTML = text;
 	var node = document.getElementById("messagebox");
-	node.scrollTop = historyView ? 0 : node.scrollHeight;
+	node.scrollTop = node.scrollHeight;
 }
 
 function URIEncodeParameters(params)
