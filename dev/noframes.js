@@ -317,6 +317,7 @@ function ShowHistory(elt)
 {
 	parameters = "&" + URIEncodeParameters({version: version});
 	url = "history.php?";
+	alert(elt.id);
 
 	if(elt.id == 'lastHour')
 		url += URIEncodeParameters({from: '-1 hour', to: '+0 sec'});
