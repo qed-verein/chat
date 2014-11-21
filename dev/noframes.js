@@ -314,17 +314,17 @@ function ShowHistory()
 {
 	parameters = "&" + URIEncodeParameters({version: version});
 	url = "history.php?";
-	if(self.id == 'lastHour')
+	if(this.id == 'lastHour')
 		url += URIEncodeParameters({from: '-1 hour', to: '+0 sec'});
-	else if(self.id == 'lastDay')
+	else if(this.id == 'lastDay')
 		url += URIEncodeParameters({from: '-1 day', to: '+0 sec'});
-	else if(self.id == 'lastWeek')
+	else if(this.id == 'lastWeek')
 		url += URIEncodeParameters({from: '-7 day', to: '+0 sec'});
-	else if(self.id == 'last100')
+	else if(this.id == 'last100')
 		url += URIEncodeParameters({last: '100'});
-	else if(self.id == 'last300')
+	else if(this.id == 'last300')
 		url += URIEncodeParameters({last: '300'});
-	else if(self.id == 'last1000')
+	else if(this.id == 'last1000')
 		url += URIEncodeParameters({last: '1000'});
 	url += parameters;
 
