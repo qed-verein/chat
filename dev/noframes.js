@@ -353,7 +353,6 @@ function OnHistoryResponse()
 	if(historyRequest.status < 200 || historyRequest.status >= 300) return;
 
 	historyPosts = Array();
-	RecreatePosts(historyPosts);
 	var lines = historyRequest.responseText.split("\n");
 	for(var index in lines)
 	{
@@ -364,9 +363,9 @@ function OnHistoryResponse()
 			historyPosts.push(obj);
 		else if(obj["type"] == "error")
 			throw new Error(obj["description"], obj["file"], obj["line"]);
-		CreatePost(obj);
 	}
 
+	RecreatePosts(historyPosts);
 	SetStatus("");
 }
 
