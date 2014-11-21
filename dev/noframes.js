@@ -254,6 +254,7 @@ function DelayString(post)
 	return delay;
 }
 
+
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
 function RecreatePosts(posts)
 {	var container;
@@ -264,8 +265,17 @@ function RecreatePosts(posts)
 	container.id = 'posts';
 
 	var from = (options["old"] || inHistoryMode) ? 0 : Math.max(0, posts.length - options["last"]);
-	for (var cursor = from; cursor != posts.length; ++cursor)
+	//for (var cursor = from; cursor != posts.length; ++cursor)
+		//AppendPost(container, posts[cursor]);
+	var RecreatePostsStep = function()
+	{
+		if(cursor == posts.length) return;
 		AppendPost(container, posts[cursor]);
+		++cursor;
+		setTimeout('RecreatePostsStep()', 1);
+	}
+	cursor = from;
+	RecreatePostsStep();
 	var node = document.getElementById('posts');
 	node.parentNode.replaceChild(container, node);
 	scrollDown();
