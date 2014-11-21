@@ -41,7 +41,7 @@ if($mode == 'date')
 }
 else
 {
-	$sql = sprintf("SELECT id FROM %s WHERE channel = :channel " .
+	$sql = sprintf("SELECT * FROM %s WHERE channel = :channel " .
 		"ORDER BY id DESC LIMIT :last", SQL_TABLE);
 	$stm = $db->prepare($sql);
 	$stm->bindValue('channel', $channel, PDO::PARAM_STR);
