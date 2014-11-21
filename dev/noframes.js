@@ -254,6 +254,7 @@ function DelayString(post)
 	return delay;
 }
 
+var recreatePostsTimeout = null;
 
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
 function RecreatePosts(posts)
@@ -271,6 +272,7 @@ function RecreatePosts(posts)
 	{
 		if(cursor == posts.length) return;
 		AppendPost(container, posts[cursor]);
+		scrollDown();
 		++cursor;
 		setTimeout(RecreatePostsStep, 1);
 	}
@@ -278,7 +280,6 @@ function RecreatePosts(posts)
 	RecreatePostsStep();
 	var node = document.getElementById('posts');
 	node.parentNode.replaceChild(container, node);
-	scrollDown();
 }
 
 
