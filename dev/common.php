@@ -121,5 +121,6 @@ function urlLogout() {
 	return 'https://chat.qed-verein.de/dev/account.php?logout=1';}
 function urlChat() {
 	return 'https://chat.qed-verein.de/index.php';}
-
+function urlChatMobile() {
+	return 'https://chat.qed-verein.de/dev/noframes.php?mobile=1';}
 ?>

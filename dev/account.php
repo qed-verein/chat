@@ -30,7 +30,13 @@ if(!userLoggedIn())
 	$content = renderLoginForm($errorMessage);
 	echo renderSimpleLayout("Login", $content);
 }
-else redirect(urlChat());
+else
+{
+	if(uriParamInteger('mobil') == 1)
+		redirect(urlChatMobile());
+	else
+		redirect(urlChat());
+}
 
 
 ?>
