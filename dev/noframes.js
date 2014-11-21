@@ -279,7 +279,7 @@ function RecreatePosts(posts)
 		}
 		AppendPost(container, posts[cursor]);
 		if(cursor == posts.length - 1)
-			UpdateTitle(posts.last['message']);
+			UpdateTitle(posts[cursor]['message']);
 		++cursor;
 		recreatePostsTimeout = setTimeout(RecreatePostsStep, 0);
 	}
