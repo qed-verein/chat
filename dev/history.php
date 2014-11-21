@@ -24,6 +24,8 @@ $to = strtotime(uriParamString('to', ''));
 
 if($to === false || $from === false)
 	throw new Exception("Ungueltiges Datum.");
+echo $to;
+echo $to;
 
 $sql = "SELECT * FROM %s WHERE date >= :from AND date <= :to AND channel = :channel LIMIT 0, 10000";
 
