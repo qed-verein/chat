@@ -327,6 +327,10 @@ function ShowHistory(elt)
 		url += URIEncodeParameters({last: '300'});
 	else if(elt.id == 'last1000')
 		url += URIEncodeParameters({last: '1000'});
+	else if(elt.id == 'log')
+		url += URIEncodeParameters({
+			from : document.getElementById("logFrom").value,
+			to : document.getElementById("logTo").value});
 	url += parameters;
 
 	historyRequest.onreadystatechange = OnHistoryResponse;
