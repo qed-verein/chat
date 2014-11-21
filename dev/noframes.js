@@ -331,8 +331,8 @@ function RenewLinks()
 	document.getElementById("log").href = "history.php?" + URIEncodeParameters({
 		from : document.getElementById("logFrom").value,
 		to : document.getElementById("logTo").value}) + parameters;
-}
 
+}
 
 
 function InitLogs()

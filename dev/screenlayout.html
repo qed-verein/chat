@@ -66,22 +66,13 @@
 		<a id="last1000">letzte 1000 Posts</a>
 	</div>
 	<div style="float: left; margin-left: 2mm">
-		<table><tr><td>von:</td><td>
-		<input type="text" id="frDay" onchange="RenewLinks()" size="2"> .
-		<input type="text" id="frMonth" onchange="RenewLinks()" size="2"> .
-		20<input type="text" id="frYear" onchange="RenewLinks()" size="2"> ,
-		<input type="text" id="frHour" onchange="RenewLinks()" size="2"> :
-		<input type="text" id="frMinute" onchange="RenewLinks()" size="2"></td>
-		<tr><td>bis:</td><td>
-		<input type="text" id="toDay" onchange="RenewLinks()" size="2"> .
-		<input type="text" id="toMonth" onchange="RenewLinks()" size="2"> .
-		20<input type="text" id="toYear" onchange="RenewLinks()" size="2"> ,
-		<input type="text" id="toHour" onchange="RenewLinks()" size="2"> :
-		<input type="text" id="toMinute" onchange="RenewLinks()" size="2"></td>
+		<table><tr>
+			<td>von:</td>
+			<td><input type="text" id="logFrom" size="12" onchange="RenewLinks()"></td>
+		</tr><tr>
+			<td>bis:</td>
+			<td><input type="text" id="logTo" size="12" onchange="RenewLinks()"></td>
 		</tr></table>
-		<input type="checkbox" id="logIp" onclick="RenewLinks()">IPs
-		<input type="checkbox" id="logDelay" onclick="RenewLinks()">Delays
-		<input type="checkbox" id="logLinks" onclick="RenewLinks()">Links
 		<a style="margin-left: 2mm" id="log">Log anzeigen</a>
 	</div>
 	<div style="clear: both"></div>
