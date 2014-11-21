@@ -262,7 +262,7 @@ function RecreatePosts()
 	while (display.hasChildNodes())
 		display.removeChild(display.lastChild);
 
-	var from = (options["old"] ? 0 : Math.max(0, xposts.length - options["last"]));
+	var from = (options["old"] && !historyView ? 0 : Math.max(0, xposts.length - options["last"]));
 	for (var cursor = from; cursor != xposts.length; ++cursor)
 		CreatePost(xposts[cursor]);
 }
