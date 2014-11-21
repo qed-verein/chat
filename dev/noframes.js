@@ -310,22 +310,22 @@ function NickEscape (text)
 
 var historyRequest;
 
-function ShowHistory()
+function ShowHistory(elt)
 {
 	parameters = "&" + URIEncodeParameters({version: version});
 	url = "history.php?";
 	alert(this.id);
-	if(this.id == 'lastHour')
+	if(elt.id == 'lastHour')
 		url += URIEncodeParameters({from: '-1 hour', to: '+0 sec'});
-	else if(this.id == 'lastDay')
+	else if(elt.id == 'lastDay')
 		url += URIEncodeParameters({from: '-1 day', to: '+0 sec'});
-	else if(this.id == 'lastWeek')
+	else if(elt.id == 'lastWeek')
 		url += URIEncodeParameters({from: '-7 day', to: '+0 sec'});
-	else if(this.id == 'last100')
+	else if(elt.id == 'last100')
 		url += URIEncodeParameters({last: '100'});
-	else if(this.id == 'last300')
+	else if(elt.id == 'last300')
 		url += URIEncodeParameters({last: '300'});
-	else if(this.id == 'last1000')
+	else if(elt.id == 'last1000')
 		url += URIEncodeParameters({last: '1000'});
 	url += parameters;
 
