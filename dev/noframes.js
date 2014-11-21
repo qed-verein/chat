@@ -276,7 +276,7 @@ function RecreatePosts(posts)
 		{
 			var node = document.getElementById('posts');
 			node.parentNode.replaceChild(container, node);
-			if(historyView)
+			if(inHistoryMode)
 				SetStatus("Chatlog wurde erfolgreich geladen!");
 			scrollDown();
 			return;
