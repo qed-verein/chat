@@ -254,15 +254,17 @@ function DelayString(post)
 }
 
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
-function RecreatePosts(posts)
+function RecreatePosts()
 {
+	xposts = historyView ? hposts : posts;
+
 	var display = document.getElementById("display");
 	while (display.hasChildNodes())
 		display.removeChild(display.lastChild);
 
-	var from = (options["old"] ? 0 : Math.max(0, posts.length - options["last"]));
-	for (var cursor = from; cursor != posts.length; ++cursor)
-		CreatePost(posts[cursor]);
+	var from = (options["old"] ? 0 : Math.max(0, xposts.length - options["last"]));
+	for (var cursor = from; cursor != xposts.length; ++cursor)
+		CreatePost(xposts[cursor]);
 }
 
 
@@ -308,7 +310,7 @@ function NickEscape (text)
 // *   Logs   *
 // ************
 
-var historyRequest;
+var historyRequest, historyView, hposts;
 
 function ShowHistory(elt)
 {
@@ -332,10 +334,17 @@ function ShowHistory(elt)
 			from : document.getElementById("logFrom").value,
 			to : document.getElementById("logTo").value});
 	url += parameters;
-
+	historyView = true;
 	historyRequest.onreadystatechange = OnHistoryResponse;
 	historyRequest.open('GET', url, true);
 	historyRequest.send();
+
+}
+
+function QuitHistory(elt)
+{
+	historyView = false
+	RecreatePosts();
 }
 
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
@@ -344,7 +353,7 @@ function OnHistoryResponse()
 	if(historyRequest.readyState != 4) return;
 	if(historyRequest.status < 200 || historyRequest.status >= 300) return;
 
-	var hposts = Array();
+	hposts = Array();
 	var lines = historyRequest.responseText.split("\n");
 	for(var index in lines)
 	{
@@ -370,6 +379,7 @@ function OnHistoryResponse()
 function InitLogs()
 {
 	historyRequest = new XMLHttpRequest();
+	hposts = Array();
 }
 
 
@@ -401,7 +411,7 @@ function UpdateSettings()
 	var num = parseInt(input.value);
 	if(isNaN(num)) num = options["last"];
 	input.value = options["last"] = Math.min(Math.max(num, 1), 1000);
-	RecreatePosts(posts);
+	RecreatePosts();
 }
 
 
@@ -409,14 +419,14 @@ function Decrease()
 {
 	var input = document.getElementById("last");
 	input.value = options['last'] = Math.max(1, parseInt(input.value) - 1);
-	RecreatePosts(posts);
+	RecreatePosts();
 }
 
 function Increase()
 {
 	var input = document.getElementById("last");
 	input.value = options['last'] = Math.min(1000, parseInt(input.value) + 1);
-	RecreatePosts(posts);
+	RecreatePosts();
 }
 
 
