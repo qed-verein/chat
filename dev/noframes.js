@@ -542,8 +542,9 @@ function URIDecodeParameters() {
 function scrollDown()
 {
 	var node = document.getElementById("messagebox");
-	node.scrollTop = node.scrollHeight;
+	node.scrollTop = inHistoryMode ? 0 : node.scrollHeight;
 }
+
 
 function HtmlEscape (text)
 {
