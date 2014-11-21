@@ -366,7 +366,7 @@ function OnHistoryResponse()
 	}
 
 	RecreatePosts(historyPosts);
-	SetStatus("Chatlog Wurde fertig geladen.");
+	SetStatus("Chatlog wurde erfolgreich geladen!");
 }
 
 function InitLogs()
