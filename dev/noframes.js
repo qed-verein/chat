@@ -357,7 +357,13 @@ function OnHistoryResponse()
 			throw new Error(obj["description"], obj["file"], obj["line"]);
 	}
 
-	RecreatePosts(hposts);
+	var display = document.getElementById("display");
+	while (display.hasChildNodes())
+		display.removeChild(display.lastChild);
+
+	for (index in posts)
+		CreatePost(posts[index]);
+
 	SetStatus("");
 }
 
