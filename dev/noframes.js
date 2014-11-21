@@ -551,9 +551,9 @@ function HtmlEscape (text)
 	return text.replace(/\"/g, "&quot;").replace(/\n/g, "<br>");
 }
 
-function updateTitle()
+function updateTitle(message)
 {
 	if(options["title"])
-		top.document.title = (post["message"].length < 256) ? post["message"] :
-			top.document.title = post["message"].substr(0, 252) + "...";
+		top.document.title = (message.length < 256) ? message :
+			top.document.title = message.substr(0, 252) + "...";
 }
