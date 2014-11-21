@@ -358,10 +358,10 @@ function OnHistoryResponse()
 	}
 
 	var display = document.getElementById("display");
-	while (display.hasChildNodes())
+	while(display.hasChildNodes())
 		display.removeChild(display.lastChild);
 
-	for (index in posts)
+	for(var index in posts)
 		CreatePost(posts[index]);
 
 	SetStatus("");
