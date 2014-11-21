@@ -31,6 +31,7 @@
 
 
 <div id="settingbox" class="box popup">
+	<h3 style="margin: 0px">Einstellungen</h3>
 	<input type="checkbox" id="ip" onclick="UpdateSettings()">IPs anzeigen<br>
 	<input type="checkbox" id="delay" onclick="UpdateSettings()">Delays anzeigen<br>
 	<input type="checkbox" id="links" onclick="UpdateSettings()">Links anzeigen<br>
@@ -47,8 +48,9 @@
 </div>
 
 <div id="logbox" class="box popup">
+	<h3 style="margin: 0px">Chat-Protokolle</h3>
 	<div style="float: left">
-		<a id="logquit" onclick="QuitHistory(this)">normale Anzeige</a><br>
+		<a id="newPosts" onclick="QuitHistory()">aktuelle Posts</a><br>
 		<a id="lastHour" onclick="ShowHistory(this)">letzte Stunde</a><br>
 		<a id="lastDay" onclick="ShowHistory(this)">letzter Tag</a><br>
 		<a id="lastWeek" onclick="ShowHistory(this)">letzte Woche</a><br>

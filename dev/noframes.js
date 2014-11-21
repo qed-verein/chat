@@ -342,7 +342,7 @@ function ShowHistory(elt)
 
 }
 
-function QuitHistory(elt)
+function QuitHistory()
 {
 	historyView = false
 	RecreatePosts();
