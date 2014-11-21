@@ -19,9 +19,10 @@ input[type="button"]:hover, input[type="submit"]:hover{
 }
 
 
-a:link
+a:link, #logbox a
 {
 	color: white;
+	text-decoration: underline;
 }
 
 a:visited
