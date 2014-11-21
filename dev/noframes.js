@@ -314,6 +314,7 @@ function ShowHistory()
 {
 	parameters = "&" + URIEncodeParameters({version: version});
 	url = "history.php?";
+	alert(this.id);
 	if(this.id == 'lastHour')
 		url += URIEncodeParameters({from: '-1 hour', to: '+0 sec'});
 	else if(this.id == 'lastDay')
