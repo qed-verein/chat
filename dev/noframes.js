@@ -136,9 +136,6 @@ function ProcessPost(post)
 
 	AppendPost(document.getElementById('posts'), post);
 
-	if(options["title"])
-		top.document.title = (post["message"].length < 256) ? post["message"] :
-			top.document.title = post["message"].substr(0, 252) + "...";
 
 	SetStatus("");
 }
@@ -153,6 +150,10 @@ function AppendPost(container, post)
 		container.appendChild(FormatMobilePost(post));
 	else
 		container.appendChild(FormatScreenPost(post));
+
+	if(options["title"])
+		top.document.title = (post["message"].length < 256) ? post["message"] :
+			top.document.title = post["message"].substr(0, 252) + "...";
 }
 
 // Stellt eine Nachricht als HTML dar (Version für große Bildschrime)
