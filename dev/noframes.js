@@ -157,11 +157,8 @@ function CreatePost(post)
 
 	document.getElementById("display").appendChild(node);
 
-	if(!historyView)
-	{
-		node = document.getElementById("messagebox");
-		node.scrollTop = node.scrollHeight;
-	}
+	node = document.getElementById("messagebox");
+	node.scrollTop = historyView ? 0 : node.scrollHeight;
 }
 
 // Stellt eine Nachricht als HTML dar (Version für große Bildschrime)
