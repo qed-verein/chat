@@ -323,7 +323,7 @@ function NickEscape (text)
 // *   Logs   *
 // ************
 
-var historyRequest, inHistoryMode, historyPosts;
+var inHistoryMode, historyPosts;
 
 function ShowHistory(elt)
 {
@@ -351,9 +351,9 @@ function ShowHistory(elt)
 			to : document.getElementById("logTo").value});
 	url += parameters;
 	inHistoryMode = true;
-	historyRequest.onreadystatechange = OnHistoryResponse;
-	historyRequest.open('GET', url, true);
-	historyRequest.send();
+	recvRequest.onreadystatechange = OnHistoryResponse;
+	recvRequest.open('GET', url, true);
+	recvRequest.send();
 	UpdateTitle("Chatlog: " + elt.firstChild.data);
 }
 
@@ -367,11 +367,11 @@ function QuitHistory()
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
 function OnHistoryResponse()
 {
-	if(historyRequest.readyState != 4) return;
-	if(historyRequest.status < 200 || historyRequest.status >= 300) return;
+	if(recvRequest.readyState != 4) return;
+	if(recvRequest.status < 200 || recvRequest.status >= 300) return;
 
 	historyPosts = Array();
-	var lines = historyRequest.responseText.split("\n");
+	var lines = recvRequest.responseText.split("\n");
 	for(var index in lines)
 	{
 		if(lines[index] == "") continue;
@@ -388,7 +388,7 @@ function OnHistoryResponse()
 
 function InitLogs()
 {
-	historyRequest = new XMLHttpRequest();
+	recvRequest = new XMLHttpRequest();
 	historyPosts = Array();
 }
 
