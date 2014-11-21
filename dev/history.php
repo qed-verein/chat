@@ -22,10 +22,13 @@ $last = uriParamInteger('last', 100);
 $from = strtotime(uriParamString('from', ''));
 $to = strtotime(uriParamString('to', ''));
 
+
 $mode = isset($_REQUEST['last']) ? 'last' : 'date';
 
 if($mode == 'date' && ($to === false || $from === false))
 	throw new Exception("Datum konnte nicht erkannt werden.");
+if($mode == 'last' && $last >= 10000)
+	throw Exception("Es wurden zu viele Posts angefragt.");
 
 $db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
 
@@ -41,11 +44,19 @@ if($mode == 'date')
 }
 else
 {
-	$sql = sprintf("SELECT * FROM %s WHERE channel = :channel " .
-		"ORDER BY id DESC LIMIT :last", SQL_TABLE);
-	$stm = $db->prepare($sql);
+	$sqlFrom = sprintf("SELECT id FROM %s WHERE channel = :channel " .
+		"ORDER BY id DESC LIMIT :last, 1", SQL_TABLE);
+	$stm = $db->prepare($sqlFrom);
 	$stm->bindValue('channel', $channel, PDO::PARAM_STR);
 	$stm->bindValue('last', $last, PDO::PARAM_INT);
+	$stm->execute();
+	$from = $stm->fetchColumn();
+
+	$sql = sprintf("SELECT * FROM %s WHERE channel = :channel " .
+		" AND id >= :from ORDER BY id", SQL_TABLE);
+	$stm = $db->prepare($sql);
+	$stm->bindValue('channel', $channel, PDO::PARAM_STR);
+	$stm->bindValue('from', $from, PDO::PARAM_INT);
 	$stm->execute();
 }
 
