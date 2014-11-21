@@ -339,6 +339,7 @@ function OnHistoryResponse()
 	if(historyRequest.readyState != 4) return;
 	if(historyRequest.status < 200 || historyRequest.status >= 300) return;
 
+	var hposts = new Array();
 	for(var line in historyRequest.responseText.split("\n"))
 	{
 		obj = JSON.parse(line);
