@@ -258,7 +258,9 @@ var recreatePostsTimeout = null;
 
 // Generiert die anzeigten Posts neu (z.B. falls Einstellungen geändert werden)
 function RecreatePosts(posts)
-{	var container;
+{
+	clearTimeout(recreatePostsTimeout);
+	var container;
 	if(options['mobile'])
 		container = document.createElement('li');
 	else
@@ -279,7 +281,7 @@ function RecreatePosts(posts)
 		}
 		AppendPost(container, posts[cursor]);
 		++cursor;
-		setTimeout(RecreatePostsStep, 0);
+		recreatePostsTimeout = setTimeout(RecreatePostsStep, 0);
 	}
 	cursor = from;
 	RecreatePostsStep();
