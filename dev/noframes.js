@@ -50,6 +50,7 @@ function InitReceiver()
 // Schicke dem Server eine Anfrage, ob neue Nachrichten angekommen sind.
 function ReceiverConnnect()
 {
+	RecreatePosts(posts);
 	textpos = 0;
 	firstReconnect = false;
 	timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
