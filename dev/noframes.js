@@ -342,13 +342,13 @@ function OnHistoryResponse()
 	var hposts = Array();
 	for(var line in historyRequest.responseText.split("\n"))
 	{
+		alert(line);
 		obj = JSON.parse(line);
 		if(obj["type"] == "post")
 			hposts.push(obj);
 		else if(obj["type"] == "error")
 			throw new Error(obj["description"], obj["file"], obj["line"]);
 	}
-	alert(hposts[0]);
 
 	RecreatePosts(hposts);
 	SetStatus("");
