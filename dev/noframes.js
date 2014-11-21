@@ -338,13 +338,11 @@ function RenewLinks()
 function InitLogs()
 {
 	document.getElementById("lastHour").target = options["target"];
-	document.getElementById("thisDay").target = options["target"];
 	document.getElementById("lastDay").target = options["target"];
-	document.getElementById("threeDays").target = options["target"];
+	document.getElementById("lastWeek").target = options["target"];
 
 	document.getElementById("last100").target = options["target"];
-	document.getElementById("last200").target = options["target"];
-	document.getElementById("last500").target = options["target"];
+	document.getElementById("last300").target = options["target"];
 	document.getElementById("last1000").target = options["target"];
 
 	document.getElementById("log").target = options["target"];
