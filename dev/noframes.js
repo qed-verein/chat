@@ -326,7 +326,7 @@ function ShowHistory(elt)
 
 	ReceiverDisconnect();
 	RecreatePosts(Array());
-	SetStatus("Lade den Chatlog...");
+	SetStatus("Lade alten Chatlog...");
 	parameters = "&" + URIEncodeParameters({version: version});
 	url = "history.php?";
 
@@ -376,7 +376,8 @@ function OnHistoryResponse()
 	}
 
 	RecreatePosts(historyPosts);
-	SetStatus("Chatlog wurde erfolgreich geladen!");
+	SetStatus("Alter Chatlog wurde erfolgreich geladen! Um wieder die aktuellen Nachrichten  anzuzeigen," +
+		"bitte auf <Logs> und <neues Posts anzeigen> klicken.");
 }
 
 function InitLogs()
