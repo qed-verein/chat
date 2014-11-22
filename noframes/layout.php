@@ -9,7 +9,7 @@ function renderLoginForm($errorMessage = null)
 	//$html .= "</p>\n";
 
 	$html = sprintf("<form action='%s' method='post'>\n", htmlEscape(urlLogin()));
-	$html .= "<fieldset style='max-width: 15em; margin: auto' class='box'>\n";
+	$html .= "<fieldset style='width: 20em; margin: auto' class='box'>\n";
 	$html .= "<legend>Anmeldung</legend>\n";
 
 	$html .= "<table>\n";
