@@ -19,7 +19,7 @@ define("NOTIFICATION_METHOD", "inotify"); /* inotify, socket */
     define ("SOCKET_PATH", "unix:///tmp/chat.sock");
 
 	// Muss in der Javascript-Datei ebenfalls geändert werden
-    define ("CHAT_VERSION", "1413235752");
+    define ("CHAT_VERSION", "1416690087");
 
 
     // redirection parameters
