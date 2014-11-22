@@ -11,7 +11,6 @@ function Init ()
 		redirect: "http://uxul.de/redirect.php?", target: "_blank"
 	};
 
-	stringOptions = ['redirect', 'channel', 'name', 'target'];
 	integerOptions = ['last', 'limit', 'wait'];
 	booleanOptions = ['botblock', 'old', 'ip', 'delay', 'links', 'title', 'mobile'];
 	params = URIDecodeParameters()
