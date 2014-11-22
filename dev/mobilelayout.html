@@ -48,6 +48,9 @@
 </div>
 
 <div id="logbox" class="box popup">
+	<div style="float: right">
+		<a id="newPosts" onclick="QuitHistory()">zurück zu den aktuellen Posts</a>
+	</div>
 	<h3 style="margin: 0px">Chat-Protokolle</h3>
 	<div style="float: left">
 		<a id="lastHour" onclick="ShowHistory(this)">letzte Stunde</a><br>
@@ -70,7 +73,6 @@
 		<a style="margin-left: 2mm" id="log" onclick="ShowHistory(this)">Intervall anzeigen</a>
 	</div>
 	<div style="clear: both; text-align: center">
-		<a id="newPosts" onclick="QuitHistory()">zurück zu den aktuellen Posts</a><br>
 		<input type="button" value="Schließen"
 			onclick="document.getElementById('logbox').style.display = 'none'">
 	</div>
