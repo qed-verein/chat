@@ -267,7 +267,6 @@ function RecreatePosts(posts)
 
 	if(posts.length != 0) UpdateTitle(posts[posts.length - 1]['message']);
 
-	if(inHistoryMode) SetStatus("Chatlog wurde erfolgreich geladen!");
 	ScrollDown();
 }
 
@@ -366,6 +365,7 @@ function OnHistoryResponse()
 	}
 
 	RecreatePosts(historyPosts);
+	SetStatus("Chatlog wurde erfolgreich geladen!");
 }
 
 function InitLogs()
