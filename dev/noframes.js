@@ -306,7 +306,7 @@ function NickEscape (text)
 // *   Logs   *
 // ************
 
-var historyRequest, historyPosts, inHistoryMode = false;c
+var historyRequest, historyPosts, inHistoryMode = false;
 
 function ShowHistory(elt)
 {
