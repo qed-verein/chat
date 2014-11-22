@@ -100,7 +100,8 @@ function OnReceiverResponse()
 function OnReceiverTimeout()
 {
 	ReceiverDisconnect();
-	SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
+	if(!inHistoryMode)
+		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
 	ReceiverConnnect();
 }
 
