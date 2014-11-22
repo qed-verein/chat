@@ -7,19 +7,21 @@ function Init ()
 	defaults = {
 		channel: "", name: "",
 		last: 24, botblock: 1, old: 0, ip: 0, delay: 0,	links: 1, title: 1, mobile: 1,
-		logIp: 1, logDelay: 0, logLinks: 1,	target: "_blank",
 		limit: 256,	wait: 60,
-		redirect: "http://uxul.de/redirect.php?"
+		redirect: "http://uxul.de/redirect.php?", target: "_blank"
 	};
 
 	stringOptions = ['redirect', 'channel', 'name', 'target'];
-
+	integerOptions = ['last', 'limit', 'wait'];
+	booleanOptions = ['botblock', 'old', 'ip', 'delay', 'links', 'title', 'mobile'];
 	params = URIDecodeParameters()
 	for(var key in defaults)
 	{
 		options[key] = params.hasOwnProperty(key) ? params[key] : defaults[key];
-		if(stringOptions.indexOf(key) < 0)
+		if(integerOptions.indexOf(key) >= 0)
 			options[key] = parseInt(options[key]);
+		if(booleanOptions.indexOf(key) >= 0)
+			options[key] = parseInt(options[key]) ? 1 : 0;
 	}
 
 	InitReceiver();
