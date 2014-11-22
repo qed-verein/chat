@@ -306,7 +306,7 @@ function NickEscape (text)
 // *   Logs   *
 // ************
 
-var historyRequest, historyPosts, inHistoryMode = false;
+var historyRequest, historyPosts, inHistoryMode;
 
 function ShowHistory(elt)
 {
@@ -341,7 +341,6 @@ function ShowHistory(elt)
 
 function QuitHistory()
 {
-	inHistoryMode = false
 	RecreatePosts(posts);
 	SetStatus("");
 }
@@ -373,6 +372,7 @@ function InitLogs()
 {
 	historyRequest = new XMLHttpRequest();
 	historyPosts = Array();
+	inHistoryMode = false;
 }
 
 
