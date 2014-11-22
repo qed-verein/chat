@@ -83,7 +83,7 @@ function OnReceiverResponse()
 		else if(obj["type"] != "ok" && obj["type"] != "debug")
 			throw new Error("Unbekannter Typ");
 
-		SetStatus("");
+		if(!inHistoryMode) SetStatus("");
 		textpos = end + 1;
 		firstReconnect = true;
 
@@ -122,6 +122,8 @@ function ProcessPost(post)
 	position = post['id'] + 1;
 	posts.push(post);
 
+	if(!inHistoryMode) return;
+
 	if (!options["old"])
 	{
 		var container = document.getElementById("posts");
@@ -136,7 +138,6 @@ function ProcessPost(post)
 
 	AppendPost(document.getElementById('posts'), post);
 	UpdateTitle(post['message']);
-	SetStatus("");
 }
 
 // Erstellt einen HTML-Knoten für diese Nachricht
@@ -310,7 +311,6 @@ var inHistoryMode, historyPosts;
 
 function ShowHistory(elt)
 {
-	ReceiverDisconnect();
 	RecreatePosts(Array());
 	SetStatus("Lade den Chatlog...");
 	parameters = "&" + URIEncodeParameters({version: version});
@@ -343,7 +343,7 @@ function ShowHistory(elt)
 function QuitHistory()
 {
 	inHistoryMode = false
-	ReceiverConnnect();
+	RecreatePosts(posts);
 }
 
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
