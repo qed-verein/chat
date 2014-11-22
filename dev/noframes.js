@@ -333,8 +333,8 @@ function ShowHistory(elt)
 			to : document.getElementById("logTo").value});
 	url += parameters;
 
-	elt.className = 'activelog';
 	document.getElementById('logbox').getElementsByClassName('activelog')[0].className = 'inactivelog';
+	elt.className = 'activelog';
 	inHistoryMode = true;
 
 	historyRequest.onreadystatechange = OnHistoryResponse;
