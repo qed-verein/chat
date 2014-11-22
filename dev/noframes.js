@@ -122,7 +122,7 @@ function ProcessPost(post)
 	position = post['id'] + 1;
 	posts.push(post);
 
-	if(!inHistoryMode) return;
+	if(inHistoryMode) return;
 
 	if (!options["old"])
 	{
