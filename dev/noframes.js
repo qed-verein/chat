@@ -44,12 +44,12 @@ function InitReceiver()
 	posts = Array();
 	RecreatePosts(Array());
 	position = -24;
-	ReceiverConnnect();
+	ReceiverConnect();
 }
 
 
 // Schicke dem Server eine Anfrage, ob neue Nachrichten angekommen sind.
-function ReceiverConnnect()
+function ReceiverConnect()
 {
 	textpos = 0;
 	firstReconnect = false;
@@ -102,7 +102,7 @@ function OnReceiverTimeout()
 	ReceiverDisconnect();
 	if(!inHistoryMode)
 		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
-	ReceiverConnnect();
+	ReceiverConnect();
 }
 
 // Schließe die Verbindung
