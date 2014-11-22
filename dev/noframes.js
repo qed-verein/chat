@@ -108,8 +108,8 @@ function OnReceiverTimeout()
 // Schließe die Verbindung
 function ReceiverDisconnect()
 {
-	recvRequest.onreadystatechange = null;
 	clearTimeout(timeout);
+	recvRequest.onreadystatechange = null;
 	recvRequest.abort();
 }
 
