@@ -343,6 +343,7 @@ function QuitHistory()
 {
 	inHistoryMode = false
 	RecreatePosts(posts);
+	SetStatus("");
 }
 
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
