@@ -25,7 +25,8 @@ function renderLoginForm($errorMessage = null)
 	$html .= "  <td><label for='mobil'>Mobile Version:</label></td>\n";
 	$html .= "  <td><input type='checkbox' name='mobil' id='input_mobil' value='1'></td>\n";
 	$html .= " </tr>\n";
-	$html .= " <tr><td colspan='2'><input type='submit' name='login' value='Einloggen'></td></tr>\n";
+	$html .= " <tr><td colspan='2' style='text-align: center'>\n";
+	$html .= " <input type='submit' name='login' value='Einloggen'></td></tr>\n";
 	$html .= "</table>\n";
 	$html .= sprintf("<p>%s</p>\n", $errorMessage);
 	$html .= "</fieldset>\n";
