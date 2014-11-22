@@ -8,7 +8,7 @@
 		die ("grml");
 
 	if(empty($_SESSION['userid']) && empty($_SESSION['anonym']))
-		redirect("noframes/account.php");
+		redirect("https://chat.qed-verein.de/noframes/account.php");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 
