@@ -310,6 +310,17 @@ var historyRequest, historyPosts, inHistoryMode;
 
 function ShowHistory(elt)
 {
+	document.getElementById('logbox').getElementsByClassName('activelog')[0].className = 'inactivelog';
+	elt.className = 'activelog';
+
+	if(elt.id == 'newPosts')
+	{
+		inHistoryMode = false;
+		RecreatePosts(posts);
+		SetStatus("");
+		return;
+	}
+
 	RecreatePosts(Array());
 	SetStatus("Lade den Chatlog...");
 	parameters = "&" + URIEncodeParameters({version: version});
@@ -333,21 +344,12 @@ function ShowHistory(elt)
 			to : document.getElementById("logTo").value});
 	url += parameters;
 
-	document.getElementById('logbox').getElementsByClassName('activelog')[0].className = 'inactivelog';
-	elt.className = 'activelog';
 	inHistoryMode = true;
 
 	historyRequest.onreadystatechange = OnHistoryResponse;
 	historyRequest.open('GET', url, true);
 	historyRequest.send();
 	UpdateTitle("Chatlog: " + elt.firstChild.data);
-}
-
-function QuitHistory()
-{
-	inHistoryMode = false;
-	RecreatePosts(posts);
-	SetStatus("");
 }
 
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
