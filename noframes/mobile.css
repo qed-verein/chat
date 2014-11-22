@@ -18,17 +18,6 @@ input[type="button"]:hover, input[type="submit"]:hover{
 	cursor: pointer;
 }
 
-#logbox a
-{
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-#logbox .activelog
-{
-	color: orange;
-}
-
 
 a:link
 {
@@ -142,4 +131,15 @@ li.post .message
 	transform: translate(-50%, -50%);
 */
 	display: none;
+}
+
+.activelog, .inactivelog,
+{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.activelog
+{
+	color: orange;
 }

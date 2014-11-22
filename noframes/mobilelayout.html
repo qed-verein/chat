@@ -24,14 +24,14 @@
 	<div style="float: right">
 		<input type="button" value="Einstellen"
 			onclick="document.getElementById('settingbox').style.display = 'block'">
-		<input type="button" value="Logs"
+		<input type="button" value="Chatlogs"
 			onclick="document.getElementById('logbox').style.display = 'block'">
 	</div>
 </div>
 
 
 <div id="settingbox" class="box popup">
-	<h3 style="margin: 0px">Einstellungen</h3>
+	<h3 style="margin: 0px">Einstellen</h3>
 	<input type="checkbox" id="ip" onclick="UpdateSettings()">IPs anzeigen<br>
 	<input type="checkbox" id="delay" onclick="UpdateSettings()">Delays anzeigen<br>
 	<input type="checkbox" id="links" onclick="UpdateSettings()">Links anzeigen<br>
@@ -41,6 +41,7 @@
 	<input type="text" id="last" onchange="UpdateSettings()" size="2" value="24">
 	<input type="button" onclick="Increase()" value=">"><br>
 	<a href="/index.php" target="_par">Frame-Version</a>
+	<a href="?mobile=0" target="_par">Noframe-Version</a>
 	<p style="text-align: center">
 		<input type="button" value="Schließen"
 			 onclick="document.getElementById('settingbox').style.display = 'none'">
@@ -48,11 +49,11 @@
 </div>
 
 <div id="logbox" class="box popup">
+	<h3 style="margin: 0px">Chatlogs</h3>
 	<div style="float: right">
 		<a id="newPosts" class="activelog" onclick="ShowHistory(this)">neue Posts anzeigen</a>
 	</div>
-	<h3 style="margin: 0px">Chatlogs</h3>
-	<div style="float: left">
+	<div style="float: left; clear: right">
 		<a id="lastHour" class="inactivelog" onclick="ShowHistory(this)">letzte Stunde</a><br>
 		<a id="lastDay" class="inactivelog" onclick="ShowHistory(this)">letzter Tag</a><br>
 		<a id="lastWeek" class="inactivelog" onclick="ShowHistory(this)">letzte Woche</a><br>

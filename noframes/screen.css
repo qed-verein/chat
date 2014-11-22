@@ -1,23 +1,46 @@
-body, input, textarea, frame
+body, input, textarea
 {
-	background-color: #444;
-	color: #cccccc;
 	font-family: sans-serif;
-	font-size: 9pt;
+	font-size: 10pt;
+	color: #ccc;
+	background-color: #000;
 }
 
-.box, .box input, .box textarea
+input, textarea
 {
-	border: 1px #222 solid;
-	background-color: #555;
+	border: 1px #666 solid;
 }
 
+
+a:link
+{
+	color: white;
+}
+
+a:visited
+{
+	color: #484;
+}
+
+
+.box
+{
+	background-color: #111;
+	border: 2px #666 solid;
+	padding: 0.5em;
+	margin: 0.5em;
+}
+
+#messagebox table
+{
+	border-collapse: collapse;
+}
 
 td.info, td.ip
 {
-	border-top: thin dotted #dddddd;
-	border-bottom: thin dotted #dddddd;
-	border-right: thin dotted #888888;
+	border-top: thin dotted #ddd;
+	border-bottom: thin dotted #ddd;
+	border-right: thin dotted #888;
 	border-width: 1px;
 	padding-left: 4px;
 	white-space: nowrap;
@@ -42,68 +65,33 @@ td.name
 	overflow: hidden;
 }
 
-#messagebox table
-{
-	border-collapse: collapse;
-}
-
 td.text
 {
 	vertical-align: top;
 }
 
-a:link
-{
-	color: #FFFFFF;
-}
-
-a:visited
-{
-	color: #000000;
-}
-
-
-
-
-
-
-
-
-
-
 .box
 {
 	padding: 1em;
-	margin: 0.5em;
-}
-
-.settings
-{
-	line-height: 150%;
-}
-
-body
-{
-	margin: 5px;
 }
 
 
 #messagebox {
 	position: fixed;
-	left: 0%;
-	top: 0%;
-	right: 0%;
-	bottom: 17.5em;
+	left: 0em;
+	top: 0em;
+	right: 0em;
+	bottom: 18.5em;
 	margin-bottom: 0em;
 	overflow-y: scroll;
 }
 
 #inputbox {
 	position: fixed;
-	left: 0%;
-	height: 14.5em;
-	right: 48em;
-	bottom: 0%;
+	left: 0em;
+	height: 15em;
+	right: 38.5em;
+	bottom: 0em;
 	margin-right: 0em;
 }
 
@@ -115,16 +103,43 @@ body
 
 #settingbox {
 	position: fixed;
-	width: 45em;
+	width: 35em;
 	height: 6em;
 	right: 0%;
-	bottom: 8.5em;
+	bottom: 9em;
+	line-height: 150%;
 }
 
 #logbox {
 	position: fixed;
-	width: 45em;
+	width: 35em;
 	height: 6em;
-	right: 0%;
-	bottom: 0%;
+	right: 0em;
+	bottom: 0em;
+	line-height: 150%;
+}
+
+
+#message
+{
+	margin: 0.5em 0em;
+	width: 98%;
+	overflow-x: hidden;
+	resize: none;
+}
+
+#name
+{
+	width: 98%;
+}
+
+.activelog, .inactivelog
+{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.activelog
+{
+	color: orange;
 }

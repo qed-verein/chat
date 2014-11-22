@@ -42,31 +42,32 @@
 
 
 
-<div id="settingbox" class="box popup">
+<div id="settingbox" class="box">
 	<input type="checkbox" id="ip" onclick="UpdateSettings()">IPs anzeigen
 	<input type="checkbox" id="delay" onclick="UpdateSettings()">Delays anzeigen
-	<input type="checkbox" id="links" onclick="UpdateSettings()">Links anzeigen<br>
+	<input type="checkbox" id="links" onclick="UpdateSettings()">Links anzeigen
 	<input type="checkbox" id="botblock" onclick="UpdateSettings()">Sinn anzeigen<br>
 	<input type="checkbox" id="old" onclick="UpdateSettings()">Alle empf. Posts anzeigen,
 	sonst <input type="button" onclick="Decrease()" value="<">
 	<input type="text" id="last" onchange="UpdateSettings()" size="2" value="24">
 	<input type="button" onclick="Increase()" value=">"><br>
-	<a href="/index.php" target="_par">alte Version</a>
+	<a href="/index.php" target="_par">Frame-Version</a>
+	<a href="?mobile=1" target="_par">Mobile Version</a>
 </div>
 
-<div id="logbox" class="box popup">
+<div id="logbox" class="box">
 	<div style="float: left">
-		<a id="logquit" onclick="QuitHistory(posts)">normale Anzeige</a><br>
-		<a id="lastHour" onclick="ShowHistory(this)">letzte Stunde</a><br>
-		<a id="lastDay" onclick="ShowHistory(this)">letzter Tag</a><br>
-		<a id="lastWeek" onclick="ShowHistory(this)">letzte Woche</a><br>
+		<a id="lastHour" class="inactivelog" onclick="ShowHistory(this)">letzte Stunde</a><br>
+		<a id="lastDay" class="inactivelog" onclick="ShowHistory(this)">letzter Tag</a><br>
+		<a id="lastWeek" class="inactivelog" onclick="ShowHistory(this)">letzte Woche</a><br>
+		<a id="newPosts" class="activelog" onclick="ShowHistory(this)">neue Posts anzeigen</a>
 	</div>
 	<div style="float: left; margin-left: 2mm">
-		<a id="last100" onclick="ShowHistory(this)">letzte 100 Posts</a><br>
-		<a id="last300" onclick="ShowHistory(this)">letzte 300 Posts</a><br>
-		<a id="last1000" onclick="ShowHistory(this)">letzte 1000 Posts</a>
+		<a id="last100" class="inactivelog" onclick="ShowHistory(this)">letzte 100 Posts</a><br>
+		<a id="last300" class="inactivelog" onclick="ShowHistory(this)">letzte 300 Posts</a><br>
+		<a id="last1000" class="inactivelog" onclick="ShowHistory(this)">letzte 1000 Posts</a>
 	</div>
-	<div style="float: left; margin-left: 2mm">
+	<div style="float: left; margin-left: 5mm">
 		<table><tr>
 			<td>von:</td>
 			<td><input type="text" id="logFrom" size="12"></td>
@@ -76,9 +77,7 @@
 		</tr></table>
 		<a style="margin-left: 2mm" id="log" onclick="ShowHistory(this)">Intervall anzeigen</a>
 	</div>
-	<div style="clear: both"></div>
 </div>
-
 
 </body>
 </html>
