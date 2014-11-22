@@ -26,7 +26,7 @@ input[type="button"]:hover, input[type="submit"]:hover{
 
 #logbox .activelog
 {
-	text-color: orange;
+	color: orange;
 }
 
 
