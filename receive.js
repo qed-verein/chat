@@ -45,7 +45,7 @@ function InitRemote (opt)
 	recvRequest = new XMLHttpRequest();
 	posts = Array();
 	position = -24;
-	ReceiverConnnect();
+	ReceiverConnect();
 }
 
 // Erstelle eine neue Verbindung mit dem Server
