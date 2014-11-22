@@ -49,18 +49,18 @@
 
 <div id="logbox" class="box popup">
 	<div style="float: right">
-		<a id="newPosts" onclick="QuitHistory()">zurück zu den aktuellen Posts</a>
+		<a id="newPosts" class="activelog" onclick="QuitHistory()">aktuelle Posts</a>
 	</div>
 	<h3 style="margin: 0px">Chat-Protokolle</h3>
 	<div style="float: left">
-		<a id="lastHour" onclick="ShowHistory(this)">letzte Stunde</a><br>
-		<a id="lastDay" onclick="ShowHistory(this)">letzter Tag</a><br>
-		<a id="lastWeek" onclick="ShowHistory(this)">letzte Woche</a><br>
+		<a id="lastHour" class="inactivelog" onclick="ShowHistory(this)">letzte Stunde</a><br>
+		<a id="lastDay" class="inactivelog" onclick="ShowHistory(this)">letzter Tag</a><br>
+		<a id="lastWeek" class="inactivelog" onclick="ShowHistory(this)">letzte Woche</a><br>
 	</div>
 	<div style="float: left; margin-left: 2mm">
-		<a id="last100" onclick="ShowHistory(this)">letzte 100 Posts</a><br>
-		<a id="last300" onclick="ShowHistory(this)">letzte 300 Posts</a><br>
-		<a id="last1000" onclick="ShowHistory(this)">letzte 1000 Posts</a>
+		<a id="last100" class="inactivelog" onclick="ShowHistory(this)">letzte 100 Posts</a><br>
+		<a id="last300" class="inactivelog" onclick="ShowHistory(this)">letzte 300 Posts</a><br>
+		<a id="last1000" class="inactivelog" onclick="ShowHistory(this)">letzte 1000 Posts</a>
 	</div>
 	<div style="float: left; margin-left: 2mm">
 		<table><tr>

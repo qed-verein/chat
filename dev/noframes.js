@@ -265,7 +265,7 @@ function RecreatePosts(posts)
 	var node = document.getElementById('posts');
 	node.parentNode.replaceChild(container, node);
 
-	if(posts.length != 0) UpdateTitle(posts[posts.length - 1]['message']);
+	if(posts.length != 0 && !inHistoryMode) UpdateTitle(posts[posts.length - 1]['message']);
 
 	ScrollDown();
 }
@@ -331,6 +331,9 @@ function ShowHistory(elt)
 		url += URIEncodeParameters({
 			from : document.getElementById("logFrom").value,
 			to : document.getElementById("logTo").value});
+	elt.class = 'activelog';
+	document.getElementById('logbox').getElementByClass('activelog')[0].class = 'inactivelog';
+
 	url += parameters;
 	inHistoryMode = true;
 	historyRequest.onreadystatechange = OnHistoryResponse;
