@@ -376,8 +376,8 @@ function OnHistoryResponse()
 	}
 
 	RecreatePosts(historyPosts);
-	SetStatus("Alter Chatlog wurde erfolgreich geladen! Um wieder die aktuellen Nachrichten  anzuzeigen," +
-		"bitte auf <i>Logs</i> - <i>neue Posts anzeigen</i> klicken.");
+	SetStatus("Alter Chatlog wurde erfolgreich geladen! Um wieder die aktuellen Nachrichten anzuzeigen, " +
+		"bitte im Menü <i>Logs</i> auf <i>neue Posts anzeigen</i> klicken.");
 }
 
 function InitLogs()
