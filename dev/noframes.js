@@ -48,9 +48,12 @@ function InitReceiver()
 }
 
 
-// Schicke dem Server eine Anfrage, ob neue Nachrichten angekommen sind.
+// Erstelle eine neue Verbindung mit dem Server
 function ReceiverConnect()
 {
+	ReceiverDisconnect();
+	SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
+
 	textpos = 0;
 	firstReconnect = false;
 	timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
@@ -63,6 +66,14 @@ function ReceiverConnect()
 	recvRequest.onreadystatechange = OnReceiverResponse;
 	recvRequest.open('GET', uri, true);
 	recvRequest.send();
+}
+
+// Schließe die Verbindung
+function ReceiverDisconnect()
+{
+	clearTimeout(timeout);
+	recvRequest.onreadystatechange = null;
+	recvRequest.abort();
 }
 
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
@@ -83,34 +94,18 @@ function OnReceiverResponse()
 		else if(obj["type"] != "ok" && obj["type"] != "debug")
 			throw new Error("Unbekannter Typ");
 
-		if(!inHistoryMode) SetStatus("");
+		SetStatus("");
 		textpos = end + 1;
 		firstReconnect = true;
 
+		// Timeout zurücksetzen
 		clearTimeout(timeout);
-		timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
+		timeout = setTimeout("ReceiverConnect()", options['wait'] * 1000);
 	}
 
 	// Beim ersten Versuch ohne Wartezeiten neu verbinden.
 	if(recvRequest.readyState == 4 && firstReconnect)
-		OnReceiverTimeout();
-}
-
-// Wird aufgerufen, falls zu lange keine Antwort vom Server gekommen ist
-function OnReceiverTimeout()
-{
-	ReceiverDisconnect();
-	if(!inHistoryMode)
-		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
-	ReceiverConnect();
-}
-
-// Schließe die Verbindung
-function ReceiverDisconnect()
-{
-	clearTimeout(timeout);
-	recvRequest.onreadystatechange = null;
-	recvRequest.abort();
+		ReceiverConnect();
 }
 
 // Wird für jede ankommende Nachricht aufgerufen
@@ -122,8 +117,6 @@ function ProcessPost(post)
 
 	position = post['id'] + 1;
 	posts.push(post);
-
-	if(inHistoryMode) return;
 
 	if (!options["old"])
 	{
@@ -272,23 +265,6 @@ function RecreatePosts(posts)
 }
 
 
-function ErrorHandler(description, filename, line)
-{
-	message = "Ein Fehler trat auf:<br>";
-	message += HtmlEscape(description) + "<br>";
-	message += "In Datei " + filename + ", Zeile " + line + ".<br>";
-	message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
-	SetStatus(message);
-	ReceiverDisconnect();
-	return false;
-}
-
-function InsertLinks (text)
-{
-	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g,
-		'<a rel="noreferrer" target="_blank" href="$1$2">$1$2</a>');
-}
-
 
 function NickEscape (text)
 {
@@ -319,7 +295,7 @@ function ShowHistory(elt)
 		inHistoryMode = false;
 		RecreatePosts(posts);
 		SetStatus("");
-		OnReceiverTimeout();
+		ReceiverConnect();
 		return;
 	}
 
@@ -539,11 +515,16 @@ function ScrollDown()
 	node.scrollTop = inHistoryMode ? 0 : node.scrollHeight;
 }
 
-
 function HtmlEscape (text)
 {
 	text = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	return text.replace(/\"/g, "&quot;").replace(/\n/g, "<br>");
+}
+
+function InsertLinks (text)
+{
+	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g,
+		'<a rel="noreferrer" target="_blank" href="$1$2">$1$2</a>');
 }
 
 function UpdateTitle(message)
@@ -551,4 +532,16 @@ function UpdateTitle(message)
 	if(options["title"])
 		top.document.title = (message.length < 256) ? message :
 			top.document.title = message.substr(0, 252) + "...";
+}
+
+
+function ErrorHandler(description, filename, line)
+{
+	message = "Ein Fehler trat auf:<br>";
+	message += HtmlEscape(description) + "<br>";
+	message += "In Datei " + filename + ", Zeile " + line + ".<br>";
+	message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
+	SetStatus(message);
+	ReceiverDisconnect();
+	return false;
 }
