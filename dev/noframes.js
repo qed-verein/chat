@@ -319,12 +319,12 @@ function ShowHistory(elt)
 		inHistoryMode = false;
 		RecreatePosts(posts);
 		SetStatus("");
-		ReceiveConnect();
+		ReceiverConnect();
 		return;
 	}
 
 
-	ReceiveDisconnect();
+	ReceiverDisconnect();
 	RecreatePosts(Array());
 	SetStatus("Lade den Chatlog...");
 	parameters = "&" + URIEncodeParameters({version: version});
