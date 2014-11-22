@@ -57,7 +57,7 @@ function ReceiverConnect()
 
 	textpos = 0;
 	firstReconnect = false;
-	timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
+	timeout = setTimeout("ReceiverConnect()", options['wait'] * 1000);
 
 	uri = "view.php?" + URIEncodeParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],

@@ -1,4 +1,4 @@
-var version = "1413235752"; // muss in data ebenfalls geaendert werden
+var version = "1416690087"; // muss in noframes/data.php ebenfalls geaendert werden
 var options;
 
 function SetStatus (text)
@@ -48,17 +48,19 @@ function InitRemote (opt)
 	ReceiverConnnect();
 }
 
-
-// Schicke dem Server eine Anfrage, ob neue Nachrichten angekommen sind.
-function ReceiverConnnect()
+// Erstelle eine neue Verbindung mit dem Server
+function ReceiverConnect()
 {
+	ReceiverDisconnect();
+	SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
+
 	textpos = 0;
 	firstReconnect = false;
-	timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
+	timeout = setTimeout("ReceiverConnect()", options['wait'] * 1000);
 
-	uri = "../viewneu.php?" + URIQueryParameters({
+	uri = "noframes/view.php?" + URIEncodeParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],
-	    version: version, type: 'json', feedback: options["wait"] / 2});
+	    version: version, keepalive: Math.ceil(options["wait"] / 2)});
 	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
 	uri += "&random=" + (Math.random() * 1000000);
 	recvRequest.onreadystatechange = OnReceiverResponse;
@@ -73,38 +75,29 @@ function OnReceiverResponse()
 		return;
 
     var end, obj;
-    while((end = recvRequest.responseText.indexOf(";", textpos)) >= 0)
+    while((end = recvRequest.responseText.indexOf("\n", textpos)) >= 0)
     {
 		obj = JSON.parse(recvRequest.responseText.substring(textpos, end));
-		for(var key in obj)
-			obj[key] = decodeURIComponent(obj[key]);
 
 		if(obj["type"] == "post")
 			ProcessPost(obj);
 		else if(obj["type"] == "error")
 			throw new Error(obj["description"], obj["file"], obj["line"]);
-		else if(obj["type"] != "ok")
+		else if(obj["type"] != "ok" && obj["type"] != "debug")
 			throw new Error("Unbekannter Typ");
 
 		SetStatus("");
 		textpos = end + 1;
 		firstReconnect = true;
 
+		// Timeout zurücksetzen
 		clearTimeout(timeout);
-		timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
+		timeout = setTimeout("ReceiverConnect()", options['wait'] * 1000);
 	}
 
 	// Beim ersten Versuch ohne Wartezeiten neu verbinden.
 	if(recvRequest.readyState == 4 && firstReconnect)
-		OnReceiverTimeout();
-}
-
-// Wird aufgerufen, falls zu lange keine Antwort vom Server gekommen ist
-function OnReceiverTimeout()
-{
-	ReceiverDisconnect();
-	SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
-	ReceiverConnnect();
+		ReceiverConnect();
 }
 
 // Schließe die Verbindung
