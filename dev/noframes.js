@@ -42,6 +42,7 @@ function InitReceiver()
 	window.onerror = ErrorHandler;
 	recvRequest = new XMLHttpRequest();
 	posts = Array();
+	RecreatePosts(Array());
 	position = -24;
 	ReceiverConnnect();
 }
@@ -50,7 +51,6 @@ function InitReceiver()
 // Schicke dem Server eine Anfrage, ob neue Nachrichten angekommen sind.
 function ReceiverConnnect()
 {
-	RecreatePosts(posts);
 	textpos = 0;
 	firstReconnect = false;
 	timeout = setTimeout("OnReceiverTimeout()", options['wait'] * 1000);
@@ -306,7 +306,7 @@ function NickEscape (text)
 // *   Logs   *
 // ************
 
-var inHistoryMode = false, historyPosts;
+var historyRequest, historyPosts, inHistoryMode = false;c
 
 function ShowHistory(elt)
 {
@@ -333,9 +333,9 @@ function ShowHistory(elt)
 			to : document.getElementById("logTo").value});
 	url += parameters;
 	inHistoryMode = true;
-	recvRequest.onreadystatechange = OnHistoryResponse;
-	recvRequest.open('GET', url, true);
-	recvRequest.send();
+	historyRequest.onreadystatechange = OnHistoryResponse;
+	historyRequest.open('GET', url, true);
+	historyRequest.send();
 	UpdateTitle("Chatlog: " + elt.firstChild.data);
 }
 
@@ -348,11 +348,11 @@ function QuitHistory()
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
 function OnHistoryResponse()
 {
-	if(recvRequest.readyState != 4) return;
-	if(recvRequest.status < 200 || recvRequest.status >= 300) return;
+	if(historyRequest.readyState != 4) return;
+	if(historyRequest.status < 200 || historyRequest.status >= 300) return;
 
 	historyPosts = Array();
-	var lines = recvRequest.responseText.split("\n");
+	var lines = historyRequest.responseText.split("\n");
 	for(var index in lines)
 	{
 		if(lines[index] == "") continue;
@@ -370,7 +370,7 @@ function OnHistoryResponse()
 
 function InitLogs()
 {
-	recvRequest = new XMLHttpRequest();
+	historyRequest = new XMLHttpRequest();
 	historyPosts = Array();
 }
 
