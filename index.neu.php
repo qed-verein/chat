@@ -21,30 +21,30 @@
 
 <script type="text/javascript">
 <?php
-echo "\t\tvar options = new Object ();\n";
-echo "\t\toptions[\"channel\"] = \"" . ((isset ($_GET["channel"]))? rawurldecode (demagicalize_string ($_GET["channel"])) : "") . "\";\n";
-echo "\t\toptions[\"redirect\"] = \"" . ((isset ($_GET["redirect"]) && 0 )? rawurlencode (demagicalize_string ($_GET["redirect"])) : URL_REDIRECT) . "\";\n";
-echo "\t\toptions[\"laghack\"] = " . ((isset ($_GET["laghack"])) ? "true" : "false") . ";\n";
-echo "\t\toptions[\"name\"] = \"" . (isset($_GET["name"])?$_GET["name"]:'') . "\";\n";
-echo "\t\toptions[\"last\"] = " . (isset ($_GET["last"]) ? max (4, min (24, intval ($_GET["last"]))) : 20) . ";\n";
-echo "\t\toptions[\"old\"] = " . (isset ($_GET["old"]) ? intval ($_GET["old"]) : 0) . ";\n";
-echo "\t\toptions[\"ip\"] = " . (isset ($_GET["ip"]) ? intval ($_GET["ip"]) : 0) . ";\n";
-echo "\t\toptions[\"delay\"] = " . (isset ($_GET["delay"]) ? intval ($_GET["delay"]) : 0) . ";\n";
-echo "\t\toptions[\"links\"] = " . (isset ($_GET["links"]) ? intval ($_GET["links"]) : 1) . ";\n";
-echo "\t\toptions[\"logIp\"] = " . (isset ($_GET["logIp"]) ? intval ($_GET["logIp"]) : 1) . ";\n";
-echo "\t\toptions[\"logDelay\"] = " . (isset ($_GET["logDelay"]) ? intval ($_GET["logDelay"]) : 0) . ";\n";
-echo "\t\toptions[\"logLinks\"] = " . (isset ($_GET["logLinks"]) ? intval ($_GET["logLinks"]) : 1) . ";\n";
-echo "\t\toptions[\"method\"] = \"" . (isset ($_GET["method"]) ? demagicalize_string ($_GET["method"]) : "detect") . "\";\n";
-echo "\t\toptions[\"limit\"] = \"" . (isset ($_GET["limit"]) ? intval ($_GET["limit"]) : "256") . "\";\n";
-echo "\t\toptions[\"wait\"] = \"" . (isset ($_GET["wait"]) ? intval ($_GET["wait"]) : 60) . "\";\n";
-echo "\t\toptions[\"target\"] = \"" . (isset ($_GET["target"]) ? demagicalize_string ($_GET["target"]) : "_blank") . "\";\n";
-echo "\t\toptions[\"title\"] = " . (isset ($_GET["title"]) ? intval ($_GET["title"]) : 1) . ";\n";
-echo "\t\toptions[\"css\"] = \"" . (isset ($_GET["css"]) ? htmlentities ($_GET["css"]) : "chat.css") . "\";\n";
-echo "\t\toptions[\"unl33t\"] = " . (isset ($_GET["unl33t"]) ? 1 : 0) . ";\n";
-echo "\t\toptions[\"urgent\"] = " . (isset ($_GET["no_urgency"]) ? "false" : "true") . ";\n";
+echo "\tvar options = new Object ();\n";
+echo "\toptions[\"channel\"] = \"" . ((isset ($_GET["channel"]))? rawurldecode (demagicalize_string ($_GET["channel"])) : "") . "\";\n";
+echo "\toptions[\"redirect\"] = \"" . ((isset ($_GET["redirect"]) && 0 )? rawurlencode (demagicalize_string ($_GET["redirect"])) : URL_REDIRECT) . "\";\n";
+echo "\toptions[\"laghack\"] = " . ((isset ($_GET["laghack"])) ? "true" : "false") . ";\n";
+echo "\toptions[\"name\"] = \"" . (isset($_GET["name"])?$_GET["name"]:'') . "\";\n";
+echo "\toptions[\"last\"] = " . (isset ($_GET["last"]) ? max (4, min (24, intval ($_GET["last"]))) : 20) . ";\n";
+echo "\toptions[\"old\"] = " . (isset ($_GET["old"]) ? intval ($_GET["old"]) : 0) . ";\n";
+echo "\toptions[\"ip\"] = " . (isset ($_GET["ip"]) ? intval ($_GET["ip"]) : 0) . ";\n";
+echo "\toptions[\"delay\"] = " . (isset ($_GET["delay"]) ? intval ($_GET["delay"]) : 0) . ";\n";
+echo "\toptions[\"links\"] = " . (isset ($_GET["links"]) ? intval ($_GET["links"]) : 1) . ";\n";
+echo "\toptions[\"logIp\"] = " . (isset ($_GET["logIp"]) ? intval ($_GET["logIp"]) : 1) . ";\n";
+echo "\toptions[\"logDelay\"] = " . (isset ($_GET["logDelay"]) ? intval ($_GET["logDelay"]) : 0) . ";\n";
+echo "\toptions[\"logLinks\"] = " . (isset ($_GET["logLinks"]) ? intval ($_GET["logLinks"]) : 1) . ";\n";
+echo "\toptions[\"method\"] = \"" . (isset ($_GET["method"]) ? demagicalize_string ($_GET["method"]) : "detect") . "\";\n";
+echo "\toptions[\"limit\"] = \"" . (isset ($_GET["limit"]) ? intval ($_GET["limit"]) : "256") . "\";\n";
+echo "\toptions[\"wait\"] = \"" . (isset ($_GET["wait"]) ? intval ($_GET["wait"]) : 60) . "\";\n";
+echo "\toptions[\"target\"] = \"" . (isset ($_GET["target"]) ? demagicalize_string ($_GET["target"]) : "_blank") . "\";\n";
+echo "\toptions[\"title\"] = " . (isset ($_GET["title"]) ? intval ($_GET["title"]) : 1) . ";\n";
+echo "\toptions[\"css\"] = \"" . (isset ($_GET["css"]) ? htmlentities ($_GET["css"]) : "chat.css") . "\";\n";
+echo "\toptions[\"unl33t\"] = " . (isset ($_GET["unl33t"]) ? 1 : 0) . ";\n";
+echo "\toptions[\"urgent\"] = " . (isset ($_GET["no_urgency"]) ? "false" : "true") . ";\n";
 
 if (SECURE_POSTS)
-	echo "\t\toptions[\"generator\"] = " . (SECURE_POSTS_GENERATOR_NUM_USES * get_key_generator ()) . ";\n";
+	echo "\toptions[\"generator\"] = " . (SECURE_POSTS_GENERATOR_NUM_USES * get_key_generator ()) . ";\n";
 
 $sizeRecv0 = (isset ($_GET["sizeRecv0"]) ? demagicalize_string ($_GET["sizeRecv0"]) : "60%");
 $sizeRecv1 = (isset ($_GET["sizeRecv1"]) ? demagicalize_string ($_GET["sizeRecv1"]) : "40%");
