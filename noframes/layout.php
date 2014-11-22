@@ -15,11 +15,11 @@ function renderLoginForm($errorMessage = null)
 	$html .= "<table>\n";
 	$html .= " <tr>\n";
 	$html .= "  <td><label for='input_username'>Benutzername:</label></td>\n";
-	$html .= "  <td><input name='username' id='input_username'></td>\n";
+	$html .= "  <td><input name='username' id='input_username' size='15'></td>\n";
 	$html .= " </tr>\n";
 	$html .= " <tr>\n";
 	$html .= "  <td><label for='password'>Passwort:</label></td>\n";
-	$html .= "  <td><input type='password' name='password' id='input_password'></td>\n";
+	$html .= "  <td><input type='password' name='password' id='input_password' size='15'></td>\n";
 	$html .= " </tr>\n";
 	$html .= " <tr>\n";
 	$html .= "  <td><label for='mobil'>Mobile Version:</label></td>\n";
