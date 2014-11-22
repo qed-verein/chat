@@ -297,3 +297,12 @@ function URIQueryParameters(params)
 		result.push(encodeURIComponent(key) + "=" + encodeURIComponent(params[key]));
 	return result.join("&");
 }
+
+
+function URIEncodeParameters(params)
+{
+	var result = [];
+	for(var key in params)
+		result.push(encodeURIComponent(key) + "=" + encodeURIComponent(params[key]));
+	return result.join("&");
+}
