@@ -1,5 +1,5 @@
 var options = new Object();
-var version = "1413235752"; // muss in data ebenfalls geaendert werden
+var version = "1416690087"; // muss in data ebenfalls geaendert werden
 
 // Initialisiere das Skript
 function Init ()

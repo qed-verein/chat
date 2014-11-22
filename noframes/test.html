@@ -11,7 +11,7 @@ function Init()
 	request = new XMLHttpRequest();
 	var now = new Date();
 	uri = "http://chat.qed-verein.de/viewneu.php?channel=&position=-20&limit=1000" +
-		"&version=1413235752&type=json&feedback=1&test=" + now.getSeconds();
+		"&version=1413235752&type=json&keepalive=1&random=" + now.getSeconds();
 	request.onreadystatechange = ServerResponse;
 	request.open("GET", uri, true);
 	request.send();

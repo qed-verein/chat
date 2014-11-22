@@ -2,13 +2,10 @@
 
 require_once('data.php');
 
-//session_set_cookie_params(0, '/', '.qed-verein.de');
-//session_name('qedcommon');
 session_start();
-// authenticateWithCookie();
 
 date_default_timezone_set('Europe/Berlin');
-//ini_set('display_errors', '0');
+ini_set('display_errors', '0');
 
 
 if(empty($ignore_no_login) && !userLoggedIn())
@@ -116,11 +113,11 @@ function versionCheck()
 }
 
 function urlLogin() {
-	return 'https://chat.qed-verein.de/dev/account.php';}
+	return 'https://chat.qed-verein.de/noframes/account.php';}
 function urlLogout() {
-	return 'https://chat.qed-verein.de/dev/account.php?logout=1';}
+	return 'https://chat.qed-verein.de/noframes/account.php?logout=1';}
 function urlChat() {
 	return 'https://chat.qed-verein.de/index.php';}
 function urlChatMobile() {
-	return 'https://chat.qed-verein.de/dev/noframes.php?mobile=1';}
+	return 'https://chat.qed-verein.de/noframes/noframes.php?mobile=1';}
 ?>

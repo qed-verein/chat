@@ -9,7 +9,7 @@
     define('TOUCH_FILE', '../sockets/touchthis');
 
 	// Muss in der Javascript-Datei ebenfalls geändert werden
-    define('CHAT_VERSION', '1413235752');
+    define('CHAT_VERSION', '1416690087');
 
     // redirection parameters
     // default redirection service (for hiding the referer [sic])
