@@ -341,6 +341,7 @@ function ShowHistory(elt)
 
 function QuitHistory()
 {
+	inHistoryMode = false;
 	RecreatePosts(posts);
 	SetStatus("");
 }
