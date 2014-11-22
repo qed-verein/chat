@@ -133,7 +133,7 @@ li.post .message
 	display: none;
 }
 
-.activelog, .inactivelog,
+.activelog, .inactivelog
 {
 	text-decoration: underline;
 	cursor: pointer;
