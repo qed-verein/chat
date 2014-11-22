@@ -80,7 +80,7 @@ function waitForMessages()
       $read = array($touchme);
       $write = NULL;
       $except = NULL;
-      $timeout = $feedback == 0 || $feedback >= 30 ? 30 : $feedback;
+      $timeout = $feedback == 0 ? 30 : $feedback;
       $errorline_of_select = __LINE__ + 1; /* TODO: HACK! */
       if (false === ($num_changed_streams = stream_select($read, $write, $except, $timeout))) {
 	// TODO: error.
@@ -97,7 +97,7 @@ function waitForMessages()
       $read = array($sock);
       $write = NULL;
       $except = array($sock);
-      $timeout = $feedback == 0 || $feedback >= 30 ? 30 : $feedback;
+      $timeout = $feedback == 0 ? 30 : $feedback;
       $errorline_of_select = __LINE__ + 1; /* TODO: HACK! */
       if (false === ($num_changed_streams = stream_select($read, $write, $except, $timeout))) {
 	echo("select_stream ging nicht");
