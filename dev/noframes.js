@@ -319,7 +319,7 @@ function ShowHistory(elt)
 		inHistoryMode = false;
 		RecreatePosts(posts);
 		SetStatus("");
-		ReceiverConnect();
+		OnReceiverTimeout();
 		return;
 	}
 
