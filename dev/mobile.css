@@ -24,6 +24,12 @@ input[type="button"]:hover, input[type="submit"]:hover{
 	cursor: pointer;
 }
 
+#logbox .activelog
+{
+	font-weight: bold;
+}
+
+
 a:link
 {
 	color: white;

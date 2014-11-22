@@ -332,7 +332,7 @@ function ShowHistory(elt)
 			from : document.getElementById("logFrom").value,
 			to : document.getElementById("logTo").value});
 	elt.class = 'activelog';
-	document.getElementById('logbox').getElementByClass('activelog')[0].class = 'inactivelog';
+	document.getElementById('logbox').getElementsByClassName('activelog')[0].class = 'inactivelog';
 
 	url += parameters;
 	inHistoryMode = true;
