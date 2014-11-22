@@ -331,11 +331,12 @@ function ShowHistory(elt)
 		url += URIEncodeParameters({
 			from : document.getElementById("logFrom").value,
 			to : document.getElementById("logTo").value});
-	elt.class = 'activelog';
-	document.getElementById('logbox').getElementsByClassName('activelog')[0].class = 'inactivelog';
-
 	url += parameters;
+
+	elt.className = 'activelog';
+	document.getElementById('logbox').getElementsByClassName('activelog')[0].className = 'inactivelog';
 	inHistoryMode = true;
+
 	historyRequest.onreadystatechange = OnHistoryResponse;
 	historyRequest.open('GET', url, true);
 	historyRequest.send();
