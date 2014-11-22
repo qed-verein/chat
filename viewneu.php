@@ -8,7 +8,7 @@ case "inotify":
   $touchme = inotify_init();
   inotify_add_watch($touchme, TOUCH_FILE, IN_ATTRIB);
   //  stream_set_blocking($touchme, 0); da wir stream_select verwenden sollte das nicht mehr notwendig sein
-  touch(TOUCH_FILE);
+  if(!file_exists(TOUCH_FILE)) touch(TOUCH_FILE);
   break;
 case "socket":
   $sock = stream_socket_client(SOCKET_PATH) or die;
@@ -85,12 +85,12 @@ function waitForMessages()
       if (false === ($num_changed_streams = stream_select($read, $write, $except, $timeout))) {
 	// TODO: error.
       } else if ($num_changed_streams > 0) {
+		  keepAlive();
 	if(inotify_read($touchme) !== FALSE)
 	  return TRUE;
       } else {
 	$keepAlives++;
 	if ($keepAlives > 120) return FALSE;
-	keepAlive();
       }
     }
     break;
@@ -105,6 +105,7 @@ function waitForMessages()
 	echo("select_stream ging nicht");
 	exit(-1);
       } else if ($num_changed_streams > 0) {
+		  keepAlive();
 	if (count($except) > 0) {
 	  return FALSE;
 	}
@@ -112,7 +113,6 @@ function waitForMessages()
       } else {
 	$keepAlives++;
 	if ($keepAlives > 120) return FALSE;
-	keepAlive();
       }
     }
   }
