@@ -16,7 +16,7 @@ body
 	min-height: 40em;
 }
 
-input, textarea
+input, textarea, select
 {
 	border: 1px #666 solid;
 }
