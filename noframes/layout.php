@@ -57,6 +57,7 @@ function renderSimpleLayout($title, $content)
 	$html .= "<html>\n" . "<head>\n";
 	$html .= "<link rel='stylesheet' href='mobile.css'>\n";
 	$html .= "<meta http-equiv='content-type' content='text/html; charset=utf-8'>\n";
+	$html .= "<meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;'>\n";
 	$html .= "<title>" . htmlEscape($title) . "</title>\n";
 	$html .= "</head>\n<body>\n" . $content . "</body>\n</html>\n";
 	return $html;
