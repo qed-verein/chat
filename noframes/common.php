@@ -118,7 +118,7 @@ function urlLogout() {
 	return 'https://chat.qed-verein.de/noframes/account.php?logout=1';}
 function urlChat($options = array()) {
 	if(!isset($options['layout']) || $options['layout'] == 'frames')
-		return 'https://chat.qed-verein.de/index.php?' . http_build_query($options);
+		return 'https://chat.qed-verein.de/frames/chat.php?' . http_build_query($options);
 	else
 		return 'https://chat.qed-verein.de/noframes/chat.php?' . http_build_query($options);
 }
