@@ -6,13 +6,13 @@ function Init ()
 {
 	defaults = {
 		channel: "", name: "",
-		last: 24, botblock: 1, old: 0, ip: 0, delay: 0,	links: 1, title: 1, mobile: 0,
+		last: 24, botblock: 1, old: 0, ip: 0, delay: 0,	links: 1, title: 1, layout: 'screen',
 		limit: 256,	wait: 60,
 		redirect: "http://uxul.de/redirect.php?", target: "_blank"
 	};
 
 	integerOptions = ['last', 'limit', 'wait'];
-	booleanOptions = ['botblock', 'old', 'ip', 'delay', 'links', 'title', 'mobile'];
+	booleanOptions = ['botblock', 'old', 'ip', 'delay', 'links', 'title'];
 	params = URIDecodeParameters()
 	for(var key in defaults)
 	{
@@ -141,7 +141,7 @@ function AppendPost(container, post)
 	if(options['botblock'] && post['bottag'] == '1')
 		return;
 
-	if(options['mobile'])
+	if(options['layout'] == 'mobile')
 		container.appendChild(FormatMobilePost(post));
 	else
 		container.appendChild(FormatScreenPost(post));
@@ -250,7 +250,7 @@ function DelayString(post)
 function RecreatePosts(posts)
 {
 	var container;
-	if(options['mobile']) container = document.createElement('li');
+	if(options['layout'] == 'mobile') container = document.createElement('li');
 	else container = document.createElement('table');
 	container.id = 'posts';
 
