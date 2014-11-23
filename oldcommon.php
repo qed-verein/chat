@@ -1,4 +1,6 @@
 <?php
+// Diese Datei ist veraltet und wird nur noch aus Kompabiltitätsgrunden beibehalten.
+// Die neue Version befindet sich in noframes/common.php
 
 session_start();
 date_default_timezone_set('Europe/Berlin');

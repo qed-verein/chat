@@ -1,6 +1,6 @@
 <?php
-	// Übernehme die Einstellung des neues Chats
-	require_once('noframes/data.php');
+	// Diese Datei ist veraltet und wird nur noch aus Kompabiltitätsgrunden beibehalten.
+	// Die neue Version befindet sich in noframes/data.php
 
     define ("MAX_PROTECTION", 0); // set this to 1 for |\/|4XXXXim41 pr0tection
 
@@ -16,8 +16,6 @@
     //define ("TOUCH_FILE", "sockets/touchthis");
     //CSS, der Sockets doch ganz nett findet
     //define ("SOCKET_PATH", "unix:///tmp/chat.sock");
-
-
 
     // flooding protection parameters ... die scheinbar ignoriert werden - TODO
     define ("FLOOD", max (MAX_PROTECTION, 0)); // setting this to 1 activates flooding protection
@@ -41,10 +39,13 @@ define ("FLOOD_MAX_POSTS", 10); // ... a maximum of MAX_POSTS is allowed
     define ("SECURE_HISTORY", max (MAX_PROTECTION, 0)); // setting this to 1 activates history DOS protection
     define ("SECURE_HISTORY_MAX_POSTS", 500); // maximum number of posts possible to retrieve
 
-// Timeouts
-define ("POLL_MICROSECONDS", 100000);
-define ("TIMEOUT_POLL_NUM",600);
-define ("KEEP_ALIVE_NL_POLL_NUM",50);
+	// Timeouts
+	define ("POLL_MICROSECONDS", 100000);
+	define ("TIMEOUT_POLL_NUM",600);
+	define ("KEEP_ALIVE_NL_POLL_NUM",50);
 
+
+	// Übernehme die Einstellung des neues Chats
+	require_once('noframes/data.php');
 
 ?>
