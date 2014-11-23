@@ -37,7 +37,7 @@ function Init ()
 function InitRemote (options)
 {
 	timeWait = 6000 * options["wait"];
-	
+
 	channel = options["channel"];
 
 	document.getElementById ("name").value = options["name"];
@@ -48,20 +48,20 @@ function InitRemote (options)
 		createRequest = function () {return new ActiveXObject ("Microsoft.XMLHTTP");};
 	else
 		createRequest = null;
-		
+
 	if (createRequest == null)
 		SetStatus ('Hm, anscheinend unterstützt dein Browser kein XMLHttpRequest-Object.<br>Probiere doch einfach mal <a href="bla.html">dieses</a> Interface.');
 	else
 		request = null;
-	
+
 	generator = options["generator"];
-	
+
 	/* if (options["urgent"] && window.XMLHttpRequest) {
 		var r = new XMLHttpRequest();
 		r.open("GET", "http://uxul.org/upload/urgent.txt", false);
 		r.send(null);
 		var text = r.responseText;
-		
+
 		document.getElementById ("message").value = text;
 	}
 */
@@ -69,7 +69,7 @@ function InitRemote (options)
 
 function SetPosition (value)
 {
-	position = value;	
+	position = value;
 }
 
 function StateChanged ()
@@ -111,13 +111,13 @@ function Send ()
 				SetStatus ("Sende Post ...");
 				request = createRequest ();
 				request.onreadystatechange = StateChanged;
-				request.open ("POST", "post.php", true);
+				request.open ("POST", "noframes/post.php", true);
 				request.setRequestHeader ("Content-Type", "application/x-www-form-urlencoded");
 				request.setRequestHeader ("Content-Encoding", "utf-8");
 				//%%user \neq bot
 				//alert(options["channel"]);
-				var content = 
-					"delay=" + position + "&channel=" + channel + "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value)+"&bottag="+zero;
+				var content =
+					"delay=" + position + "&channel=" + channel + "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value)+"&bottag="+zero+"&version="+version;
 				if (generator)
 					content += "&key=" + GetKey (generator++);
 				request.send (content);
