@@ -22,14 +22,14 @@ if(isset($_REQUEST['login']))
 elseif(isset($_REQUEST['logout']))
 {
 	session_destroy();
-	redirect(urlLogin(chatOptions()));
+	redirect(urlLogin());
 }
 
 if(userLoggedIn())
 	redirect(urlChat(chatOptions()));
 else
 {
-	$content = renderLoginForm($errorMessage);
+	$content = renderLoginForm(chatOptions(), $errorMessage);
 	echo renderSimpleLayout("Login", $content);
 }
 
