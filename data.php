@@ -6,6 +6,7 @@
 
     // SQL login and database information
     define ("SQL_HOST", "127.0.0.1:3306"); // host name
+    define ("SQL_DATABASE", "spam"); // host name
 
     define ("OLD_SQL_TABLE", "content");
 
