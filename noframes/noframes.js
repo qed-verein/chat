@@ -541,7 +541,7 @@ function ErrorHandler(description, filename, line)
 	message = "Ein Fehler trat auf:<br>";
 	message += HtmlEscape(description) + "<br>";
 	message += "In Datei " + filename + ", Zeile " + line + ".<br>";
-	message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
+	//message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
 	SetStatus(message);
 	ReceiverDisconnect();
 	return false;
