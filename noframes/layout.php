@@ -1,14 +1,14 @@
 <?php
 
 
-function renderLoginForm($errorMessage = null)
+function renderLoginForm($options, $errorMessage = null)
 {
 	//$html = "<p style='margin: 1cm auto; text-align: center'>\n";
 	//$html .= "<b>Regeln:</b> Die Nutzung des Chats verpflichtet zur Einhaltung geltenden Rechts ";
 	//$html .= "sowie der üblichen Netiquette. Bei Verstößen kann eine Sperrung des Zugangs erfolgen.\n";
 	//$html .= "</p>\n";
 
-	$html = sprintf("<form action='%s' method='post'>\n", htmlEscape(urlLogin()));
+	$html = sprintf("<form action='%s' method='post'>\n", htmlEscape(urlLogin($options)));
 	$html .= "<fieldset style='max-width: 20em; margin: auto' class='box'>\n";
 	$html .= "<legend>Anmeldung</legend>\n";
 
