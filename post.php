@@ -24,8 +24,8 @@
 
 	$recorded = false;
 
-	require_once ("data.php");
-	require_once ("common.php");
+	require_once ("olddata.php");
+	require_once ("oldcommon.php");
 
 function do_notification() {
   switch (NOTIFICATION_METHOD) {

@@ -1,7 +1,7 @@
 <?php
 
-	require_once ("data.php");
-	require_once ("common.php");
+	require_once ("olddata.php");
+	require_once ("oldcommon.php");
 
 	$reverse_output = false; //reverse output of posts?
 	if (!empty($_GET['reverse']) && $_GET['reverse'] == "true")
