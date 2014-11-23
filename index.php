@@ -1,13 +1,21 @@
 <?php
+	function demagicalize_string ($string)
+	{
+		if (get_magic_quotes_gpc ())
+			$string = stripslashes ($string);
+
+		return $string;
+	}
+
 	$ignore_no_login=true;
 	$session_not_close=true;
-	require_once ("data.php");
-	require_once ("common.php");
+	require_once ("frames/data.php");
+	require_once ("frames/common.php");
 
-	if ($_SERVER['SERVER_NAME']!='chat.qed-verein.de' && $_SERVER['SERVER_NAME']!='qedchat.qed-verein.de')
-		die ("grml");
+	if($_SERVER['SERVER_NAME'] != 'chat.qed-verein.de')
+		die("grml");
 
-	if(empty($_SESSION['userid']) && empty($_SESSION['anonym']))
+	if(empty($_SESSION['userid']))
 		redirect("https://chat.qed-verein.de/noframes/account.php");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
@@ -44,8 +52,6 @@ echo "\toptions[\"unl33t\"] = " . (isset ($_GET["unl33t"]) ? 1 : 0) . ";\n";
 echo "\toptions[\"urgent\"] = " . (isset ($_GET["no_urgency"]) ? "false" : "true") . ";\n";
 echo "\toptions[\"version\"] = " . (isset ($_GET["version"]) ? 0 : CHAT_VERSION) . ";\n";
 
-if (SECURE_POSTS)
-	echo "\toptions[\"generator\"] = " . (SECURE_POSTS_GENERATOR_NUM_USES * get_key_generator ()) . ";\n";
 
 $sizeRecv0 = (isset ($_GET["sizeRecv0"]) ? demagicalize_string ($_GET["sizeRecv0"]) : "60%");
 $sizeRecv1 = (isset ($_GET["sizeRecv1"]) ? demagicalize_string ($_GET["sizeRecv1"]) : "40%");
