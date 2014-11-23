@@ -45,7 +45,7 @@ a:visited
 	right: 0em;
 	bottom: 0em;
 	height: 6em;
-	min-width: 25em;
+	min-width: 23em;
 }
 
 
@@ -112,7 +112,8 @@ li.post .message
 
 #name
 {
-	width: 30%;
+	width: 20%;
+	min-width: 5em;
 }
 
 
