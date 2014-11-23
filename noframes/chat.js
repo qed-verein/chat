@@ -421,8 +421,8 @@ var sendRequest, sendTimeout;
 
 function InitSender()
 {
-	if(options['name'] != '')
-		document.getElementById("name").value = options["name"];
+	document.getElementById("name").value = options["name"];
+	document.getElementById("message").focus();
 	sendRequest = null;
 }
 
