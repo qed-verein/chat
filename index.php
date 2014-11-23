@@ -9,8 +9,8 @@
 
 	$ignore_no_login=true;
 	$session_not_close=true;
-	require_once ("frames/data.php");
-	require_once ("frames/common.php");
+	require_once ("noframes/data.php");
+	require_once ("noframes/common.php");
 
 	if($_SERVER['SERVER_NAME'] != 'chat.qed-verein.de')
 		die("grml");
