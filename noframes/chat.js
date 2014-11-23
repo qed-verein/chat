@@ -435,6 +435,7 @@ function Send()
 	}
 
 	SetStatus("Sende Post ...");
+	ScrollDown();
 	sendRequest = new XMLHttpRequest();
 	sendRequest.onreadystatechange = OnSenderResponse;
 	sendRequest.open("POST", "post.php", true);
