@@ -119,7 +119,7 @@ function urlLogout() {
 function urlChat($options = array()) {
 	if($options['layout'] == 'frames')
 	{
-		unset($options['frames']);
+		unset($options['layout']);
 		return 'https://chat.qed-verein.de/index.php?' . http_build_query($options);
 	}
 	else
