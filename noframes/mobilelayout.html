@@ -26,10 +26,10 @@ function CloseMenus()
 
 <div id="inputbox">
 	<input id="name" size="50" placeholder="Name" tabindex="1">
-	<input id="send" type="submit" value="Senden" onclick="Send()">
-	<input type="button" value="Einstellen"
+	<input id="send" type="submit" value="Senden" onclick="Send()" tabindex="3">
+	<input type="button" value="Einstellen" tabindex="4"
 		onclick="CloseMenus(); document.getElementById('settingbox').style.display = 'block'">
-	<input type="button" value="Logs"
+	<input type="button" value="Logs" tabindex="5"
 		onclick="CloseMenus(); document.getElementById('logbox').style.display = 'block'">
 	<textarea id="message" rows="3" cols="50" placeholder="Nachricht" tabindex="2"></textarea>
 </div>
