@@ -1,8 +1,8 @@
 <?php
 
-	require_once ("data.php");
-	require_once ("common.php");
-	
+	require_once ("olddata.php");
+	require_once ("oldcommon.php");
+
 	mysql_connect (SQL_HOST, SQL_USER, SQL_PASSWORD);
 	mysql_select_db (SQL_DATABASE);
 	$botblocksql='';
@@ -39,7 +39,7 @@
 			die ();
 		}
 	}
-		
+
 	header ("Content-Type: text/html; charset=utf-8");
 
 	if (isset ($_GET["type"]))
@@ -73,7 +73,7 @@
 		$coloredarray = $array;
 		$coloredarray["color"] = get_color($array["name"]);
 		//$coloredarray = applymods($coloredarray);
-		
+
 		if ($type == "html")
 			echo "\t\t\t" . format_post ($coloredarray, $_GET) . "\n";
 		else if ($type == "xml")
@@ -92,5 +92,5 @@
 	{
 		echo "</content>\n";
 	}
-	
+
 ?>
