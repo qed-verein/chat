@@ -23,7 +23,7 @@ function renderLoginForm($errorMessage = null)
 	$html .= " </tr>\n";
 	$html .= " <tr>\n";
 	$html .= "  <td><label for='mobil'>Version:</label></td>\n";
-	$html .= "  <td><select name='version'>\n";
+	$html .= "  <td><select name='layout'>\n";
 	$html .= "   <option value='frames'>mit Frames</option>\n";
 	$html .= "   <option value='noframes'>ohne Frames</option>\n";
 	$html .= "   <option value='mobile'>für mobile Geräte</option>\n";

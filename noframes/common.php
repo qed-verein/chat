@@ -116,10 +116,21 @@ function urlLogin() {
 	return 'https://chat.qed-verein.de/noframes/account.php';}
 function urlLogout() {
 	return 'https://chat.qed-verein.de/noframes/account.php?logout=1';}
-function urlChat() {
-	return 'https://chat.qed-verein.de/noframes/noframes.php';}
-function urlChatFrames() {
-	return 'https://chat.qed-verein.de/index.php';}
-function urlChatMobile() {
-	return 'https://chat.qed-verein.de/noframes/noframes.php?mobile=1';}
+function urlChat($options = array()) {
+	if($options['layout'] == 'frames')
+		return 'https://chat.qed-verein.de/index.php?' + http_build_query($options);
+	else
+		return 'https://chat.qed-verein.de/noframes/noframes.php?' + http_build_query($options);
+}
+
+function chatOptions()
+{
+	$keys = array('channel', 'name', 'limit', 'wait', 'redirect', 'target', 'layout',
+		'last', 'botblock', 'old', 'ip', 'delay', 'links', 'title');
+	$options = array();
+	foreach($keys as $k)
+		if(isset($_REQUEST[$k])) $options[$k] = $_REQUEST[$k];
+	return $options;
+}
+
 ?>

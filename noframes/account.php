@@ -25,21 +25,12 @@ elseif(isset($_REQUEST['logout']))
 	redirect(urlLogin());
 }
 
-if(!userLoggedIn())
+if(userLoggedIn())
+	redirect(urlChat(chatOptions()));
+else
 {
 	$content = renderLoginForm($errorMessage);
 	echo renderSimpleLayout("Login", $content);
 }
-else
-{
-	$version = uriParamString('version', 'frames');
-	if($version == 'frames')
-		redirect(urlChatFrames());
-	else if($version == 'mobile')
-		redirect(urlChatMobile());
-	else
-		redirect(urlChat());
-}
-
 
 ?>
