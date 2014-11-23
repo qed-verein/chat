@@ -133,6 +133,7 @@ function ProcessPost(post)
 
 	AppendPost(document.getElementById('posts'), post);
 	UpdateTitle(post['message']);
+	ScrollDown();
 }
 
 // Erstellt einen HTML-Knoten für diese Nachricht
@@ -486,7 +487,6 @@ function OnSenderError()
 function SetStatus(text)
 {
     document.getElementById("status").innerHTML = text;
-    ScrollDown();
 }
 
 function URIEncodeParameters(params)
