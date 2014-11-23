@@ -1,5 +1,6 @@
 <?php
 
+$ignore_no_login = true;
 require_once('common.php');
 
 // Sende dem JavaScript ein Lebenszeichen
@@ -41,6 +42,8 @@ function ExceptionHandler($e)
 }
 
 set_exception_handler('ExceptionHandler');
+if(!userLoggedIn())
+	throw new Exception("Du bist nicht eingeloggt!");
 
 versionCheck();
 $position = uriParamInteger('position', 0);
