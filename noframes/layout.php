@@ -55,7 +55,7 @@ function renderSimpleLayout($title, $content)
 {
 	$html = "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>";
 	$html .= "<html>\n" . "<head>\n";
-	$html .= "<link rel='stylesheet' href='screen.css'>\n";
+	$html .= "<link rel='stylesheet' href='mobile.css'>\n";
 	$html .= "<meta http-equiv='content-type' content='text/html; charset=utf-8'>\n";
 	$html .= "<title>" . htmlEscape($title) . "</title>\n";
 	$html .= "</head>\n<body>\n" . $content . "</body>\n</html>\n";

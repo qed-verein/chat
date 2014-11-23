@@ -112,7 +112,7 @@ function versionCheck()
 		throw new Exception("Der Chat-Client besitzt eine ungültige Versionsnummer. Bitte neuladen!");
 }
 
-function urlLogin($options) {
+function urlLogin($options = array()) {
 	return 'https://chat.qed-verein.de/noframes/account.php?' .	http_build_query($options);}
 function urlLogout() {
 	return 'https://chat.qed-verein.de/noframes/account.php?logout=1';}
