@@ -32,7 +32,10 @@ if(!userLoggedIn())
 }
 else
 {
-	if(uriParamInteger('version', 0) == 1)
+	$version = uriParamString('version', 'frames');
+	if($version == 'frames')
+		redirect(urlChatFrames());
+	else if($version == 'mobile')
 		redirect(urlChatMobile());
 	else
 		redirect(urlChat());
