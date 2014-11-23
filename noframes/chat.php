@@ -10,5 +10,5 @@ if(isset($_GET['layout']) && $_GET['layout'] == 'mobile')
 else if(isset($_GET['layout']) && $_GET['layout'] == 'screen')
 	readfile('screenlayout.html');
 else
-	redirect('https://chat.qed-verein.de/index.php?' . http_build_query(allOptions()));
+	redirect('https://chat.qed-verein.de/index.php?' . http_build_query(chatOptions()));
 ?>

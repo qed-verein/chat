@@ -22,7 +22,7 @@ if(isset($_REQUEST['login']))
 elseif(isset($_REQUEST['logout']))
 {
 	session_destroy();
-	redirect(urlLogin());
+	redirect(urlLogin(chatOptions()));
 }
 
 if(userLoggedIn())
