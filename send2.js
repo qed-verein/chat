@@ -1,4 +1,5 @@
 var createRequest, request, channel, position, from = 0, timeWait, generator = 0,zero=0;
+var options;
 
 function GetKey (gen)
 {
@@ -34,8 +35,9 @@ function Init ()
 	}
 }
 
-function InitRemote (options)
+function InitRemote (opt)
 {
+	options = opt;
 	timeWait = 6000 * options["wait"];
 
 	channel = options["channel"];
