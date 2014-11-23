@@ -117,7 +117,7 @@ function Send ()
 				//%%user \neq bot
 				//alert(options["channel"]);
 				var content =
-					"delay=" + position + "&channel=" + channel + "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value)+"&bottag="+zero+"&version="+version;
+					"delay=" + position + "&channel=" + channel + "&name=" + encodeURIComponent (document.getElementById ("name").value) + "&message=" + encodeURIComponent (document.getElementById ("message").value)+"&bottag="+zero+"&version="+options['version'];
 				if (generator)
 					content += "&key=" + GetKey (generator++);
 				request.send (content);
