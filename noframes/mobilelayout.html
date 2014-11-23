@@ -6,6 +6,13 @@
 <link rel="stylesheet" type="text/css" href="mobile.css">
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 <script type="text/javascript" src="chat.js"></script>
+<script>
+function CloseMenus()
+{
+	document.getElementById('logbox').style.display = 'none';
+	document.getElementById('settingbox').style.display = 'none';
+}
+</script>
 <title>QED-Chat</title>
 </head>
 
@@ -18,13 +25,13 @@
 </div>
 
 <div id="inputbox">
-	<input id="name" size="50" placeholder="Name">
+	<input id="name" size="50" placeholder="Name" tabindex="1">
 	<input id="send" type="submit" value="Senden" onclick="Send()">
 	<input type="button" value="Einstellen"
-		onclick="document.getElementById('settingbox').style.display = 'block'">
+		onclick="CloseMenus(); document.getElementById('settingbox').style.display = 'block'">
 	<input type="button" value="Logs"
-		onclick="document.getElementById('logbox').style.display = 'block'">
-	<textarea id="message" rows="3" cols="50" placeholder="Nachricht"></textarea>
+		onclick="CloseMenus(); document.getElementById('logbox').style.display = 'block'">
+	<textarea id="message" rows="3" cols="50" placeholder="Nachricht" tabindex="2"></textarea>
 </div>
 
 
@@ -70,10 +77,10 @@
 		<a style="margin-left: 2mm" id="log" class="inactivelog"
 			onclick="ShowHistory(this)">Intervall anzeigen</a>
 	</div>
-	<div style="clear: both; text-align: center">
+	<p style="clear: both; text-align: center">
 		<input type="button" value="Schließen"
 			onclick="document.getElementById('logbox').style.display = 'none'">
-	</div>
+	</p>
 </div>
 
 </body>
