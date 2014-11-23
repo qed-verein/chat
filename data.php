@@ -1,4 +1,5 @@
 <?php
+	// Übernehme die Einstellung des neues Chats
 	require_once('noframes/data.php');
 
     define ("MAX_PROTECTION", 0); // set this to 1 for |\/|4XXXXim41 pr0tection
@@ -9,11 +10,11 @@
     define ("OLD_SQL_TABLE", "content");
 
     // CSS, der sich nicht entscheiden kann
-	define("NOTIFICATION_METHOD", "inotify"); /* inotify, socket */
+	//define("NOTIFICATION_METHOD", "inotify"); /* inotify, socket */
     //CSS, der sockets nicht mag
-    define ("TOUCH_FILE", "sockets/touchthis");
+    //define ("TOUCH_FILE", "sockets/touchthis");
     //CSS, der Sockets doch ganz nett findet
-    define ("SOCKET_PATH", "unix:///tmp/chat.sock");
+    //define ("SOCKET_PATH", "unix:///tmp/chat.sock");
 
 
 
