@@ -1,6 +1,6 @@
 <?php
-	// Diese Datei ist veraltet und wird nur noch aus Kompabiltitätsgrunden beibehalten.
-	// Die neue Version befindet sich in noframes/data.php
+	// Diese Datei ist veraltet und wird nur noch aus Kompabiltitätsgrunden für die Frame-Version beibehalten.
+	// Die aktuelle Version befindet sich in noframes/data.php
 
     define ("MAX_PROTECTION", 0); // set this to 1 for |\/|4XXXXim41 pr0tection
 
