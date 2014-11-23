@@ -1,29 +1,21 @@
 <?php
+	require_once('noframes/data.php');
+
     define ("MAX_PROTECTION", 0); // set this to 1 for |\/|4XXXXim41 pr0tection
 
     // SQL login and database information
     define ("SQL_HOST", "127.0.0.1:3306"); // host name
-    define ("SQL_USER", "chat"); // user name
-    define ("SQL_PASSWORD", "spa!spa123"); // user password
-    define ("SQL_DATABASE", "spam"); // database name  (if changed init.php has to be called)
-    define ("SQL_TABLE", "content2"); // name of table to be used (if changed init.php has to be called)
-    define('SQL_DSN', 'mysql:host=127.0.0.1;port=3306;dbname=spam'); // PDO Data Source Name
 
     define ("OLD_SQL_TABLE", "content");
 
     // CSS, der sich nicht entscheiden kann
-define("NOTIFICATION_METHOD", "inotify"); /* inotify, socket */
+	define("NOTIFICATION_METHOD", "inotify"); /* inotify, socket */
     //CSS, der sockets nicht mag
     define ("TOUCH_FILE", "sockets/touchthis");
     //CSS, der Sockets doch ganz nett findet
     define ("SOCKET_PATH", "unix:///tmp/chat.sock");
 
-	// Muss in der Javascript-Datei ebenfalls geändert werden
-    define ("CHAT_VERSION", "1416690087");
 
-
-    // redirection parameters
-    define ("URL_REDIRECT", "http://uxul.de/redirect.php?"); // default redirection service (for hiding the referer [sic])
 
     // flooding protection parameters ... die scheinbar ignoriert werden - TODO
     define ("FLOOD", max (MAX_PROTECTION, 0)); // setting this to 1 activates flooding protection
@@ -52,10 +44,5 @@ define ("POLL_MICROSECONDS", 100000);
 define ("TIMEOUT_POLL_NUM",600);
 define ("KEEP_ALIVE_NL_POLL_NUM",50);
 
-// Login
-define ("REQUIRE_LOGIN", false);
-
-
-define("ADMIN_EMAIL", "webmaster@qed-verein.de");
 
 ?>
