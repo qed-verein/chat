@@ -42,6 +42,7 @@ echo "\toptions[\"title\"] = " . (isset ($_GET["title"]) ? intval ($_GET["title"
 echo "\toptions[\"css\"] = \"" . (isset ($_GET["css"]) ? htmlentities ($_GET["css"]) : "chat.css") . "\";\n";
 echo "\toptions[\"unl33t\"] = " . (isset ($_GET["unl33t"]) ? 1 : 0) . ";\n";
 echo "\toptions[\"urgent\"] = " . (isset ($_GET["no_urgency"]) ? "false" : "true") . ";\n";
+echo "\toptions[\"version\"] = " . (isset ($_GET["version"]) ? CHAT_VERSION : 0) . ";\n";
 
 if (SECURE_POSTS)
 	echo "\toptions[\"generator\"] = " . (SECURE_POSTS_GENERATOR_NUM_USES * get_key_generator ()) . ";\n";

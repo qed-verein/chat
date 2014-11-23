@@ -1,4 +1,3 @@
-var version = "1416690087"; // muss in noframes/data.php ebenfalls geaendert werden
 var options;
 
 function SetStatus (text)
@@ -60,7 +59,7 @@ function ReceiverConnect()
 
 	uri = "noframes/view.php?" + URIEncodeParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],
-	    version: version, keepalive: Math.ceil(options["wait"] / 2)});
+	    version: options["version"], keepalive: Math.ceil(options["wait"] / 2)});
 	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
 	uri += "&random=" + (Math.random() * 1000000);
 	recvRequest.onreadystatechange = OnReceiverResponse;
