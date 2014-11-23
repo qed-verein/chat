@@ -32,7 +32,7 @@ if(!userLoggedIn())
 }
 else
 {
-	if(uriParamInteger('mobil', 0) == 1)
+	if(uriParamInteger('version', 0) == 1)
 		redirect(urlChatMobile());
 	else
 		redirect(urlChat());

@@ -6,7 +6,7 @@ function Init ()
 {
 	defaults = {
 		channel: "", name: "",
-		last: 24, botblock: 1, old: 0, ip: 0, delay: 0,	links: 1, title: 1, mobile: 1,
+		last: 24, botblock: 1, old: 0, ip: 0, delay: 0,	links: 1, title: 1, mobile: 0,
 		limit: 256,	wait: 60,
 		redirect: "http://uxul.de/redirect.php?", target: "_blank"
 	};

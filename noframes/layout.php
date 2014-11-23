@@ -22,8 +22,12 @@ function renderLoginForm($errorMessage = null)
 	$html .= "  <td><input type='password' name='password' id='input_password' size='15'></td>\n";
 	$html .= " </tr>\n";
 	$html .= " <tr>\n";
-	$html .= "  <td><label for='mobil'>Mobile Version:</label></td>\n";
-	$html .= "  <td><input type='checkbox' name='mobil' id='input_mobil' value='1'></td>\n";
+	$html .= "  <td><label for='mobil'>Version:</label></td>\n";
+	$html .= "  <td><select name='version'>\n";
+	$html .= "   <option value='0'>mit Frames</option>\n";
+	$html .= "   <option value='1'>ohne Frames</option>\n";
+	$html .= "   <option value='2'>für mobile Geräte</option>\n";
+	$html .= "  </select></td>\n";
 	$html .= " </tr>\n";
 	$html .= " <tr><td colspan='2' style='text-align: center'>\n";
 	$html .= " <input type='submit' name='login' value='Einloggen'></td></tr>\n";

@@ -117,6 +117,8 @@ function urlLogin() {
 function urlLogout() {
 	return 'https://chat.qed-verein.de/noframes/account.php?logout=1';}
 function urlChat() {
+	return 'https://chat.qed-verein.de/noframes/noframes.php';}
+function urlChatFrames() {
 	return 'https://chat.qed-verein.de/index.php';}
 function urlChatMobile() {
 	return 'https://chat.qed-verein.de/noframes/noframes.php?mobile=1';}
