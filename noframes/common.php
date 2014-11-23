@@ -112,18 +112,12 @@ function versionCheck()
 		throw new Exception("Der Chat-Client besitzt eine ungültige Versionsnummer. Bitte neuladen!");
 }
 
-function urlLogin() {
-	return 'https://chat.qed-verein.de/noframes/account.php';}
+function urlLogin($options) {
+	return 'https://chat.qed-verein.de/noframes/account.php?' .	http_build_query($options);}
 function urlLogout() {
 	return 'https://chat.qed-verein.de/noframes/account.php?logout=1';}
 function urlChat($options = array()) {
-	if($options['layout'] == 'frames')
-	{
-		unset($options['layout']);
-		return 'https://chat.qed-verein.de/index.php?' . http_build_query($options);
-	}
-	else
-		return 'https://chat.qed-verein.de/noframes/noframes.php?' . http_build_query($options);
+	return 'https://chat.qed-verein.de/noframes/chat.php?' . http_build_query($options);
 }
 
 function chatOptions()
