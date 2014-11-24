@@ -388,11 +388,11 @@ function InitSettings()
 
 function UpdateSettings()
 {
-	options["ip"] = document.getElementById("ip").checked;
-	options["delay"] = document.getElementById("delay").checked;
-	options["links"] = document.getElementById("links").checked;
-	options["old"] = document.getElementById("old").checked;
-	options["botblock"] = document.getElementById("botblock").checked;
+	options["ip"] = document.getElementById("ip").checked ? 1 : 0;
+	options["delay"] = document.getElementById("delay").checked ? 1 : 0;
+	options["links"] = document.getElementById("links").checked ? 1 : 0;
+	options["old"] = document.getElementById("old").checked ? 1 : 0;
+	options["botblock"] = document.getElementById("botblock").checked ? 1 : 0;
 
 	var input = document.getElementById("last");
 	var num = parseInt(input.value);
@@ -419,16 +419,18 @@ function Increase()
 
 function RenewLinks()
 {
-	// Geht noch nicht
-	//var tempOptions = new Object();
-	//for(var i in options)
-		//if(options[i] != defaults[i]) tempOptions[i] = options[i];
-	//tempOptions['layout'] = 'screen';
-	//if(document.getElementById('screenlink'))
-		//document.getElementById('screenlink').href = URIEncodeParameters(tempOptions);
-	//tempOptions['layout'] = 'mobile';
-	//if(document.getElementById('mobilelink'))
-		//document.getElementById('mobilelink').href = URIEncodeParameters(tempOptions);
+	var tempOptions = new Object();
+	for(var i in options)
+		if(options[i] != defaults[i]) tempOptions[i] = options[i];
+	tempOptions['layout'] = 'screen';
+	if(document.getElementById('screenlink'))
+		document.getElementById('screenlink').href = URIEncodeParameters(tempOptions);
+	tempOptions['layout'] = 'mobile';
+	if(document.getElementById('mobilelink'))
+		document.getElementById('mobilelink').href = URIEncodeParameters(tempOptions);
+	tempOptions['layout'] = 'frame';
+	if(document.getElementById('framelink'))
+		document.getElementById('framelink').href = URIEncodeParameters(tempOptions);
 }
 
 
