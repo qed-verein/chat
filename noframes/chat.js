@@ -4,7 +4,7 @@ var version = "1416690087"; // muss in data ebenfalls geaendert werden
 var defaults = {
 		channel: "", name: "",
 		last: 24, botblock: 1, old: 0, ip: 0, delay: 0, links: 1, title: 1,
-		layout: 'screen', skin: 'dunkelgrauton',
+		layout: 'screen', skin: 'schwarz',
 		limit: 256,	wait: 60,
 		redirect: "http://uxul.de/redirect.php?", target: "_blank"
 	};
