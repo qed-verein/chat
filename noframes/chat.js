@@ -178,7 +178,7 @@ function FormatScreenPost(post)
 	node = document.createElement ("td");
 	node.innerHTML =  NickEscape (post["name"] + ((post['anonym'] == "1") ? " (anonym)" : "") + ":");
 	node.setAttribute ("class", "name");
-	node.setAttribute ("style", "color:#" + PostColor(post) + ";");
+	node.setAttribute ("style", "color:#" + post["color"] + ";");
 	tr.appendChild (node);
 
 	node = document.createElement ("td");
@@ -197,7 +197,7 @@ function FormatMobilePost(post)
 	var li = document.createElement('li');
 	li.setAttribute('id', 'post' + post['id']);
 	li.setAttribute('class', 'post');
-	li.setAttribute('style', 'color:#' + PostColor(post));
+	li.setAttribute('style', 'color:#' + post['color']);
 
 	var name = document.createElement('span');
 	name.innerHTML = NickEscape(post["name"] + ((post['anonym'] == "1") ? " (anonym)" : "") + ":");
@@ -546,13 +546,6 @@ function InsertLinks (text)
 {
 	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g,
 		'<a rel="noreferrer" target="_blank" href="$1$2">$1$2</a>');
-}
-
-
-function PostColor(post)
-{
-	return (options['skin'] != 'mylittlepony') ? post['color'] :
-			return (parseInt(post['color'], 16) ^ parseInt("FFFFFF", 16)).toString(16);
 }
 
 function UpdateTitle(message)
