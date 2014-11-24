@@ -178,7 +178,7 @@ function FormatScreenPost(post)
 	node = document.createElement ("td");
 	node.innerHTML =  NickEscape (post["name"] + ((post['anonym'] == "1") ? " (anonym)" : "") + ":");
 	node.setAttribute ("class", "name");
-	node.setAttribute ("style", "color:#" + post["color"] + ";");
+	node.setAttribute ("style", "color:#" + PostColor(post) + ";");
 	tr.appendChild (node);
 
 	node = document.createElement ("td");
@@ -197,7 +197,7 @@ function FormatMobilePost(post)
 	var li = document.createElement('li');
 	li.setAttribute('id', 'post' + post['id']);
 	li.setAttribute('class', 'post');
-	li.setAttribute('style', 'color:#' + post['color']);
+	li.setAttribute('style', 'color:#' + PostColor(post));
 
 	var name = document.createElement('span');
 	name.innerHTML = NickEscape(post["name"] + ((post['anonym'] == "1") ? " (anonym)" : "") + ":");
@@ -528,6 +528,13 @@ function URIDecodeParameters() {
 		vars[k] = v;
 	});
 	return vars;
+}
+
+
+function PostColor(post)
+{
+	return (options['skin'] != 'mylittlepony') ? post['color'] :
+		(parseInt(post['color'], 16) ^ parseInt("FFFFFF", 16)).toString(16);
 }
 
 function ScrollDown()
