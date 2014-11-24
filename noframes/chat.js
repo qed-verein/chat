@@ -185,7 +185,7 @@ function FormatScreenPost(post)
 	node.innerHTML = HtmlEscape (post["message"]);
 	if(options["links"]) node.innerHTML = InsertLinks(node.innerHTML);
 	node.setAttribute ("class", "message");
-	node.setAttribute ("style", "color:#" + post["color"] + ";");
+	node.setAttribute ("style", "color:#" + PostColor(post) + ";");
 	tr.appendChild (node);
 
 	return tr;
