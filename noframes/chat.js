@@ -424,13 +424,10 @@ function RenewLinks()
 		if(options[i] != defaults[i]) tempOptions[i] = options[i];
 	tempOptions['layout'] = 'screen';
 	if(document.getElementById('screenlink'))
-		document.getElementById('screenlink').href = URIEncodeParameters(tempOptions);
+		document.getElementById('screenlink').href = '?' + URIEncodeParameters(tempOptions);
 	tempOptions['layout'] = 'mobile';
 	if(document.getElementById('mobilelink'))
-		document.getElementById('mobilelink').href = URIEncodeParameters(tempOptions);
-	tempOptions['layout'] = 'frame';
-	if(document.getElementById('framelink'))
-		document.getElementById('framelink').href = URIEncodeParameters(tempOptions);
+		document.getElementById('mobilelink').href = '?' + URIEncodeParameters(tempOptions);
 }
 
 
