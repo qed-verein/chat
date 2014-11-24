@@ -145,7 +145,7 @@ function AppendPost(container, post)
 	if(options['botblock'] && post['bottag'] == '1')
 		return;
 	if(options['skins'] == 'mylittlepony')
-		options['color'] = (parseInt(options['color', 16]) ^ parseInt("FFFFFF", 16)).toString(16);
+		options['color'] = (parseInt(options['color'], 16) ^ parseInt("FFFFFF", 16)).toString(16);
 
 	if(options['layout'] == 'mobile')
 		container.appendChild(FormatMobilePost(post));
