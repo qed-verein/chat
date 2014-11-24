@@ -144,14 +144,13 @@ function AppendPost(container, post)
 {
 	if(options['botblock'] && post['bottag'] == '1')
 		return;
-	if(options['skin'] == 'mylittlepony')
-		options['color'] = (parseInt(options['color'], 16) ^ parseInt("FFFFFF", 16)).toString(16);
 
 	if(options['layout'] == 'mobile')
 		container.appendChild(FormatMobilePost(post));
 	else
 		container.appendChild(FormatScreenPost(post));
 }
+
 
 // Stellt eine Nachricht als HTML dar (Version für große Bildschrime)
 function FormatScreenPost(post)
@@ -179,7 +178,7 @@ function FormatScreenPost(post)
 	node = document.createElement ("td");
 	node.innerHTML =  NickEscape (post["name"] + ((post['anonym'] == "1") ? " (anonym)" : "") + ":");
 	node.setAttribute ("class", "name");
-	node.setAttribute ("style", "color:#" + post["color"] + ";");
+	node.setAttribute ("style", "color:#" + PostColor(post) + ";");
 	tr.appendChild (node);
 
 	node = document.createElement ("td");
@@ -198,7 +197,7 @@ function FormatMobilePost(post)
 	var li = document.createElement('li');
 	li.setAttribute('id', 'post' + post['id']);
 	li.setAttribute('class', 'post');
-	li.setAttribute('style', 'color:#' + post['color']);
+	li.setAttribute('style', 'color:#' + PostColor(post));
 
 	var name = document.createElement('span');
 	name.innerHTML = NickEscape(post["name"] + ((post['anonym'] == "1") ? " (anonym)" : "") + ":");
@@ -547,6 +546,13 @@ function InsertLinks (text)
 {
 	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\w\&.~%\/?#=@:\[\]+\$\,-;]*)/g,
 		'<a rel="noreferrer" target="_blank" href="$1$2">$1$2</a>');
+}
+
+
+function PostColor(post)
+{
+	return (options['skin'] != 'mylittlepony') ? post['color'] :
+			return (parseInt(post['color'], 16) ^ parseInt("FFFFFF", 16)).toString(16);
 }
 
 function UpdateTitle(message)
