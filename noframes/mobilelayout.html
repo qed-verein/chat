@@ -4,6 +4,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link rel="stylesheet" type="text/css" href="mobile.css">
+<link rel="stylesheet" type="text/css" href="colors.css">
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 <script type="text/javascript" src="chat.js"></script>
 <script>
@@ -45,8 +46,8 @@ function CloseMenus()
 	sonst <input type="button" onclick="Decrease()" value="<">
 	<input type="text" id="last" onchange="UpdateSettings()" size="2" value="24">
 	<input type="button" onclick="Increase()" value=">"><br>
-	<a href="/index.php">Frame-Version</a>
-	<a href="?layout=screen">für Bildschirm</a>
+	<a id="framelink" href="/index.php">Frame-Version</a>
+	<a id="screenlink" href="?layout=screen">für Bildschirm</a>
 	<p style="text-align: center">
 		<input type="button" value="Schließen"
 			 onclick="document.getElementById('settingbox').style.display = 'none'">

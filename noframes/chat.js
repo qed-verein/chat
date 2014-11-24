@@ -1,16 +1,17 @@
 var options = new Object();
 var version = "1416690087"; // muss in data ebenfalls geaendert werden
 
-// Initialisiere das Skript
-function Init ()
-{
-	defaults = {
+var defaults = {
 		channel: "", name: "",
-		last: 24, botblock: 1, old: 0, ip: 0, delay: 0,	links: 1, title: 1, layout: 'screen',
+		last: 24, botblock: 1, old: 0, ip: 0, delay: 0, links: 1, title: 1,
+		layout: 'screen', skin: 'dunkelgrauton',
 		limit: 256,	wait: 60,
 		redirect: "http://uxul.de/redirect.php?", target: "_blank"
 	};
 
+// Initialisiere das Skript
+function Init ()
+{
 	integerOptions = ['last', 'limit', 'wait'];
 	booleanOptions = ['botblock', 'old', 'ip', 'delay', 'links', 'title'];
 	params = URIDecodeParameters()
@@ -22,6 +23,8 @@ function Init ()
 		if(booleanOptions.indexOf(key) >= 0)
 			options[key] = parseInt(options[key]) ? 1 : 0;
 	}
+
+	document.getElementsByTagName('body')[0].className = options['skin'];
 
 	InitReceiver();
 	InitSender();
@@ -380,6 +383,7 @@ function InitSettings()
 	document.getElementById("old").checked = options["old"];
 	document.getElementById("last").value = count = options["last"];
 	document.getElementById("botblock").checked = options["botblock"];
+	RenewLinks();
 }
 
 function UpdateSettings()
@@ -395,6 +399,7 @@ function UpdateSettings()
 	if(isNaN(num)) num = options["last"];
 	input.value = options["last"] = Math.min(Math.max(num, 1), 1000);
 	RecreatePosts(inHistoryMode ? historyPosts : posts);
+	RenewLinks();
 }
 
 
@@ -410,6 +415,20 @@ function Increase()
 	var input = document.getElementById("last");
 	input.value = options['last'] = Math.min(1000, parseInt(input.value) + 1);
 	UpdateSettings();
+}
+
+function RenewLinks()
+{
+	// Geht noch nicht
+	//var tempOptions = new Object();
+	//for(var i in options)
+		//if(options[i] != defaults[i]) tempOptions[i] = options[i];
+	//tempOptions['layout'] = 'screen';
+	//if(document.getElementById('screenlink'))
+		//document.getElementById('screenlink').href = URIEncodeParameters(tempOptions);
+	//tempOptions['layout'] = 'mobile';
+	//if(document.getElementById('mobilelink'))
+		//document.getElementById('mobilelink').href = URIEncodeParameters(tempOptions);
 }
 
 
