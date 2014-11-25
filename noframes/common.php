@@ -125,7 +125,7 @@ function urlChat($options = array()) {
 
 function chatOptions()
 {
-	$keys = array('channel', 'name', 'limit', 'wait', 'redirect', 'target', 'layout',
+	$keys = array('channel', 'name', 'limit', 'wait', 'redirect', 'target', 'layout', 'skin',
 		'last', 'botblock', 'old', 'ip', 'delay', 'links', 'title');
 	$options = array();
 	foreach($keys as $k)
