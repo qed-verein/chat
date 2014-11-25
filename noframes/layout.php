@@ -26,9 +26,9 @@ function renderLoginForm($options, $errorMessage = null)
 	{
 		$html .= "  <td><label for='input_layout'>Version:</label></td>\n";
 		$html .= "  <td><select name='layout' id='input_layout'>\n";
-		$html .= "   <option value='frames'>mit Frames</option>\n";
 		$html .= "   <option value='screen'>ohne Frames</option>\n";
 		$html .= "   <option value='mobile'>für mobile Geräte</option>\n";
+		$html .= "   <option value='frames'>mit Frames</option>\n";
 		$html .= "  </select></td>\n";
 	}
 	$html .= " </tr>\n";
