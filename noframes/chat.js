@@ -384,7 +384,7 @@ function InitSettings()
 	document.getElementById("old").checked = options["old"];
 	document.getElementById("last").value = count = options["last"];
 	document.getElementById("botblock").checked = options["botblock"];
-	var skins = ["dunkelgrauton", "schwarzwiedienacht", "mylittlepony"];
+	var skins = ["schwarzwiedienacht", "dunkelgrauton", "mylittlepony"];
 	for(var i in skins)
 		document.getElementById('skin').add(new Option(skins[i], skins[i]));
 	document.getElementById('skin').value = options['skin'];
