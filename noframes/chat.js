@@ -437,6 +437,9 @@ function RenewLinks()
 	tempOptions['layout'] = 'mobile';
 	if(document.getElementById('mobilelink'))
 		document.getElementById('mobilelink').href = '?' + URIEncodeParameters(tempOptions);
+	tempOptions['layout'] = 'frames';
+	if(document.getElementById('framelink'))
+		document.getElementById('framelink').href = '/noframes/chat.php?' + URIEncodeParameters(tempOptions);
 }
 
 
