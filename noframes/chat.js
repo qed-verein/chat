@@ -534,8 +534,8 @@ function URIEncodeParameters(params)
 function URIDecodeParameters() {
 	var vars = {}, k, v;
 	location.search.replace(/[?&]+([^=&]+)=([^&#]*)/gi, function(m,key,value) {
-		k = decodeURIComponent(key);
-		v = decodeURIComponent(value);
+		k = decodeURIComponent(key.replace(/\+/g, '%20'));
+		v = decodeURIComponent(value.replace(/\+/g, '%20'));
 		vars[k] = v;
 	});
 	return vars;
