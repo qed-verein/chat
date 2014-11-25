@@ -6,7 +6,7 @@ if(!userLoggedIn())
 	redirect(urlLogin(chatOptions()));
 
 if(isset($_GET['layout']) && $_GET['layout'] == 'frames')
-	redirect('https://chat.qed-verein.de/noframes/chat.php?' . http_build_query(chatOptions()));
+	redirect('https://chat.qed-verein.de/frames/chat.php?' . http_build_query(chatOptions()));
 
 if(isset($_GET['layout']) && $_GET['layout'] == 'mobile')
 	readfile('mobilelayout.html');
