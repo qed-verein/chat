@@ -26,7 +26,7 @@ function renderLoginForm($options, $errorMessage = null)
 	{
 		$html .= "  <td><label for='input_layout'>Version:</label></td>\n";
 		$html .= "  <td><select name='layout' id='input_layout'>\n";
-		$html .= "   <option value='screen'>ohne Frames</option>\n";
+		$html .= "   <option value='screen'>für Bildschrime</option>\n";
 		$html .= "   <option value='mobile'>für mobile Geräte</option>\n";
 		$html .= "   <option value='frames'>mit Frames</option>\n";
 		$html .= "  </select></td>\n";
@@ -59,7 +59,7 @@ function renderSimpleLayout($title, $content)
 	$html .= "<meta http-equiv='content-type' content='text/html; charset=utf-8'>\n";
 	$html .= "<meta name='viewport' content='width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;'>\n";
 	$html .= "<title>" . htmlEscape($title) . "</title>\n";
-	$html .= "</head>\n<body>\n" . $content . "</body>\n</html>\n";
+	$html .= "</head>\n<body class='dunkelgrauton'>\n" . $content . "</body>\n</html>\n";
 	return $html;
 }
 
