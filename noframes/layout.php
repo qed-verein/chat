@@ -18,14 +18,14 @@ function renderLoginForm($options, $errorMessage = null)
 	$html .= "  <td><input name='username' id='input_username' size='15'></td>\n";
 	$html .= " </tr>\n";
 	$html .= " <tr>\n";
-	$html .= "  <td><label for='password'>Passwort:</label></td>\n";
+	$html .= "  <td><label for='input_password'>Passwort:</label></td>\n";
 	$html .= "  <td><input type='password' name='password' id='input_password' size='15'></td>\n";
 	$html .= " </tr>\n";
 	$html .= " <tr>\n";
 	if(!isset($options['layout']))
 	{
 		$html .= "  <td><label for='input_layout'>Version:</label></td>\n";
-		$html .= "  <td><select name='layout'>\n";
+		$html .= "  <td><select name='layout' id='input_layout'>\n";
 		$html .= "   <option value='frames'>mit Frames</option>\n";
 		$html .= "   <option value='screen'>ohne Frames</option>\n";
 		$html .= "   <option value='mobile'>für mobile Geräte</option>\n";
