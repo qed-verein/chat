@@ -384,6 +384,11 @@ function InitSettings()
 	document.getElementById("old").checked = options["old"];
 	document.getElementById("last").value = count = options["last"];
 	document.getElementById("botblock").checked = options["botblock"];
+	var skins = ["dunkelgrauton", "schwarzwiedienacht", "mylittlepony"];
+	for(var i in skins)
+		document.getElementById('skin').add(new Option(skins[i], skins[i]));
+	document.getElementById('skin').value = options['skin'];
+	document.getElementsByTagName('body')[0].className = options['skin'];
 	RenewLinks();
 }
 
@@ -394,6 +399,8 @@ function UpdateSettings()
 	options["links"] = document.getElementById("links").checked ? 1 : 0;
 	options["old"] = document.getElementById("old").checked ? 1 : 0;
 	options["botblock"] = document.getElementById("botblock").checked ? 1 : 0;
+	options["skin"] = document.getElementById("skin").value;
+	document.getElementsByTagName('body')[0].className = options['skin'];
 
 	var input = document.getElementById("last");
 	var num = parseInt(input.value);

@@ -21,7 +21,6 @@
 {
 	background-color: #f6b7d2;
 	border-color: #e882b2;
-	border-width: 2px;
 	color: #ed468e;
 }
 
@@ -32,7 +31,8 @@
 	color: #e181af;
 }
 
-.mylittlepony #settingbox, .mylittlepony #settingbox input, .mylittlepony #settingbox a
+.mylittlepony #settingbox, .mylittlepony #settingbox input,
+.mylittlepony #settingbox select, .mylittlepony #settingbox a
 {
 	background-color: #fbbb64;
 	border-color: #cc9b58;
@@ -46,8 +46,6 @@
 	border-color: #a66bbf;
 	color: #283873;
 }
-
-
 
 .mylittlepony .inactivelog
 {
