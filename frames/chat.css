@@ -55,69 +55,7 @@ a:visited
 	color: #000000;
 }
 
-
-
-.box, .box input, .box textarea
-{
-	border: 1px #222 solid;
-	background-color: #666;
-}
-
-.box
-{
-	padding: 1em;
-	margin: 0.5em;
-}
-
-.settings
-{
-	line-height: 150%;
-}
-
 body
 {
 	margin: 5px;
-}
-
-
-
-#messagearea {
-	position: fixed;
-	left: 0%;
-	top: 0%;
-	right: 0%;
-	bottom: 17.5em;
-	margin-bottom: 0em;
-	overflow-y: scroll;
-}
-
-#inputarea {
-	position: fixed;
-	left: 0%;
-	height: 14.5em;
-	right: 48em;
-	bottom: 0%;
-	margin-right: 0em;
-}
-
-
-#inputarea table {
-	width: 100%;
-}
-
-
-#settingarea {
-	position: fixed;
-	width: 45em;
-	height: 6em;
-	right: 0%;
-	bottom: 8.5em;
-}
-
-#logarea {
-	position: fixed;
-	width: 45em;
-	height: 6em;
-	right: 0%;
-	bottom: 0%;
 }
