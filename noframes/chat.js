@@ -44,6 +44,7 @@ var firstReconnect, recvRequest, position, textpos, posts, timeout;
 function InitReceiver()
 {
 	window.onerror = ErrorHandler;
+	window.onunload = ReceiverDisconnect;
 	recvRequest = new XMLHttpRequest();
 	posts = Array();
 	RecreatePosts(Array());
