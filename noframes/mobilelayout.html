@@ -47,8 +47,8 @@ function CloseMenus()
 	<input type="text" id="last" onchange="UpdateSettings()" size="2" value="24">
 	<input type="button" onclick="Increase()" value=">"><br>
 	Farbschema: <select id="skin" size="1" onchange="UpdateSettings()"></select><br>
-	<a id="framelink" href="/index.php">Frame-Version</a>
-	<a id="screenlink" href="?layout=screen">für Bildschirm</a>
+	<a id="framelink" class="layoutlink" href="/index.php">Frame-Version</a>
+	<a id="screenlink" class="layoutlink" href="?layout=screen">für Bildschirm</a>
 	<p style="text-align: center">
 		<input type="button" value="Schließen"
 			 onclick="document.getElementById('settingbox').style.display = 'none'">

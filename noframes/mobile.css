@@ -134,7 +134,7 @@ li.post .message
 	display: none;
 }
 
-.activelog, .inactivelog
+.activelog, .inactivelog, .layoutlink
 {
 	text-decoration: underline;
 	cursor: pointer;
