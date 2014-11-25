@@ -19,7 +19,7 @@ input[type="button"]:hover, input[type="submit"]:hover{
 }
 
 
-a:link
+a:link, .layoutlink:visited
 {
 	color: white;
 }
@@ -134,7 +134,7 @@ li.post .message
 	display: none;
 }
 
-.activelog, .inactivelog, .layoutlink
+.activelog, .inactivelog
 {
 	text-decoration: underline;
 	cursor: pointer;

@@ -22,7 +22,7 @@ input, textarea, select
 }
 
 
-a:link
+a:link, .layoutlink:visited
 {
 	color: white;
 }
@@ -143,7 +143,7 @@ td.text
 	width: 98%;
 }
 
-.activelog, .inactivelog, .layoutlink
+.activelog, .inactivelog
 {
 	text-decoration: underline;
 	cursor: pointer;
