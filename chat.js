@@ -446,6 +446,7 @@ var inHistoryMode;
 // Für das Herunterladen und Anzeigen des Chatlogs
 function LoadHistory()
 {
+	window.onerror = ErrorHandler;
 	inHistoryMode = true;
 	posts = Array();
 
