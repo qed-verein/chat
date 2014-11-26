@@ -27,7 +27,7 @@ function waitForMessages()
 		$read = array($touchme); $write = $except = NULL;
 		$timeout = $keepalive > 0 ? $keepalive : NULL;
 		$changed = @stream_select($read, $write, $except, $timeout);
-		if($changed === false) throw new Exception("Fehler in stream_select");
+		if($changed === false) return false;
 		if($changed > 0 && inotify_read($touchme) !== false) return true;
 		signalAlive();
 	}
@@ -72,7 +72,6 @@ if($position <= 0)
 header('Content-Type: text/plain; charset=utf-8');
 $counter = 0;
 
-signalAlive();
 do
 {
 	$sql = sprintf("SELECT * FROM %s WHERE id >= :id AND channel = :channel " .
