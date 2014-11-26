@@ -113,8 +113,10 @@ li.post .message
 }
 
 
-a:link
+a:link, a[onclick]
 {
+	text-decoration: underline;
+	cursor: pointer;
 	color: white;
 }
 
@@ -123,8 +125,7 @@ a:visited
 	color: black;
 }
 
-a[onclick]
+a:hover
 {
-	text-decoration: underline;
-	cursor: pointer;
+	color: orange;
 }

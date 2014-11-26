@@ -122,8 +122,10 @@ td.text
 	width: 98%;
 }
 
-a:link
+a:link, a[onclick]
 {
+	text-decoration: underline;
+	cursor: pointer;
 	color: white;
 }
 
@@ -132,14 +134,7 @@ a:visited
 	color: black;
 }
 
-
 a:hover
 {
 	color: orange;
-}
-
-a[onclick]
-{
-	text-decoration: underline;
-	cursor: pointer;
 }
