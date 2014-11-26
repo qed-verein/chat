@@ -7,7 +7,7 @@ if(!userLoggedIn())
 	redirect(urlLogin(chatOptions()));
 
 if(isset($_GET['layout']) && $_GET['layout'] == 'frames')
-	include('framelayout.html');
+	include('frames/frame_main.html');
 else if(isset($_GET['layout']) && $_GET['layout'] == 'mobile')
 	include('mobilelayout.html');
 else
