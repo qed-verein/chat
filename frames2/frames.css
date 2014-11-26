@@ -12,11 +12,11 @@ body
 #messagebox, #inputbox, #settingbox, #logbox
 {
 	position: fixed;
-	height: 100%;
-	left: -5px;
-	right: -5px;
-	top: -5px;
-	bottom: -5px;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	padding: 5px;
 	overflow: auto;
 }
 
