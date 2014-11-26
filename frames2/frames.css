@@ -13,10 +13,10 @@ body
 {
 	position: fixed;
 	height: 100%;
-	left: 5px;
-	right: 5px;
-	top: 5px;
-	bottom: 5px;
+	left: -5px;
+	right: -5px;
+	top: -5px;
+	bottom: -5px;
 	overflow: auto;
 }
 
