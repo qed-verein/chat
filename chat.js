@@ -363,7 +363,7 @@ function OnLayoutClicked(elt)
 	for(var i in options)
 		if(options[i] != defaults[i]) tempOptions[i] = options[i];
 	tempOptions['layout'] = elt.id.slice(0, -4);
-	document.location.href = 'chat.php?' + URIEncodeParameters(tempOptions);
+	document.location.href = 'index.php?' + URIEncodeParameters(tempOptions);
 }
 
 // **************
