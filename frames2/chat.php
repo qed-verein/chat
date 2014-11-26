@@ -7,5 +7,5 @@ if(!userLoggedIn())
 	redirect(urlLogin(chatOptions()));
 
 if(isset($_GET['layout']) && $_GET['layout'] == 'frames')
-	readfile('framelayout.html');
+	readfile('frames2/framelayout.html');
 ?>
