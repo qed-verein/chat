@@ -558,7 +558,7 @@ function PostColor(post)
 
 function ScrollDown()
 {
-	var node = recvPart.getElementById("posts").parent;
+	var node = recvPart.getElementById("posts").parentNode;
 	if(node) node.scrollTop = node.scrollHeight;
 }
 
@@ -589,6 +589,7 @@ function ErrorHandler(description, filename, line)
 	message += "In Datei " + filename + ", Zeile " + line + ".<br>";
 	//message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
 	SetStatus(message);
+	ScrollDown();
 	ReceiverDisconnect();
 	return false;
 }
