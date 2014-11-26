@@ -117,7 +117,7 @@ function urlLogin($options = array()) {
 function urlLogout() {
 	return 'https://chat.qed-verein.de/account.php?logout=1';}
 function urlChat($options = array()) {
-	return 'https://chat.qed-verein.de/index.php?' . http_build_query($options);
+	return 'https://chat.qed-verein.de/?' . http_build_query($options);
 }
 
 function chatOptions()
