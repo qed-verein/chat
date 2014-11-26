@@ -1,9 +1,29 @@
+.schwarzwiedienacht, .schwarzwiedienacht input, .schwarzwiedienacht textarea, .schwarzwiedienacht select
+{
+	color: #ccc;
+	background-color: #000;
+	border-color: #666;
+}
+
+
+.schwarzwiedienacht a:link, .schwarzwiedienacht .layoutlink:visited
+{
+	color: white;
+}
+
+.schwarzwiedienacht a:visited
+{
+	color: #484;
+}
+
 
 .dunkelgrauton, .dunkelgrauton input, .dunkelgrauton textarea, .dunkelgrauton select, .dunkelgrauton .box
 {
 	color: #ccc;
 	background-color: #555;
+/*
 	border-color: #888;
+*/
 }
 
 .mylittlepony
