@@ -13,7 +13,7 @@
 	chdir("../noframes");
 	require_once("common.php");
 
-	if($_SERVER['SERsVER_NAME'] != 'chat.qed-verein.de')
+	if($_SERVER['SERVER_NAME'] != 'chat.qed-verein.de')
 		die("grml");
 
 	if(empty($_SESSION['userid']))
