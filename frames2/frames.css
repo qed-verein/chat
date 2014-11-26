@@ -4,6 +4,11 @@ body, input, textarea, frame
 	font-size: 9pt;
 }
 
+body
+{
+	overflow: hidden;
+}
+
 #messagebox, #inputbox, #settingbox, #logbox
 {
 	position: fixed;
@@ -12,7 +17,7 @@ body, input, textarea, frame
 	right: 0px;
 	top: 0px;
 	bottom: 0px;
-	padding: 5px;
+	padding: 0px;
 	overflow: auto;
 }
 
