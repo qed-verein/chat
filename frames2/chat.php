@@ -13,11 +13,11 @@
 	chdir("../noframes");
 	require_once("common.php");
 
-	if($_SERVER['SERVER_NAME'] != 'chat.qed-verein.de')
-		die("grml");
+	//if($_SERVER['SERVER_NAME'] != 'chat.qed-verein.de')
+		//die("grml");
 
-	if(empty($_SESSION['userid']))
-		redirect(urlLogin(chatOptions()));
+	//if(empty($_SESSION['userid']))
+		//redirect(urlLogin(chatOptions()));
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
