@@ -1,6 +1,6 @@
 body, input, textarea, select
 {
-	font-family: sans-serif;
+	font-family: Verdana, Arial, sans-serif;
 	font-size: 10pt;
 	background-color: gray;
 }

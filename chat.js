@@ -196,7 +196,6 @@ function FormatScreenPost(post)
 	tr.appendChild (node);
 
 	node = recvPart.createElement ("td");
-	if(inHistoryMode && post["message"] == null) alert(post["id"]);
 	node.innerHTML = HtmlEscape (post["message"]);
 	if(options["links"]) node.innerHTML = InsertLinks(node.innerHTML);
 	node.setAttribute ("class", "message");
