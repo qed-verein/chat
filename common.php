@@ -61,6 +61,7 @@ function userLoggedIn()
 
 function jsonPost($post)
 {
+	if(is_null($post['name'])) $post['name'] = ''; // workaround
 	if(is_null($post['message'])) $post['message'] = ''; // workaround
 	$post['type'] = 'post';
 	$post['color'] = colorForName($post['name']);
