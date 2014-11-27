@@ -81,7 +81,7 @@ do
 	$stm->bindValue('channel', $channel, PDO::PARAM_STR);
 	$stm->bindValue('limit', $limit - $counter, PDO::PARAM_INT);
 	$stm->execute();
-	while($row = $stm->fetch())
+	while($row = $stm->fetch(PDO::FETCH_ASSOC))
 	{
 		++$counter;
 		$position = $row['id'] + 1;

@@ -60,7 +60,7 @@ else if($mode == 'last')
 	$stm->execute();
 }
 
-while($row = $stm->fetch())
+while($row = $stm->fetch(PDO::FETCH_ASSOC))
 	echo jsonPost($row);
 
 ?>

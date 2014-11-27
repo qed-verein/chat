@@ -577,6 +577,7 @@ function ScrollDown()
 
 function HtmlEscape (text)
 {
+	if(!text) return '';
 	text = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	return text.replace(/\"/g, "&quot;").replace(/\n/g, "<br>");
 }
