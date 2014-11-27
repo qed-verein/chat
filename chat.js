@@ -5,7 +5,7 @@ var recvPart, sendPart, confPart, logsPart;
 
 var defaults = {
 		channel: "", name: "",
-		last: 24, botblock: 1, old: 0, ip: 0, delay: 0, links: 1, title: 1,
+		last: 24, botblock: 1, old: 0, ip: 0, delay: 0, links: 1, title: 1, math: 0,
 		layout: 'screen', skin: 'dunkelgrauton',
 		limit: 256,	wait: 60,
 		redirect: "http://uxul.de/redirect.php?"
@@ -15,7 +15,7 @@ var defaults = {
 function LoadOptions()
 {
 	integerOptions = ['last', 'limit', 'wait'];
-	booleanOptions = ['botblock', 'old', 'ip', 'delay', 'links', 'title'];
+	booleanOptions = ['botblock', 'old', 'ip', 'delay', 'links', 'title', 'math'];
 	params = URIDecodeParameters()
 	for(var key in defaults)
 	{
@@ -33,6 +33,18 @@ function LoadOptions()
 		recvPart = top.recv.document; sendPart = top.send.document;
 		confPart = top.conf.document; logsPart = top.logs.document;
 	}
+
+	if(options['math'] == 1)
+		LoadMathjax();
+}
+
+// Mathjax - Erstmal nur zum Testen
+function LoadMathjax()
+{
+	var script = document.createElement("script");
+	scripts.type = "text/javascript";
+	scripts.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+	document.getElementsByTagName("head")[0].appendChild(script);
 }
 
 // Initialisiere das Skript
