@@ -42,8 +42,8 @@ function LoadOptions()
 function LoadMathjax()
 {
 	var script = document.createElement("script");
-	scripts.type = "text/javascript";
-	scripts.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+	script.type = "text/javascript";
+	script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
 	document.getElementsByTagName("head")[0].appendChild(script);
 }
 
