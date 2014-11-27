@@ -240,6 +240,7 @@ function FormatMobilePost(post)
 	li.appendChild(info);
 
 	var message = recvPart.createElement('span');
+	if(inHistoryMode && post["message"] == null) alert(post["id"]);
 	message.innerHTML = HtmlEscape (post["message"]);
 	if(options["links"]) message.innerHTML = InsertLinks(message.innerHTML);
 	message.setAttribute('class', 'message');
