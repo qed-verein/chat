@@ -8,6 +8,7 @@ function sqlTime($time)
 }
 function jsonPostTest($post)
 {
+	var_dump($post);
 	$post['type'] = 'post';
 	$post['color'] = colorForName($post['name']);
 	return json_encode($post) . "\n";
