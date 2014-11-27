@@ -1,15 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Seite wurde verschoben</title>
+</head>
+<body>
+Diese Webseite existiert unter dieser Adresse nicht mehr!<br> Die aktuelle Adresse lautet:
 <?php
-$ignore_no_login = true;
-$session_not_close = true;
-require_once('common.php');
-if(!userLoggedIn())
-	redirect(urlLogin(chatOptions()));
-
-if(isset($_GET['layout']) && $_GET['layout'] == 'frames')
-	redirect('https://chat.qed-verein.de/frames/chat.php?' . http_build_query(chatOptions()));
-
-if(isset($_GET['layout']) && $_GET['layout'] == 'mobile')
-	readfile('mobilelayout.html');
-else
-	readfile('screenlayout.html');
+$link = "https://chat.qed-verein.de/";
+if(isset($_SERVER['QUERY_STRING'])) $link .= "?" . $_SERVER['QUERY_STRING'];
+echo sprintf('<a href="%s">%s</a>', htmlspecialchars($link), htmlspecialchars($link));
 ?>
+</body>
+</html>
