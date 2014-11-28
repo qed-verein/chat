@@ -56,7 +56,8 @@ $touchme = inotify_init();
 stream_set_blocking($touchme, false);
 inotify_add_watch($touchme, TOUCH_FILE, IN_ATTRIB);
 
-$db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
+$db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD,
+	 array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 if($position <= 0)
 {

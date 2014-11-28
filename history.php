@@ -30,7 +30,8 @@ if($mode == 'date' && ($to === false || $from === false))
 if($mode == 'last' && $last > 10000)
 	throw new Exception("Es wurden zu viele Posts angefragt.");
 
-$db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD);
+$db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD,
+	 array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 if($mode == 'date')
 {
