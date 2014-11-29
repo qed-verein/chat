@@ -26,7 +26,7 @@ function CloseMenus()
 </div>
 
 <div id="inputbox">
-	<input id="name" size="50" placeholder="Name" tabindex="1">
+	<input id="name" size="50" placeholder="Name" tabindex="1" onchange="UpdateSettings()">
 	<input id="send" type="submit" value="Senden" onclick="Send()" tabindex="3">
 	<input type="button" value="Einstellen" tabindex="4"
 		onclick="CloseMenus(); document.getElementById('settingbox').style.display = 'block'">
