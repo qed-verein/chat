@@ -338,6 +338,7 @@ function UpdateSettings()
 	options["old"] = confPart.getElementById("old").checked ? 1 : 0;
 	options["botblock"] = confPart.getElementById("botblock").checked ? 1 : 0;
 	options["skin"] = confPart.getElementById("skin").value;
+	options["name"] = sendPart.getElementById("name").value;
 
 	var input = confPart.getElementById("last");
 	var num = parseInt(input.value);
