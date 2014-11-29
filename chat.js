@@ -371,7 +371,7 @@ function ApplySettings()
 	for(var i in options)
 		if(options[i] != defaults[i]) tempOptions[i] = options[i];
 	if(history.replaceState)
-		history.replaceState('?' + URIEncodeParameters(tempOptions));
+		history.replaceState(null, '', '?' + URIEncodeParameters(tempOptions));
 }
 
 function OnLayoutClicked(elt)
