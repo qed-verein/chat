@@ -11,7 +11,7 @@
 	border-color: #666;
 }
 
-.schwarzwiedienacht a:link, .schwarzwiedienacht .layoutlink:visited
+.schwarzwiedienacht a:link, .schwarzwiedienacht a[onclick]
 {
 	color: white;
 }
