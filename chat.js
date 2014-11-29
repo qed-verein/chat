@@ -525,7 +525,8 @@ function OnHistoryClicked(elt)
 	var tempOptions = new Object();
 	for(var i in options)
 		if(options[i] != defaults[i]) tempOptions[i] = options[i];
-	tempOptions['layout'] = 'screen';
+	if(options['layout'] == 'frames') tempOptions['layout'] = 'screen';
+	tempOptions.remove('last');
 	url += '&' + URIEncodeParameters(tempOptions);
 
 	window.open(url, '_blank');
