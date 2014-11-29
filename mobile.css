@@ -55,6 +55,7 @@ ul#posts
 
 li.post
 {
+	clear: right;
 	color: #C70;
 }
 
@@ -66,7 +67,6 @@ li.post .name
 
 li.post .info
 {
-	clear: right;
 	float: right;
 	position: relative;
 	top: 0.5em;
