@@ -367,6 +367,11 @@ function ApplySettings()
 	var parts = [recvPart, sendPart, confPart, logsPart];
 	for(var i in parts)
 		parts[i].getElementsByTagName('body')[0].className = options['skin'];
+	var tempOptions = new Object();
+	for(var i in options)
+		if(options[i] != defaults[i]) tempOptions[i] = options[i];
+	if(history.replaceState)
+		history.replaceState('?' + URIEncodeParameters(tempOptions));
 }
 
 function OnLayoutClicked(elt)
