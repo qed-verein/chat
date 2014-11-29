@@ -367,6 +367,11 @@ function ApplySettings()
 	var parts = [recvPart, sendPart, confPart, logsPart];
 	for(var i in parts)
 		parts[i].getElementsByTagName('body')[0].className = options['skin'];
+	URIReplaceState();
+}
+
+function URIReplaceState()
+{
 	var tempOptions = new Object();
 	for(var i in options)
 		if(options[i] != defaults[i]) tempOptions[i] = options[i];
