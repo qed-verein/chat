@@ -66,6 +66,7 @@ li.post .name
 
 li.post .info
 {
+	clear: right;
 	float: right;
 	position: relative;
 	top: 0.5em;
