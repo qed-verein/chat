@@ -14,7 +14,7 @@
 	<div id="inputbox">
 		<table style="position: relative; width: 98%; height: 98%; border: 0px">
 			<tr><td>Name:</td><td><input id="name" class="text" style="width:100%;" tabindex="3"
-				onchange="parent.URIReplaceState()"></td></tr>
+				onchange="parent.options['name'] = this.value; parent.URIReplaceState()"></td></tr>
 			<tr><td>Text:</td><td style="height:100%; width:100%;">
 			<textarea id="message" class="text" rows="4" style="width:100%; height:100%;"
 			 tabindex="1"></textarea></td></tr>
