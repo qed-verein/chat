@@ -11,6 +11,8 @@ body
 	right: 0em;
 	bottom: 0em;
 	height: 6em;
+	border-width: 0px;
+	padding: 0px;
 }
 
 #messagebox
@@ -20,6 +22,8 @@ body
 	right: 0em;
 	bottom: 6em;
 	top: 0em;
+	border-width: 0px;
+	padding: 0px;
 	overflow-y: scroll;
 }
 
@@ -27,8 +31,6 @@ body
 #settingbox, #logbox
 {
 	display: none;
-	border: 2px black solid;
-	padding: 0.5em;
 	position: fixed;
 	top: 50%;
 	left: 50%;

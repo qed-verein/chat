@@ -16,7 +16,6 @@ body
 	right: 0px;
 	top: 0px;
 	bottom: 0px;
-	padding: 5px;
 	overflow: auto;
 }
 
@@ -45,6 +44,12 @@ body
 }
 
 
+.box
+{
+	border-width: 0px;
+	padding: 1em;
+	margin: 0em;
+}
 
 
 
