@@ -5,7 +5,7 @@
 <title>QED-Chat</title>
 <meta name="robots" content="noindex, nofollow">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<script type="text/javascript" src="chat.js"></script>
+<script type="text/javascript" src="chatneu.js"></script>
 <link rel="stylesheet" type="text/css" href="common.css">
 <?php if(in_array('mobile', $parts)): ?>
 <!--
