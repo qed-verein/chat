@@ -8,9 +8,7 @@
 <script type="text/javascript" src="chatneu.js"></script>
 <link rel="stylesheet" type="text/css" href="common.css">
 <?php if(in_array('mobile', $parts)): ?>
-<!--
-<link rel="stylesheet" type="text/css" href="mobile.css">
--->
+<link rel="stylesheet" type="text/css" href="mobileneu.css">
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0">
 <script>
 function ShowMenu(menu)
@@ -20,9 +18,7 @@ function ShowMenu(menu)
 }
 </script>
 <?php elseif(in_array('frames', $parts)): ?>
-<!--
-<link rel="stylesheet" type="text/css" href="frames.css">
--->
+<link rel="stylesheet" type="text/css" href="framesneu.css">
 <script type="text/javascript">
 var OnLayoutClicked = parent.OnLayoutClicked;
 var OnHistoryClicked = parent.OnHistoryClicked;
@@ -30,9 +26,7 @@ var UpdateSettings = parent.UpdateSettings;
 var Send = parent.Send;
 </script>
 <?php else: ?>
-<!--
-<link rel="stylesheet" type="text/css" href="screen.css">
--->
+<link rel="stylesheet" type="text/css" href="screenneu.css">
 <?php endif; ?>
 <link rel="stylesheet" type="text/css" href="colors.css">
 </head>
@@ -92,7 +86,9 @@ var Send = parent.Send;
 	<li><label>Layout: <select id="layout" size="1" onchange="OnLayoutClicked(this)"></select></label></li>
 </ul>
 <?php if(in_array('mobile', $parts)): ?>
+<p style="text-align: center">
 <input type="button" value="Schließen" onclick="ShowMenu('')">
+</p>
 <?php endif; ?>
 </div>
 <?php endif; ?>
@@ -115,7 +111,7 @@ var Send = parent.Send;
 	<li><a id="interval" onclick="OnHistoryClicked(this)">Intervall anzeigen</a></li>
 </ul>
 <?php if(in_array('mobile', $parts)): ?>
-<p style="clear: both; text-align: center">
+<p style="text-align: center">
 <input type="button" value="Schließen" onclick="ShowMenu('')">
 </p>
 <?php endif; ?>
