@@ -4,6 +4,12 @@ body
 	min-width: 23em;
 }
 
+.box
+{
+	border-width: 0px;
+	padding: 0px;
+}
+
 #inputbox
 {
 	position: absolute;
