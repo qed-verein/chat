@@ -58,10 +58,10 @@ td.name
 	font-weight: bold;
 	vertical-align: top;
 	max-width: 15em;
-	overflow: hidden;
+	word-wrap: break-word;
 }
 
-td.text
+td.message
 {
 	vertical-align: top;
 	white-space: pre-wrap;
