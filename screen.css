@@ -64,6 +64,7 @@ td.name
 td.text
 {
 	vertical-align: top;
+	white-space: pre-wrap;
 }
 
 #messagebox {

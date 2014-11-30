@@ -83,6 +83,7 @@ li.post .ip, li.post .date, li.post .delay
 li.post .message
 {
 	word-wrap: break-word;
+	white-space: pre-wrap;
 	display: block;
 	margin-left: 1em;
 	margin-bottom: 0.3em;
