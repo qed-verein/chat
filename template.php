@@ -70,7 +70,7 @@ var Send = parent.Send;
 <?php endif; ?>
 
 <?php if(in_array('settings', $parts)): ?>
-<div id="settingbox" class="box popup">
+<div id="settingbox" class="box">
 <ul>
 	<li><label><input type="checkbox" id="ip" onchange="UpdateSettings()">IPs anzeigen</label></li>
 	<li><label><input type="checkbox" id="delay" onchange="UpdateSettings()">Delays anzeigen</label></li>
@@ -94,7 +94,7 @@ var Send = parent.Send;
 <?php endif; ?>
 
 <?php if(in_array('logs', $parts)): ?>
-<div id="logbox" class="box popup">
+<div id="logbox" class="box">
 <ul>
 	<li><a id="lastHour" onclick="OnHistoryClicked(this)">letzte Stunde</a></li>
 	<li><a id="lastDay" onclick="OnHistoryClicked(this)">letzter Tag</a></li>

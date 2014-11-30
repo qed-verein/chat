@@ -10,6 +10,13 @@ input, textarea, select
 	border: 1px black solid;
 }
 
+input[type="button"]:hover, input[type="submit"]:hover{
+	border-color: #444;
+	background-color: #ccc;
+	color: #444;
+	cursor: pointer;
+}
+
 .box
 {
 	border: 2px black solid;
