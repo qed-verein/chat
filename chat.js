@@ -615,7 +615,7 @@ function LoadMathjax()
 	if(mathjaxLoaded) return;
 	var script = document.createElement("script");
 	script.type = "text/javascript";
-	script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+	script.src  = "/MathJax-2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
 	document.getElementsByTagName("head")[0].appendChild(script);
 	mathjaxLoaded = true;
 }
