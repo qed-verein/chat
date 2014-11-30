@@ -375,7 +375,7 @@ function ApplySettings()
 	var parts = [recvPart, sendPart, confPart, logsPart];
 	for(var i in parts)
 		parts[i].getElementsByTagName('body')[0].className = options['skin'];
-	URIReplaceState();
+	if(!inHistoryMode) URIReplaceState();
 }
 
 function URIReplaceState()
