@@ -1,6 +1,5 @@
 body
 {
-	margin: 0px;
 	min-width: 60em;
 	min-height: 30em;
 }
@@ -30,7 +29,6 @@ body
 	height: 6em;
 	right: 0%;
 	bottom: 9em;
-	line-height: 150%;
 }
 
 #logbox {
@@ -39,7 +37,6 @@ body
 	height: 6em;
 	right: 0em;
 	bottom: 0em;
-	line-height: 150%;
 }
 
 
@@ -125,7 +122,7 @@ body.frames
 	right: 0px;
 	top: 0px;
 	bottom: 0px;
-	overflow: auto;
+	overflow: scroll;
 }
 
 .frames #settingbox, .frames #logbox

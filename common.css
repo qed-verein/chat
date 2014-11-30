@@ -3,6 +3,7 @@ body, input, textarea, select
 	font-family: sans-serif;
 	font-size: 10pt;
 	background-color: gray;
+	margin: 0px;
 }
 
 input, textarea, select
@@ -45,7 +46,7 @@ a:hover
 
 #settingbox, #logbox
 {
-	line-height: 150%;
+	line-height: 175%;
 }
 
 #settingbox ul
