@@ -483,7 +483,7 @@ function LoadHistory()
 	LoadOptions();
 	ApplySettings();
 
-	document.getElementById('layoutcsslink').href = options['layout'] + '.css';
+	document.getElementById('layoutcsslink').href = (options['layout'] == 'mobile' ? 'mobile.css' : 'screen.css');
 	SetStatus("Lade alten Chatlog...");
 
 	parameters = URIDecodeParameters();
