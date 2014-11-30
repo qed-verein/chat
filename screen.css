@@ -26,15 +26,15 @@ body.screen
 .screen #settingbox {
 	position: absolute;
 	width: 35em;
-	height: 6em;
+	height: 7em;
 	right: 0%;
-	bottom: 9em;
+	bottom: 8em;
 }
 
 .screen #logbox {
 	position: absolute;
 	width: 35em;
-	height: 6em;
+	height: 5em;
 	right: 0em;
 	bottom: 0em;
 }
