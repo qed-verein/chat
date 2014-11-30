@@ -1,0 +1,105 @@
+body
+{
+	margin: 0px;
+	min-width: 60em;
+	min-height: 30em;
+}
+
+#messagebox {
+	position: absolute;
+	left: 0em;
+	top: 0em;
+	right: 0em;
+	bottom: 18.5em;
+	margin-bottom: 0em;
+	overflow-y: scroll;
+}
+
+#inputbox {
+	position: absolute;
+	left: 0em;
+	height: 15em;
+	right: 38.5em;
+	bottom: 0em;
+	margin-right: 0em;
+}
+
+#settingbox {
+	position: absolute;
+	width: 35em;
+	height: 6em;
+	right: 0%;
+	bottom: 9em;
+	line-height: 150%;
+}
+
+#logbox {
+	position: absolute;
+	width: 35em;
+	height: 6em;
+	right: 0em;
+	bottom: 0em;
+	line-height: 150%;
+}
+
+
+
+
+#inputbox table {
+	width: 100%;
+}
+
+#message
+{
+	margin: 0.5em 0em;
+	width: 98%;
+	resize: none;
+	overflow-x: hidden;
+}
+
+#name
+{
+	width: 98%;
+}
+
+
+
+table#posts
+{
+	border-collapse: collapse;
+}
+
+td.info, td.ip
+{
+	border-top: thin dotted #ddd;
+	border-bottom: thin dotted #ddd;
+	border-right: thin dotted #888;
+	border-width: 1px;
+	padding-left: 4px;
+	white-space: nowrap;
+	vertical-align: top;
+}
+
+td.info
+{
+	text-align: right;
+}
+
+td.ip
+{
+	text-align: center;
+}
+
+td.name
+{
+	font-weight: bold;
+	vertical-align: top;
+	max-width: 15em;
+	word-wrap: break-word;
+}
+
+td.message
+{
+	vertical-align: top;
+	white-space: pre-wrap;
+}
