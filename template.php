@@ -106,9 +106,9 @@ var Send = parent.Send;
 	<li><a id="last1000" onclick="OnHistoryClicked(this)">letzte 1000 Posts</a></li>
 </ul>
 <ul>
-	<li><label><span stlye="display: inline-block; width: 5em">von:</span>
+	<li><label><span style="display: inline-block; width: 3em">von:</span>
 	<input id="logFrom" type="text" size="12" placeholder="TT.MM.JJJJ"></label></li>
-	<li><label><span stlye="display: inline-block; width: 5em">bis:</span>
+	<li><label><span style="display: inline-block; width: 3em">bis:</span>
 	<input id="logTo" type="text" size="12" placeholder="TT.MM.JJJJ"></label></li>
 	<li><a id="interval" onclick="OnHistoryClicked(this)">Intervall anzeigen</a></li>
 </ul>

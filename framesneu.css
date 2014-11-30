@@ -27,6 +27,26 @@ body
 
 
 
+#inputbox table {
+	width: 100%;
+}
+
+#message
+{
+	margin: 0.5em 0em;
+	width: 98%;
+	resize: none;
+	overflow-x: hidden;
+}
+
+#name
+{
+	width: 98%;
+}
+
+
+
+
 
 
 
