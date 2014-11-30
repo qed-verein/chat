@@ -5,10 +5,10 @@
 <title>QED-Chat</title>
 <meta name="robots" content="noindex, nofollow">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<script type="text/javascript" src="chatneu.js"></script>
 <link rel="stylesheet" type="text/css" href="common.css">
 <?php if(in_array('mobile', $parts)): ?>
 <link rel="stylesheet" type="text/css" href="mobileneu.css">
+<script type="text/javascript" src="chatneu.js"></script>
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0">
 <script>
 function ShowMenu(menu)
@@ -27,6 +27,7 @@ var Send = parent.Send;
 </script>
 <?php else: ?>
 <link rel="stylesheet" type="text/css" href="screenneu.css">
+<script type="text/javascript" src="chatneu.js"></script>
 <?php endif; ?>
 <link rel="stylesheet" type="text/css" href="colors.css">
 </head>
@@ -56,7 +57,9 @@ var Send = parent.Send;
 		<td><label for="message">Text:</label></td>
 		<td><textarea class="text" id="message" rows="8" cols="60"></textarea></td>
 	</tr>
-	<tr><td colspan="2"><input type="submit" value="Senden" onclick="Send()"></td>
+	<tr>
+		<td colspan="2" style="text-align: center"><input type="submit" value="Senden" onclick="Send()"></td>
+	</tr>
 </table>
 </div>
 <?php elseif(in_array('send_mobile', $parts)): ?>
