@@ -41,23 +41,33 @@ body.screen
 
 
 
-
-#inputbox table {
-	width: 100%;
-}
-
-#message
+body.frames
 {
-	margin: 0.5em 0em;
-	width: 98%;
-	resize: none;
-	overflow-x: hidden;
+	overflow: hidden;
 }
 
-#name
+.frames .box
 {
-	width: 98%;
+	border-width: 0px;
+	padding: 1em;
+	margin: 0em;
 }
+
+.frames #messagebox, .frames #inputbox, .frames #settingbox, .frames #logbox
+{
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	overflow: auto;
+}
+
+.frames #settingbox, .frames #logbox
+{
+	line-height: 200%;
+}
+
 
 
 
@@ -102,30 +112,20 @@ td.message
 }
 
 
-
-body.frames
-{
-	overflow: hidden;
+#inputbox table {
+	width: 100%;
 }
 
-.frames .box
+#message
 {
-	border-width: 0px;
-	padding: 1em;
-	margin: 0em;
+	margin: 0.5em 0em;
+	width: 98%;
+	resize: none;
+	overflow-x: hidden;
 }
 
-.frames #messagebox, .frames #inputbox, .frames #settingbox, .frames #logbox
+#name
 {
-	position: fixed;
-	left: 0px;
-	right: 0px;
-	top: 0px;
-	bottom: 0px;
-	overflow: auto;
+	width: 98%;
 }
 
-.frames #settingbox, .frames #logbox
-{
-	line-height: 200%;
-}
