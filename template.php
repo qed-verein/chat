@@ -18,7 +18,7 @@ function ShowMenu(menu)
 }
 </script>
 <?php elseif(in_array('frames', $parts)): ?>
-<link rel="stylesheet" type="text/css" href="framesneu.css">
+<link rel="stylesheet" type="text/css" href="screenneu.css">
 <script type="text/javascript">
 var OnLayoutClicked = parent.OnLayoutClicked;
 var OnHistoryClicked = parent.OnHistoryClicked;

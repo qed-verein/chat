@@ -103,3 +103,32 @@ td.message
 	vertical-align: top;
 	white-space: pre-wrap;
 }
+
+
+
+body.frames
+{
+	overflow: hidden;
+}
+
+.frames .box
+{
+	border-width: 0px;
+	padding: 1em;
+	margin: 0em;
+}
+
+.frames #messagebox, .frames #inputbox, .frames #settingbox, .frames #logbox
+{
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	overflow: auto;
+}
+
+.frames #settingbox, .frames #logbox
+{
+	line-height: 200%;
+}

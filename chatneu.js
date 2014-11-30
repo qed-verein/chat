@@ -374,7 +374,7 @@ function ApplySettings()
 	if(!inHistoryMode) RecreatePosts();
 	var parts = [recvPart, sendPart, confPart, logsPart];
 	for(var i in parts)
-		parts[i].getElementsByTagName('body')[0].className = options['skin'];
+		parts[i].getElementsByTagName('body')[0].className = options['layout'] + " " + options['skin'];
 	if(!inHistoryMode) URIReplaceState();
 }
 
