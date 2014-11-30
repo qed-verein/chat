@@ -378,7 +378,7 @@ function ApplySettings()
 	if(options['math'] == 1)
 	{
 		LoadMathjax();
-		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+		if(MathJax)	MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	}
 	var parts = [recvPart, sendPart, confPart, logsPart];
 	for(var i in parts)
