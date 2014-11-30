@@ -1,10 +1,10 @@
-body
+body.screen
 {
 	min-width: 60em;
 	min-height: 30em;
 }
 
-#messagebox {
+.screen #messagebox {
 	position: absolute;
 	left: 0em;
 	top: 0em;
@@ -14,7 +14,7 @@ body
 	overflow-y: scroll;
 }
 
-#inputbox {
+.screen #inputbox {
 	position: absolute;
 	left: 0em;
 	height: 15em;
@@ -23,7 +23,7 @@ body
 	margin-right: 0em;
 }
 
-#settingbox {
+.screen #settingbox {
 	position: absolute;
 	width: 35em;
 	height: 6em;
@@ -31,7 +31,7 @@ body
 	bottom: 9em;
 }
 
-#logbox {
+.screen #logbox {
 	position: absolute;
 	width: 35em;
 	height: 6em;
@@ -122,8 +122,6 @@ body.frames
 	right: 0px;
 	top: 0px;
 	bottom: 0px;
-	width: 100%;
-	height: 100%;
 	overflow: auto;
 }
 
