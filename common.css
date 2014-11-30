@@ -58,9 +58,3 @@ a:hover
 	padding: 0em;
 	list-style-type: none;
 }
-
-#logFrom, #logTo
-{
-	float: right;
-	margin-left: 1em;
-}
