@@ -35,19 +35,6 @@ function LoadOptions()
 	}
 }
 
-// Mathjax - Erstmal nur zum Testen
-var mathjaxLoaded = false;
-
-function LoadMathjax()
-{
-	if(mathjaxLoaded) return;
-	var script = document.createElement("script");
-	script.type = "text/javascript";
-	script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-	document.getElementsByTagName("head")[0].appendChild(script);
-	mathjaxLoaded = true;
-}
-
 // Initialisiere das Skript
 function Init()
 {
@@ -162,6 +149,7 @@ function ProcessPost(post)
 	}
 
 	AppendPost(recvPart.getElementById('posts'), post);
+	ProcessMath();
 	UpdateTitle(post['message']);
 	ScrollDown();
 }
@@ -294,6 +282,7 @@ function RecreatePosts()
 
 	if(posts.length != 0 && !inHistoryMode) UpdateTitle(posts[posts.length - 1]['message']);
 
+	ProcessMath();
 	ScrollDown();
 }
 
@@ -375,11 +364,6 @@ function Increase()
 function ApplySettings()
 {
 	if(!inHistoryMode) RecreatePosts();
-	if(options['math'] == 1)
-	{
-		LoadMathjax();
-		if(typeof MathJax != 'undefined') MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-	}
 	var parts = [recvPart, sendPart, confPart, logsPart];
 	for(var i in parts)
 		parts[i].getElementsByTagName('body')[0].className = options['layout'] + " " + options['skin'];
@@ -622,6 +606,29 @@ function UpdateTitle(message)
 			top.document.title = message.substr(0, 252) + "...";
 }
 
+
+// Lädt Mathjax - Erstmal nur zum Testen
+var mathjaxLoaded = false;
+
+function LoadMathjax()
+{
+	if(mathjaxLoaded) return;
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+	document.getElementsByTagName("head")[0].appendChild(script);
+	mathjaxLoaded = true;
+}
+
+// Lässt MathJax nochmal rüberlaufen
+function ProcessMath()
+{
+	if(options['math'] == 1)
+	{
+		LoadMathjax();
+		if(typeof MathJax != 'undefined') MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+	}
+}
 
 function ErrorHandler(description, filename, line)
 {
