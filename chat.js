@@ -33,14 +33,12 @@ function LoadOptions()
 		recvPart = top.recv.document; sendPart = top.send.document;
 		confPart = top.conf.document; logsPart = top.logs.document;
 	}
-
-	if(options['math'] == 1)
-		LoadMathjax();
 }
 
 // Mathjax - Erstmal nur zum Testen
 function LoadMathjax()
 {
+	if(MathJax) return;
 	var script = document.createElement("script");
 	script.type = "text/javascript";
 	script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
@@ -321,6 +319,7 @@ function InitSettings()
 	confPart.getElementById("old").checked = options["old"];
 	confPart.getElementById("last").value = count = options["last"];
 	confPart.getElementById("botblock").checked = options["botblock"];
+	confPart.getElementById("math").checked = options["math"];
 
 	var skinSelect = confPart.getElementById('skin');
 	skinSelect.add(new Option("Dunkelgrauton", 'dunkelgrauton'));
@@ -345,6 +344,7 @@ function UpdateSettings()
 	options["old"] = confPart.getElementById("old").checked ? 1 : 0;
 	options["botblock"] = confPart.getElementById("botblock").checked ? 1 : 0;
 	options["skin"] = confPart.getElementById("skin").value;
+	options["math"] = confPart.getElementById("math").value;
 	options["name"] = sendPart.getElementById("name").value;
 
 	var input = confPart.getElementById("last");
@@ -372,6 +372,11 @@ function Increase()
 function ApplySettings()
 {
 	if(!inHistoryMode) RecreatePosts();
+	if(options['math'] == 1)
+	{
+		LoadMathjax();
+		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+	}
 	var parts = [recvPart, sendPart, confPart, logsPart];
 	for(var i in parts)
 		parts[i].getElementsByTagName('body')[0].className = options['layout'] + " " + options['skin'];
