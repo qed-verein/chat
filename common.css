@@ -17,13 +17,6 @@ input[type="button"]:hover, input[type="submit"]:hover{
 	cursor: pointer;
 }
 
-.box
-{
-	border: 2px black solid;
-	padding: 1em;
-	margin: 0.5em;
-}
-
 a:link, a[onclick]
 {
 	text-decoration: underline;

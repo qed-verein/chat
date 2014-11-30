@@ -5,6 +5,14 @@ body
 	min-height: 30em;
 }
 
+
+.box
+{
+	border: 2px black solid;
+	padding: 1em;
+	margin: 0.5em;
+}
+
 #messagebox {
 	position: absolute;
 	left: 0em;
