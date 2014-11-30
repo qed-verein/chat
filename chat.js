@@ -322,10 +322,17 @@ function InitSettings()
 	confPart.getElementById("last").value = count = options["last"];
 	confPart.getElementById("botblock").checked = options["botblock"];
 
-	var skins = ["schwarzwiedienacht", "dunkelgrauton", "mylittlepony"];
-	for(var i in skins)
-		confPart.getElementById('skin').add(new Option(skins[i], skins[i]));
-	confPart.getElementById('skin').value = options['skin'];
+	var skinSelect = confPart.getElementById('skin');
+	skinSelect.add(new Option("Dunkelgrauton", 'dunkelgrauton'));
+	skinSelect.add(new Option("Nachtschwarz", 'schwarzwiedienacht'));
+	skinSelect.add(new Option("My Little Pony", 'mylittlepony'));
+	skinSelect.value = options['skin'];
+
+	var layoutSelect = confPart.getElementById('layout');
+	layoutSelect.add(new Option("mit Frames", 'frames'));
+	layoutSelect.add(new Option("ohne Frames", 'screen'));
+	layoutSelect.add(new Option("mobile Version", 'mobile'));
+	layoutSelect.value = options['layout'];
 
 	ApplySettings();
 }
@@ -367,8 +374,8 @@ function ApplySettings()
 	if(!inHistoryMode) RecreatePosts();
 	var parts = [recvPart, sendPart, confPart, logsPart];
 	for(var i in parts)
-		parts[i].getElementsByTagName('body')[0].className = options['skin'];
-	URIReplaceState();
+		parts[i].getElementsByTagName('body')[0].className = options['layout'] + " " + options['skin'];
+	if(!inHistoryMode) URIReplaceState();
 }
 
 function URIReplaceState()
@@ -385,8 +392,8 @@ function OnLayoutClicked(elt)
 	var tempOptions = new Object();
 	for(var i in options)
 		if(options[i] != defaults[i]) tempOptions[i] = options[i];
-	tempOptions['layout'] = elt.id.slice(0, -4);
-	document.location.href = 'index.php?' + URIEncodeParameters(tempOptions);
+	tempOptions['layout'] = elt.value;
+	window.open('index.php?' + URIEncodeParameters(tempOptions), '_blank');
 }
 
 // **************

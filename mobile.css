@@ -1,26 +1,7 @@
-body, input, textarea, select
+body
 {
-	font-family: Verdana, Arial, sans-serif;
 	font-size: 9pt;
-	background-color: gray;
-}
-
-input, textarea, select
-{
-	border: 1px black solid;
-}
-
-.box
-{
-	border: 2px black solid;
-	padding: 0.5em;
-}
-
-input[type="button"]:hover, input[type="submit"]:hover{
-	border-color: #444;
-	background-color: #ccc;
-	color: #444;
-	cursor: pointer;
+	min-width: 23em;
 }
 
 #inputbox
@@ -30,20 +11,57 @@ input[type="button"]:hover, input[type="submit"]:hover{
 	right: 0em;
 	bottom: 0em;
 	height: 6em;
-	min-width: 23em;
+	border-width: 0px;
+	padding: 0px;
 }
-
 
 #messagebox
 {
-	overflow-y: scroll;
 	position: absolute;
 	left: 0em;
 	right: 0em;
 	bottom: 6em;
 	top: 0em;
-	min-width: 18em;
+	border-width: 0px;
+	padding: 0px;
+	overflow-y: scroll;
 }
+
+
+#settingbox, #logbox
+{
+	display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1;
+}
+
+
+#message
+{
+	width: 98%;
+	resize: none;
+	overflow-x: hidden;
+}
+
+#name
+{
+	width: 20%;
+	min-width: 5em;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 ul#posts
@@ -90,44 +108,6 @@ li.post .message
 }
 
 
-#message
-{
-	width: 98%;
-	overflow-x: hidden;
-	resize: none;
-}
 
-#name
-{
-	width: 20%;
-	min-width: 5em;
-}
-
-
-.popup
-{
-	z-index: 1;
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	display: none;
-}
-
-
-a:link, a[onclick]
-{
-	text-decoration: underline;
-	cursor: pointer;
-	color: white;
-}
-
-a:visited
-{
-	color: black;
-}
-
-a:hover
-{
-	color: orange;
-}
+#settingbox li {display: block;}
+#logbox ul {display: block;}

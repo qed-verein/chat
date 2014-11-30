@@ -1,31 +1,75 @@
-body, input, textarea, select
+body.screen
 {
-	font-family: sans-serif;
-	font-size: 10pt;
-	background-color: gray;
-}
-
-body
-{
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	margin: 0px;
 	min-width: 60em;
 	min-height: 30em;
 }
 
-input, textarea, select
-{
-	border: 1px black solid;
+.screen #messagebox {
+	position: absolute;
+	left: 0em;
+	top: 0em;
+	right: 0em;
+	bottom: 18.5em;
+	margin-bottom: 0em;
+	overflow-y: scroll;
 }
 
-.box
-{
-	border: 2px black solid;
-	padding: 1em;
-	margin: 0.5em;
+.screen #inputbox {
+	position: absolute;
+	left: 0em;
+	height: 15em;
+	right: 38.5em;
+	bottom: 0em;
+	margin-right: 0em;
 }
+
+.screen #settingbox {
+	position: absolute;
+	width: 35em;
+	height: 6em;
+	right: 0%;
+	bottom: 9em;
+}
+
+.screen #logbox {
+	position: absolute;
+	width: 35em;
+	height: 6em;
+	right: 0em;
+	bottom: 0em;
+}
+
+
+
+body.frames
+{
+	overflow: hidden;
+}
+
+.frames .box
+{
+	border-width: 0px;
+	padding: 1em;
+	margin: 0em;
+}
+
+.frames #messagebox, .frames #inputbox, .frames #settingbox, .frames #logbox
+{
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	overflow: auto;
+}
+
+.frames #settingbox, .frames #logbox
+{
+	line-height: 200%;
+}
+
+
+
 
 table#posts
 {
@@ -67,55 +111,17 @@ td.message
 	white-space: pre-wrap;
 }
 
-#messagebox {
-	position: absolute;
-	left: 0em;
-	top: 0em;
-	right: 0em;
-	bottom: 18.5em;
-	margin-bottom: 0em;
-	overflow-y: scroll;
-}
-
-#inputbox {
-	position: absolute;
-	left: 0em;
-	height: 15em;
-	right: 38.5em;
-	bottom: 0em;
-	margin-right: 0em;
-}
 
 #inputbox table {
 	width: 100%;
 }
 
-
-#settingbox {
-	position: absolute;
-	width: 35em;
-	height: 6em;
-	right: 0%;
-	bottom: 9em;
-	line-height: 150%;
-}
-
-#logbox {
-	position: absolute;
-	width: 35em;
-	height: 6em;
-	right: 0em;
-	bottom: 0em;
-	line-height: 150%;
-}
-
-
 #message
 {
 	margin: 0.5em 0em;
 	width: 98%;
-	overflow-x: hidden;
 	resize: none;
+	overflow-x: hidden;
 }
 
 #name
@@ -123,19 +129,3 @@ td.message
 	width: 98%;
 }
 
-a:link, a[onclick]
-{
-	text-decoration: underline;
-	cursor: pointer;
-	color: white;
-}
-
-a:visited
-{
-	color: black;
-}
-
-a:hover
-{
-	color: orange;
-}

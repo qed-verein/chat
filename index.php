@@ -4,13 +4,31 @@ $session_not_close = true;
 
 require_once('common.php');
 
-if(!userLoggedIn())
-	redirect(urlLogin(chatOptions()));
+//if(!userLoggedIn())
+	//redirect(urlLogin(chatOptions()));
 
-if(isset($_GET['layout']) && $_GET['layout'] == 'frames')
-	include('frames.html');
-else if(isset($_GET['layout']) && $_GET['layout'] == 'mobile')
-	include('mobile.html');
-else
-	include('screen.html');
+$layout = uriParamString('layout', 'screen');
+$frame = uriParamString('frame', '');
+
+if($layout == 'mobile')
+{
+	$parts = array('mobile', 'receiver', 'send_mobile', 'settings', 'logs');
+	require('template.php');
+}
+elseif($layout == 'screen')
+{
+	$parts = array('screen', 'receiver', 'send', 'settings', 'logs');
+	require('template.php');
+}
+elseif($layout == 'frames')
+{
+	if(in_array($frame, array('receiver', 'send', 'settings', 'logs')))
+	{
+		$parts = array('frames', $frame);
+		require('template.php');
+	}
+	else require('frames.html');
+}
+else die("Unbekanntes Layout");
+
 ?>

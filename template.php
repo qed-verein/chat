@@ -2,34 +2,34 @@
 
 <html>
 <head>
-<title>QED-Chat</title>
-<meta name="robots" content="noindex, nofollow">
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link rel="stylesheet" type="text/css" href="common.css">
-<?php if(in_array('mobile', $parts)): ?>
-<link rel="stylesheet" type="text/css" href="mobileneu.css">
-<script type="text/javascript" src="chatneu.js"></script>
-<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0">
-<script>
-function ShowMenu(menu)
-{
-	document.getElementById('settingbox').style.display = (menu == 'settings') ? 'block' : 'none';
-	document.getElementById('logbox').style.display = (menu == 'logs') ? 'block' : 'none';
-}
-</script>
+	<title>QED-Chat</title>
+	<meta name="robots" content="noindex, nofollow">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="common.css">
+<?php if(in_array('screen', $parts)): ?>
+	<link rel="stylesheet" type="text/css" href="screen.css">
+	<script type="text/javascript" src="chat.js"></script>
+<?php elseif(in_array('mobile', $parts)): ?>
+	<link rel="stylesheet" type="text/css" href="mobile.css">
+	<script type="text/javascript" src="chat.js"></script>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0">
+	<script>
+	function ShowMenu(menu)
+	{
+		document.getElementById('settingbox').style.display = (menu == 'settings') ? 'block' : 'none';
+		document.getElementById('logbox').style.display = (menu == 'logs') ? 'block' : 'none';
+	}
+	</script>
 <?php elseif(in_array('frames', $parts)): ?>
-<link rel="stylesheet" type="text/css" href="screenneu.css">
-<script type="text/javascript">
-var OnLayoutClicked = parent.OnLayoutClicked;
-var OnHistoryClicked = parent.OnHistoryClicked;
-var UpdateSettings = parent.UpdateSettings;
-var Send = parent.Send;
-</script>
-<?php else: ?>
-<link rel="stylesheet" type="text/css" href="screenneu.css">
-<script type="text/javascript" src="chatneu.js"></script>
+	<link rel="stylesheet" type="text/css" href="screen.css">
+	<script type="text/javascript">
+		var OnLayoutClicked = parent.OnLayoutClicked;
+		var OnHistoryClicked = parent.OnHistoryClicked;
+		var UpdateSettings = parent.UpdateSettings;
+		var Send = parent.Send;
+	</script>
 <?php endif; ?>
-<link rel="stylesheet" type="text/css" href="colors.css">
+	<link rel="stylesheet" type="text/css" href="colors.css">
 </head>
 
 <?php if(in_array('frames', $parts)): ?>
@@ -37,7 +37,6 @@ var Send = parent.Send;
 <?php else: ?>
 <body onload="Init()">
 <?php endif; ?>
-
 
 <?php if(in_array('receiver', $parts)): ?>
 <div id="messagebox" class="box">
