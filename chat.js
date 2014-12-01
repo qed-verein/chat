@@ -612,7 +612,7 @@ function UpdateTitle(message)
 }
 
 // 0 = Mathjax deaktiviert, 1 = Mathjax ladend, 2 = Mathjax fertig geladen
-var mathjaxProgress = 0;
+var mathjaxProgress = {value : 0};
 
 // Lädt Mathjax - Erstmal nur zum Testen
 function LoadMathjax()
@@ -620,7 +620,7 @@ function LoadMathjax()
 	if(mathjaxProgress > 0) return;
 
 	var authorInit = "function() { MathJax.Hub.Register.StartupHook(" +
-		"'End', function() {mathjaxProgress = 2; RecreatePosts();});}"
+		"'End', function() {mathjaxProgress.value = 2; RecreatePosts();});}"
 	var config = recvPart.createElement("script");
 	config.type = "text/javascript";
 	config[(window.opera ? "innerHTML" : "text")] =
@@ -635,7 +635,7 @@ function LoadMathjax()
 	script.type = "text/javascript";
 	script.src  = "/MathJax-2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&locale=de";
 	recvPart.getElementsByTagName("head")[0].appendChild(script);
-	mathjaxProgress = 1;
+	mathjaxProgress.value = 1;
 }
 
 // Lässt MathJax nochmal rüberlaufen
