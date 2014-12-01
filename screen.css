@@ -112,6 +112,7 @@ td.message
 {
 	vertical-align: top;
 	white-space: pre-wrap;
+	word-wrap: break-word;
 }
 
 
