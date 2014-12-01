@@ -627,7 +627,7 @@ function LoadMathjax()
 	config[(window.opera ? "innerHTML" : "text")] =
 		"window.MathJax = {" +
 		" AuthorInit: " + authorInit + "," +
-		" linebreaks: { automatic: true } " +
+		" 'HTML-CSS': {linebreaks: {automatic: true}}" +
 		"};";
 	recvPart.getElementsByTagName("head")[0].appendChild(config);
 
