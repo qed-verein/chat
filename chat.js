@@ -618,7 +618,7 @@ function LoadMathjax()
 	config[(window.opera ? "innerHTML" : "text")] =
 		"window.MathJax = {AuthorInit: function () {" +
 		"MathJax.Hub.Register.StartupHook('Mathjax geladen', " +
-		"function {mathjaxProgress = 2; RecreatePosts();});}};";
+		"function() {mathjaxProgress = 2; RecreatePosts();});}};";
 	document.getElementsByTagName("head")[0].appendChild(config);
 
 	var script = document.createElement("script");
