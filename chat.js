@@ -58,6 +58,8 @@ var firstReconnect, recvRequest, position, textpos, posts, timeout;
 
 function InitReceiver()
 {
+	recvPart.mathjaxProgress = 0;
+
 	recvRequest = new XMLHttpRequest();
 	posts = Array();
 	RecreatePosts();
@@ -611,19 +613,18 @@ function UpdateTitle(message)
 			top.document.title = message.substr(0, 252) + "...";
 }
 
-// 0 = aus, 1 = ladend, 2 = fertig
-var mathjaxProgress = 0;
 
 // Lädt Mathjax - Erstmal nur zum Testen
+// mathjaxProgress: 0 = aus, 1 = ladend, 2 = fertig
 function LoadMathjax()
 {
-	if(mathjaxProgress > 0) return;
+	if(recvPart.mathjaxProgress > 0) return;
 	var config = recvPart.createElement("script");
 	config.type = "text/javascript";
 	config[(window.opera ? "innerHTML" : "text")] =
 		"window.MathJax = {AuthorInit: function() {" +
 		" MathJax.Hub.Register.StartupHook('End', " +
-		"  function() {mathjaxProgress = 2; RecreatePosts();});" +
+		"  function() {recvPart.mathjaxProgress = 2; RecreatePosts();});" +
 		"}};";
 	recvPart.getElementsByTagName("head")[0].appendChild(config);
 
@@ -631,13 +632,13 @@ function LoadMathjax()
 	script.type = "text/javascript";
 	script.src  = "/MathJax-2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
 	recvPart.getElementsByTagName("head")[0].appendChild(script);
-	mathjaxProgress = 1;
+	recvPart.mathjaxProgress = 1;
 }
 
 // Lässt MathJax nochmal rüberlaufen
 function ProcessMath()
 {
-	if(options['math'] == 1 && mathjaxProgress == 2)
+	if(options['math'] == 1 && recvPart.mathjaxProgress == 2)
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
 
