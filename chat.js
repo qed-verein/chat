@@ -620,7 +620,7 @@ function LoadMathjax()
 	if(mathjaxProgress > 0) return;
 
 	var authorInit = "function() { MathJax.Hub.Register.StartupHook(" +
-		"'End', function() {parent.MathJax = MathJax; parent.mathjaxProgress = 2; RecreatePosts();})}"
+		"'End', function() {parent.mathjaxProgress = 2; RecreatePosts();})}"
 	var config = recvPart.createElement("script");
 	config.type = "text/javascript";
 	config[(window.opera ? "innerHTML" : "text")] =
@@ -642,7 +642,10 @@ function LoadMathjax()
 function ProcessMath()
 {
 	if(options['math'] == 1 && mathjaxProgress == 2)
-		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+	{
+		if(option['layout'] == 'frames') top.recv.Typeset();
+		else MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+	}
 }
 
 function ErrorHandler(description, filename, line)

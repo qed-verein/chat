@@ -23,7 +23,7 @@
 <?php elseif(in_array('frames', $parts)): ?>
 	<link rel="stylesheet" type="text/css" href="screen.css">
 	<script type="text/javascript">
-		var mathjaxProgress = parent.mathjaxProgress;
+		function Typeset() {MathJax.Hub.Queue(["Typeset", MathJax.Hub]);}
 		var Send = parent.Send;
 		var RecreatePosts = parent.RecreatePosts;
 		var UpdateSettings = parent.UpdateSettings;
