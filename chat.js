@@ -641,7 +641,6 @@ function LoadMathjax()
 // Lässt MathJax nochmal rüberlaufen
 function ProcessMath()
 {
-	var MathJax = recvPart.parent.MathJax; // Workaround für Frames
 	if(options['math'] == 1 && mathjaxProgress == 2)
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
