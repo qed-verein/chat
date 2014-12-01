@@ -641,7 +641,7 @@ function LoadMathjax()
 // Lässt MathJax nochmal rüberlaufen
 function ProcessMath()
 {
-	if(options['math'] == 1 && mathjaxProgress == 2)
+	if(options['math'] == 1 && mathjaxProgress.value == 2)
 		recvPart.MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
 
