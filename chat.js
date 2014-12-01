@@ -617,7 +617,7 @@ var mathjaxProgress = {value : 0};
 // Lädt Mathjax - Erstmal nur zum Testen
 function LoadMathjax()
 {
-	if(mathjaxProgress > 0) return;
+	if(mathjaxProgress.value > 0) return;
 
 	var authorInit = "function() { MathJax.Hub.Register.StartupHook(" +
 		"'End', function() {mathjaxProgress.value = 2; RecreatePosts();});}"
