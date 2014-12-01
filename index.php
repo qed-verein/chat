@@ -4,8 +4,8 @@ $session_not_close = true;
 
 require_once('common.php');
 
-//if(!userLoggedIn())
-	//redirect(urlLogin(chatOptions()));
+if(!userLoggedIn())
+	redirect(urlLogin(chatOptions()));
 
 $layout = uriParamString('layout', 'screen');
 $frame = uriParamString('frame', '');
