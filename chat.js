@@ -618,19 +618,19 @@ var mathjaxProgress = 0;
 function LoadMathjax()
 {
 	if(mathjaxProgress > 0) return;
-	var config = document.createElement("script");
+	var config = recvPart.createElement("script");
 	config.type = "text/javascript";
 	config[(window.opera ? "innerHTML" : "text")] =
 		"window.MathJax = {AuthorInit: function() {" +
 		" MathJax.Hub.Register.StartupHook('End', " +
 		"  function() {mathjaxProgress = 2; RecreatePosts();});" +
 		"}};";
-	document.getElementsByTagName("head")[0].appendChild(config);
+	recvPart.getElementsByTagName("head")[0].appendChild(config);
 
-	var script = document.createElement("script");
+	var script = recvPart.createElement("script");
 	script.type = "text/javascript";
 	script.src  = "/MathJax-2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-	document.getElementsByTagName("head")[0].appendChild(script);
+	recvPart.getElementsByTagName("head")[0].appendChild(script);
 	mathjaxProgress = 1;
 }
 
