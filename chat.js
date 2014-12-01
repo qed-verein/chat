@@ -615,8 +615,8 @@ function LoadMathjax()
 	var config = document.createElement("script");
 	config.type = "text/javascript";
 	config[(window.opera ? "innerHTML" : "text")] =
-		"window.MathJax = {AuthorInit: function () {mathjaxStarted = 2; RecreatePosts();}};";
-	document.getElementsByTagName("head")[0].appendChild(config);
+		"window.MathJax = {AuthorInit: function () {RecreatePosts();}};";
+	//document.getElementsByTagName("head")[0].appendChild(config);
 
 	var script = document.createElement("script");
 	script.type = "text/javascript";
