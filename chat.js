@@ -390,7 +390,7 @@ function OnLayoutClicked(elt)
 	for(var i in options)
 		if(options[i] != defaults[i]) tempOptions[i] = options[i];
 	tempOptions['layout'] = elt.value;
-	window.open('index.php?' + URIEncodeParameters(tempOptions), '_blank');
+	document.location.href = 'index.php?' + URIEncodeParameters(tempOptions);
 }
 
 // **************
