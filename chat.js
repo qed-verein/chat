@@ -631,7 +631,7 @@ function ProcessMath()
 	if(options['math'] == 1)
 	{
 		LoadMathjax();
-		if(typeof MathJaxHub.Queue != 'undefined') MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+		if(typeof MathJax.Hub.Queue != 'undefined') MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	}
 }
 
