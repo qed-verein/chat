@@ -363,11 +363,16 @@ function Increase()
 
 function ApplySettings()
 {
+	if(!inHistoryMode) URIReplaceState();
 	if(!inHistoryMode) RecreatePosts();
+
+	if(options['math'] == 1)
+		LoadMathjax();
+
 	var parts = [recvPart, sendPart, confPart, logsPart];
 	for(var i in parts)
 		parts[i].getElementsByTagName('body')[0].className = options['layout'] + " " + options['skin'];
-	if(!inHistoryMode) URIReplaceState();
+
 }
 
 function URIReplaceState()
@@ -632,11 +637,8 @@ function LoadMathjax()
 // Lässt MathJax nochmal rüberlaufen
 function ProcessMath()
 {
-	if(options['math'] == 1)
-	{
-		LoadMathjax();
-		if(mathjaxProgress == 2) MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-	}
+	if(options['math'] == 1 && mathjaxProgress == 2)
+		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
 
 function ErrorHandler(description, filename, line)
