@@ -643,7 +643,7 @@ function ProcessMath()
 {
 	if(options['math'] == 1 && mathjaxProgress == 2)
 	{
-		if(options['layout'] == 'frames') top.recv.Typeset();
+		if(options['layout'] == 'frames') top.recv.Typeset(); // Workaround für Frames
 		else MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	}
 }
