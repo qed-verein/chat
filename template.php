@@ -27,6 +27,7 @@
 		var OnHistoryClicked = parent.OnHistoryClicked;
 		var UpdateSettings = parent.UpdateSettings;
 		var Send = parent.Send;
+		var RecreatePosts = parent.RecreatePosts;
 	</script>
 <?php endif; ?>
 	<link rel="stylesheet" type="text/css" href="colors.css">
