@@ -23,11 +23,12 @@
 <?php elseif(in_array('frames', $parts)): ?>
 	<link rel="stylesheet" type="text/css" href="screen.css">
 	<script type="text/javascript">
-		var OnLayoutClicked = parent.OnLayoutClicked;
-		var OnHistoryClicked = parent.OnHistoryClicked;
-		var UpdateSettings = parent.UpdateSettings;
+		var mathjaxProgress = parent.mathjaxProgress;
 		var Send = parent.Send;
 		var RecreatePosts = parent.RecreatePosts;
+		var UpdateSettings = parent.UpdateSettings;
+		var OnLayoutClicked = parent.OnLayoutClicked;
+		var OnHistoryClicked = parent.OnHistoryClicked;
 	</script>
 <?php endif; ?>
 	<link rel="stylesheet" type="text/css" href="colors.css">
