@@ -642,7 +642,7 @@ function LoadMathjax()
 function ProcessMath()
 {
 	if(options['math'] == 1 && mathjaxProgress == 2)
-		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+		recvPart.MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
 
 function ErrorHandler(description, filename, line)
