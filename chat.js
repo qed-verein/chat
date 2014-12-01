@@ -625,12 +625,12 @@ function LoadMathjax()
 		" MathJax.Hub.Register.StartupHook('End', " +
 		"  function() {mathjaxProgress = 2; RecreatePosts();});" +
 		"}};";
-	document.getElementsByTagName("head")[0].appendChild(config);
+	recvPart.getElementsByTagName("head")[0].appendChild(config);
 
 	var script = document.createElement("script");
 	script.type = "text/javascript";
 	script.src  = "/MathJax-2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-	document.getElementsByTagName("head")[0].appendChild(script);
+	recvPart.getElementsByTagName("head")[0].appendChild(script);
 	mathjaxProgress = 1;
 }
 
