@@ -606,23 +606,26 @@ function UpdateTitle(message)
 			top.document.title = message.substr(0, 252) + "...";
 }
 
-var mathjaxStarted = 0;
+// 0 = aus, 1 = ladend, 2 = fertig
+var mathjaxProgress = 0;
 
 // Lädt Mathjax - Erstmal nur zum Testen
 function LoadMathjax()
 {
-	if(mathjaxStarted > 0) return;
+	if(mathjaxProgress > 0) return;
 	var config = document.createElement("script");
 	config.type = "text/javascript";
 	config[(window.opera ? "innerHTML" : "text")] =
-		"window.MathJax = {AuthorInit: function () {RecreatePosts();}};";
-	//document.getElementsByTagName("head")[0].appendChild(config);
+		"window.MathJax = {AuthorInit: function () {" +
+		"MathJax.Hub.Register.StartupHook('Mathjax geladen', " +
+		"function {mathjaxProgress = 2; RecreatePosts();});}};";
+	document.getElementsByTagName("head")[0].appendChild(config);
 
 	var script = document.createElement("script");
 	script.type = "text/javascript";
 	script.src  = "/MathJax-2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
 	document.getElementsByTagName("head")[0].appendChild(script);
-	mathjaxLoaded = true;
+	mathjaxProgress = 1;
 }
 
 // Lässt MathJax nochmal rüberlaufen
@@ -631,8 +634,7 @@ function ProcessMath()
 	if(options['math'] == 1)
 	{
 		LoadMathjax();
-		if(typeof MathJax != 'undefined' && typeof MathJax.Hub != 'undefined'
-			&& typeof MathJax.Hub.Queue != 'undefined') MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+		if(mathjaxProgress == 2) MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	}
 }
 
