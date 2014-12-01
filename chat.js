@@ -622,10 +622,12 @@ function LoadMathjax()
 	var config = recvPart.createElement("script");
 	config.type = "text/javascript";
 	config[(window.opera ? "innerHTML" : "text")] =
-		"window.MathJax = {AuthorInit: function() {" +
+		"window.MathJax = {" +
+		" AuthorInit: function() {" +
 		" MathJax.Hub.Register.StartupHook('End', " +
-		"  function() {recvPart.mathjaxProgress = 2; RecreatePosts();});" +
-		"}};";
+		"  function() {recvPart.mathjaxProgress = 2; RecreatePosts();});}," +
+		" locale: 'de'" +
+		"};";
 	recvPart.getElementsByTagName("head")[0].appendChild(config);
 
 	var script = recvPart.createElement("script");
