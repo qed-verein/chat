@@ -619,13 +619,15 @@ function UpdateTitle(message)
 function LoadMathjax()
 {
 	if(recvPart.mathjaxProgress > 0) return;
+
+	var authorInit = "function() { MathJax.Hub.Register.StartupHook(" +
+		"'End', function() {recvPart.mathjaxProgress = 2; RecreatePosts();});}"
 	var config = recvPart.createElement("script");
 	config.type = "text/javascript";
 	config[(window.opera ? "innerHTML" : "text")] =
 		"window.MathJax = {" +
-		" AuthorInit: function() {" +
-		"  MathJax.Hub.Register.StartupHook('End', " +
-		"   function() {recvPart.mathjaxProgress = 2; RecreatePosts();});}" +
+		" AuthorInit: " + authorInit + "," +
+		" linebreaks: { automatic: true } " +
 		"};";
 	recvPart.getElementsByTagName("head")[0].appendChild(config);
 
