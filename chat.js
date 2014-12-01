@@ -606,16 +606,16 @@ function UpdateTitle(message)
 			top.document.title = message.substr(0, 252) + "...";
 }
 
-var mathjaxStarted = false;
+var mathjaxStarted = 0;
 
 // Lädt Mathjax - Erstmal nur zum Testen
 function LoadMathjax()
 {
-	if(mathjaxStarted) return;
+	if(mathjaxStarted > 0) return;
 	var config = document.createElement("script");
 	config.type = "text/javascript";
 	config[(window.opera ? "innerHTML" : "text")] =
-		"window.MathJax = {AuthorInit: function () {RecreatePosts();}};";
+		"window.MathJax = {AuthorInit: function () {mathjaxStarted = 2; RecreatePosts();}};";
 	document.getElementsByTagName("head")[0].appendChild(config);
 
 	var script = document.createElement("script");
@@ -631,7 +631,8 @@ function ProcessMath()
 	if(options['math'] == 1)
 	{
 		LoadMathjax();
-		if(typeof MathJax.Hub.Queue != 'undefined') MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+		if(typeof MathJax != 'undefined' && typeof MathJax.Hub != 'undefined'
+			&& typeof MathJax.Hub.Queue != 'undefined') MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 	}
 }
 
