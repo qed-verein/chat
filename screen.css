@@ -1,5 +1,6 @@
 body.screen
 {
+	position: absolute;
 	min-width: 60em;
 	min-height: 30em;
 }
