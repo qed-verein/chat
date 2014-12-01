@@ -606,13 +606,18 @@ function UpdateTitle(message)
 			top.document.title = message.substr(0, 252) + "...";
 }
 
+var mathjaxStarted = false;
 
 // Lädt Mathjax - Erstmal nur zum Testen
-var mathjaxLoaded = false;
-
 function LoadMathjax()
 {
-	if(mathjaxLoaded) return;
+	if(mathjaxStarted) return;
+	var config = document.createElement("script");
+	config.type = "text/javascript";
+	config[(window.opera ? "innerHTML" : "text")] =
+		"window.MathJax = {AuthorInit: function () {RecreatePosts();}};";
+	document.getElementsByTagName("head")[0].appendChild(config);
+
 	var script = document.createElement("script");
 	script.type = "text/javascript";
 	script.src  = "/MathJax-2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
