@@ -624,15 +624,14 @@ function LoadMathjax()
 	config[(window.opera ? "innerHTML" : "text")] =
 		"window.MathJax = {" +
 		" AuthorInit: function() {" +
-		" MathJax.Hub.Register.StartupHook('End', " +
-		"  function() {recvPart.mathjaxProgress = 2; RecreatePosts();});}," +
-		" locale: 'de'" +
+		"  MathJax.Hub.Register.StartupHook('End', " +
+		"   function() {recvPart.mathjaxProgress = 2; RecreatePosts();});}" +
 		"};";
 	recvPart.getElementsByTagName("head")[0].appendChild(config);
 
 	var script = recvPart.createElement("script");
 	script.type = "text/javascript";
-	script.src  = "/MathJax-2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+	script.src  = "/MathJax-2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&locale=de";
 	recvPart.getElementsByTagName("head")[0].appendChild(script);
 	recvPart.mathjaxProgress = 1;
 }
