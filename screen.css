@@ -87,6 +87,7 @@ tr.post > td
 
 tr.post .name
 {
+	max-width: 10em;
 	font-weight: bold;
 }
 
@@ -102,6 +103,7 @@ tr.post .info, tr.post .ip
 	text-align: center;
 	color: lightgray;
 	padding: 0px 3px;
+	white-space: nowrap;
 }
 
 #messagebox {
