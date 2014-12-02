@@ -627,7 +627,7 @@ function LoadMathjax()
 		"window.MathJax = {" +
 		" AuthorInit: " + authorInit + "," +
 		" displayAlign: 'left'," +
-//		" 'HTML-CSS': {linebreaks: {automatic: true}}" +
+		" 'HTML-CSS': {linebreaks: {automatic: true}}" +
 		"};";
 	recvPart.getElementsByTagName("head")[0].appendChild(config);
 
