@@ -77,8 +77,6 @@ body.frames
 table#posts
 {
 	border-collapse: collapse;
-	table-layout: fixed;
-	width: 100%;
 }
 
 tr.post > td
@@ -90,7 +88,6 @@ tr.post > td
 tr.post .name
 {
 	font-weight: bold;
-	width: 7em;
 }
 
 tr.post .message
@@ -102,9 +99,9 @@ tr.post .info, tr.post .ip
 {
 	border-bottom: thin dotted #bbb;
 	border-right: thin dotted #bbb;
-	width: 9em;
 	text-align: center;
 	color: lightgray;
+	padding: 3px;
 }
 
 #messagebox {
