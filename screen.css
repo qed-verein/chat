@@ -72,49 +72,43 @@ body.frames
 }
 
 
-#messagebox {
-	padding: 0px;
-}
 
 
 table#posts
 {
 	border-collapse: collapse;
+	table-layout: fixed;
+	width: 100%;
 }
 
-td.info, td.ip
+tr.post > td
+{
+	word-wrap: break-word;
+	vertical-align: top;
+}
+
+tr.post .name
+{
+	font-weight: bold;
+	width: 7em;
+}
+
+tr.post .message
+{
+	white-space: pre-wrap;
+}
+
+tr.post .info, tr.post .ip
 {
 	border-bottom: thin dotted #bbb;
 	border-right: thin dotted #bbb;
-	white-space: nowrap;
-	vertical-align: top;
-}
-
-td.info
-{
-	text-align: right;
-}
-
-td.ip
-{
+	width: 10em;
 	text-align: center;
 }
 
-td.name
-{
-	font-weight: bold;
-	vertical-align: top;
-	max-width: 15em;
-	word-wrap: break-word;
+#messagebox {
+	padding: 0px;
 }
-
-td.message
-{
-	vertical-align: top;
-	white-space: pre-wrap;
-	word-wrap: break-word;
-}
-
 
 #inputbox table {
 	width: 100%;
@@ -132,4 +126,3 @@ td.message
 {
 	width: 98%;
 }
-

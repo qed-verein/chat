@@ -171,6 +171,9 @@ function AppendPost(container, post)
 function FormatScreenPost(post)
 {
 	var tr = recvPart.createElement ("tr");
+	tr.setAttribute('id', 'post' + post['id']);
+	tr.setAttribute('class', 'post');
+	tr.setAttribute('style', 'color:#' + PostColor(post));
 
 	var info = post["date"].substr (5);
 	if (options["delay"])
