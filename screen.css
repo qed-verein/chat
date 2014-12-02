@@ -72,6 +72,9 @@ body.frames
 }
 
 
+#messagebox {
+	padding: 0px;
+}
 
 
 table#posts
@@ -81,11 +84,8 @@ table#posts
 
 td.info, td.ip
 {
-	border-top: thin dotted #ddd;
-	border-bottom: thin dotted #ddd;
-	border-right: thin dotted #888;
-	border-width: 1px;
-	padding-left: 4px;
+	border-bottom: thin dotted #bbb;
+	border-right: thin dotted #bbb;
 	white-space: nowrap;
 	vertical-align: top;
 }
