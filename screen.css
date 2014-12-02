@@ -102,7 +102,7 @@ tr.post .info, tr.post .ip
 {
 	border-bottom: thin dotted #bbb;
 	border-right: thin dotted #bbb;
-	width: 10em;
+	width: 9em;
 	text-align: center;
 	color: lightgray;
 }
