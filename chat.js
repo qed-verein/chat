@@ -170,41 +170,40 @@ function AppendPost(container, post)
 // Stellt eine Nachricht als HTML dar (Version für große Bildschrime)
 function FormatScreenPost(post)
 {
-	var tr = recvPart.createElement ("tr");
+	var tr = recvPart.createElement('tr');
 	tr.setAttribute('id', 'post' + post['id']);
 	tr.setAttribute('class', 'post');
 	tr.setAttribute('style', 'color:#' + PostColor(post));
 
-	var info = post["date"].substr (5);
-	if (options["delay"])
-		info = DelayString(post) + info;
+	var delay = recvPart.createElement('span');
+	delay.setAttribute('class', 'delay');
+	delay.appendChild(recvPart.createTextNode(DelayString(post)));
 
-	var node = recvPart.createElement ("td");
-	node.setAttribute ("text", "ff00ff");
-	node.appendChild (recvPart.createTextNode (info));
-	node.setAttribute ("class", "info");
-	tr.appendChild (node);
+	var date = recvPart.createElement('span');
+	date.setAttribute('class', 'date');
+	date.appendChild(recvPart.createTextNode(post['date'].substr(5)));
 
-	if (options["ip"])
-	{
-		var ip = recvPart.createElement ("td");
-		ip.appendChild (recvPart.createTextNode (post["ip"]));
-		ip.setAttribute ("class", "ip");
-		tr.appendChild (ip);
-	}
+	var info = recvPart.createElement('td');
+	info.setAttribute('class', 'info');
+	if(options['delay']) info.appendChild(delay);
+	info.appendChild(date);
+	tr.appendChild(info);
 
-	node = recvPart.createElement ("td");
-	node.innerHTML =  NickEscape (post["name"] + ((post['anonym'] == "1") ? " (anonym)" : "") + ":");
-	node.setAttribute ("class", "name");
-	node.setAttribute ("style", "color:#" + PostColor(post) + ";");
-	tr.appendChild (node);
+	var ip = recvPart.createElement('td');
+	ip.setAttribute('class', 'ip');
+	ip.appendChild(recvPart.createTextNode(post['ip']));
+	if(options['ip']) tr.appendChild(ip);
 
-	node = recvPart.createElement ("td");
-	node.innerHTML = HtmlEscape (post["message"]);
-	if(options["links"]) node.innerHTML = InsertLinks(node.innerHTML);
-	node.setAttribute ("class", "message");
-	node.setAttribute ("style", "color:#" + PostColor(post) + ";");
-	tr.appendChild (node);
+	var name = recvPart.createElement('td');
+	name.innerHTML = NickEscape(post["name"]);
+	name.setAttribute('class', 'name');
+	tr.appendChild(name);
+
+	var message = recvPart.createElement('td');
+	message.innerHTML = HtmlEscape(post["message"]);
+	if(options["links"]) message.innerHTML = InsertLinks(message.innerHTML);
+	message.setAttribute('class', 'message');
+	tr.appendChild(message);
 
 	return tr;
 }
@@ -218,7 +217,7 @@ function FormatMobilePost(post)
 	li.setAttribute('style', 'color:#' + PostColor(post));
 
 	var name = recvPart.createElement('span');
-	name.innerHTML = NickEscape(post["name"] + ((post['anonym'] == "1") ? " (anonym)" : "") + ":");
+	name.innerHTML = NickEscape(post["name"]);
 	name.setAttribute('class', 'name');
 	li.appendChild(name);
 
@@ -227,12 +226,12 @@ function FormatMobilePost(post)
 	date.appendChild(recvPart.createTextNode(post['date']));
 
 	var ip = recvPart.createElement('span');
-	ip.appendChild(recvPart.createTextNode("[" + post['ip'] + "]"));
 	ip.setAttribute('class', 'ip');
+	ip.appendChild(recvPart.createTextNode("[" + post['ip'] + "]"));
 
 	var delay = recvPart.createElement('span');
-	delay.appendChild(recvPart.createTextNode(DelayString(post)));
 	delay.setAttribute('class', 'delay');
+	delay.appendChild(recvPart.createTextNode(DelayString(post)));
 
 	var info = recvPart.createElement('span');
 	info.setAttribute('class', 'info');
@@ -244,7 +243,7 @@ function FormatMobilePost(post)
 	li.appendChild(info);
 
 	var message = recvPart.createElement('span');
-	message.innerHTML = HtmlEscape (post["message"]);
+	message.innerHTML = HtmlEscape(post["message"]);
 	if(options["links"]) message.innerHTML = InsertLinks(message.innerHTML);
 	message.setAttribute('class', 'message');
 	li.appendChild(message);

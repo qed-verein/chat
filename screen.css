@@ -101,7 +101,7 @@ tr.post .info, tr.post .ip
 	border-right: thin dotted #bbb;
 	text-align: center;
 	color: lightgray;
-	padding: 3px;
+	padding: 0px 3px;
 }
 
 #messagebox {
