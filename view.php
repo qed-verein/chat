@@ -17,12 +17,9 @@ function signalAlive()
 // Warte bis jemand neue Nachrichten versendet
 function waitForMessages()
 {
-	global $counter, $limit, $touchme, $keepalive;
+	global $touchme, $keepalive, $timeout;
 
-	if($counter == $limit)
-		return false;
-
-	while(!connection_aborted())
+	while(!connection_aborted() && microtime(true) < $timeout)
 	{
 		$read = array($touchme); $write = $except = NULL;
 		$timeout = $keepalive > 0 ? $keepalive : NULL;
@@ -49,7 +46,9 @@ versionCheck();
 $position = uriParamInteger('position', 0);
 $limit = uriParamInteger('limit', 200);
 $channel = uriParamString('channel', '');
-$keepalive = uriParamInteger('keepalive', 60);
+$keepalive = uriParamInteger('keepalive', 30);
+$timeout = uriParamInteger('timeout', 240);
+$timeout += microtime(true);
 
 if(!file_exists(TOUCH_FILE)) touch(TOUCH_FILE);
 $touchme = inotify_init();
@@ -90,6 +89,6 @@ do
 	}
 	flush();
 }
-while(waitForMessages());
+while($counter < $limit && waitForMessages());
 
 ?>
