@@ -47,7 +47,7 @@ $position = uriParamInteger('position', 0);
 $limit = uriParamInteger('limit', 200);
 $channel = uriParamString('channel', '');
 $keepalive = uriParamInteger('keepalive', 30);
-$timeout = uriParamInteger('timeout', 240);
+$timeout = uriParamInteger('timeout', 3600);
 $timeout += microtime(true);
 
 if(!file_exists(TOUCH_FILE)) touch(TOUCH_FILE);
