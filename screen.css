@@ -7,12 +7,17 @@ body.screen
 	height: 100%;
 }
 
+.screen .box
+{
+	margin: 0px;
+}
+
 .screen #messagebox {
 	position: absolute;
 	left: 0em;
 	top: 0em;
 	right: 0em;
-	bottom: 18.5em;
+	bottom: 18em;
 	margin-bottom: 0em;
 	overflow-y: scroll;
 }
@@ -21,14 +26,14 @@ body.screen
 	position: absolute;
 	left: 0em;
 	height: 15em;
-	right: 38.5em;
+	right: 39em;
 	bottom: 0em;
 	margin-right: 0em;
 }
 
 .screen #settingbox {
 	position: absolute;
-	width: 35em;
+	width: 36em;
 	height: 7em;
 	right: 0%;
 	bottom: 8em;
@@ -36,7 +41,7 @@ body.screen
 
 .screen #logbox {
 	position: absolute;
-	width: 35em;
+	width: 36em;
 	height: 5em;
 	right: 0em;
 	bottom: 0em;
