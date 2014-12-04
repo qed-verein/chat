@@ -19,7 +19,7 @@ function waitForMessages()
 {
 	global $touchme, $keepalive, $timeout;
 
-	while(!connection_aborted() && microtime(true) < $timeout)
+	while(!connection_aborted())
 	{
 		$read = array($touchme); $write = $except = NULL;
 		$timeout = $keepalive > 0 ? $keepalive : NULL;
