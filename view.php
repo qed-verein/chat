@@ -19,11 +19,11 @@ function waitForMessages()
 {
 	global $touchme, $keepalive, $timeout;
 
-	while(!connection_aborted())
+	while(!connection_aborted() && microtime(true) < $timeout)
 	{
 		$read = array($touchme); $write = $except = NULL;
-		$timeout = $keepalive > 0 ? $keepalive : NULL;
-		$changed = @stream_select($read, $write, $except, $timeout);
+		$seltimeout = $keepalive > 0 ? $keepalive : NULL;
+		$changed = @stream_select($read, $write, $except, $seltimeout);
 		if($changed === false) return false;
 		if($changed > 0 && inotify_read($touchme) !== false) return true;
 		signalAlive();
