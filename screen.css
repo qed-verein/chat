@@ -19,6 +19,7 @@ body.screen
 	right: 0em;
 	bottom: 18em;
 	margin-bottom: 0em;
+	border-width: 0px;
 	overflow-y: scroll;
 }
 
