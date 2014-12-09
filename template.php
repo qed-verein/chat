@@ -82,8 +82,7 @@
 	<li><label><input type="checkbox" id="botblock" onchange="UpdateSettings()">Sinn anzeigen</label></li>
 	<li><label><input type="checkbox" id="math" onchange="UpdateSettings()"
 		title="Mathjax ist ein Plugin zum Einfügen von mathematischen Formeln in den Chat, z.B.
-		\( (a + b)^2 = a^2 + b^2 + 2ab \)">
-		Mathjax anschalten</label>,</li>
+		\( (a + b)^2 = a^2 + b^2 + 2ab \)">Mathjax anschalten</label></li>
 	<li><label><input type="checkbox" id="old" onchange="UpdateSettings()">Alle empf. Posts anzeigen</label>,</li>
 	<li>sonst
 		<input type="button" onclick="Decrease()" value="<">
