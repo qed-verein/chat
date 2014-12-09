@@ -635,7 +635,7 @@ function LoadMathjax()
 
 	var script = recvPart.createElement("script");
 	script.type = "text/javascript";
-	script.src  = "/MathJax-2.4-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&locale=de";
+	script.src  = "/MathJax-2.4-latest/MathJax.js?config=TeX-AMS-MML_SVG&locale=de";
 	recvPart.getElementsByTagName("head")[0].appendChild(script);
 	mathjaxProgress = 1;
 }
