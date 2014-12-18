@@ -108,7 +108,7 @@ function redirect($url)
 function versionCheck()
 {
 	$version = uriParamString('version', '');
-	if($version != CHAT_VERSION)
+	if(isset($_REQUEST['version']) && $version != CHAT_VERSION)
 		throw new Exception("Der Chat-Client besitzt eine ungültige Versionsnummer. Bitte neuladen!");
 }
 

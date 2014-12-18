@@ -92,6 +92,7 @@ tr.post > td
 
 tr.post .name
 {
+	min-width: 6em;
 	max-width: 15em;
 	font-weight: bold;
 }
