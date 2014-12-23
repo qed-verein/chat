@@ -35,7 +35,7 @@ if(strlen($post['message']) > 10000)
 
 /* TODO: Little Bobby Tables laesst gruessen ... - CSS */
 $db = new PDO(SQL_DSN, SQL_USER, SQL_PASSWORD,
-	 array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	 array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4"));
 $sql = sprintf("INSERT INTO %s (name, message, channel, date, ip, user_id, delay, bottag)" .
 	"VALUES (:name, :message, :channel, :date, :ip, :user_id, :delay, :bottag)", SQL_TABLE);
 $stm = $db->prepare($sql);
