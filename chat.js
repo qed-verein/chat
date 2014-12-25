@@ -195,7 +195,7 @@ function FormatScreenPost(post)
 	if(options['ip']) tr.appendChild(ip);
 
 	var name = recvPart.createElement('td');
-	name.innerHTML = NickEscape(post["name"] + ":");
+	name.innerHTML = HtmlEscape(post["name"] + ":");
 	name.setAttribute('class', 'name');
 	tr.appendChild(name);
 
@@ -217,7 +217,7 @@ function FormatMobilePost(post)
 	li.setAttribute('style', 'color:#' + PostColor(post));
 
 	var name = recvPart.createElement('span');
-	name.innerHTML = NickEscape(post["name"] + ":");
+	name.innerHTML = HtmlEscape(post["name"] + ":");
 	name.setAttribute('class', 'name');
 	li.appendChild(name);
 
@@ -287,18 +287,6 @@ function RecreatePosts()
 	ProcessMath();
 	ScrollDown();
 }
-
-
-
-function NickEscape (text)
-{
-    var ret = "";
-    for (var i = 0; i < text.length; i++) {
-	ret += "&#" + text.charCodeAt(i) + ";";
-    }
-    return ret;
-}
-
 
 
 // *********************
