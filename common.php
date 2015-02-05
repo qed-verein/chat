@@ -125,7 +125,7 @@ function chatOptions()
 		'last', 'botblock', 'old', 'ip', 'delay', 'links', 'title');
 	$options = array();
 	foreach($keys as $k)
-		if(isset($_REQUEST[$k])) $options[$k] = $_REQUEST[$k];
+		if(isset($_REQUEST[$k])) $options[$k] = urldecode($_REQUEST[$k]);
 	return $options;
 }
 
