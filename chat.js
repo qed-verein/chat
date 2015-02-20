@@ -545,6 +545,7 @@ function OnHistoryClicked(elt)
 function SetStatus(text)
 {
     recvPart.getElementById("status").innerHTML = text;
+    ScrollDown();
 }
 
 function URIEncodeParameters(params)
