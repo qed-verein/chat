@@ -4,7 +4,7 @@ $session_not_close = true;
 
 require_once('common.php');
 
-if(!userLoggedIn() || $_SERVER['SERVER_PORT'] != 31416)
+if(!userLoggedIn())
 	redirect(urlLogin(chatOptions()));
 
 $layout = uriParamString('layout', 'screen');
