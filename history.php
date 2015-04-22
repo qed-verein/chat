@@ -49,7 +49,7 @@ else if($mode == 'last')
 		"ORDER BY id DESC LIMIT :last, 1", SQL_TABLE);
 	$stm = $db->prepare($sqlFrom);
 	$stm->bindValue('channel', $channel, PDO::PARAM_STR);
-	$stm->bindValue('last', $last, PDO::PARAM_INT);
+	$stm->bindValue('last', $last - 1, PDO::PARAM_INT);
 	$stm->execute();
 	$from = $stm->fetchColumn();
 	if($from === FALSE) exit();
