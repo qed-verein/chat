@@ -52,6 +52,7 @@ else if($mode == 'last')
 	$stm->bindValue('last', $last, PDO::PARAM_INT);
 	$stm->execute();
 	$from = $stm->fetchColumn();
+	if($from === FALSE) exit();
 
 	$sql = sprintf("SELECT * FROM %s WHERE channel = :channel " .
 		" AND id >= :from ORDER BY id", SQL_TABLE);
