@@ -2,6 +2,7 @@ var options = new Object();
 var version = "1416690087"; // muss in data ebenfalls geaendert werden
 
 var recvPart, sendPart, confPart, logsPart;
+var notification, isActive = true;
 
 var defaults = {
 		channel: "", name: "",
@@ -45,6 +46,7 @@ function Init()
 	InitReceiver();
 	InitSender();
 	InitSettings();
+	InitNotifications();
 }
 
 
@@ -151,6 +153,10 @@ function ProcessPost(post)
 	AppendPost(recvPart.getElementById('posts'), post);
 	ProcessMath();
 	UpdateTitle(post['message']);
+	if (window.Notification && Notification.permission === "granted" && !isActive) {
+		if (notification) {notification.close();}
+		notification = new Notification(post["name"], {body : post["message"], icon : "https://www.qed-verein.de/sites/default/files/logo.png"});
+	}
 	ScrollDown();
 }
 
@@ -541,6 +547,24 @@ function OnHistoryClicked(elt)
 // *****************
 // *   Sonstiges   *
 // *****************
+
+function InitNotifications()
+{	
+	if (window.Notification && Notification.permission !== "granted") {
+		Notification.requestPermission(function (status) {
+			if (Notification.permission !== status) {
+				Notification.permission = status;
+			}
+		});
+	}
+	window.onfocus = function () { 
+		isActive = true; 
+	}; 
+
+	window.onblur = function () { 
+		isActive = false; 
+	}; 
+}
 
 function SetStatus(text)
 {
