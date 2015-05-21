@@ -83,10 +83,10 @@
 	<li><label
 title="MathJax ist ein Plugin zum Einfügen von mathematischen Formeln in den Chat. Aktiviert man diese Option, wird zum Beispiel \( (a + b)^2 = a^2 + b^2 + 2ab \) nicht als Text, sondern als Formel angezeigt. Weitere Informationen finden sich unter http://docs.mathjax.org">
 		<input type="checkbox" id="math" onchange="UpdateSettings()">MathJax aktivieren</label></li>
-	<li><label><input type="checkbox" id="old" onchange="UpdateSettings()">Alle empf. Posts anzeigen</label>,</li>
+	<li><label><input type="checkbox" id="old" onchange="UpdateSettings()">Alle empf. Posts anzeigen,</label></li>
 	<li>sonst
 		<input type="button" onclick="Decrease()" value="<">
-		<input type="text" id="last" onchange="UpdateSettings()" size="3" value="24">
+		<input type="text" id="last" onchange="UpdateSettings()" size="2" value="24">
 		<input type="button" onclick="Increase()" value=">">
 	</li>
 	<li><label>Farbschema: <select id="skin" size="1" onchange="UpdateSettings()"></select></label></li>
