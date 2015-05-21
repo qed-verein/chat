@@ -15,13 +15,19 @@ if(isset($_REQUEST['login']))
 	$userId = userAuthenticate($username, $password);
 
 	if(!is_null($userId))
-		$_SESSION['userid'] = $userId;
+	{
+		//$_SESSION['userid'] = $userId;
+		setcookie('userid', $userId, strtotime("+1 month"));
+		setcookie('pwhash', sha1($username . $password), strtotime("+1 month"));
+	}
 	else
 		$errorMessage = "Logindaten sind nicht gültig";
 }
 elseif(isset($_REQUEST['logout']))
 {
-	session_destroy();
+	//session_destroy();
+	setcookie('userid', '', strtotime("-1 day"));
+	setcookie('pwhash', '', strtotime("-1 day"));
 	redirect(urlLogin());
 }
 

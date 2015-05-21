@@ -1,11 +1,22 @@
 <?php
 
 require_once('data.php');
+
+
+function globalExceptionHandler($exception)
+{
+	die(sprintf("%s: %s\n", get_class($exception),
+		$exception->getMessage()));
+}
+set_exception_handler('globalExceptionHandler');
 	
 session_start();
 
 date_default_timezone_set('Europe/Berlin');
 ini_set('display_errors', '0');
+
+if(isset($_COOKIE['userid']) && isset($_COOKIE['pwhash']))
+	$GLOBALS['userid'] = cookieAuthenticate($_COOKIE['userid'], $_COOKIE['pwhash']);
 
 if(empty($ignore_no_login) && !userLoggedIn())
 	die("Du musst dich erst einloggen");
@@ -44,17 +55,27 @@ function userAuthenticate($username, $password)
 	$stm->bindParam('username', $username, PDO::PARAM_STR);
 	$stm->bindParam('password', $pwhash, PDO::PARAM_STR);
 	$stm->execute();
-	$userid = $stm->fetchColumn();
+	$userId = $stm->fetchColumn();
+	return $userId ? $userId : null;
+}
 
-	if($userid)
-		return $userid;
-	else
-		return null;
+function cookieAuthenticate($userid, $pwhash)
+{
+	$db = databaseConnection();
+
+	$sql = "SELECT id FROM user WHERE id=:id AND password=:password";
+	$stm = $db->prepare($sql);
+	$stm->bindParam('id', $userid, PDO::PARAM_INT);
+	$stm->bindParam('password', $pwhash, PDO::PARAM_STR);
+	$stm->execute();
+	$userId = $stm->fetchColumn();
+	return $userId ? $userId : null;
 }
 
 function userLoggedIn()
 {
-	return !empty($_SESSION['userid']);
+	return !empty($GLOBALS['userid']);
+	//return !empty($_SESSION['userid']);
 }
 
 

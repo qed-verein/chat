@@ -44,7 +44,7 @@ $stm->bindValue(':message', $post['message'], PDO::PARAM_STR);
 $stm->bindValue(':channel', $post['channel'], PDO::PARAM_STR);
 $stm->bindValue(':date',    $post['date'],    PDO::PARAM_STR);
 $stm->bindValue(':ip',      $post['ip'],      PDO::PARAM_STR);
-$stm->bindValue(':user_id', $post['userid'],  PDO::PARAM_INT);
+$stm->bindValue(':user_id', $post['userid'],  PDO::PARAM_STR);
 $stm->bindValue(':delay',   $post['delay'],   PDO::PARAM_INT);
 $stm->bindValue(':bottag',  $post['bottag'],  PDO::PARAM_BOOL);
 $stm->execute();
