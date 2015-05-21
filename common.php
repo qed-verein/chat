@@ -10,7 +10,7 @@ function globalExceptionHandler($exception)
 }
 set_exception_handler('globalExceptionHandler');
 	
-session_start();
+//session_start();
 
 date_default_timezone_set('Europe/Berlin');
 ini_set('display_errors', '0');
@@ -21,8 +21,8 @@ if(isset($_COOKIE['userid']) && isset($_COOKIE['pwhash']))
 if(empty($ignore_no_login) && !userLoggedIn())
 	die("Du musst dich erst einloggen");
 
-if(empty($session_not_close))
-	session_write_close();
+//if(empty($session_not_close))
+	//session_write_close();
 
 function colorForName($name)
 {
@@ -61,6 +61,7 @@ function userAuthenticate($username, $password)
 
 function cookieAuthenticate($userid, $pwhash)
 {
+	if(strlen($pwhash) !== 40) return null;
 	$db = databaseConnection();
 
 	$sql = "SELECT id FROM user WHERE id=:id AND password=:password";
