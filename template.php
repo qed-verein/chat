@@ -86,7 +86,7 @@ title="MathJax ist ein Plugin zum Einfügen von mathematischen Formeln in den Ch
 	<li><label><input type="checkbox" id="old" onchange="UpdateSettings()">Alle empf. Posts anzeigen</label>,</li>
 	<li>sonst
 		<input type="button" onclick="Decrease()" value="<">
-		<input type="text" id="last" onchange="UpdateSettings()" size="2" value="24">
+		<input type="text" id="last" onchange="UpdateSettings()" size="1" value="24">
 		<input type="button" onclick="Increase()" value=">">
 	</li>
 	<li><label>Farbschema: <select id="skin" size="1" onchange="UpdateSettings()"></select></label></li>
