@@ -91,7 +91,7 @@ title="MathJax ist ein Plugin zum Einfügen von mathematischen Formeln in den Ch
 	</li>
 	<li><label>Farbschema: <select id="skin" size="1" onchange="UpdateSettings()"></select></label></li>
 	<li><label>Layout: <select id="layout" size="1" onchange="OnLayoutClicked(this)"></select></label></li>
-	<li><a href="account.php?logout=1">Logout</a></li>
+	<li><a href="account.php?logout=1">Ausloggen</a></li>
 </ul>
 <?php if(in_array('mobile', $parts)): ?>
 <p style="text-align: center">
