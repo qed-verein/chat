@@ -26,7 +26,7 @@ $post['message'] = uriParamString('message');
 $post['channel'] = uriParamString('channel', '');
 $post['date']    = date('Y-m-d H-i-s');
 $post['ip']      = getenv('REMOTE_ADDR');
-$post['userid']  = $_SESSION['userid'];
+$post['userid']  = $GLOBALS['userid'];
 $post['delay']   = isset($_REQUEST['delay']) ? uriParamInteger('delay') : null;
 $post['bottag']  = uriParamInteger('bottag', 0);
 

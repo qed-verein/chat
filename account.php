@@ -1,7 +1,6 @@
 <?php
 
 $ignore_no_login = true;
-$session_not_close = true;
 
 require_once('common.php');
 require_once('layout.php');
@@ -16,7 +15,6 @@ if(isset($_REQUEST['login']))
 
 	if(!is_null($userId))
 	{
-		//$_SESSION['userid'] = $userId;
 		setcookie('userid', $userId, strtotime("+1 month"));
 		setcookie('pwhash', sha1($username . $password), strtotime("+1 month"));
 		$GLOBALS['userid'] = $userId;
@@ -26,7 +24,6 @@ if(isset($_REQUEST['login']))
 }
 elseif(isset($_REQUEST['logout']))
 {
-	//session_destroy();
 	setcookie('userid', '', strtotime("-1 day"));
 	setcookie('pwhash', '', strtotime("-1 day"));
 	redirect(urlLogin());
