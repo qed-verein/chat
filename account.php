@@ -19,6 +19,7 @@ if(isset($_REQUEST['login']))
 		//$_SESSION['userid'] = $userId;
 		setcookie('userid', $userId, strtotime("+1 month"));
 		setcookie('pwhash', sha1($username . $password), strtotime("+1 month"));
+		$GLOBALS['userid'] = $userId;
 	}
 	else
 		$errorMessage = "Logindaten sind nicht gültig";
