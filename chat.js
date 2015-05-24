@@ -155,7 +155,10 @@ function ProcessPost(post)
 	UpdateTitle(post['message']);
 	if (window.Notification && Notification.permission === "granted" && !isActive) {
 		if (notification) {notification.close();}
-		notification = new Notification(post["name"], {body : post["message"], icon : "https://www.qed-verein.de/sites/default/files/logo.png"});
+		try{
+			notification = new Notification(post["name"], {body : post["message"], icon : "https://www.qed-verein.de/sites/default/files}/logo.png"});
+		} catch (e) {
+		}
 	}
 	ScrollDown();
 }
