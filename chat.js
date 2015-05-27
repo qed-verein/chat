@@ -156,7 +156,7 @@ function ProcessPost(post)
 	if (window.Notification && Notification.permission === "granted" && !isActive) {
 		if (notification) {notification.close();}
 		try{
-			notification = new Notification(post["name"], {body : post["message"], icon : "https://www.qed-verein.de/sites/default/files/logo.png"});
+			notification = new Notification(post["name"].trim().substr(0, 30), {body : post["message"].substr(0, 100), icon : "https://www.qed-verein.de/sites/default/files/logo.png"});
 		} catch (e) {
 		}
 	}
