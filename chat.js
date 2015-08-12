@@ -2,7 +2,7 @@ var options = new Object();
 var version = "1416690087"; // muss in data ebenfalls geaendert werden
 
 var recvPart, sendPart, confPart, logsPart;
-var notification, isActive = true;
+var notification, isActive = true, unreadCount = 0;
 
 var defaults = {
 		channel: "", name: "",
@@ -159,6 +159,10 @@ function ProcessPost(post)
 			notification = new Notification(post["name"].trim().substr(0, 30), {body : post["message"].substr(0, 200), icon : "https://www.qed-verein.de/sites/default/files/logo.png"});
 		} catch (e) {
 		}
+	}
+	if (!isActive){
+		unreadCount += 1;
+		changeFavicon();
 	}
 	ScrollDown();
 }
@@ -562,6 +566,8 @@ function InitNotifications()
 	}
 	window.onfocus = function () { 
 		isActive = true; 
+		unreadCount = 0;
+		changeFavicon();
 	}; 
 
 	window.onblur = function () { 
@@ -594,6 +600,23 @@ function URIDecodeParameters() {
 		vars[k] = v;
 	});
 	return vars;
+}
+
+// from http://stackoverflow.com/questions/260857/changing-website-favicon-dynamically
+function changeFavicon() {
+	unreadCount = (unreadCount > 10) ? 10 : unreadCount;
+	src = "/" + unreadCount + ".ico";
+	if (unreadCount == 0) {
+		src  = "/favicon.ico";
+	}
+	var link = document.createElement('link'), oldLink = document.getElementById('dynamic-favicon');
+	link.id = 'dynamic-favicon';
+	link.rel = 'shortcut icon';
+	link.href = src;
+	if (oldLink) {
+		document.head.removeChild(oldLink);
+	}
+	document.head.appendChild(link);
 }
 
 
