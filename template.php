@@ -80,6 +80,7 @@
 	<li><label><input type="checkbox" id="delay" onchange="UpdateSettings()">Delays anzeigen</label></li>
 	<li><label><input type="checkbox" id="links" onchange="UpdateSettings()">Links anzeigen</label></li>
 	<li><label><input type="checkbox" id="botblock" onchange="UpdateSettings()">Sinn anzeigen</label></li>
+	<li><label><input type="checkbox" id="notifications" onchange="UpdateSettings()">Notifications anzeigen</label></li>
 	<li><label
 title="MathJax ist ein Plugin zum Einfügen von mathematischen Formeln in den Chat. Aktiviert man diese Option, wird zum Beispiel \( (a + b)^2 = a^2 + b^2 + 2ab \) nicht als Text, sondern als Formel angezeigt. Weitere Informationen finden sich unter http://docs.mathjax.org">
 		<input type="checkbox" id="math" onchange="UpdateSettings()">MathJax aktivieren</label></li>

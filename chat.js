@@ -6,7 +6,7 @@ var notification, isActive = true, unreadCount = 0;
 
 var defaults = {
 		channel: "", name: "",
-		last: 24, botblock: 0, old: 0, ip: 0, delay: 0, links: 1, title: 1, math: 0,
+		last: 24, botblock: 0, old: 0, ip: 0, delay: 0, links: 1, title: 1, math: 0, notifications: 1,
 		layout: 'screen', skin: 'dunkelgrauton',
 		limit: 256,	wait: 60,
 		redirect: "http://uxul.de/redirect.php?"
@@ -16,7 +16,7 @@ var defaults = {
 function LoadOptions()
 {
 	integerOptions = ['last', 'limit', 'wait'];
-	booleanOptions = ['botblock', 'old', 'ip', 'delay', 'links', 'title', 'math'];
+	booleanOptions = ['botblock', 'old', 'ip', 'delay', 'links', 'title', 'math', 'notifications'];
 	params = URIDecodeParameters()
 	for(var key in defaults)
 	{
@@ -153,7 +153,7 @@ function ProcessPost(post)
 	AppendPost(recvPart.getElementById('posts'), post);
 	ProcessMath();
 	UpdateTitle(post['message']);
-	if (window.Notification && Notification.permission === "granted" && !isActive) {
+	if (window.Notification && Notification.permission === "granted" && !isActive && options['notifications']) {
 		if (notification) {notification.close();}
 		try{
 			notification = new Notification(post["name"].trim().substr(0, 30), {body : post["message"].substr(0, 200), icon : "https://www.qed-verein.de/sites/default/files/logo.png"});
@@ -315,6 +315,7 @@ function InitSettings()
 	confPart.getElementById("last").value = count = options["last"];
 	confPart.getElementById("botblock").checked = options["botblock"];
 	confPart.getElementById("math").checked = options["math"];
+	confPart.getElementById("notifications").checked = options["notifications"];
 
 	var skinSelect = confPart.getElementById('skin');
 	skinSelect.add(new Option("Dunkelgrauton", 'dunkelgrauton'));
@@ -338,6 +339,7 @@ function UpdateSettings()
 	options["links"] = confPart.getElementById("links").checked ? 1 : 0;
 	options["old"] = confPart.getElementById("old").checked ? 1 : 0;
 	options["botblock"] = confPart.getElementById("botblock").checked ? 1 : 0;
+	options["notifications"] = confPart.getElementById("notifications").checked ? 1 : 0;
 	options["skin"] = confPart.getElementById("skin").value;
 	options["math"] = confPart.getElementById("math").checked ? 1 : 0;
 	options["name"] = sendPart.getElementById("name").value;
@@ -347,6 +349,7 @@ function UpdateSettings()
 	if(isNaN(num)) num = options["last"];
 	input.value = options["last"] = Math.min(Math.max(num, 1), 1000);
 	ApplySettings();
+	InitNotifications();
 }
 
 
@@ -557,7 +560,7 @@ function OnHistoryClicked(elt)
 
 function InitNotifications()
 {	
-	if (window.Notification && Notification.permission !== "granted") {
+	if (window.Notification && Notification.permission !== "granted" && options['notifications']) {
 		Notification.requestPermission(function (status) {
 			if (Notification.permission !== status) {
 				Notification.permission = status;
