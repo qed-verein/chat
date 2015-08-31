@@ -128,9 +128,9 @@ function versionCheck()
 }
 
 function urlLogin($options = array()) {
-	return 'https://chat.qed-verein.de31416/account.php?' .	http_build_query($options);}
+	return 'https://chat.qed-verein.de:31416/account.php?' .	http_build_query($options);}
 function urlLogout() {
-	return 'https://chat.qed-verein.de31416/account.php?logout=1';}
+	return 'https://chat.qed-verein.de:31416/account.php?logout=1';}
 function urlChat($options = array()) {
 	return 'https://chat.qed-verein.de:31416/?' . http_build_query($options);
 }
