@@ -69,6 +69,7 @@
 	<input id="send" type="submit" value="Senden" tabindex="3" onclick="Send()">
 	<input type="button" value="Einstellen" tabindex="4" onclick="ShowMenu('settings')">
 	<input type="button" value="Logs" tabindex="5" onclick="ShowMenu('logs')">
+	<input id="quote" type="button" value="Zitieren" tabindex="6" onclick="Quote()" style = "display: none;">
 	<textarea id="message" placeholder="Nachricht" tabindex="2" rows="3" cols="50"></textarea>
 </div>
 <?php endif; ?>

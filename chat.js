@@ -2,7 +2,7 @@ var options = new Object();
 var version = "1416690087"; // muss in data ebenfalls geaendert werden
 
 var recvPart, sendPart, confPart, logsPart;
-var notification, isActive = true, unreadCount = 0;
+var notification, isActive = true, unreadCount = 0, selectmode = 0;
 
 var defaults = {
 		channel: "", name: "",
@@ -260,6 +260,36 @@ function FormatMobilePost(post)
 	if(options["links"]) message.innerHTML = InsertLinks(message.innerHTML);
 	message.setAttribute('class', 'message');
 	li.appendChild(message);
+	
+	var timer = null;
+
+	li.onmousedown = function(){
+		timer = setTimeout( function(){
+			if (li.style.backgroundColor == 'blue') {
+				li.style.backgroundColor = '';
+				for (var i = 0; i < li.children.length; i+=1){
+					li.children[i].style.color = '';
+				}
+				selectmode -= 1;
+				if (selectmode == 0){
+					document.getElementById("quote").style.display = "none";
+				}
+			} else {
+				li.style.backgroundColor = 'blue';
+				for (var i = 0; i < li.children.length; i+=1){
+					li.children[i].style.color = 'white';
+				}
+				selectmode += 1;
+				if (selectmode == 1){
+					document.getElementById("quote").style.display = "inline-block";
+				}
+			}
+		}, selectmode ? 0 : 1000  );
+	};
+
+	li.onmouseup = function(){
+	  clearTimeout( timer );
+	};
 
 	return li;
 }
@@ -557,6 +587,27 @@ function OnHistoryClicked(elt)
 // *****************
 // *   Sonstiges   *
 // *****************
+
+
+function Quote()
+{
+	var posts = document.getElementById("posts");
+	var q = "";
+	for (var i = 0; i < posts.children.length; i++){
+		var child = posts.children[i];
+		if (child.style.backgroundColor == 'blue'){
+			child.onmousedown();
+		/*	child.style.backgroundColor = '';
+			for (var j = 0; j < li.children.length; j++){
+				child.children[j].style.color = '';
+			}*/
+			q += child.children[1].children[0].innerHTML + " " + (options['ip'] ?  child.children[1].children[1].innerHTML : "") +  child.children[0].innerHTML + ": " +  child.children[2].innerHTML + "\n";
+		}
+			
+	}
+	document.getElementById("message").value = q;
+	
+}
 
 function InitNotifications()
 {	
