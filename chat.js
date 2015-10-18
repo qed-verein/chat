@@ -263,7 +263,7 @@ function FormatMobilePost(post)
 	
 	var timer = null;
 
-	li.onmousedown = function(){
+	li.ontouchstart = function(){
 		timer = setTimeout( function(){
 			if (li.style.backgroundColor == 'blue') {
 				li.style.backgroundColor = '';
@@ -287,7 +287,10 @@ function FormatMobilePost(post)
 		}, selectmode ? 0 : 1000  );
 	};
 
-	li.onmouseup = function(){
+	li.ontouchend = function(){
+	  clearTimeout( timer );
+	};
+	li.ontouchmove = function(){
 	  clearTimeout( timer );
 	};
 
@@ -596,7 +599,7 @@ function Quote()
 	for (var i = 0; i < posts.children.length; i++){
 		var child = posts.children[i];
 		if (child.style.backgroundColor == 'blue'){
-			child.onmousedown();
+			child.ontouchstart();
 		/*	child.style.backgroundColor = '';
 			for (var j = 0; j < li.children.length; j++){
 				child.children[j].style.color = '';
