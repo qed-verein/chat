@@ -2,7 +2,7 @@ var options = new Object();
 var version = "1416690087"; // muss in data ebenfalls geaendert werden
 
 var recvPart, sendPart, confPart, logsPart;
-var notification, isActive = true, unreadCount = 0, selectmode = 0;
+var notification, isActive = true, unreadCount = 0, selectcount = 0;
 
 var defaults = {
 		channel: "", name: "",
@@ -270,8 +270,8 @@ function FormatMobilePost(post)
 				for (var i = 0; i < li.children.length; i+=1){
 					li.children[i].style.color = '';
 				}
-				selectmode -= 1;
-				if (selectmode == 0){
+				selectcount -= 1;
+				if (selectcount == 0){
 					document.getElementById("quote").style.display = "none";
 				}
 			} else {
@@ -279,17 +279,18 @@ function FormatMobilePost(post)
 				for (var i = 0; i < li.children.length; i+=1){
 					li.children[i].style.color = 'white';
 				}
-				selectmode += 1;
-				if (selectmode == 1){
+				selectcount += 1;
+				if (selectcount == 1){
 					document.getElementById("quote").style.display = "inline-block";
 				}
 			}
-		}, selectmode ? 0 : 1000  );
+		}, selectcount ? 0 : 1000  );
 	};
 
 	li.ontouchend = function(){
 	  clearTimeout( timer );
 	};
+	
 	li.ontouchmove = function(){
 	  clearTimeout( timer );
 	};
@@ -604,11 +605,13 @@ function Quote()
 			for (var j = 0; j < li.children.length; j++){
 				child.children[j].style.color = '';
 			}*/
-			q += child.children[1].children[0].innerHTML + " " + (options['ip'] ?  child.children[1].children[1].innerHTML : "") +  child.children[0].innerHTML + ": " +  child.children[2].innerHTML + "\n";
+			q += child.children[1].children[0].innerHTML + " " + (options['ip'] ?  child.children[1].children[1].innerHTML : "") +  child.children[0].innerHTML + " " +  child.children[2].innerHTML + "\n";
 		}
 			
 	}
 	document.getElementById("message").value = q;
+	document.getElementById("quote").style.display = "none";
+	selectcount = 0;
 	
 }
 
