@@ -6,7 +6,8 @@ var notification, isActive = true, unreadCount = 0, selectcount = 0;
 
 var defaults = {
 		channel: "", name: "",
-		last: 24, botblock: 0, old: 0, ip: 0, delay: 0, links: 1, title: 1, math: 0, notifications: 1,
+		last: 24, botblock: 0, old: 0, ip: 0, delay: 0, links: 1, title: 1, math: 0, 
+		notifications: 0, favicon: 0,
 		layout: 'screen', skin: 'dunkelgrauton',
 		limit: 256,	wait: 60,
 		redirect: "http://uxul.de/redirect.php?"
@@ -16,7 +17,7 @@ var defaults = {
 function LoadOptions()
 {
 	integerOptions = ['last', 'limit', 'wait'];
-	booleanOptions = ['botblock', 'old', 'ip', 'delay', 'links', 'title', 'math', 'notifications'];
+	booleanOptions = ['botblock', 'old', 'ip', 'delay', 'links', 'title', 'math', 'notifications', 'favicon'];
 	params = URIDecodeParameters()
 	for(var key in defaults)
 	{
@@ -666,7 +667,7 @@ function URIDecodeParameters() {
 
 // from http://stackoverflow.com/questions/260857/changing-website-favicon-dynamically
 function changeFavicon() {
-	unreadCount = (unreadCount > 10) ? 10 : unreadCount;
+	unreadCount = ((unreadCount > 10) ? 10 : unreadCount) * options["favicon"];
 	src = "/" + unreadCount + ".ico";
 	if (unreadCount == 0) {
 		src  = "/favicon.ico";
