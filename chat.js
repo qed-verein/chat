@@ -380,6 +380,7 @@ function UpdateSettings()
 	options["skin"] = confPart.getElementById("skin").value;
 	options["math"] = confPart.getElementById("math").checked ? 1 : 0;
 	options["name"] = sendPart.getElementById("name").value;
+	options["favicon"] = confPart.getElementById("favicon").checked ? 1 : 0;
 
 	var input = confPart.getElementById("last");
 	var num = parseInt(input.value);
