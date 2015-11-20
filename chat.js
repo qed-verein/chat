@@ -261,39 +261,41 @@ function FormatMobilePost(post)
 	message.setAttribute('class', 'message');
 	li.appendChild(message);
 	
-	var timer = null;
+	if (!inHistoryMode){
+		var timer = null;
 
-	li.ontouchstart = function(){
-		timer = setTimeout( function(){
-			if (li.style.backgroundColor == 'blue') {
-				li.style.backgroundColor = '';
-				for (var i = 0; i < li.children.length; i+=1){
-					li.children[i].style.color = '';
+		li.ontouchstart = function(){
+			timer = setTimeout( function(){
+				if (li.style.backgroundColor == 'blue') {
+					li.style.backgroundColor = '';
+					for (var i = 0; i < li.children.length; i+=1){
+						li.children[i].style.color = '';
+					}
+					selectcount -= 1;
+					if (selectcount == 0){
+						document.getElementById("quote").style.display = "none";
+					}
+				} else {
+					li.style.backgroundColor = 'blue';
+					for (var i = 0; i < li.children.length; i+=1){
+						li.children[i].style.color = 'white';
+					}
+					selectcount += 1;
+					if (selectcount == 1){
+						document.getElementById("quote").style.display = "inline-block";
+					}
 				}
-				selectcount -= 1;
-				if (selectcount == 0){
-					document.getElementById("quote").style.display = "none";
-				}
-			} else {
-				li.style.backgroundColor = 'blue';
-				for (var i = 0; i < li.children.length; i+=1){
-					li.children[i].style.color = 'white';
-				}
-				selectcount += 1;
-				if (selectcount == 1){
-					document.getElementById("quote").style.display = "inline-block";
-				}
-			}
-		}, selectcount ? 0 : 1000  );
-	};
+			}, selectcount ? 0 : 1000  );
+		};
 
-	li.ontouchend = function(){
-	  clearTimeout( timer );
-	};
+		li.ontouchend = function(){
+		  clearTimeout( timer );
+		};
 	
-	li.ontouchmove = function(){
-	  clearTimeout( timer );
-	};
+		li.ontouchmove = function(){
+		  clearTimeout( timer );
+		};
+	}
 
 	return li;
 }
