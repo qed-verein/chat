@@ -7,7 +7,7 @@ var notification, isActive = true, unreadCount = 0, selectcount = 0;
 var defaults = {
 		channel: "", name: "",
 		last: 24, botblock: 0, old: 0, ip: 0, delay: 0, links: 1, title: 1, math: 0, 
-		notifications: 0, favicon: 0,
+		notifications: 1, favicon: 1,
 		layout: 'screen', skin: 'dunkelgrauton',
 		limit: 256,	wait: 60,
 		redirect: "http://uxul.de/redirect.php?"
