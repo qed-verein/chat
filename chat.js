@@ -353,6 +353,7 @@ function InitSettings()
 	confPart.getElementById("botblock").checked = options["botblock"];
 	confPart.getElementById("math").checked = options["math"];
 	confPart.getElementById("notifications").checked = options["notifications"];
+	confPart.getElementById("favicon").checked = options["favicon"];
 
 	var skinSelect = confPart.getElementById('skin');
 	skinSelect.add(new Option("Dunkelgrauton", 'dunkelgrauton'));
