@@ -158,6 +158,9 @@ function ProcessPost(post)
 		if (notification) {notification.close();}
 		try{
 			notification = new Notification(post["name"].trim().substr(0, 30), {body : post["message"].substr(0, 200), icon : "https://www.qed-verein.de/sites/default/files/logo.png"});
+			setTimeout(function(){
+					notification.close();
+				}, 3000); 
 		} catch (e) {
 		}
 	}
