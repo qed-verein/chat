@@ -538,7 +538,7 @@ function LoadHistory()
 	recvRequest.onreadystatechange = OnHistoryResponse;
 	recvRequest.open('GET', 'history.php?' + URIEncodeParameters(parameters), true);
 	recvRequest.send();
-	UpdateTitle("Logs vom QED-Chat");
+	UpdateTitle("Log des QED-Chats");
 }
 
 // Wird aufgerufen, falls der Server eine Antwort geschickt hat.
