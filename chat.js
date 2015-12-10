@@ -584,6 +584,8 @@ function OnHistoryClicked(elt)
 		url += URIEncodeParameters({
 			from : logsPart.getElementById("logFrom").value,
 			to : logsPart.getElementById("logTo").value});
+	else if(elt.id == 'sincepost')
+		url += URIEncodeParameters({userid: '1'});
 
 	var tempOptions = new Object();
 	for(var i in options)

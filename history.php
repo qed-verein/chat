@@ -22,8 +22,8 @@ $last = uriParamInteger('last', 100);
 $from = strtotime(uriParamString('from', ''));
 $to = strtotime(uriParamString('to', ''));
 
-
 $mode = isset($_REQUEST['last']) ? 'last' : 'date';
+$mode = isset($_REQUEST['userid']) ? 'post': $mode;
 
 if($mode == 'date' && ($to === false || $from === false))
 	throw new Exception("Datum konnte nicht erkannt werden.");
@@ -61,7 +61,23 @@ else if($mode == 'last')
 	$stm->bindValue('from', $from, PDO::PARAM_INT);
 	$stm->execute();
 }
+else if($mode =='post')
+{
+	$sqlFrom = sprintf("SELECT MAX(id) FROM %s WHERE channel = :channel AND user_id = :user_id", SQL_TABLE);
+	$stm = $db->prepare($sqlFrom);
+	$stm->bindValue('channel', $channel, PDO::PARAM_STR);
+	$stm->bindValue('user_id',$GLOBALS['userid'], PDO::PARAM_STR);
+	$stm->execute();
+	$from = $stm->fetchColumn();
+	if($from === FALSE) exit();
 
+	$sql = sprintf("SELECT * FROM %s WHERE channel = :channel " .
+		" AND id >= :from ORDER BY id LIMIT 10000", SQL_TABLE);
+	$stm = $db->prepare($sql);
+	$stm->bindValue('channel', $channel, PDO::PARAM_STR);
+	$stm->bindValue('from', $from, PDO::PARAM_INT);
+	$stm->execute();
+}
 while($row = $stm->fetch(PDO::FETCH_ASSOC))
 	echo jsonPost($row);
 
