@@ -157,7 +157,7 @@ function ProcessPost(post)
 	if (window.Notification && Notification.permission === "granted" && !isActive && options['notifications']) {
 		if (notification) {notification.close();}
 		try{
-			notification = new Notification(post["name"].trim().substr(0, 30), {body : post["message"].substr(0, 200), icon : "https://www.qed-verein.de/sites/default/files/logo.png"});
+			notification = new Notification(post["name"].trim().substr(0, 30), {body : post["message"].substr(0, 200), icon : "favicon.ico"});
 			setTimeout(function(){
 					notification.close();
 				}, 3000); 
@@ -605,24 +605,27 @@ function OnHistoryClicked(elt)
 
 function Quote()
 {
-	var posts = document.getElementById("posts");
+	var postsh = document.getElementById("posts");
 	var q = "";
-	for (var i = 0; i < posts.children.length; i++){
-		var child = posts.children[i];
+	for (var i = 0; i < postsh.children.length; i++){
+		var child = postsh.children[i];
 		if (child.style.backgroundColor == 'blue'){
 			child.ontouchstart();
+			child.ontouchend();
 		/*	child.style.backgroundColor = '';
 			for (var j = 0; j < li.children.length; j++){
 				child.children[j].style.color = '';
 			}*/
-			q += child.children[1].children[0].innerHTML + " " + (options['ip'] ?  child.children[1].children[1].innerHTML : "") +  child.children[0].innerHTML + " " +  child.children[2].innerHTML + "\n";
+			q+=posts[i]['date'] +" " +(options['ip'] ?  posts[i]['ip'] : "") + posts[i]['name'].trim() + ": " + posts[i]['message']+"\n";
+
+//q += child.children[1].children[0].innerHTML + " " + (options['ip'] ?  child.children[1].children[1].innerHTML : "") +  child.children[0].innerHTML + " " +  child.children[2].innerHTML + "\n";
 		}
 			
 	}
 	document.getElementById("message").value = q;
 	document.getElementById("quote").style.display = "none";
 	selectcount = 0;
-	
+	RecreatePosts();
 }
 
 function InitNotifications()
