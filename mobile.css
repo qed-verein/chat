@@ -10,7 +10,7 @@ body
 	left: 0em;
 	right: 0em;
 	bottom: 0em;
-	height: 6em;
+	height: 7em;
 }
 
 #messagebox
@@ -18,7 +18,7 @@ body
 	position: absolute;
 	left: 0em;
 	right: 0em;
-	bottom: 6em;
+	bottom: 7em;
 	top: 0em;
 	overflow-y: scroll;
 }
