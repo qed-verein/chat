@@ -35,7 +35,10 @@ body
 {
 	display: none;
 	position: fixed;
-	margin: auto;
+	left: 5em;
+	right: 5em;
+	top: 5em;
+	bottom: 5em;
 	z-index: 1;
 }
 
