@@ -33,12 +33,12 @@ body
 
 #settingbox, #logbox
 {
+	font-size: x-large;
 	display: none;
 	position: fixed;
 	left: 5em;
 	right: 5em;
 	top: 5em;
-	bottom: 5em;
 	z-index: 1;
 }
 
