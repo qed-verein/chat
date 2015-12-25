@@ -117,4 +117,4 @@ li.post .message
 #settingbox li {display: block;}
 #logbox ul {display: block;}
 
-input[type="button"] {font-size: large;}
+#inputbox input {font-size: large;}
