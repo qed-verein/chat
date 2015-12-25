@@ -11,7 +11,6 @@ body
 	right: 0em;
 	bottom: 0em;
 	height: 6em;
-	font-size: x-large;
 }
 
 #messagebox
@@ -117,3 +116,5 @@ li.post .message
 
 #settingbox li {display: block;}
 #logbox ul {display: block;}
+
+input[type="button"] {font-size: large;}
