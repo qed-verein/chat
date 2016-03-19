@@ -693,11 +693,15 @@ function changeFavicon() {
 	document.head.appendChild(link);
 }
 
+function InvertColor(color)
+{
+	var s = (parseInt(color,16) ^ 0xFFFFFF).toString(16);
+	return "0".repeat(6-s.length)+s;
+}
 
 function PostColor(post)
 {
-	return (options['skin'] != 'mylittlepony') ? post['color'] :
-		(parseInt(post['color'], 16) ^ parseInt("FFFFFF", 16)).toString(16);
+	return (options['skin'] != 'mylittlepony') ? post['color'] : InvertColor(post['color']);
 }
 
 function ScrollDown()
