@@ -25,7 +25,7 @@ $from = strtotime(uriParamString('from', ''));
 $to = strtotime(uriParamString('to', ''));
 
 $mode = isset($_REQUEST['last']) ? 'last' : 'date';
-$mode = isset($_REQUEST['userid']) ? 'post': $mode;
+if(isset($_REQUEST['last']) && $_REQUEST['last'] == 'own') $mode = 'post';
 
 if($mode == 'date' && ($to === false || $from === false))
 	throw new Exception("Datum konnte nicht erkannt werden.");
