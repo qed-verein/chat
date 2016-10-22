@@ -103,6 +103,9 @@ function OnReceiverResponse()
 	if(recvRequest.readyState < 3)
 		return;
 
+	if(recvRequest.status < 200 || recvRequest.status >= 300)
+		return;
+
     var end, obj;
     while((end = recvRequest.responseText.indexOf("\n", textpos)) >= 0)
     {
@@ -539,7 +542,7 @@ function LoadHistory()
 
 	recvRequest = new XMLHttpRequest();
 	recvRequest.onreadystatechange = OnHistoryResponse;
-	recvRequest.open('GET', 'history.php?' + URIEncodeParameters(parameters), true);
+	recvRequest.open('GET', '/rubychat/history?' + URIEncodeParameters(parameters), true);
 	recvRequest.send();
 	UpdateTitle("Log des QED-Chats");
 }
@@ -572,23 +575,23 @@ function OnHistoryClicked(elt)
 {
 	url = "history.html?";
 	if(elt.id == 'lastHour')
-		url += URIEncodeParameters({from: '-1 hour', to: '+0 sec'});
+		url += URIEncodeParameters({mode: 'daterecent', last: '3600'});
 	else if(elt.id == 'lastDay')
-		url += URIEncodeParameters({from: '-1 day', to: '+0 sec'});
+		url += URIEncodeParameters({mode: 'daterecent', last: '86400'});
 	else if(elt.id == 'lastWeek')
-		url += URIEncodeParameters({from: '-7 days', to: '+0 sec'});
+		url += URIEncodeParameters({mode: 'daterecent', last: '604800'});
 	else if(elt.id == 'last100')
-		url += URIEncodeParameters({last: '100'});
+		url += URIEncodeParameters({mode: 'postrecent', last: '100'});
 	else if(elt.id == 'last300')
-		url += URIEncodeParameters({last: '300'});
+		url += URIEncodeParameters({mode: 'postrecent', last: '300'});
 	else if(elt.id == 'last1000')
-		url += URIEncodeParameters({last: '1000'});
+		url += URIEncodeParameters({mode: 'postrecent', last: '1000'});
 	else if(elt.id == 'interval')
-		url += URIEncodeParameters({
+		url += URIEncodeParameters({mode: 'dateinterval',
 			from : logsPart.getElementById("logFrom").value,
 			to : logsPart.getElementById("logTo").value});
 	else if(elt.id == 'sincepost')
-		url += URIEncodeParameters({userid: '1'});
+		url += URIEncodeParameters({mode: 'lastownpost'});
 
 	var tempOptions = new Object();
 	for(var i in options)
