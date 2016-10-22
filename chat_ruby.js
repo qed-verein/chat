@@ -591,7 +591,7 @@ function OnHistoryClicked(elt)
 			from : logsPart.getElementById("logFrom").value,
 			to : logsPart.getElementById("logTo").value});
 	else if(elt.id == 'sincepost')
-		url += URIEncodeParameters({mode: 'lastownpost'});
+		url += URIEncodeParameters({mode: 'fromownpost'});
 
 	var tempOptions = new Object();
 	for(var i in options)
