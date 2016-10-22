@@ -8,7 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="common.css">
 <?php if(in_array('screen', $parts)): ?>
 	<link rel="stylesheet" type="text/css" href="screen.css">
-	<script type="text/javascript" src="chat.js"></script>
+	<script type="text/javascript" src="chat_ruby.js"></script>
 <?php elseif(in_array('mobile', $parts)): ?>
 	<link rel="stylesheet" type="text/css" href="mobile.css">
 	<script type="text/javascript" src="chat_ruby.js"></script>

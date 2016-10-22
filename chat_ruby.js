@@ -79,7 +79,7 @@ function ReceiverConnect()
 	firstReconnect = false;
 	timeout = setTimeout("ReceiverConnect()", options['wait'] * 1000);
 
-	uri = "view.php?" + URIEncodeParameters({
+	uri = "/rubychat/view?" + URIEncodeParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],
 	    version: version, keepalive: Math.ceil(options["wait"] / 2)});
 	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
@@ -117,7 +117,9 @@ function OnReceiverResponse()
 
 		SetStatus("");
 		textpos = end + 1;
-		firstReconnect = true;
+
+		 if(obj["type"] == "ok" && obj["finished"] == "1")
+			firstReconnect = true;
 
 		// Timeout zurücksetzen
 		clearTimeout(timeout);
@@ -468,7 +470,7 @@ function Send()
 	ScrollDown();
 	sendRequest = new XMLHttpRequest();
 	sendRequest.onreadystatechange = OnSenderResponse;
-	sendRequest.open("POST", "post.php", true);
+	sendRequest.open("POST", "/rubychat/post", true);
 	sendRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	sendRequest.setRequestHeader("Content-Encoding", "utf-8");
 
