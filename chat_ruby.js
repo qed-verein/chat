@@ -573,7 +573,7 @@ function OnHistoryResponse()
 // Wird aufgerufen, wenn der Benutzer auf einen Link zum Chatlog klickt
 function OnHistoryClicked(elt)
 {
-	url = "history.html?";
+	url = "history_ruby.html?";
 	if(elt.id == 'lastHour')
 		url += URIEncodeParameters({mode: 'daterecent', last: '3600'});
 	else if(elt.id == 'lastDay')
