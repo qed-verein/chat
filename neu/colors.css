@@ -1,0 +1,72 @@
+.schwarzwiedienacht, .schwarzwiedienacht input, .schwarzwiedienacht textarea, .schwarzwiedienacht select
+{
+	color: #ccc;
+	background-color: #000;
+	border-color: #666;
+}
+
+.schwarzwiedienacht .box
+{
+	background-color: #111;
+	border-color: #666;
+}
+
+.schwarzwiedienacht a:visited
+{
+	color: #484;
+}
+
+
+.dunkelgrauton, .dunkelgrauton input, .dunkelgrauton textarea, .dunkelgrauton select, .dunkelgrauton .box
+{
+	color: #ccc;
+	background-color: #555;
+	border-color: #AAA;
+}
+
+.mylittlepony
+{
+	background-color: #edeef2;
+	color: #5f50a3;
+}
+
+
+.mylittlepony #inputbox input, .mylittlepony  #inputbox textarea, .mylittlepony #inputbox
+{
+	background-color: #f6b7d2;
+	border-color: #e882b2;
+	color: #ed468e;
+}
+
+.mylittlepony #logbox input, .mylittlepony #logbox a, .mylittlepony #logbox
+{
+	background-color: #fdf6ae;
+	border-color: #ecde7b;
+	color: #e181af;
+}
+
+.mylittlepony #settingbox, .mylittlepony #settingbox input,
+.mylittlepony #settingbox select, .mylittlepony #settingbox a
+{
+	background-color: #fbbb64;
+	border-color: #cc9b58;
+	color: #b98b4d;
+}
+
+
+.mylittlepony #messagebox, .mylittlepony #historybox
+{
+	background-color: #d29fe4;
+	border-color: #a66bbf;
+	color: #283873;
+}
+
+.mylittlepony .inactivelog
+{
+	color: green;
+}
+
+.mylittlepony .activelog
+{
+	color: orange;
+}

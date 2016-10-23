@@ -28,13 +28,8 @@ function LoadOptions()
 			options[key] = parseInt(options[key]) ? 1 : 0;
 	}
 
-	if(options['layout'] != 'frames')
-		recvPart = sendPart = confPart = logsPart = document;
-	else
-	{
-		recvPart = top.recv.document; sendPart = top.send.document;
-		confPart = top.conf.document; logsPart = top.logs.document;
-	}
+	recvPart = sendPart = confPart = logsPart = document;
+
 }
 
 // Initialisiere das Skript
@@ -371,8 +366,7 @@ function InitSettings()
 	skinSelect.value = options['skin'];
 
 	var layoutSelect = confPart.getElementById('layout');
-	layoutSelect.add(new Option("mit Frames", 'frames'));
-	layoutSelect.add(new Option("ohne Frames", 'screen'));
+	layoutSelect.add(new Option("für Bildschirme", 'screen'));
 	layoutSelect.add(new Option("mobile Version", 'mobile'));
 	layoutSelect.value = options['layout'];
 
@@ -388,6 +382,7 @@ function UpdateSettings()
 	options["botblock"] = confPart.getElementById("botblock").checked ? 1 : 0;
 	options["notifications"] = confPart.getElementById("notifications").checked ? 1 : 0;
 	options["skin"] = confPart.getElementById("skin").value;
+	options["layout"] = confPart.getElementById("layout").value;
 	options["math"] = confPart.getElementById("math").checked ? 1 : 0;
 	options["name"] = sendPart.getElementById("name").value;
 	options["favicon"] = confPart.getElementById("favicon").checked ? 1 : 0;
@@ -417,16 +412,18 @@ function Increase()
 
 function ApplySettings()
 {
-	if(!inHistoryMode) URIReplaceState();
-	if(!inHistoryMode) RecreatePosts();
+	if(!inHistoryMode) {URIReplaceState(); RecreatePosts();}
+	if(options['math'] == 1) LoadMathjax();
 
-	if(options['math'] == 1)
-		LoadMathjax();
+	document.getElementsByTagName('body')[0].className = options['layout'] + " " + options['skin'];
+	document.getElementById('layoutcsslink').href = (options['layout'] == 'mobile' ? 'mobile.css' : 'screen.css');
 
-	var parts = [recvPart, sendPart, confPart, logsPart];
-	for(var i in parts)
-		parts[i].getElementsByTagName('body')[0].className = options['layout'] + " " + options['skin'];
-
+	if(!inHistoryMode)
+	{
+		document.getElementById('settingbox').style.display = (options['layout'] == 'screen') ? 'block' : 'none';
+		document.getElementById('logbox').style.display = (options['layout'] == 'screen') ? 'block' : 'none';
+	}
+	
 }
 
 function URIReplaceState()
@@ -438,14 +435,6 @@ function URIReplaceState()
 		history.replaceState(null, '', '?' + URIEncodeParameters(tempOptions));
 }
 
-function OnLayoutClicked(elt)
-{
-	var tempOptions = new Object();
-	for(var i in options)
-		if(options[i] != defaults[i]) tempOptions[i] = options[i];
-	tempOptions['layout'] = elt.value;
-	document.location.href = 'index_ruby.php?' + URIEncodeParameters(tempOptions);
-}
 
 // **************
 // *   Sender   *
@@ -534,7 +523,6 @@ function LoadHistory()
 	LoadOptions();
 	ApplySettings();
 
-	document.getElementById('layoutcsslink').href = (options['layout'] == 'mobile' ? 'mobile.css' : 'screen.css');
 	SetStatus("Lade alte Posts...");
 
 	parameters = URIDecodeParameters();
@@ -573,7 +561,7 @@ function OnHistoryResponse()
 // Wird aufgerufen, wenn der Benutzer auf einen Link zum Chatlog klickt
 function OnHistoryClicked(elt)
 {
-	url = "history_ruby.html?";
+	url = "history.html?";
 	if(elt.id == 'lastHour')
 		url += URIEncodeParameters({mode: 'daterecent', last: '3600'});
 	else if(elt.id == 'lastDay')
@@ -591,12 +579,11 @@ function OnHistoryClicked(elt)
 			from : logsPart.getElementById("logFrom").value,
 			to : logsPart.getElementById("logTo").value});
 	else if(elt.id == 'sincepost')
-		url += URIEncodeParameters({mode: 'fromownpost'});
+		url += URIEncodeParameters({mode: 'lastownpost'});
 
 	var tempOptions = new Object();
 	for(var i in options)
 		if(options[i] != defaults[i]) tempOptions[i] = options[i];
-	if(options['layout'] == 'frames') tempOptions['layout'] = 'screen';
 	delete tempOptions['last'];
 	url += '&' + URIEncodeParameters(tempOptions);
 
@@ -766,10 +753,7 @@ function LoadMathjax()
 function ProcessMath()
 {
 	if(options['math'] == 1 && mathjaxProgress == 2)
-	{
-		if(options['layout'] == 'frames') top.recv.Typeset(); // Workaround für Frames
-		else MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-	}
+		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
 
 function ErrorHandler(description, filename, line)
@@ -782,4 +766,62 @@ function ErrorHandler(description, filename, line)
 	ScrollDown();
 	ReceiverDisconnect();
 	return false;
+}
+
+
+// *************
+// *   Login   *
+// *************
+
+function LoginInit()
+{
+	LoadOptions();
+	document.getElementById('input_layout').value = options['layout'];
+}
+
+function OnLoginClicked(logout = false)
+{
+	loginRequest = new XMLHttpRequest();
+	loginRequest.onreadystatechange = function() {OnLoginResponse(logout)};
+	loginRequest.open("POST", "/rubychat/account", true);
+	loginRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	loginRequest.setRequestHeader("Content-Encoding", "utf-8");
+
+	if(logout) url = URIEncodeParameters({logout: 1});
+	else url = URIEncodeParameters({
+			username: document.getElementById('login_username').value,
+			password: document.getElementById('login_password').value,
+			version: version});
+
+	loginRequest.send(url);
+}
+
+function OptionURL()
+{
+	LoadOptions();
+	var tempOptions = new Object();
+	for(var i in options)
+		if(options[i] != defaults[i]) tempOptions[i] = options[i];
+	url = URIEncodeParameters(tempOptions);
+	return url;
+}
+
+function OnLoginResponse(logout)
+{
+	if(loginRequest.readyState != 4) return;
+	obj = JSON.parse(loginRequest.responseText);
+
+	if(logout && obj['result'] == 'success')
+		document.location.href = "account.html?" + OptionURL();
+	else if(!logout && obj['result'] == 'success')
+		document.location.href = "chat.html?" + OptionURL();
+	else if(!logout && obj['result'] == 'fail')
+		document.getElementById('message').innerText = obj['message'];
+
+}
+
+function ShowMenu(menu)
+{
+	document.getElementById('settingbox').style.display = (menu == 'settings') ? 'block' : 'none';
+	document.getElementById('logbox').style.display = (menu == 'logs') ? 'block' : 'none';
 }

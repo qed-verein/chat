@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>QED-Chat</title>
+	<meta name="robots" content="noindex, nofollow">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0">
+	<link rel="stylesheet" type="text/css" href="common.css">
+	<link rel="stylesheet" type="text/css" href="screen.css" id="layoutcsslink">
+	<link rel="stylesheet" type="text/css" href="colors.css">
+	<script type="text/javascript" src="chat.js"></script>
+</head>
+
+<body onload="Init()">
+
+<div id="messagebox" class="box">
+<div id="posts"></div>
+<p id="status"></p>
+</div>
+
+<div id="inputbox" class="box">
+	<p><label for="name">Name:</label>
+	<input id="name" placeholder="Name" size="10" onchange="UpdateSettings()"></p>
+	<p><label for="message">Text:</label>
+	<textarea id="message" placeholder="Nachricht" rows="3" cols="10"></textarea></p>
+	<p><input id="send" type="submit" value="Senden" onclick="Send()">
+	<input id="showsettingsbutton" type="button" value="Einstellen" onclick="ShowMenu('settings')">
+	<input id="showlogsbutton" type="button" value="Logs" onclick="ShowMenu('logs')">
+	<input id="quote" type="button" value="Zitieren" onclick="Quote()" style="display: none;"></p>
+</div>
+
+<div id="settingbox" class="box">
+<ul>
+	<li><label><input type="checkbox" id="ip" onchange="UpdateSettings()">IPs anzeigen</label></li>
+	<li><label><input type="checkbox" id="delay" onchange="UpdateSettings()">Delays anzeigen</label></li>
+	<li><label><input type="checkbox" id="links" onchange="UpdateSettings()">Links anzeigen</label></li>
+	<li><label><input type="checkbox" id="botblock" onchange="UpdateSettings()">Sinn anzeigen</label></li>
+	<li><label><input type="checkbox" id="notifications" onchange="UpdateSettings()">Notifications anzeigen</label></li>
+	<li><label><input type="checkbox" id="favicon" onchange="UpdateSettings()">Dynamisches Favicon</label></li>
+	<li><label title="MathJax ist ein Plugin zum Einfügen von mathematischen Formeln in den Chat. Aktiviert man diese Option, wird zum Beispiel \( (a + b)^2 = a^2 + b^2 + 2ab \) nicht als Text, sondern als Formel angezeigt. Weitere Informationen finden sich unter http://docs.mathjax.org">
+		<input type="checkbox" id="math" onchange="UpdateSettings()">MathJax aktivieren</label></li>
+	<li><label><input type="checkbox" id="old" onchange="UpdateSettings()">Alle empf. Posts anzeigen,</label></li>
+	<li>sonst
+		<input type="button" onclick="Decrease()" value="<">
+		<input type="text" id="last" onchange="UpdateSettings()" size="2" value="24">
+		<input type="button" onclick="Increase()" value=">">
+	</li>
+	<li><label>Farbschema: <select id="skin" size="1" onchange="UpdateSettings()"></select></label></li>
+	<li><label>Layout: <select id="layout" size="1" onchange="UpdateSettings()"></select></label></li>
+	<li><a id="logoutlink" onclick="OnLoginClicked(true)">Ausloggen</a></li>
+</ul>
+<input id="closesettingsbutton" type="button" value="Schließen" onclick="ShowMenu('')">
+</div>
+
+<div id="logbox" class="box">
+<ul>
+	<li><a id="lastHour" onclick="OnHistoryClicked(this)">letzte Stunde</a></li>
+	<li><a id="lastDay" onclick="OnHistoryClicked(this)">letzter Tag</a></li>
+	<li><a id="lastWeek" onclick="OnHistoryClicked(this)">letzte Woche</a></li>
+</ul>
+<ul>
+	<li><a id="last100" onclick="OnHistoryClicked(this)">letzte 100 Posts</a></li>
+	<li><a id="last300" onclick="OnHistoryClicked(this)">letzte 300 Posts</a></li>
+	<li><a id="last1000" onclick="OnHistoryClicked(this)">letzte 1000 Posts</a></li>
+</ul>
+<ul>
+	<li><label><span style="display: inline-block; width: 3em">von:</span>
+	<input id="logFrom" type="text" size="12" placeholder="TT.MM.JJJJ"></label></li>
+	<li><label><span style="display: inline-block; width: 3em">bis:</span>
+	<input id="logTo" type="text" size="12" placeholder="TT.MM.JJJJ"></label></li>
+	<li><a id="interval" onclick="OnHistoryClicked(this)">Intervall anzeigen</a></li>
+</ul>
+<input id="closelogsbutton" type="button" value="Schließen" onclick="ShowMenu('')">
+</div>
+
+</body>
+</html>
+-

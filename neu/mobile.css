@@ -1,0 +1,124 @@
+body
+{
+	font-size: 9pt;
+	min-width: 23em;
+}
+
+#inputbox
+{
+	position: absolute;
+	left: 0em;
+	right: 0em;
+	bottom: 0em;
+	height: 7em;
+}
+
+#messagebox
+{
+	position: absolute;
+	left: 0em;
+	right: 0em;
+	bottom: 7em;
+	top: 0em;
+	overflow-y: scroll;
+}
+
+
+#inputbox, #messagebox
+{
+	border-width: 0px;
+	padding: 0px;
+	margin: 0px;
+}
+
+#settingbox, #logbox
+{
+	font-size: large;
+	display: none;
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	z-index: 1;
+}
+
+
+#message
+{
+	width: 98%;
+	resize: none;
+	overflow-x: hidden;
+	float: left;
+}
+
+#name
+{
+	width: 20%;
+	min-width: 5em;
+	float: left;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+ul#posts
+{
+	list-style-type: none;
+	margin: 0em;
+	padding: 0em;
+}
+
+li.post
+{
+	clear: right;
+	color: #C70;
+}
+
+li.post .name
+{
+	font-weight: bold;
+	overflow: hidden;
+}
+
+li.post .info
+{
+	float: right;
+	text-align: right;
+	position: relative;
+	top: 0.5em;
+	color: gray;
+	font-size: x-small;
+}
+
+li.post .ip, li.post .date, li.post .delay
+{
+	display: block;
+}
+
+
+li.post .message
+{
+	word-wrap: break-word;
+	white-space: pre-wrap;
+	display: block;
+	margin-left: 1em;
+	margin-bottom: 0.3em;
+}
+
+
+
+#settingbox li {display: block;}
+#logbox ul {display: block;}
+
+input {font-size: large;}
+
+#inputbox label {display: none;}
