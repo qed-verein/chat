@@ -123,11 +123,11 @@ function OnReceiverResponse()
 		else if(obj["type"] != "ok" && obj["type"] != "debug")
 			throw new Error("Unbekannter Typ");
 
-		SetStatus("");
-		textpos = end + 1;
-
+		 if(obj["type"] == "ok" && obj["started"] == "1")
+			SetStatus("");
 		 if(obj["type"] == "ok" && obj["finished"] == "1")
 			firstReconnect = true;
+		textpos = end + 1;
 
 		// Timeout zurücksetzen
 		clearTimeout(timeout);
