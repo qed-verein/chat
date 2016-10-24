@@ -702,7 +702,8 @@ function changeFavicon() {
 function InvertColor(color)
 {
 	var s = (parseInt(color,16) ^ 0xFFFFFF).toString(16);
-	return "0".repeat(6-s.length)+s;
+	return Array(6-s.length+1).join("0") + s;
+	//return "0".repeat(6-s.length)+s; <- geht erst ab ECMA-Script6
 }
 
 function PostColor(post)
