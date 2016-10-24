@@ -763,6 +763,7 @@ function ErrorHandler(description, filename, line)
 	message += "In Datei " + filename + ", Zeile " + line + ".<br>";
 	//message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
 	SetStatus(message);
+	alert(message);
 	ScrollDown();
 	ReceiverDisconnect();
 	return false;
