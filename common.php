@@ -18,6 +18,8 @@ if(isset($_COOKIE['userid']) && isset($_COOKIE['pwhash']))
 
 if(empty($ignore_no_login) && !userLoggedIn())
 	die("Du musst dich erst einloggen");
+if($_SERVER['SERVER_PORT'] == 31416)
+	throw new Exception("Die neue Version des QED-Chats befindet sich unter https://chat.qed-verein.de:31416/neu/chat.html");
 
 function colorForName($name)
 {
