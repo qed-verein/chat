@@ -1,7 +1,11 @@
 <?php
+
 $ignore_no_login = true;
 
 require_once('common.php');
+
+if($HTTP_SERVER['SERVER_PORT'] == 31416)
+	redirect('/neu/chat.html?' . QUERY_STRING);
 
 if(!userLoggedIn())
 	redirect(urlLogin(chatOptions()));
