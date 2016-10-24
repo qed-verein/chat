@@ -426,14 +426,14 @@ function ApplySettings()
 	if(options['math'] == 1) LoadMathjax();
 
 	document.getElementsByTagName('body')[0].className = options['layout'] + " " + options['skin'];
+	document.getElementById('layoutcsslink').href = options['layout'] == 'mobile' ? 'mobile.css' : 'screen.css';
+}
 
-	newStylesheet = options['layout'] == 'mobile' ? 'mobile.css' : 'screen.css';
-	if(!inHistoryMode && newStylesheet != document.getElementById('layoutcsslink').href)
-	{
-		document.getElementById('settingbox').style.display = (options['layout'] == 'screen') ? 'block' : 'none';
-		document.getElementById('logbox').style.display = (options['layout'] == 'screen') ? 'block' : 'none';
-	}
-	document.getElementById('layoutcsslink').href = newStylesheet;
+function LayoutSelected(layoutSelect)
+{
+	document.getElementById('settingbox').style.display = (layoutSelect.value == 'screen') ? 'block' : 'none';
+	document.getElementById('logbox').style.display = (layoutSelect.value == 'screen') ? 'block' : 'none';
+	UpdateSettings();
 }
 
 function URIReplaceState()
