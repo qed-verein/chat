@@ -1,5 +1,11 @@
 <?php
 
+
+
+
+if($_SERVER['SERVER_PORT'] == 31416)
+	die("{'type' => 'error', 'description' => 'Bitte%20den%20Chat%20neuladen'}\n");
+
 $ignore_no_login = true;
 require_once('common.php');
 
