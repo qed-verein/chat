@@ -796,7 +796,6 @@ function ErrorHandler(description, filename, line)
 function LoginInit()
 {
 	LoadOptions();
-	document.getElementById('input_layout').value = options['layout'];
 }
 
 function OnLoginClicked(mode)
