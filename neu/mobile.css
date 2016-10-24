@@ -49,6 +49,7 @@ body
 	resize: none;
 	overflow-x: hidden;
 	float: left;
+	clear: left;
 }
 
 #name
