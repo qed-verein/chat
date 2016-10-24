@@ -46,23 +46,19 @@ body
 
 #name
 {
-	width: 20%;
-	min-width: 5em;
+	width: 15%;
+	min-width: 4em;
 }
 
 #message
 {
-	position: absolute;
 	resize: none;
 	overflow-x: hidden;
-	left: 0px;
-	bottom: 0px;
 	width: 98%;
-	height: 4em;
+	float: left;
 }
 
 #inputbox p {display: inline}
-
 
 
 
