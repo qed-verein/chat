@@ -434,6 +434,7 @@ function LayoutSelected(layoutSelect)
 	document.getElementById('settingbox').style.display = (layoutSelect.value == 'screen') ? 'block' : 'none';
 	document.getElementById('logbox').style.display = (layoutSelect.value == 'screen') ? 'block' : 'none';
 	UpdateSettings();
+	ScrollDown();
 }
 
 function URIReplaceState()
