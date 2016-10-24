@@ -115,10 +115,10 @@ li.post .message
 }
 
 
-
 #settingbox li {display: block;}
 #logbox ul {display: block;}
 
 input {font-size: large;}
 
 #inputbox label {display: none;}
+#inputbox p {margin: 0px}
