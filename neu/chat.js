@@ -18,7 +18,7 @@ function LoadOptions()
 {
 	integerOptions = ['last', 'limit', 'wait'];
 	booleanOptions = ['botblock', 'old', 'ip', 'delay', 'links', 'title', 'math', 'notifications', 'favicon'];
-	params = URIDecodeParameters()
+	params = URIDecodeParameters();
 	for(var key in defaults)
 	{
 		options[key] = params.hasOwnProperty(key) ? params[key] : defaults[key];
@@ -32,20 +32,30 @@ function LoadOptions()
 
 }
 
+function OptionURL()
+{
+	var tempOptions = new Object();
+	for(var i in options)
+		if(options[i] != defaults[i]) tempOptions[i] = options[i];
+	url = URIEncodeParameters(tempOptions);
+	return url;
+}
+
+
 // Initialisiere das Skript
 function Init()
 {
+	LoadOptions();
+	if(!ReadCookie('userid')) document.location.href = "account.html?"  + OptionURL();
+
 	window.onerror = ErrorHandler;
 	window.onunload = ReceiverDisconnect;
-
-	LoadOptions();
+	
 	InitReceiver();
 	InitSender();
 	InitSettings();
 	InitNotifications();
 }
-
-
 
 // *****************
 // *   Empfänger   *
@@ -428,11 +438,7 @@ function ApplySettings()
 
 function URIReplaceState()
 {
-	var tempOptions = new Object();
-	for(var i in options)
-		if(options[i] != defaults[i]) tempOptions[i] = options[i];
-	if(history.replaceState)
-		history.replaceState(null, '', '?' + URIEncodeParameters(tempOptions));
+	if(history.replaceState) history.replaceState(null, '', '?' + OptionURL());
 }
 
 
@@ -621,6 +627,14 @@ function Quote()
 	RecreatePosts();
 }
 
+
+function ShowMenu(menu)
+{
+	document.getElementById('settingbox').style.display = (menu == 'settings') ? 'block' : 'none';
+	document.getElementById('logbox').style.display = (menu == 'logs') ? 'block' : 'none';
+}
+
+
 function InitNotifications()
 {	
 	if (window.Notification && Notification.permission !== "granted" && options['notifications']) {
@@ -722,6 +736,13 @@ function UpdateTitle(message)
 			top.document.title = message.substr(0, 252) + "...";
 }
 
+function ReadCookie(key)
+{
+    var result;
+    return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? (result[1]) : null;
+}
+
+
 // mathjaxProgress: 0 = Mathjax deaktiviert, 1 = Mathjax ladend, 2 = Mathjax fertig geladen
 var mathjaxProgress = 0;
 
@@ -763,12 +784,10 @@ function ErrorHandler(description, filename, line)
 	message += "In Datei " + filename + ", Zeile " + line + ".<br>";
 	//message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
 	SetStatus(message);
-	alert(message);
 	ScrollDown();
 	ReceiverDisconnect();
 	return false;
 }
-
 
 // *************
 // *   Login   *
@@ -780,15 +799,15 @@ function LoginInit()
 	document.getElementById('input_layout').value = options['layout'];
 }
 
-function OnLoginClicked(logout = false)
+function OnLoginClicked(mode)
 {
 	loginRequest = new XMLHttpRequest();
-	loginRequest.onreadystatechange = function() {OnLoginResponse(logout)};
+	loginRequest.onreadystatechange = function() {OnLoginResponse(mode)};
 	loginRequest.open("POST", "/rubychat/account", true);
 	loginRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	loginRequest.setRequestHeader("Content-Encoding", "utf-8");
 
-	if(logout) url = URIEncodeParameters({logout: 1});
+	if(mode == 'logout') url = URIEncodeParameters({logout: 1});
 	else url = URIEncodeParameters({
 			username: document.getElementById('login_username').value,
 			password: document.getElementById('login_password').value,
@@ -797,32 +816,18 @@ function OnLoginClicked(logout = false)
 	loginRequest.send(url);
 }
 
-function OptionURL()
-{
-	LoadOptions();
-	var tempOptions = new Object();
-	for(var i in options)
-		if(options[i] != defaults[i]) tempOptions[i] = options[i];
-	url = URIEncodeParameters(tempOptions);
-	return url;
-}
 
-function OnLoginResponse(logout)
+function OnLoginResponse(mode)
 {
 	if(loginRequest.readyState != 4) return;
 	obj = JSON.parse(loginRequest.responseText);
 
-	if(logout && obj['result'] == 'success')
+	if(mode == 'logout' && obj['result'] == 'success')
 		document.location.href = "account.html?" + OptionURL();
-	else if(!logout && obj['result'] == 'success')
+	else if(mode == 'login' && obj['result'] == 'success')
 		document.location.href = "chat.html?" + OptionURL();
-	else if(!logout && obj['result'] == 'fail')
+	else if(mode == 'login' && obj['result'] == 'fail')
 		document.getElementById('message').innerText = obj['message'];
 
 }
 
-function ShowMenu(menu)
-{
-	document.getElementById('settingbox').style.display = (menu == 'settings') ? 'block' : 'none';
-	document.getElementById('logbox').style.display = (menu == 'logs') ? 'block' : 'none';
-}
