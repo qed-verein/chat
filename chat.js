@@ -422,7 +422,12 @@ function Increase()
 
 function ApplySettings()
 {
-	if(!inHistoryMode) {URIReplaceState(); RecreatePosts();}
+	if(!inHistoryMode) {
+		URIReplaceState();
+		RecreatePosts();
+		sendPart.getElementById('name').placeholder = options['layout'] == 'mobile' ? 'Name' : '';
+		sendPart.getElementById('message').placeholder = options['layout'] == 'mobile' ? 'Nachricht' : '';	
+	}
 	if(options['math'] == 1) LoadMathjax();
 
 	document.getElementsByTagName('body')[0].className = options['layout'] + " " + options['skin'];
@@ -431,7 +436,7 @@ function ApplySettings()
 }
 
 function LayoutSelected(layoutSelect)
-{
+{	
 	document.getElementById('settingbox').style.display = (layoutSelect.value == 'screen') ? 'block' : 'none';
 	document.getElementById('logbox').style.display = (layoutSelect.value == 'screen') ? 'block' : 'none';
 	UpdateSettings();
