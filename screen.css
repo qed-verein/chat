@@ -1,4 +1,4 @@
-body.screen
+body
 {
 	position: absolute;
 	min-width: 60em;
@@ -7,12 +7,12 @@ body.screen
 	height: 100%;
 }
 
-.screen .box
+.box
 {
 	margin: 0px;
 }
 
-.screen #messagebox {
+#messagebox {
 	position: absolute;
 	left: 0em;
 	top: 0em;
@@ -22,7 +22,7 @@ body.screen
 	overflow-y: scroll;
 }
 
-.screen #inputbox {
+#inputbox {
 	position: absolute;
 	left: 0em;
 	height: 15em;
@@ -31,7 +31,7 @@ body.screen
 	margin-right: 0em;
 }
 
-.screen #settingbox {
+#settingbox {
 	position: absolute;
 	width: 36em;
 	height: 7em;
@@ -39,41 +39,12 @@ body.screen
 	bottom: 8em;
 }
 
-.screen #logbox {
+#logbox {
 	position: absolute;
 	width: 36em;
 	height: 5em;
 	right: 0em;
 	bottom: 0em;
-}
-
-
-
-body.frames
-{
-	overflow: hidden;
-}
-
-.frames .box
-{
-	border-width: 0px;
-	padding: 1em;
-	margin: 0em;
-}
-
-.frames #messagebox, .frames #inputbox, .frames #settingbox, .frames #logbox
-{
-	position: fixed;
-	left: 0px;
-	right: 0px;
-	top: 0px;
-	bottom: 0px;
-	overflow: auto;
-}
-
-.frames #settingbox, .frames #logbox
-{
-	line-height: 200%;
 }
 
 
@@ -116,19 +87,45 @@ tr.post .info, tr.post .ip
 	padding: 0px;
 }
 
-#inputbox table {
-	width: 100%;
-}
+
 
 #message
 {
-	margin: 0.5em 0em;
-	width: 98%;
+
+	vertical-align: middle;
+	display: inline-block;
+	width: 90%;
+	height: 8em;
 	resize: none;
 	overflow-x: hidden;
 }
 
 #name
 {
-	width: 98%;
+	display: inline-block;
+	width: 90%;
+}
+
+
+
+#logbox, #settingbox {display: block}
+
+#showsettingsbutton, #showlogsbutton, #closesettingsbutton, #closelogsbutton
+{
+	display: none;
+}
+
+#inputbox label {
+	width: 3em;
+	margin-right: 1em;
+	display: inline-block;
+}
+
+#send {
+	display: block;
+	margin: auto;
+}
+
+#inputbox p {
+	margin-top: 0em;
 }

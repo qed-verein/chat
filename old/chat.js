@@ -1,5 +1,5 @@
 var options = new Object();
-var version = "20161022000000"; // muss in data ebenfalls geaendert werden
+var version = "1416690087"; // muss in data ebenfalls geaendert werden
 
 var recvPart, sendPart, confPart, logsPart;
 var notification, isActive = true, unreadCount = 0, selectcount = 0;
@@ -18,7 +18,7 @@ function LoadOptions()
 {
 	integerOptions = ['last', 'limit', 'wait'];
 	booleanOptions = ['botblock', 'old', 'ip', 'delay', 'links', 'title', 'math', 'notifications', 'favicon'];
-	params = URIDecodeParameters();
+	params = URIDecodeParameters()
 	for(var key in defaults)
 	{
 		options[key] = params.hasOwnProperty(key) ? params[key] : defaults[key];
@@ -28,34 +28,29 @@ function LoadOptions()
 			options[key] = parseInt(options[key]) ? 1 : 0;
 	}
 
-	recvPart = sendPart = confPart = logsPart = document;
-
+	if(options['layout'] != 'frames')
+		recvPart = sendPart = confPart = logsPart = document;
+	else
+	{
+		recvPart = top.recv.document; sendPart = top.send.document;
+		confPart = top.conf.document; logsPart = top.logs.document;
+	}
 }
-
-function OptionURL()
-{
-	var tempOptions = new Object();
-	for(var i in options)
-		if(options[i] != defaults[i]) tempOptions[i] = options[i];
-	url = URIEncodeParameters(tempOptions);
-	return url;
-}
-
 
 // Initialisiere das Skript
 function Init()
 {
-	LoadOptions();
-	if(!ReadCookie('userid')) document.location.href = "account.html?"  + OptionURL();
-
 	window.onerror = ErrorHandler;
 	window.onunload = ReceiverDisconnect;
-	
+
+	LoadOptions();
 	InitReceiver();
 	InitSender();
 	InitSettings();
 	InitNotifications();
 }
+
+
 
 // *****************
 // *   Empfänger   *
@@ -84,7 +79,7 @@ function ReceiverConnect()
 	firstReconnect = false;
 	timeout = setTimeout("ReceiverConnect()", options['wait'] * 1000);
 
-	uri = "/rubychat/view?" + URIEncodeParameters({
+	uri = "view.php?" + URIEncodeParameters({
 	    channel: options["channel"], position: position, limit: options["limit"],
 	    version: version, keepalive: Math.ceil(options["wait"] / 2)});
 	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
@@ -108,9 +103,6 @@ function OnReceiverResponse()
 	if(recvRequest.readyState < 3)
 		return;
 
-	if(recvRequest.status < 200 || recvRequest.status >= 300)
-		return;
-
     var end, obj;
     while((end = recvRequest.responseText.indexOf("\n", textpos)) >= 0)
     {
@@ -123,11 +115,9 @@ function OnReceiverResponse()
 		else if(obj["type"] != "ok" && obj["type"] != "debug")
 			throw new Error("Unbekannter Typ");
 
-		 if(obj["type"] == "ok" && obj["started"] == "1")
-			SetStatus("");
-		 if(obj["type"] == "ok" && obj["finished"] == "1")
-			firstReconnect = true;
+		SetStatus("");
 		textpos = end + 1;
+		firstReconnect = true;
 
 		// Timeout zurücksetzen
 		clearTimeout(timeout);
@@ -376,7 +366,8 @@ function InitSettings()
 	skinSelect.value = options['skin'];
 
 	var layoutSelect = confPart.getElementById('layout');
-	layoutSelect.add(new Option("für Bildschirme", 'screen'));
+	layoutSelect.add(new Option("mit Frames", 'frames'));
+	layoutSelect.add(new Option("ohne Frames", 'screen'));
 	layoutSelect.add(new Option("mobile Version", 'mobile'));
 	layoutSelect.value = options['layout'];
 
@@ -392,7 +383,6 @@ function UpdateSettings()
 	options["botblock"] = confPart.getElementById("botblock").checked ? 1 : 0;
 	options["notifications"] = confPart.getElementById("notifications").checked ? 1 : 0;
 	options["skin"] = confPart.getElementById("skin").value;
-	options["layout"] = confPart.getElementById("layout").value;
 	options["math"] = confPart.getElementById("math").checked ? 1 : 0;
 	options["name"] = sendPart.getElementById("name").value;
 	options["favicon"] = confPart.getElementById("favicon").checked ? 1 : 0;
@@ -422,26 +412,35 @@ function Increase()
 
 function ApplySettings()
 {
-	if(!inHistoryMode) {URIReplaceState(); RecreatePosts();}
-	if(options['math'] == 1) LoadMathjax();
+	if(!inHistoryMode) URIReplaceState();
+	if(!inHistoryMode) RecreatePosts();
 
-	document.getElementsByTagName('body')[0].className = options['layout'] + " " + options['skin'];
-	document.getElementById('layoutcsslink').href = options['layout'] == 'mobile' ? 'mobile.css' : 'screen.css';
-}
+	if(options['math'] == 1)
+		LoadMathjax();
 
-function LayoutSelected(layoutSelect)
-{
-	document.getElementById('settingbox').style.display = (layoutSelect.value == 'screen') ? 'block' : 'none';
-	document.getElementById('logbox').style.display = (layoutSelect.value == 'screen') ? 'block' : 'none';
-	UpdateSettings();
-	ScrollDown();
+	var parts = [recvPart, sendPart, confPart, logsPart];
+	for(var i in parts)
+		parts[i].getElementsByTagName('body')[0].className = options['layout'] + " " + options['skin'];
+
 }
 
 function URIReplaceState()
 {
-	if(history.replaceState) history.replaceState(null, '', '?' + OptionURL());
+	var tempOptions = new Object();
+	for(var i in options)
+		if(options[i] != defaults[i]) tempOptions[i] = options[i];
+	if(history.replaceState)
+		history.replaceState(null, '', '?' + URIEncodeParameters(tempOptions));
 }
 
+function OnLayoutClicked(elt)
+{
+	var tempOptions = new Object();
+	for(var i in options)
+		if(options[i] != defaults[i]) tempOptions[i] = options[i];
+	tempOptions['layout'] = elt.value;
+	document.location.href = 'index.php?' + URIEncodeParameters(tempOptions);
+}
 
 // **************
 // *   Sender   *
@@ -469,7 +468,7 @@ function Send()
 	ScrollDown();
 	sendRequest = new XMLHttpRequest();
 	sendRequest.onreadystatechange = OnSenderResponse;
-	sendRequest.open("POST", "/rubychat/post", true);
+	sendRequest.open("POST", "post.php", true);
 	sendRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	sendRequest.setRequestHeader("Content-Encoding", "utf-8");
 
@@ -530,6 +529,7 @@ function LoadHistory()
 	LoadOptions();
 	ApplySettings();
 
+	document.getElementById('layoutcsslink').href = (options['layout'] == 'mobile' ? 'mobile.css' : 'screen.css');
 	SetStatus("Lade alte Posts...");
 
 	parameters = URIDecodeParameters();
@@ -537,7 +537,7 @@ function LoadHistory()
 
 	recvRequest = new XMLHttpRequest();
 	recvRequest.onreadystatechange = OnHistoryResponse;
-	recvRequest.open('GET', '/rubychat/history?' + URIEncodeParameters(parameters), true);
+	recvRequest.open('GET', 'history.php?' + URIEncodeParameters(parameters), true);
 	recvRequest.send();
 	UpdateTitle("Log des QED-Chats");
 }
@@ -570,27 +570,28 @@ function OnHistoryClicked(elt)
 {
 	url = "history.html?";
 	if(elt.id == 'lastHour')
-		url += URIEncodeParameters({mode: 'daterecent', last: '3600'});
+		url += URIEncodeParameters({from: '-1 hour', to: '+0 sec'});
 	else if(elt.id == 'lastDay')
-		url += URIEncodeParameters({mode: 'daterecent', last: '86400'});
+		url += URIEncodeParameters({from: '-1 day', to: '+0 sec'});
 	else if(elt.id == 'lastWeek')
-		url += URIEncodeParameters({mode: 'daterecent', last: '604800'});
+		url += URIEncodeParameters({from: '-7 days', to: '+0 sec'});
 	else if(elt.id == 'last100')
-		url += URIEncodeParameters({mode: 'postrecent', last: '100'});
+		url += URIEncodeParameters({last: '100'});
 	else if(elt.id == 'last300')
-		url += URIEncodeParameters({mode: 'postrecent', last: '300'});
+		url += URIEncodeParameters({last: '300'});
 	else if(elt.id == 'last1000')
-		url += URIEncodeParameters({mode: 'postrecent', last: '1000'});
+		url += URIEncodeParameters({last: '1000'});
 	else if(elt.id == 'interval')
-		url += URIEncodeParameters({mode: 'dateinterval',
+		url += URIEncodeParameters({
 			from : logsPart.getElementById("logFrom").value,
 			to : logsPart.getElementById("logTo").value});
 	else if(elt.id == 'sincepost')
-		url += URIEncodeParameters({mode: 'lastownpost'});
+		url += URIEncodeParameters({userid: '1'});
 
 	var tempOptions = new Object();
 	for(var i in options)
 		if(options[i] != defaults[i]) tempOptions[i] = options[i];
+	if(options['layout'] == 'frames') tempOptions['layout'] = 'screen';
 	delete tempOptions['last'];
 	url += '&' + URIEncodeParameters(tempOptions);
 
@@ -627,14 +628,6 @@ function Quote()
 	selectcount = 0;
 	RecreatePosts();
 }
-
-
-function ShowMenu(menu)
-{
-	document.getElementById('settingbox').style.display = (menu == 'settings') ? 'block' : 'none';
-	document.getElementById('logbox').style.display = (menu == 'logs') ? 'block' : 'none';
-}
-
 
 function InitNotifications()
 {	
@@ -703,8 +696,7 @@ function changeFavicon() {
 function InvertColor(color)
 {
 	var s = (parseInt(color,16) ^ 0xFFFFFF).toString(16);
-	return Array(6-s.length+1).join("0") + s;
-	//return "0".repeat(6-s.length)+s; <- geht erst ab ECMA-Script6
+	return "0".repeat(6-s.length)+s;
 }
 
 function PostColor(post)
@@ -738,13 +730,6 @@ function UpdateTitle(message)
 			top.document.title = message.substr(0, 252) + "...";
 }
 
-function ReadCookie(key)
-{
-    var result;
-    return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? (result[1]) : null;
-}
-
-
 // mathjaxProgress: 0 = Mathjax deaktiviert, 1 = Mathjax ladend, 2 = Mathjax fertig geladen
 var mathjaxProgress = 0;
 
@@ -776,7 +761,10 @@ function LoadMathjax()
 function ProcessMath()
 {
 	if(options['math'] == 1 && mathjaxProgress == 2)
-		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+	{
+		if(options['layout'] == 'frames') top.recv.Typeset(); // Workaround für Frames
+		else MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+	}
 }
 
 function ErrorHandler(description, filename, line)
@@ -790,45 +778,3 @@ function ErrorHandler(description, filename, line)
 	ReceiverDisconnect();
 	return false;
 }
-
-// *************
-// *   Login   *
-// *************
-
-function LoginInit()
-{
-	LoadOptions();
-}
-
-function OnLoginClicked(mode)
-{
-	loginRequest = new XMLHttpRequest();
-	loginRequest.onreadystatechange = function() {OnLoginResponse(mode)};
-	loginRequest.open("POST", "/rubychat/account", true);
-	loginRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	loginRequest.setRequestHeader("Content-Encoding", "utf-8");
-
-	if(mode == 'logout') url = URIEncodeParameters({logout: 1});
-	else url = URIEncodeParameters({
-			username: document.getElementById('login_username').value,
-			password: document.getElementById('login_password').value,
-			version: version});
-
-	loginRequest.send(url);
-}
-
-
-function OnLoginResponse(mode)
-{
-	if(loginRequest.readyState != 4) return;
-	obj = JSON.parse(loginRequest.responseText);
-
-	if(mode == 'logout' && obj['result'] == 'success')
-		document.location.href = "account.html?" + OptionURL();
-	else if(mode == 'login' && obj['result'] == 'success')
-		document.location.href = "chat.html?" + OptionURL();
-	else if(mode == 'login' && obj['result'] == 'fail')
-		document.getElementById('message').innerText = obj['message'];
-
-}
-

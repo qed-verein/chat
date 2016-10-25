@@ -43,12 +43,6 @@ body
 }
 
 
-#message
-{
-	width: 98%;
-	resize: none;
-	overflow-x: hidden;
-}
 
 #name
 {
@@ -56,9 +50,15 @@ body
 	min-width: 5em;
 }
 
+#message
+{
+	resize: none;
+	overflow-x: hidden;
+	width: 98%;
+	float: left;
+}
 
-
-
+#inputbox p {display: inline}
 
 
 
@@ -113,8 +113,10 @@ li.post .message
 }
 
 
-
 #settingbox li {display: block;}
 #logbox ul {display: block;}
 
 input {font-size: large;}
+
+#inputbox label {display: none;}
+#inputbox p {margin: 0px}
