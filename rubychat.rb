@@ -267,8 +267,8 @@ begin
 				cgi = CGIAdapter.new headers, connection, connection
 				Thread.current[:cgi] = cgi;
 				handleRequest cgi
-			rescue Errno::EPIPE, Errno::ECONNRESET
-				writeToLog "Verbindung abgebrochen."
+			rescue Errno::EPIPE, Errno::ECONNRESET => e
+				writeToLog sprintf("Verbindung abgebrochen: %s", e.message);
 			rescue Exception => e
 				writeToLog sprintf("\n%s: %s\n%s\n", e.class, e.message, e.backtrace.join("\n"))
 			ensure
