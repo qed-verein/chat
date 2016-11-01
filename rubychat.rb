@@ -4,6 +4,8 @@ require 'cgi'
 require 'dbi'
 require 'json'
 require 'digest'
+require './rubychat-config.rb'
+
 #require 'rb-inotify'
 #require 'fileutils'
 
@@ -170,7 +172,7 @@ def historyHandler(cgi)
 		raise ChatError, "Unbekannter Modus!"
 	end
 	
-	cgi.print ({'type' => 'ok', 'finised' => 1}.to_json)  + "\n"
+	cgi.print ({'type' => 'ok', 'finished' => 1}.to_json)  + "\n"
 end
 
 
@@ -200,10 +202,8 @@ def accountHandler(cgi)
 end
 
 def chatDatabase
-	DBI.connect('DBI:Mysql:spam:localhost', 'chat', 'spa!spa123') {|db|
+	DBI.connect($sqlDatabase, $sqlUsername, $sqlPassword) {|db|
 		db.do("SET NAMES UTF8mb4"); yield(db)}
-	#DBI.connect('DBI:Mysql:chat:localhost', 'chat', 'chatpw') {|db|
-		#db.do("SET NAMES UTF8mb4"); yield(db)}
 end
 
 
@@ -248,7 +248,7 @@ $mutex = Mutex.new
 $condition = ConditionVariable.new
 $increment = 0
 $running = true
-$touchfile = '/var/kunden/webs/chat/sockets/touchthis'
+#$touchfile = '/var/kunden/webs/chat/sockets/touchthis'
 
 # Kompabilität zu alten Version des QED-Chats, kann nach vollständiger Migration entfernt werden
 #Thread.new {
@@ -268,7 +268,7 @@ Signal.trap("USR2") do
 			thread[:cgi].script_name.to_s + '?' + thread[:cgi].query_string.to_s, thread[:cgi].user_agent}
 end
 
-server = TCPServer.new "127.0.0.1", 20000
+server = TCPServer.new "127.0.0.1", $scgiPort
 writeToLog "Chatserver wurde gestartet."
 
 begin
