@@ -6,9 +6,6 @@ require 'json'
 require 'digest'
 require './rubychat-config.rb'
 
-#require 'rb-inotify'
-#require 'fileutils'
-
 class CGIAdapter < ::CGI
 	attr_reader :args, :env_table, :stdinput, :stdoutput
 
@@ -78,8 +75,7 @@ def postHandler(cgi)
 	chatDatabase {|db| db.do(sql, name, message, channel, date, cgi.remote_addr, Thread.current[:userid], delay, bottag)}
 
 	$mutex.synchronize{$increment += 1; $condition.broadcast}
-	#FileUtils.touch $touchfile
-	
+
 	cgi.print({'type' => 'ok', 'finished' => 1}.to_json)
 end
 
@@ -248,17 +244,8 @@ $mutex = Mutex.new
 $condition = ConditionVariable.new
 $increment = 0
 $running = true
-#$touchfile = '/var/kunden/webs/chat/sockets/touchthis'
-
-# Kompabilität zu alten Version des QED-Chats, kann nach vollständiger Migration entfernt werden
-#Thread.new {
-	#inotify = INotify::Notifier.new
-	#inotify.watch($touchfile, :attrib) {|event| $mutex.synchronize{$increment += 1; $condition.broadcast}}
-	#inotify.run
-#}
 
 threads = []
-
 
 Signal.trap("USR2") do
 	active = threads.select {|thread| !thread[:cgi].nil? && thread.alive?}
