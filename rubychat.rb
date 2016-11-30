@@ -249,6 +249,7 @@ threads = []
 
 Signal.trap("USR2") do
 	active = threads.select {|thread| !thread[:cgi].nil? && thread.alive?}
+	STDERR.printf "Anzahl der Threads: %d\n", threads.size
 	STDERR.printf "Anzahl der offenen Verbindungen: %d\n", active.size
 	active.each {|thread|
 		STDERR.printf "Verbunden: IP=%s RequestURI=%s UserAgent=%s\n", thread[:cgi].remote_addr,
