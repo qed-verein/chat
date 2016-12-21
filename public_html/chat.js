@@ -458,7 +458,7 @@ var sendRequest, sendTimeout;
 function InitSender()
 {
 	sendPart.getElementById("name").value = options["name"];
-	sendPart.getElementById("name").focus();
+	sendPart.getElementById("message").focus();
 	sendRequest = null;
 }
 
