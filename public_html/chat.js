@@ -432,7 +432,7 @@ function ApplySettings()
 
 	document.getElementsByTagName('body')[0].className = options['layout'] + " " + options['skin'];
 	document.getElementById('layoutcsslink').href = options['layout'] == 'mobile' ? 'mobile.css' : 'screen.css';
-	document.getElementById('theme-color').content=window.getComputedStyle(document.body).getPropertyValue('background-color');
+	document.getElementById('theme-color').content=window.getComputedStyle(document.getElementById("inputbox")).getPropertyValue('background-color');
 }
 
 function LayoutSelected(layoutSelect)
