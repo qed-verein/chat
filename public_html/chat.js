@@ -4,6 +4,8 @@ var version = "20161022000000"; // muss in data ebenfalls geaendert werden
 var recvPart, sendPart, confPart, logsPart;
 var notification, isActive = true, unreadCount = 0, selectcount = 0;
 
+var themecolors = { 'dunkelgrauton' : "#555" , 'schwarzwiedienacht' :"#010101" , 'mylittlepony': "#f6b7d2"};
+
 var defaults = {
 		channel: "", name: "",
 		last: 24, botblock: 0, old: 0, ip: 0, delay: 0, links: 1, title: 1, math: 0, 
@@ -432,9 +434,7 @@ function ApplySettings()
 
 	document.getElementsByTagName('body')[0].className = options['layout'] + " " + options['skin'];
 	document.getElementById('layoutcsslink').href = options['layout'] == 'mobile' ? 'mobile.css' : 'screen.css';
-	var tmp = document.createElement("div");
-	tmp.className="box";
-	document.getElementById('theme-color').content=window.getComputedStyle(tmp).getPropertyValue('background-color');
+	document.getElementById('theme-color').content=themecolors[options['skin']];
 }
 
 function LayoutSelected(layoutSelect)
