@@ -97,7 +97,7 @@ li.post .info
 	font-size: x-small;
 }
 
-li.post .ip, li.post .date, li.post .delay
+li.post .userid, li.post .date, li.post .delay
 {
 	display: block;
 }

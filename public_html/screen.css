@@ -73,7 +73,7 @@ tr.post .message
 	white-space: pre-wrap;
 }
 
-tr.post .info, tr.post .ip
+tr.post .info, tr.post .userid
 {
 	border-bottom: thin dotted #bbb;
 	border-right: thin dotted #bbb;

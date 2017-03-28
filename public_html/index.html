@@ -33,7 +33,8 @@
 
 <div id="settingbox" class="box">
 <ul>
-	<li><label><input type="checkbox" id="ip" onchange="UpdateSettings()">IPs anzeigen</label></li>
+	<li><label title="Andere dürfen deine User-ID (und deinen Benutzernamen) sehen. Hinweis: Die User-ID wird auch gespeichert, wenn du diese Option deaktivierst, aber nicht an andere gesendet" >
+		<input type="checkbox" id="publicid" onchange="UpdateSettings()">Öffentliche ID</label></li>
 	<li><label><input type="checkbox" id="delay" onchange="UpdateSettings()">Delays anzeigen</label></li>
 	<li><label><input type="checkbox" id="links" onchange="UpdateSettings()">Links anzeigen</label></li>
 	<li><label><input type="checkbox" id="botblock" onchange="UpdateSettings()">Sinn anzeigen</label></li>
@@ -41,12 +42,13 @@
 	<li><label><input type="checkbox" id="favicon" onchange="UpdateSettings()">Dynamisches Favicon</label></li>
 	<li><label title="MathJax ist ein Plugin zum Einfügen von mathematischen Formeln in den Chat. Aktiviert man diese Option, wird zum Beispiel \( (a + b)^2 = a^2 + b^2 + 2ab \) nicht als Text, sondern als Formel angezeigt. Weitere Informationen finden sich unter http://docs.mathjax.org">
 		<input type="checkbox" id="math" onchange="UpdateSettings()">MathJax aktivieren</label></li>
-	<li><label><input type="checkbox" id="old" onchange="UpdateSettings()">Alle empf. Posts anzeigen,</label></li>
+	<li><label><input type="checkbox" id="old" onchange="UpdateSettings()">Alle Posts anzeigen,</label></li>
 	<li>sonst
 		<input type="button" onclick="Decrease()" value="<">
 		<input type="text" id="last" onchange="UpdateSettings()" size="2" value="24">
 		<input type="button" onclick="Increase()" value=">">
 	</li>
+	<li><label>IDs anzeigen: <select id="showids" onchange="UpdateSettings()"><option value=1>IDs</option><option value=2>Namen</option><option value=3>Beides</option><option value=4>Symbol</option><option value=0>Aus</option></select></label></li>
 	<li><label>Farbschema: <select id="skin" size="1" onchange="UpdateSettings()"></select></label></li>
 	<li><label>Layout: <select id="layout" size="1" onchange="LayoutSelected(this)"></select></label></li>
 	<li><a id="logoutlink" onclick="OnLoginClicked('logout')">Ausloggen</a></li>

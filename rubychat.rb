@@ -45,7 +45,7 @@ def handleRequest(cgi)
 		cookieAuthenticate cgi
 
 		raise ChatError, "Du bist nicht in den Chat eingeloggt!" if Thread.current[:userid].nil?
-		raise ChatError, "Ungueltige Versionsnummer!" if cgi.has_key? 'version' && cgi['version'] != '20161022000000'
+		raise ChatError, "Ungueltige Versionsnummer!" if cgi.has_key? 'version' && cgi['version'] != '20170328000042'
 
 		case cgi.script_name
 			when "/rubychat/post"
@@ -69,10 +69,11 @@ def postHandler(cgi)
 	channel = cgi['channel']
 	date = Time.new.strftime "%Y-%m-%d %H-%M-%S"
 	delay = cgi.has_key?('delay') ? cgi['delay'].to_i : nil
-	bottag = cgi.has_key?('bottag') ? cgi['bottag'].to_i : 0
-	sql = "INSERT INTO content2 (name, message, channel, date, ip, user_id, delay, bottag) " +
+	bottag = cgi.has_key?('bottag') ? (cgi['bottag'].to_i ==0 ? 0 : 1) : 0
+	publicid = cgi.has_key?('publicid') ? (cgi['publicid'].to_i == 0 ? 0 : 1) : 0
+	sql = "INSERT INTO content2 (name, message, channel, date, user_id, delay, bottag, publicid) " +
 		"VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-	chatDatabase {|db| db.do(sql, name, message, channel, date, cgi.remote_addr, Thread.current[:userid], delay, bottag)}
+	chatDatabase {|db| db.do(sql, name, message, channel, date, Thread.current[:userid], delay, bottag, publicid)}
 
 	$mutex.synchronize{$increment += 1; $condition.broadcast}
 
@@ -93,8 +94,8 @@ def viewHandler(cgi)
 	cgi.stdoutput.flush
 	
 	messageLoop(cgi) {chatDatabase {|db|			
-		sql = "SELECT id, name, message, channel, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS date, ip, user_id, delay, bottag" +
-			" FROM content2 WHERE id >= ? AND channel = ? ORDER BY id LIMIT ?"
+		sql = "SELECT content2.id AS id, name, message, channel, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS date, user_id, delay, bottag, publicid, username" +
+			" FROM content2 LEFT JOIN user ON content2.user_id=user.id WHERE content2.id >= ? AND channel = ? ORDER BY id LIMIT ?"
 		db.select_all(sql, position,  cgi['channel'], limit) {|row|
 			outputPosting(cgi, row.to_h)
 			position = row['id'].to_i + 1
@@ -131,8 +132,8 @@ def messageLoop(cgi)
 end
 
 def historyHandler(cgi)
-	sqlTemplate = "SELECT id, name, message, channel, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS date, " +
-		"ip, user_id, delay, bottag FROM content2 "
+	sqlTemplate = "SELECT content2.id AS id, name, message, channel, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS date, " +
+		"user_id, delay, bottag, publicid, username FROM content2 LEFT JOIN user ON content2.user_id=user.id "
 
 	cgi.print ({'type' => 'ok', 'started' => 1}.to_json)  + "\n"
 	
@@ -147,7 +148,7 @@ def historyHandler(cgi)
 		chatDatabase {|db|
 			db.select_all(sql, cgi['channel'], from.strftime("%F %X")) {|row| outputPosting(cgi, row.to_h)}}
 	when 'postinterval'
-		sql = sqlTemplate + "WHERE channel = ? AND id >= ? AND id <= ? ORDER BY id"
+		sql = sqlTemplate + "WHERE channel = ? AND content2.id >= ? AND content2.id <= ? ORDER BY id"
 		chatDatabase {|db|
 			db.select_all(sql, cgi['channel'], cgi['from'].to_i, cgi['to'].to_i) {|row| outputPosting(cgi, row.to_h)}}
 	when 'postrecent', 'fromownpost'
@@ -161,7 +162,7 @@ def historyHandler(cgi)
 			end
 			
 			fromId = row.nil? ? 0 : row['from_id']
-			sql = sqlTemplate + "WHERE channel = ? AND id >= ? ORDER BY id"
+			sql = sqlTemplate + "WHERE channel = ? AND content2.id >= ? ORDER BY id"
 			db.select_all(sql, cgi['channel'], fromId) {|row| outputPosting(cgi, row.to_h)}
 		}
 	else
@@ -205,6 +206,13 @@ end
 
 def outputPosting(cgi, posting)
 	posting.each {|k, v| posting[k] = v.force_encoding('UTF-8') if v.class == String}
+	if not posting['publicid'] then
+		posting['username']=nil
+		posting['user_id']=nil
+	elsif not posting['username'] then
+		posting['username']='?'
+	end
+	posting.delete('publicid')
 	posting.merge!({'type' => 'post', 'color' => colorForName(posting['name'])})
 	cgi.print posting.to_json + "\n"
 end

@@ -1,5 +1,5 @@
 var options = new Object();
-var version = "20161022000000"; // muss in data ebenfalls geaendert werden
+var version = "20170328000042"; // muss in rubychat ebenfalls geaendert werden
 
 var recvPart, sendPart, confPart, logsPart;
 var notification, isActive = true, unreadCount = 0, selectcount = 0;
@@ -8,7 +8,7 @@ var themecolors = { 'dunkelgrauton' : "#555" , 'schwarzwiedienacht' :"#010101" ,
 
 var defaults = {
 		channel: "", name: "",
-		last: 24, botblock: 0, old: 0, ip: 0, delay: 0, links: 1, title: 1, math: 0, 
+		last: 24, botblock: 0, old: 0, publicid: 0, delay: 0, links: 1, title: 1, math: 0, showids: 4,
 		notifications: 1, favicon: 1,
 		layout: 'screen', skin: 'dunkelgrauton',
 		limit: 256,	wait: 60,
@@ -18,8 +18,8 @@ var defaults = {
 
 function LoadOptions()
 {
-	integerOptions = ['last', 'limit', 'wait'];
-	booleanOptions = ['botblock', 'old', 'ip', 'delay', 'links', 'title', 'math', 'notifications', 'favicon'];
+	integerOptions = ['last', 'limit', 'wait', 'showids'];
+	booleanOptions = ['botblock', 'old', 'publicid', 'delay', 'links', 'title', 'math', 'notifications', 'favicon'];
 	params = URIDecodeParameters();
 	for(var key in defaults)
 	{
@@ -218,10 +218,11 @@ function FormatScreenPost(post)
 	info.appendChild(date);
 	tr.appendChild(info);
 
-	var ip = recvPart.createElement('td');
-	ip.setAttribute('class', 'ip');
-	ip.appendChild(recvPart.createTextNode(post['ip']));
-	if(options['ip']) tr.appendChild(ip);
+	var userid = recvPart.createElement('td');
+	userid.setAttribute('class', 'userid');
+	userid.appendChild(recvPart.createTextNode(IDString(post)));
+	userid.title=IDTitle(post);
+	if(options['showids']) tr.appendChild(userid);
 
 	var name = recvPart.createElement('td');
 	name.innerHTML = HtmlEscape(post["name"] + ":");
@@ -253,10 +254,12 @@ function FormatMobilePost(post)
 	var date = recvPart.createElement('span');
 	date.setAttribute('class', 'date');
 	date.appendChild(recvPart.createTextNode(post['date']));
-
-	var ip = recvPart.createElement('span');
-	ip.setAttribute('class', 'ip');
-	ip.appendChild(recvPart.createTextNode("[" + post['ip'] + "]"));
+	
+	var userid = recvPart.createElement('span');
+	userid.setAttribute('class', 'userid');
+	var useridstr = IDString(post)
+	userid.appendChild(recvPart.createTextNode(useridstr ? "[" + IDString(post) + "]" : ""));
+	userid.title=IDTitle(post);
 
 	var delay = recvPart.createElement('span');
 	delay.setAttribute('class', 'delay');
@@ -265,8 +268,8 @@ function FormatMobilePost(post)
 	var info = recvPart.createElement('span');
 	info.setAttribute('class', 'info');
 	info.appendChild(date);
-	if(options['ip'])
-		info.appendChild(ip);
+	if(options['showids'])
+		info.appendChild(userid);
 	if(options['delay'])
 		info.appendChild(delay);
 	li.appendChild(info);
@@ -317,6 +320,34 @@ function FormatMobilePost(post)
 	return li;
 }
 
+function IDTitle(post)
+{
+	var username=post['username']==null ? "" : post['username'];
+	var userid=post['user_id']==null ? "" : post['user_id'];
+	return username + (userid ? " ("+userid+")" : "");
+}
+function IDString(post)
+{
+	var username=post['username']==null ? (post['user_id']==null ? "" : "?") : post['username'];
+	var userid=post['user_id']==null ? "" : post['user_id'];
+	if (username.length>18) username=username.substring(0,15)+"...";
+	switch (options['showids']){
+	case 1:
+		return userid;
+		break;
+	case 2:
+		return username;
+		break;
+	case 3:
+		return username + (userid ? " ("+userid+")" : "");
+		break;
+	case 4:
+		return userid ? "✓" : "";
+		break;
+	default:
+		return "";
+	} 
+}
 function DelayString(post)
 {
 	var delay;
@@ -361,7 +392,7 @@ function RecreatePosts()
 
 function InitSettings()
 {
-	confPart.getElementById("ip").checked = options["ip"];
+	confPart.getElementById("publicid").checked = options["publicid"];
 	confPart.getElementById("delay").checked = options["delay"];
 	confPart.getElementById("links").checked = options["links"];
 	confPart.getElementById("old").checked = options["old"];
@@ -370,6 +401,7 @@ function InitSettings()
 	confPart.getElementById("math").checked = options["math"];
 	confPart.getElementById("notifications").checked = options["notifications"];
 	confPart.getElementById("favicon").checked = options["favicon"];
+	confPart.getElementById("showids").value = options["showids"];
 
 	var skinSelect = confPart.getElementById('skin');
 	skinSelect.add(new Option("Dunkelgrauton", 'dunkelgrauton'));
@@ -387,7 +419,7 @@ function InitSettings()
 
 function UpdateSettings()
 {
-	options["ip"] = confPart.getElementById("ip").checked ? 1 : 0;
+	options["publicid"] = confPart.getElementById("publicid").checked ? 1 : 0;
 	options["delay"] = confPart.getElementById("delay").checked ? 1 : 0;
 	options["links"] = confPart.getElementById("links").checked ? 1 : 0;
 	options["old"] = confPart.getElementById("old").checked ? 1 : 0;
@@ -398,6 +430,8 @@ function UpdateSettings()
 	options["math"] = confPart.getElementById("math").checked ? 1 : 0;
 	options["name"] = sendPart.getElementById("name").value;
 	options["favicon"] = confPart.getElementById("favicon").checked ? 1 : 0;
+
+	options["showids"] = parseInt(confPart.getElementById("showids").value);
 
 	var input = confPart.getElementById("last");
 	var num = parseInt(input.value);
@@ -488,7 +522,8 @@ function Send()
 	    name: sendPart.getElementById ("name").value,
 	    message: sendPart.getElementById ("message").value,
 	    delay: position,
-	    version: version});
+	    version: version,
+	    publicid: options["publicid"]});
 	sendRequest.send(uri);
 }
 
@@ -623,8 +658,9 @@ function Quote()
 		/*	child.style.backgroundColor = '';
 			for (var j = 0; j < li.children.length; j++){
 				child.children[j].style.color = '';
-			}*/
-			q+=posts[i]['date'] +" " +(options['ip'] ?  posts[i]['ip'] : "") + posts[i]['name'].trim() + ": " + posts[i]['message']+"\n";
+				}*/
+		    q+=posts[i]['date'] +" " + posts[i]['name'].trim() + ": " + posts[i]['message']+"\n";
+			//q+=posts[i]['date'] +" " +(options['ip'] ?  posts[i]['ip'] : "") + posts[i]['name'].trim() + ": " + posts[i]['message']+"\n";
 
 //q += child.children[1].children[0].innerHTML + " " + (options['ip'] ?  child.children[1].children[1].innerHTML : "") +  child.children[0].innerHTML + " " +  child.children[2].innerHTML + "\n";
 		}
