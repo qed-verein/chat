@@ -4,7 +4,9 @@ require 'cgi'
 require 'dbi'
 require 'json'
 require 'digest'
+require 'eventmachine'
 require './rubychat-config.rb'
+require './rubychat-backend.rb'
 
 class CGIAdapter < ::CGI
 	attr_reader :args, :env_table, :stdinput, :stdoutput
@@ -27,32 +29,35 @@ end
 
 class ChatError < StandardError; end
 
-
-
+#Entry point for every request
+#Points requests to the appropriate handler using the request-url
 def handleRequest(cgi)
+	#Login requests must be passed first. All other requests are auth only
 	if cgi.script_name == "/rubychat/account"
 		accountHandler cgi
 		return
 	end
 
+	#These headers are sent with every response (except for login-responses)
 	headers = {
-		'Content-Type' => 'application/json; charset=utf-8',
-		'Cache-Control' => 'no-cache, must-revalidate',
+		'Content-Type' => 'application/json; charset=utf-8', #All posts are sent as JSON
+		'Cache-Control' => 'no-cache, must-revalidate', #Posts shouldn't be cached
 		'Expires' => 'Sat, 26 Jul 1997 05:00:00 GMT'}
 	cgi.print cgi.http_header(headers)
 
 	begin
-		cookieAuthenticate cgi
+		cookieAuthenticate cgi #Authenticate via cookie and set the userid
 
-		raise ChatError, "Du bist nicht in den Chat eingeloggt!" if Thread.current[:userid].nil?
+		raise ChatError, "Du bist nicht in den Chat eingeloggt!" if Thread.current[:userid].nil? #No userid means auth-fail -> reject
 		raise ChatError, "Ungueltige Versionsnummer!" if cgi.has_key? 'version' && cgi['version'] != '20170328000042'
 
+		#Direct to appropriate handler
 		case cgi.script_name
-			when "/rubychat/post"
+			when "/rubychat/post" #New post
 				postHandler cgi
-			when "/rubychat/view"
+			when "/rubychat/view" #Get long-polling request
 				viewHandler cgi
-			when "/rubychat/history"
+			when "/rubychat/history" #Get history (range of posts)
 				historyHandler cgi
 			else
 				raise ChatError, "Unbekannter Befehl!"
@@ -62,51 +67,53 @@ def handleRequest(cgi)
 	end
 end
 
-
+#This handler gets called when creating a new post
 def postHandler(cgi)
+	#Extract parameters form request
 	name = cgi['name']
 	message = cgi['message']
 	channel = cgi['channel']
 	date = Time.new.strftime "%Y-%m-%d %H-%M-%S"
 	delay = cgi.has_key?('delay') ? cgi['delay'].to_i : nil
-	bottag = cgi.has_key?('bottag') ? (cgi['bottag'].to_i ==0 ? 0 : 1) : 0
+	bottag = cgi.has_key?('bottag') ? cgi['bottag'].to_i : 0
 	publicid = cgi.has_key?('publicid') ? (cgi['publicid'].to_i == 0 ? 0 : 1) : 0
-	sql = "INSERT INTO content2 (name, message, channel, date, user_id, delay, bottag, publicid) " +
-		"VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-	chatDatabase {|db| db.do(sql, name, message, channel, date, Thread.current[:userid], delay, bottag, publicid)}
 
+	$chat.createPost(name, message, channel, date, Thread.current[:userid], delay, bottag, publicid)
+
+	#Notify all listeners about new post
 	$mutex.synchronize{$increment += 1; $condition.broadcast}
+	queue.push $increment
 
 	cgi.print({'type' => 'ok', 'finished' => 1}.to_json)
 end
 
+#Endpoint for long polling
+#Handles requests to create new long polling connection
 def viewHandler(cgi)
+	#Parse request and set default values if missing
 	position = cgi.has_key?('position') ? cgi['position'].to_i : -24
 	limit = cgi.has_key?('limit') ? cgi['limit'].to_i : 1000
 
+	#Get the -position last posts if position isn't positive
 	if position <= 0 then
-		sqlNextId = "SELECT id + 1 AS next FROM content2 WHERE channel = ? ORDER BY id DESC LIMIT ?, 1"
-		chatDatabase {|db| row = db.select_one(sqlNextId, cgi['channel'], -position)
-			position = row.nil? ? 0 : row['next']}
+		position = $chat.getCurrentId(cgi['channel'], -position)
 	end
 	
 	cgi.print ({'type' => 'ok', 'started' => 1}.to_json)  + "\n"
 	cgi.stdoutput.flush
 	
-	messageLoop(cgi) {chatDatabase {|db|			
-		sql = "SELECT content2.id AS id, name, message, channel, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS date, user_id, delay, bottag, publicid, username" +
-			" FROM content2 LEFT JOIN user ON content2.user_id=user.id WHERE content2.id >= ? AND channel = ? ORDER BY id LIMIT ?"
-		db.select_all(sql, position,  cgi['channel'], limit) {|row|
+	#Enter message loop
+	messageLoop(cgi) {		
+		$chat.getPostsByStartId(cgi['channel'], position, limit) {|row|
 			outputPosting(cgi, row.to_h)
 			position = row['id'].to_i + 1
-			limit -= 1 }}
+			limit -= 1 }
 		break if limit <= 0
 	}
 	
 	cgi.print ({'type' => 'ok', 'finished' => 1}.to_json)  + "\n"
 	cgi.stdoutput.flush
 end
-
 
 def messageLoop(cgi)
 	keepalive = cgi.has_key?('keepalive') ? cgi['keepalive'].to_i : 30
@@ -131,47 +138,29 @@ def messageLoop(cgi)
 	end while Time.now < timeout
 end
 
+#Gets called when the histroy is request
 def historyHandler(cgi)
-	sqlTemplate = "SELECT content2.id AS id, name, message, channel, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS date, " +
-		"user_id, delay, bottag, publicid, username FROM content2 LEFT JOIN user ON content2.user_id=user.id "
-
 	cgi.print ({'type' => 'ok', 'started' => 1}.to_json)  + "\n"
+	channel = cgi['channel']
 	
 	case cgi['mode']
 	when 'dateinterval'
-		sql = sqlTemplate + "WHERE channel = ? AND date >= ? AND date <= ? ORDER BY id"
-		chatDatabase {|db|
-			db.select_all(sql, cgi['channel'], cgi['from'], cgi['to']) {|row| outputPosting(cgi, row.to_h)}}
+		$chat.getPostsByDateInterval(channel, cgi['from'], cgi['to']) {|row| outputPosting(cgi, row.to_h)}
 	when 'daterecent'
 		from = Time.now - cgi['last'].to_i
-		sql = sqlTemplate + "WHERE channel = ? AND date >= ? ORDER BY id"
-		chatDatabase {|db|
-			db.select_all(sql, cgi['channel'], from.strftime("%F %X")) {|row| outputPosting(cgi, row.to_h)}}
+		$chat.getPostsByStartDate(channel, from) {|row| outputPosting(cgi, row.to_h)}
 	when 'postinterval'
-		sql = sqlTemplate + "WHERE channel = ? AND content2.id >= ? AND content2.id <= ? ORDER BY id"
-		chatDatabase {|db|
-			db.select_all(sql, cgi['channel'], cgi['from'].to_i, cgi['to'].to_i) {|row| outputPosting(cgi, row.to_h)}}
-	when 'postrecent', 'fromownpost'
-		chatDatabase {|db|
-			if cgi['mode'] == 'postrecent' then
-				sqlFromId = "SELECT id + 1 AS from_id FROM content2 WHERE channel = ? ORDER BY id DESC LIMIT ?, 1"
-				row = db.select_one(sqlFromId, cgi['channel'], cgi['last'].to_i)
-			elsif cgi['mode'] == 'fromownpost'
-				sqlFromId = "SELECT MAX(id) AS from_id FROM content2 WHERE channel = ? AND user_id = ?"
-				row = db.select_one(sqlFromId, cgi['channel'], Thread.current[:userid])
-			end
-			
-			fromId = row.nil? ? 0 : row['from_id']
-			sql = sqlTemplate + "WHERE channel = ? AND content2.id >= ? ORDER BY id"
-			db.select_all(sql, cgi['channel'], fromId) {|row| outputPosting(cgi, row.to_h)}
-		}
+		$chat.getPostsByIdInterval(channel, cgi['from'].to_i, cgi['to'].to_i) {|row| outputPosting(cgi, row.to_h)}
+	when 'postrecent'
+		$chat.getPostsByStartId(channel, $chat.getCurrentId(channel, cgi['last'].to_i)) {|row| outputPosting(cgi, row.to_h)}
+	when 'fromownpost'
+		$chat.getPostsByStartId(channel, $chat.getCurrentId(channel, Thread.current[:userid])) {|row| outputPosting(cgi, row.to_h)}
 	else
 		raise ChatError, "Unbekannter Modus!"
 	end
 	
 	cgi.print ({'type' => 'ok', 'finished' => 1}.to_json)  + "\n"
 end
-
 
 def accountHandler(cgi)
 	if cgi['logout'] == '1' then
@@ -184,7 +173,7 @@ def accountHandler(cgi)
 		return
 	end
 	
-	user = userAuthenticate(cgi['username'], cgi['password'])
+	user = $chat.userAuthenticate(cgi['username'], cgi['password'])
 	if user.nil? then
 		cgi.out('type' => 'application/json') {
 			{'result' => 'fail', 'message' => 'Logindaten sind ungültig'}.to_json}
@@ -203,44 +192,15 @@ def chatDatabase
 		db.do("SET NAMES UTF8mb4"); yield(db)}
 end
 
-
 def outputPosting(cgi, posting)
-	posting.each {|k, v| posting[k] = v.force_encoding('UTF-8') if v.class == String}
-	if not posting['publicid'] then
-		posting['username']=nil
-		posting['user_id']=nil
-	elsif not posting['username'] then
-		posting['username']='?'
-	end
-	posting.delete('publicid')
-	posting.merge!({'type' => 'post', 'color' => colorForName(posting['name'])})
-	cgi.print posting.to_json + "\n"
-end
-
-def colorForName(name)
-	md5 = Digest::MD5.new
-	r = md5.hexdigest('a' + name + 'a')[-7..-1].to_i(16) % 156 + 100
-	g = md5.hexdigest('b' + name + 'b')[-7..-1].to_i(16) % 156 + 100
-	b = md5.hexdigest('c' + name + 'c')[-7..-1].to_i(16) % 156 + 100
-	r.to_s(16) + g.to_s(16) + b.to_s(16)
+	cgi.print $chat.formatAsJson(posting) + "\n"
 end
 
 def cookieAuthenticate(cgi)
 	return if !cgi.cookies.keys.include?('userid') || !cgi.cookies.keys.include?('pwhash')
 	return if cgi.cookies['pwhash'][0].size != 40
-	chatDatabase {|db|
-		sql = "SELECT id FROM user WHERE id=? AND password=?"
-		row = db.select_one(sql, cgi.cookies['userid'][0], cgi.cookies['pwhash'][0]);
-		Thread.current[:userid] = row['id'].to_i if !row.nil?}
+	Thread.current[:userid] = $chat.checkCookie(cgi.cookies['userid'][0], cgi.cookies['pwhash'][0])
 end
-
-
-def userAuthenticate(username, password)
-	sql = "SELECT id, password FROM user WHERE username=? AND password=SHA1(CONCAT(username, ?))"
-	chatDatabase {|db| row = db.select_one(sql, username, password); return row.nil? ? nil : row.to_h}
-end
-
-
 
 $logMutex = Mutex.new
 
@@ -252,8 +212,10 @@ $mutex = Mutex.new
 $condition = ConditionVariable.new
 $increment = 0
 $running = true
+$chat = ChatBackend.new
 
 threads = []
+queue = EM::Queue.new
 
 Signal.trap("USR2") do
 	active = threads.select {|thread| !thread[:cgi].nil? && thread.alive?}
@@ -264,28 +226,51 @@ Signal.trap("USR2") do
 			thread[:cgi].script_name.to_s + '?' + thread[:cgi].query_string.to_s, thread[:cgi].user_agent}
 end
 
-server = TCPServer.new "127.0.0.1", $scgiPort
+scgiServer = TCPServer.new "127.0.0.1", $scgiPort #Start tcp server for Scgi
+
 writeToLog "Chatserver wurde gestartet."
 
+#Not ready yet
+=begin
+#Start seperate thread to listen to WS-requests
+wsServerThread = Thread.new do
+	begin
+		#Start EventMachine. This blocks this thread
+		EventMachine.run {
+			puts "Starting EM-Server"
+			EventMachine.start_server "127.0.0.1", $wsPort, WsConnection, queue
+			puts "Done"
+		}
+	end
+end
+=end
+
+#Main loop: Listen for SCGI-requests and process them
 begin
 	loop do
-		connection = server.accept
-		thread = Thread.new do
-			begin		
-				headers = readSCGIHeaders connection
-				cgi = CGIAdapter.new headers, connection, connection
+		#Process new SCGI-request
+		scgiConnection = scgiServer.accept
+		scgiThread = Thread.new do #Each request gets its own thread
+			begin	
+				#Parse arguments and store them in the thread
+				headers = readSCGIHeaders scgiConnection
+				cgi = CGIAdapter.new headers, scgiConnection, scgiConnection
 				Thread.current[:cgi] = cgi;
+
+				#Begin request-handling
 				handleRequest cgi
 			rescue Errno::EPIPE, Errno::ECONNRESET => e
 				writeToLog sprintf("Verbindung abgebrochen: %s", e.message);
 			rescue Exception => e
 				writeToLog sprintf("\n%s: %s\n%s\n", e.class, e.message, e.backtrace.join("\n"))
 			ensure
-				connection.close
+				scgiConnection.close
 			end
 		end
-		threads.push thread
-		threads.keep_if {|thread| thread.alive?}
+
+		#Store thread
+		threads.push scgiThread 
+		threads.keep_if {|scgiThread| scgiThread.alive?}
 	end
 rescue Interrupt => e
 	writeToLog "Beende den Chatserver."
@@ -295,4 +280,3 @@ rescue Interrupt => e
 ensure
 	writeToLog "Chatserver wurde beendet."
 end
-
