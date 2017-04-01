@@ -4,7 +4,8 @@ var version = "20170328000042"; // muss in rubychat ebenfalls geaendert werden
 var recvPart, sendPart, confPart, logsPart;
 var notification, isActive = true, unreadCount = 0, selectcount = 0;
 
-var themecolors = { 'dunkelgrauton' : "#555" , 'schwarzwiedienacht' :"#010101" , 'mylittlepony': "#f6b7d2"};
+var themecolors = { 'dunkelgrauton' : "#555" , 'schwarzwiedienacht' :"#010101" , 'mylittlepony': "#f6b7d2",
+	'apfelweiss': "#ddd", };
 
 var defaults = {
 		channel: "", name: "",
@@ -29,7 +30,7 @@ function LoadOptions()
 		if(booleanOptions.indexOf(key) >= 0)
 			options[key] = parseInt(options[key]) ? 1 : 0;
 	}
-	options["skin"]='mylittlepony';
+
 	recvPart = sendPart = confPart = logsPart = document;
 
 }
@@ -404,10 +405,11 @@ function InitSettings()
 	confPart.getElementById("showids").value = options["showids"];
 
 	var skinSelect = confPart.getElementById('skin');
-//	skinSelect.add(new Option("Dunkelgrauton", 'dunkelgrauton'));
-//	skinSelect.add(new Option("Nachtschwarz", 'schwarzwiedienacht'));
+	skinSelect.add(new Option("Dunkelgrauton", 'dunkelgrauton'));
+	skinSelect.add(new Option("Nachtschwarz", 'schwarzwiedienacht'));
 	skinSelect.add(new Option("My Little Pony", 'mylittlepony'));
-	skinSelect.value = 'mylittlepony';
+	skinSelect.add(new Option("Apfelweiß", 'apfelweiss'));
+	skinSelect.value = options['skin'];
 
 	var layoutSelect = confPart.getElementById('layout');
 	layoutSelect.add(new Option("für Bildschirme", 'screen'));
@@ -753,7 +755,8 @@ function InvertColor(color)
 
 function PostColor(post)
 {
-	return (options['skin'] != 'mylittlepony') ? post['color'] : InvertColor(post['color']);
+	return (options['skin'] != 'mylittlepony' && options['skin'] != 'apfelweiss') ?
+		post['color'] : InvertColor(post['color']);
 }
 
 function ScrollDown()

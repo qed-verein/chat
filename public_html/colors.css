@@ -16,6 +16,23 @@
 	color: #484;
 }
 
+.apfelweiss, .apfelweiss input, .apfelweiss textarea, .apfelweiss select
+{
+	color: #444;
+	background-color: #eee;
+	border-color: #aaa;
+}
+
+.apfelweiss .box
+{
+	background-color: #ddd;
+	border-color: #aaa;
+}
+
+.apfelweiss .post .info, .apfelweiss .post .userid
+{
+	color: #333;
+}
 
 .dunkelgrauton, .dunkelgrauton input, .dunkelgrauton textarea, .dunkelgrauton select, .dunkelgrauton .box
 {
@@ -38,7 +55,7 @@
 	color: #ed468e;
 }
 
-.mylittlepony #logbox input, .mylittlepony #logbox a, .mylittlepony #logbox
+.mylittlepony #logbox input, .mylittlepony #logbox
 {
 	background-color: #fdf6ae;
 	border-color: #ecde7b;
@@ -61,12 +78,11 @@
 	color: #283873;
 }
 
-.mylittlepony .inactivelog
+.mylittlepony a, .apfelweiss a
 {
 	color: green;
 }
-
-.mylittlepony .activelog
+.mylittlepony a:hover, .apfelweiss a:hover
 {
 	color: orange;
 }
