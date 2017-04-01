@@ -404,10 +404,10 @@ function InitSettings()
 	confPart.getElementById("showids").value = options["showids"];
 
 	var skinSelect = confPart.getElementById('skin');
-	skinSelect.add(new Option("Dunkelgrauton", 'dunkelgrauton'));
-	skinSelect.add(new Option("Nachtschwarz", 'schwarzwiedienacht'));
+//	skinSelect.add(new Option("Dunkelgrauton", 'dunkelgrauton'));
+//	skinSelect.add(new Option("Nachtschwarz", 'schwarzwiedienacht'));
 	skinSelect.add(new Option("My Little Pony", 'mylittlepony'));
-	skinSelect.value = options['skin'];
+	skinSelect.value = 'mylittlepony';
 
 	var layoutSelect = confPart.getElementById('layout');
 	layoutSelect.add(new Option("für Bildschirme", 'screen'));

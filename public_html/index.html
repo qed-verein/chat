@@ -49,7 +49,7 @@
 		<input type="button" onclick="Increase()" value=">">
 	</li>
 	<li><label>IDs anzeigen: <select id="showids" onchange="UpdateSettings()"><option value=1>IDs</option><option value=2>Namen</option><option value=3>Beides</option><option value=4>Symbol</option><option value=0>Aus</option></select></label></li>
-	<li><label>Farbschema: <select id="skin" size="1" onchange="UpdateSettings()"></select></label></li>
+	<li><label>Farbschema: <select id="skin" size="1" onchange="UpdateSettings()" disabled></select></label></li>
 	<li><label>Layout: <select id="layout" size="1" onchange="LayoutSelected(this)"></select></label></li>
 	<li><a id="logoutlink" onclick="OnLoginClicked('logout')">Ausloggen</a></li>
 </ul>
