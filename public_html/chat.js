@@ -29,7 +29,7 @@ function LoadOptions()
 		if(booleanOptions.indexOf(key) >= 0)
 			options[key] = parseInt(options[key]) ? 1 : 0;
 	}
-
+	options["skin"]='mylittlepony';
 	recvPart = sendPart = confPart = logsPart = document;
 
 }
