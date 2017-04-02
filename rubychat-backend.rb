@@ -80,10 +80,10 @@ class ChatBackend
     
     def formatAsJson(posting)
         posting.each {|k, v| posting[k] = v.force_encoding('UTF-8') if v.class == String}
-        if posting[:publicid] != 1 then
+        if not posting[:publicid] then
 		    posting[:username] = nil
 		    posting[:user_id] = nil
-	    elsif not posting[:username] then
+	    elsif posting[:username].nil? then
 		    posting[:username] = '?'
 	    end
 	    posting.delete(:publicid)
