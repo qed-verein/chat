@@ -1,8 +1,8 @@
 require 'thread'
 require 'socket'
 require 'cgi'
-require 'dbi'
 require 'json'
+require 'sequel'
 require 'digest'
 require 'eventmachine'
 require './rubychat-config.rb'
@@ -63,7 +63,7 @@ def handleRequest(cgi)
 				raise ChatError, "Unbekannter Befehl!"
 		end
 	rescue StandardError => e
-		cgi.print({'type' => 'error', 'description' => e.message}.to_json)
+		cgi.print({'type' => 'error', 'description' => e.message + "\n" + e.backtrace.join("\n")}.to_json)
 	end
 end
 
@@ -82,7 +82,7 @@ def postHandler(cgi)
 
 	#Notify all listeners about new post
 	$mutex.synchronize{$increment += 1; $condition.broadcast}
-	queue.push $increment
+	#queue.push $increment // TODO Auskommentiert, da nicht definiert 
 
 	cgi.print({'type' => 'ok', 'finished' => 1}.to_json)
 end
@@ -106,7 +106,7 @@ def viewHandler(cgi)
 	messageLoop(cgi) {		
 		$chat.getPostsByStartId(cgi['channel'], position, limit) {|row|
 			outputPosting(cgi, row.to_h)
-			position = row['id'].to_i + 1
+			position = row[:id].to_i + 1
 			limit -= 1 }
 		break if limit <= 0
 	}
@@ -145,16 +145,16 @@ def historyHandler(cgi)
 	
 	case cgi['mode']
 	when 'dateinterval'
-		$chat.getPostsByDateInterval(channel, cgi['from'], cgi['to']) {|row| outputPosting(cgi, row.to_h)}
+		$chat.getPostsByDateInterval(channel, cgi['from'], cgi['to']) {|row| outputPosting(cgi, row)}
 	when 'daterecent'
 		from = Time.now - cgi['last'].to_i
-		$chat.getPostsByStartDate(channel, from) {|row| outputPosting(cgi, row.to_h)}
+		$chat.getPostsByStartDate(channel, from) {|row| outputPosting(cgi, row)}
 	when 'postinterval'
-		$chat.getPostsByIdInterval(channel, cgi['from'].to_i, cgi['to'].to_i) {|row| outputPosting(cgi, row.to_h)}
+		$chat.getPostsByIdInterval(channel, cgi['from'].to_i, cgi['to'].to_i) {|row| outputPosting(cgi, row)}
 	when 'postrecent'
-		$chat.getPostsByStartId(channel, $chat.getCurrentId(channel, cgi['last'].to_i)) {|row| outputPosting(cgi, row.to_h)}
+		$chat.getPostsByStartId(channel, $chat.getCurrentId(channel, cgi['last'].to_i)) {|row| outputPosting(cgi, row)}
 	when 'fromownpost'
-		$chat.getPostsByStartId(channel, $chat.getCurrentId(channel, Thread.current[:userid])) {|row| outputPosting(cgi, row.to_h)}
+		$chat.getPostsByStartId(channel, $chat.getCurrentId(channel, Thread.current[:userid])) {|row| outputPosting(cgi, row)}
 	else
 		raise ChatError, "Unbekannter Modus!"
 	end
@@ -178,18 +178,13 @@ def accountHandler(cgi)
 		cgi.out('type' => 'application/json') {
 			{'result' => 'fail', 'message' => 'Logindaten sind ungültig'}.to_json}
 	else
-		cookie1 = CGI::Cookie::new('name' => 'userid', 'value' => user['id'].to_i.to_s,
+		cookie1 = CGI::Cookie::new('name' => 'userid', 'value' => user[:id].to_i.to_s,
 			'path' => '/', 'expires' => Time.now + 3600 * 24 * 90)
-		cookie2 = CGI::Cookie::new('name' => 'pwhash', 'value' => user['password'],
+		cookie2 = CGI::Cookie::new('name' => 'pwhash', 'value' => user[:password],
 			'path' => '/', 'expires' => Time.now + 3600 * 24 * 90)
 		cgi.out('type' => 'application/json', 'cookie' => [cookie1, cookie2]) {
 			{'result' => 'success', 'message' => 'Eingeloggt'}.to_json}
 	end
-end
-
-def chatDatabase
-	DBI.connect($sqlDatabase, $sqlUsername, $sqlPassword) {|db|
-		db.do("SET NAMES UTF8mb4"); yield(db)}
 end
 
 def outputPosting(cgi, posting)
@@ -198,7 +193,7 @@ end
 
 def cookieAuthenticate(cgi)
 	return if !cgi.cookies.keys.include?('userid') || !cgi.cookies.keys.include?('pwhash')
-	return if cgi.cookies['pwhash'][0].size != 40
+	return if cgi.cookies['pwhash'][0].nil? || cgi.cookies['pwhash'][0].size != 40
 	Thread.current[:userid] = $chat.checkCookie(cgi.cookies['userid'][0], cgi.cookies['pwhash'][0])
 end
 

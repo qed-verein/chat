@@ -1,8 +1,7 @@
 # Geänderte Konfiguration in rubychat-config.rb speichern
 
-$sqlDatabase = "DBI:Mysql:Datenbank:localhost"
-$sqlUsername = "Benutzername"
-$sqlPassword = "Passwort"
+$sqlConfig = {:adapter => "mysql2", :host => "localhost",
+	:database => "Datenbankname", :username => "Benutzername", :password => "Passwort"}
 $scgiPort = 20000
 $wsPort = 21000 
 
