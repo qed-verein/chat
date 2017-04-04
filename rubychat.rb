@@ -63,6 +63,7 @@ def handleRequest(cgi)
 				raise ChatError, "Unbekannter Befehl!"
 		end
 	rescue StandardError => e
+		writeToLog sprintf("\n%s: %s\n%s\n", e.class, e.message, e.backtrace.join("\n"))
 		cgi.print({'type' => 'error', 'description' => e.message + "\n" + e.backtrace.join("\n")}.to_json)
 	end
 end
