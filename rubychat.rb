@@ -111,6 +111,7 @@ def viewHandler(cgi)
 			outputPosting(cgi, row.to_h)
 			position = row[:id].to_i + 1
 			limit -= 1 }
+		cgi.stdoutput.flush
 		break if limit <= 0
 	}
 	
