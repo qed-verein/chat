@@ -135,7 +135,7 @@ def messageLoop(cgi)
 		end
 	
 		$mutex.synchronize {
-			$condition.wait($mutex, [[timeout - Time.now, keepalive].min, 0].max)
+			$condition.wait($mutex, [[timeout - Time.now, keepalive].min, 0].max) if threadIncrement == $increment
 			sendKeepalive = (threadIncrement == $increment)
 			threadIncrement = $increment}
 		raise ChatError, "Server wurde beendet" if !$running 
