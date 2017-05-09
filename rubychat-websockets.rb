@@ -1,14 +1,15 @@
-include 'eventmachine'
-include 'websocket'
+require 'eventmachine'
+require 'websocket'
+require 'cgi'
 
-#Not ready yet
-=begin
 $connectedClients = Array.new
 $connectedClientsMutex = Mutex.new
 class WsConnection < EM::Connection
 	attr_reader :uid
 	attr_reader :channel
 	attr_reader :queue
+
+	attr_accessor :position
 
 	def initialize(queue)
 		@queue = queue
@@ -17,17 +18,16 @@ class WsConnection < EM::Connection
 	def post_init
 		@uid = nil #uid=nil means not authorized
 		@handshake = nil
-		puts $connectedClientsMutex.locked?
-		$connectedClientsMutex.synchornize { puts "in"; $connectedClients.push(self); puts "out" } #Store connection
-
-		puts "Connection created"
+		@position = 0
+		$connectedClientsMutex.synchronize { $connectedClients.push(self) } #Store connection
 	end
-	
-	def recieve_data(data)
-		puts "Incoming data"
-		if !authorized?
-			if !handle_handshake data #Client must perform handshake before communicating
-				self.close_connection
+
+	def receive_data(data)
+		unless authorized?
+			if @handshake.nil?
+				handle_handshake data #Client must perform handshake before communicating
+			else
+				close 1002, "Du bist nicht eingeloggt!"
 			end
 		else
 			handle_incoming data
@@ -40,8 +40,6 @@ class WsConnection < EM::Connection
 
 	#Handles handshake when connection is opened and uses cookies to auth the user
 	def handle_handshake(data)
-		puts "Handling handshake"
-
 		#Create handshake
 		@handshake = WebSocket::Handshake::Server.new
 		@handshake << data
@@ -55,20 +53,23 @@ class WsConnection < EM::Connection
 			validate_cookies
 
 			#Create frame for incoming data. This frame will remain for the rest of the connection
-			@frame = incoming_frame.new(:version => @handshake.version)
+			@frame = WebSocket::Frame::Incoming::Server.new(:version => @handshake.version)
 			@state = :open
 
 			#Set the channel
-			query = CGI.parse @handshake.query
-			if !query.include?('channel')
+			query = CGI.parse @handshake.query unless @handshake.query.nil?
+			if @handshake.query.nil? || !query.include?('channel')
 				handle_fatal_error "Missing parameters"
-				return;
+				return
 			end
-			@channel = query['channel']			
+			@channel = query['channel'][0]
 
-			last = query.include?('last') ? [query['last'].to_i, 10000].min : 0
-			$chat.getPostsByStartId(@channel, $chat.getCurrentId(@channel, last)) { |row|
+			last = query.include?('last') ? [query['last'][0].to_i, 10000].min : 0
+
+			@position = $chat.getCurrentId(@channel, last)
+			$chat.getPostsByStartId(@channel, @position) { |row|
 				send_post row.to_h
+				@position = row.to_h[:id].to_i + 1
 			}
 
 			handle_incoming @handshake.leftovers if @handshake.leftovers
@@ -79,13 +80,11 @@ class WsConnection < EM::Connection
 
 	#Sets the uid according to the cookie send on handshake
 	def validate_cookies()
-		#Extract cookies form header
-		match = /(?:Cookie:\s?)(.+)/.match @handshake.leftovers
-		return if match.nil? #No match
+		return unless @handshake.headers.include?('cookie') #No match
 
-		cookies = CGI::Cookie::parse match[1]
+		cookie = CGI::Cookie::parse @handshake.headers['cookie']
 		return unless cookie.keys.include?('userid') && cookie.keys.include?('pwhash')
-		return if cookie['pwhash'][0].size != 40
+		return unless cookie['pwhash'][0].size == 40
 
 		@uid = $chat.checkCookie cookie['userid'][0], cookie['pwhash'][0]
 	end
@@ -96,18 +95,24 @@ class WsConnection < EM::Connection
 		while frame = @frame.next #Repeate until current frame is fully processed
 			if @state == :open
 				case frame.type
-				when :close #Client demands close -> We only need to confirm the close
-					@state = :closing
-					close
-				when :ping
-					send frame.to_s, :type => :pong
-				when :text
-					parsedJson = JSON.parse frame.to_s
-					if parsedJson.includes?("type")
-						send_log parsedJson
-					else
-						create_post parsedJson
-					end
+					when :close #Client demands close -> We only need to confirm the close
+						@state = :closing
+						close
+					when :ping
+						send frame.to_s, :type => :pong
+					when :text
+						begin
+							parsedJson = JSON.parse frame.to_s
+						rescue JSON::ParserError => e
+							puts e
+							handle_fatal_error e
+							return
+						end
+						if parsedJson.include?("type")
+							send_log parsedJson
+						else
+							create_post parsedJson
+						end
 				end
 			else
 				break
@@ -117,7 +122,7 @@ class WsConnection < EM::Connection
 	end
 
 	def send_log(data)
-        raise NotImplementedError
+		raise NotImplementedError
 	end
 
 	def send_post(posting)
@@ -127,19 +132,20 @@ class WsConnection < EM::Connection
 	def create_post(data)
 		name = data['name']
 		message = data['message']
-		channel = data['channel']
 		date = Time.new.strftime "%Y-%m-%d %H-%M-%S"
 		delay = data.has_key?('delay') ? data['delay'].to_i : nil
 		bottag = data.has_key?('bottag') ? data['bottag'].to_i : 0
 		publicid = data.has_key?('publicid') ? (data['publicid'].to_i == 0 ? 0 : 1) : 0
 
+		#Send posts to db asynchroniously to avoid blockin
 		operation = proc {
-			$chat.createPost(name, message, channel, date, Thread.current[:userid], delay, bottag, publicid)
+			$chat.createPost(name, message, @channel, date, @uid, delay, bottag, publicid)
 		}
 
+		#Only notify clients if the db-operation is successful
 		callback = proc {
-			$mutex.synchronize{$increment += 1; $condition.broadcast}
-			@queue.push $increment
+			$mutex.synchronize { $increment += 1; $condition.broadcast }
+			@queue.push(@channel)
 		}
 
 		EM.defer(operation, callback)
@@ -147,10 +153,13 @@ class WsConnection < EM::Connection
 
 	#Gets called when the current connections encounters an error it cannot recover from
 	def handle_fatal_error(error)
-        error_code = case error
-          when :invalid_payload_encoding then 1007
-          else 1002
-        end
+		error_code =
+				case error
+					when :invalid_payload_encoding then
+						1007
+					else
+						1002
+				end
 		close error_code
 	end
 
@@ -162,7 +171,7 @@ class WsConnection < EM::Connection
 	# @return [Boolean] true if data was send
 	def send(data, args = {})
 		type = args[:type] || :text
-        return if @state == :closed || (@state == :closing && type != :close)
+		return if @state == :closed || (@state == :closing && type != :close)
 		unless type == :plain #Plain is only used during handshake and is raw HTTP
 			frame = WebSocket::Frame::Outgoing::Server.new :version => @handshake.version, :data => data, :type => type.to_s, :code => args[:code]
 			if !frame.supported?
@@ -186,7 +195,7 @@ class WsConnection < EM::Connection
 			send data, :type => :close if @state == :closing #This only happends when the client asked for closing the connection
 			@state = :closed
 		end
-        close_connection_after_writing
+		close_connection_after_writing
 	end
 
 	#Gets called when connection is closed
@@ -194,4 +203,3 @@ class WsConnection < EM::Connection
 		$connectedClientsMutex.synchronize { $connectedClients.delete self } #Cleanup client
 	end
 end
-=end
