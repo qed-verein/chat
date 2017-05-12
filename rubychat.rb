@@ -248,6 +248,7 @@ wsServerThread = Thread.new do
 			#Handle new items in messageQueue
 			processPost = Proc.new { |channel|
 				$connectedClients.each { |client|
+					#Only process posts if the connection has the correct channel to reduce load on db
 					if client.channel == channel
 						$chat.getPostsByStartId(channel, client.position) { |post|
 							client.send_post post
@@ -258,6 +259,8 @@ wsServerThread = Thread.new do
 				#Check for new items on next tick
 				EM.next_tick { @messageQueue.pop &processPost }
 			}
+
+			#Begin first check of messageQueue. From now on the checks will executed within processPost
 			@messageQueue.pop &processPost
 		}
 	end

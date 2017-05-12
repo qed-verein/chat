@@ -7,6 +7,9 @@ $connectedClientsMutex = Mutex.new
 class WsConnection < EM::Connection
 	attr_reader :uid
 	attr_reader :channel
+
+	#queue is used to pass messages recieved on this connection to the main eventloop
+	#There the message will get distributed to all connected clients
 	attr_reader :queue
 
 	attr_accessor :position
@@ -22,12 +25,14 @@ class WsConnection < EM::Connection
 		$connectedClientsMutex.synchronize { $connectedClients.push(self) } #Store connection
 	end
 
+	#This methode gets called by the TCP-Server everytime a connection recieves new data
+	#Checks are performed to determine the state of the connection and the the data is redirected appropriately
 	def receive_data(data)
 		unless authorized?
 			if @handshake.nil?
 				handle_handshake data #Client must perform handshake before communicating
 			else
-				close 1002, "Du bist nicht eingeloggt!"
+				close 1002, "Du bist nicht eingeloggt!" #Only one attemped handshake per connection is allowed
 			end
 		else
 			handle_incoming data
@@ -50,6 +55,11 @@ class WsConnection < EM::Connection
 			#Respond if necessary
 			send @handshake.to_s, :type => :plain if @handshake.should_respond?
 
+			#TODO: It might be possible (if client-server latency is very low) that the client recieves the handshake
+			#before the connections is fully initiallized. This would cause the server to close the connection
+			#without processing the data. Maybe think about queueing this data? Sending handshake-response later is not
+			#an option because this would make it impossible to send errors to the client.
+
 			validate_cookies
 
 			#Create frame for incoming data. This frame will remain for the rest of the connection
@@ -64,6 +74,8 @@ class WsConnection < EM::Connection
 			end
 			@channel = query['channel'][0]
 
+			#Set last and send recent posts if requested
+			#Warning: The last passed to ws differs from the position passed to viewHandler
 			last = query.include?('last') ? [query['last'][0].to_i, 10000].min : 0
 
 			@position = $chat.getCurrentId(@channel, last)
@@ -74,7 +86,7 @@ class WsConnection < EM::Connection
 
 			handle_incoming @handshake.leftovers if @handshake.leftovers
 		else
-			handle_fatal_error @handshake.error.to_s #This closes the connection
+			handle_fatal_error @handshake.error.to_s #This also closes the connection
 		end
 	end
 
@@ -89,10 +101,11 @@ class WsConnection < EM::Connection
 		@uid = $chat.checkCookie cookie['userid'][0], cookie['pwhash'][0]
 	end
 
-	#Gets called when there is new data. Parses the data and selects what to do based on the type of the data
+	#Gets called when there is new data and the connection is already initiallized
+	#Parses the data and selects what to do based on the type of the data
 	def handle_incoming(data)
 		@frame << data
-		while frame = @frame.next #Repeate until current frame is fully processed
+		while frame = @frame.next #Repeat until current frame is fully processed
 			if @state == :open
 				case frame.type
 					when :close #Client demands close -> We only need to confirm the close
@@ -103,16 +116,14 @@ class WsConnection < EM::Connection
 					when :text
 						begin
 							parsedJson = JSON.parse frame.to_s
-						rescue JSON::ParserError => e
-							puts e
-							handle_fatal_error e
-							return
-						end
-						if parsedJson.include?("type")
-							send_log parsedJson
-						else
-							create_post parsedJson
-						end
+							rescue JSON::ParserError => e
+								handle_fatal_error e
+								return
+							end
+						create_post parsedJson
+					else #We don't know how to handle anything else -> Reject and abandon connection
+						handle_fatal_error :unsupported_data_type
+						return
 				end
 			else
 				break
@@ -121,6 +132,8 @@ class WsConnection < EM::Connection
 		handle_fatal_error @frame.error if @frame.error?
 	end
 
+	#Send the requested part of the log to the client
+	#Not yet implemented
 	def send_log(data)
 		raise NotImplementedError
 	end
@@ -137,7 +150,7 @@ class WsConnection < EM::Connection
 		bottag = data.has_key?('bottag') ? data['bottag'].to_i : 0
 		publicid = data.has_key?('publicid') ? (data['publicid'].to_i == 0 ? 0 : 1) : 0
 
-		#Send posts to db asynchroniously to avoid blockin
+		#Send posts to db asynchroniously to avoid blocking
 		operation = proc {
 			$chat.createPost(name, message, @channel, date, @uid, delay, bottag, publicid)
 		}
@@ -157,6 +170,8 @@ class WsConnection < EM::Connection
 				case error
 					when :invalid_payload_encoding then
 						1007
+					when :unsupported_data_type then
+						1003
 					else
 						1002
 				end
@@ -200,6 +215,6 @@ class WsConnection < EM::Connection
 
 	#Gets called when connection is closed
 	def unbind
-		$connectedClientsMutex.synchronize { $connectedClients.delete self } #Cleanup client
+		$connectedClientsMutex.synchronize { $connectedClients.delete self }
 	end
 end
