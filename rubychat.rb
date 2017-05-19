@@ -8,17 +8,18 @@ require 'digest'
 require 'eventmachine'
 require '/etc/chat/rubychat-config.rb'
 require './rubychat-backend.rb'
+require './rubychat-websockets.rb'
 
 class CGIAdapter < ::CGI
 	attr_reader :args, :env_table, :stdinput, :stdoutput
 
 	def initialize(enviroment, input, output, *args)
-      @env_table = enviroment
-      @stdinput = input
-      @stdoutput = output
-      @args = *args
-      super(*args)
-    end
+	  @env_table = enviroment
+	  @stdinput = input
+	  @stdoutput = output
+	  @args = *args
+	  super(*args)
+	end
 end
 
 def readSCGIHeaders(stream)
@@ -49,7 +50,7 @@ def handleRequest(cgi)
 	begin
 		cookieAuthenticate cgi #Authenticate via cookie and set the userid
 
-		raise ChatError, "Du bist nicht in den Chat eingeloggt!" if Thread.current[:userid].nil? #No userid means auth-fail -> reject
+		raise ChatError, "Du bist nicht in den Chat eingeloggt!" if Thread.current[:userid].nil?
 		raise ChatError, "Ungueltige Versionsnummer!" if cgi.has_key? 'version' && cgi['version'] != '20170328000042'
 
 		#Direct to appropriate handler
@@ -71,6 +72,10 @@ def handleRequest(cgi)
 	end
 end
 
+#Provieds a message queue for incoming posts
+#Each post in this queue gets pushed to all websocket-connections
+@messageQueue = EM::Queue.new
+
 #This handler gets called when creating a new post
 def postHandler(cgi)
 	#Extract parameters form request
@@ -86,7 +91,7 @@ def postHandler(cgi)
 
 	#Notify all listeners about new post
 	$mutex.synchronize{$increment += 1; $condition.broadcast}
-	#queue.push $increment // TODO Auskommentiert, da nicht definiert 
+	@messageQueue.push(channel)
 
 	cgi.print({'type' => 'ok', 'finished' => 1}.to_json)
 end
@@ -107,7 +112,7 @@ def viewHandler(cgi)
 	cgi.stdoutput.flush
 	
 	#Enter message loop
-	messageLoop(cgi) {		
+	messageLoop(cgi) {
 		$chat.getPostsByStartId(cgi['channel'], position, limit) {|row|
 			outputPosting(cgi, row.to_h)
 			position = row[:id].to_i + 1
@@ -215,7 +220,6 @@ $running = true
 $chat = ChatBackend.new
 
 threads = []
-queue = EM::Queue.new
 
 Signal.trap("USR2") do
 	active = threads.select {|thread| !thread[:cgi].nil? && thread.alive?}
@@ -230,20 +234,38 @@ scgiServer = TCPServer.new "127.0.0.1", $scgiPort #Start tcp server for Scgi
 
 writeToLog "Chatserver wurde gestartet."
 
-#Not ready yet
-=begin
 #Start seperate thread to listen to WS-requests
 wsServerThread = Thread.new do
 	begin
 		#Start EventMachine. This blocks this thread
 		EventMachine.run {
-			puts "Starting EM-Server"
-			EventMachine.start_server "127.0.0.1", $wsPort, WsConnection, queue
-			puts "Done"
+			#Redirect all uncaught errors raised in the eventloop to stderr
+			EM.error_handler{ |e|
+				writeToLog sprintf("\n%s: %s\n%s\n", e.class, e.message, e.backtrace.join("\n"))
+			}
+
+			EM.start_server "127.0.0.1", $wsPort, WsConnection, @messageQueue
+
+			#Handle new items in messageQueue
+			processPost = Proc.new { |channel|
+				$connectedClients.each { |client|
+					#Only process posts if the connection has the correct channel to reduce load on db
+					if client.channel == channel
+						$chat.getPostsByStartId(channel, client.position) { |post|
+							client.send_post post
+							client.position = post[:id] + 1
+						}
+					end
+				}
+				#Check for new items on next tick
+				EM.next_tick { @messageQueue.pop &processPost }
+			}
+
+			#Begin first check of messageQueue. From now on the checks will executed within processPost
+			@messageQueue.pop &processPost
 		}
 	end
 end
-=end
 
 #Main loop: Listen for SCGI-requests and process them
 begin
