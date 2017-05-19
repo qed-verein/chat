@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'thread'
 require 'socket'
 require 'cgi'
@@ -5,7 +6,7 @@ require 'json'
 require 'sequel'
 require 'digest'
 require 'eventmachine'
-require './rubychat-config.rb'
+require '/etc/rubychat-config.rb'
 require './rubychat-backend.rb'
 
 class CGIAdapter < ::CGI
