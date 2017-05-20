@@ -264,6 +264,8 @@ wsServerThread = Thread.new do
 			#Begin first check of messageQueue. From now on the checks will executed within processPost
 			@messageQueue.pop &processPost
 		}
+	rescue Exception => e
+		writeToLog sprintf("\n%s: %s\n%s\n", e.class, e.message, e.backtrace.join("\n"))
 	end
 end
 
