@@ -620,12 +620,12 @@ function OnHistoryClicked(elt)
 		url += URIEncodeParameters({mode: 'daterecent', last: '86400'});
 	else if(elt.id == 'lastWeek')
 		url += URIEncodeParameters({mode: 'daterecent', last: '604800'});
-	else if(elt.id == 'last100')
-		url += URIEncodeParameters({mode: 'postrecent', last: '100'});
 	else if(elt.id == 'last300')
 		url += URIEncodeParameters({mode: 'postrecent', last: '300'});
 	else if(elt.id == 'last1000')
 		url += URIEncodeParameters({mode: 'postrecent', last: '1000'});
+	else if(elt.id == 'fromOwnPost')
+		url += URIEncodeParameters({mode: 'fromownpost'});
 	else if(elt.id == 'interval')
 		url += URIEncodeParameters({mode: 'dateinterval',
 			from : logsPart.getElementById("logFrom").value,
