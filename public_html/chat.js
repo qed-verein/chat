@@ -652,8 +652,8 @@ function Quote()
 {
 	var postsh = document.getElementById("posts");
 	var q = "";
-	for (var i = 0; i < postsh.children.length; i++){
-		var child = postsh.children[i];
+	for (var i = 1; i <= postsh.children.length; i++){
+		var child = postsh.children[postsh.children.length-i];
 		if (child.style.backgroundColor == 'blue'){
 			child.ontouchstart();
 			child.ontouchend();
@@ -661,7 +661,7 @@ function Quote()
 			for (var j = 0; j < li.children.length; j++){
 				child.children[j].style.color = '';
 				}*/
-		    q+=posts[i]['date'] +" " + posts[i]['name'].trim() + ": " + posts[i]['message']+"\n";
+		    q = posts[posts.length-i]['date'] +" " + posts[posts.length-i]['name'].trim() + ": " + posts[posts.length-i]['message']+"\n" + q;
 			//q+=posts[i]['date'] +" " +(options['ip'] ?  posts[i]['ip'] : "") + posts[i]['name'].trim() + ": " + posts[i]['message']+"\n";
 
 //q += child.children[1].children[0].innerHTML + " " + (options['ip'] ?  child.children[1].children[1].innerHTML : "") +  child.children[0].innerHTML + " " +  child.children[2].innerHTML + "\n";
