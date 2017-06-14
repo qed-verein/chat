@@ -245,6 +245,12 @@ wsServerThread = Thread.new do
 
 			EM.start_server "127.0.0.1", $wsPort, WsConnection, @messageQueue
 
+			EM.add_periodic_timer($wsPingInterval) {
+				$connectedClients.each { |client|
+					client.ping
+				}
+			}
+
 			#Handle new items in messageQueue
 			processPost = Proc.new { |channel|
 				$connectedClients.each { |client|
