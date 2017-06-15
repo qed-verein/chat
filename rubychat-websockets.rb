@@ -13,7 +13,6 @@ class WsConnection < EM::Connection
 	attr_reader :queue
 
 	attr_accessor :position
-	attr_accessor :ping_failures
 
 	def initialize(queue)
 		@queue = queue
@@ -23,7 +22,6 @@ class WsConnection < EM::Connection
 		@uid = nil #uid=nil means not authorized
 		@handshake = nil
 		@position = 0
-		@ping_failures = 0
 		$connectedClientsMutex.synchronize { $connectedClients.push(self) } #Store connection
 	end
 
@@ -77,12 +75,10 @@ class WsConnection < EM::Connection
 			@channel = query['channel'][0]
 
 			#Set last and send recent posts if requested
-			@position = query.include?('position') ? query['position'][0].to_i : 0
-			if @position <= 0
-				@position = [@position, -10000].max
-				@position = $chat.getCurrentId(@channel, -@position)
-			end
+			#Warning: The last passed to ws differs from the position passed to viewHandler
+			last = query.include?('last') ? [query['last'][0].to_i, 10000].min : 0
 
+			@position = $chat.getCurrentId(@channel, last)
 			$chat.getPostsByStartId(@channel, @position) { |row|
 				send_post row.to_h
 				@position = row.to_h[:id].to_i + 1
@@ -117,8 +113,6 @@ class WsConnection < EM::Connection
 						close
 					when :ping
 						send frame.to_s, :type => :pong
-					when :pong
-						@ping_failures = 0
 					when :text
 						begin
 							parsedJson = JSON.parse frame.to_s
@@ -168,15 +162,6 @@ class WsConnection < EM::Connection
 		}
 
 		EM.defer(operation, callback)
-	end
-
-	def ping()
-		if @ping_failures >= 3
-			close
-			return
-		end
-		@ping_failures += 1
-		send nil, :type => :ping
 	end
 
 	#Gets called when the current connections encounters an error it cannot recover from

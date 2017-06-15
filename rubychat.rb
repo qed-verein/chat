@@ -51,7 +51,7 @@ def handleRequest(cgi)
 		cookieAuthenticate cgi #Authenticate via cookie and set the userid
 
 		raise ChatError, "Du bist nicht in den Chat eingeloggt!" if Thread.current[:userid].nil?
-		raise ChatError, "Ungueltige Versionsnummer!" if cgi.has_key? 'version' && cgi['version'] != '20170615153225'
+		raise ChatError, "Ungueltige Versionsnummer!" if cgi.has_key? 'version' && cgi['version'] != '20170328000042'
 
 		#Direct to appropriate handler
 		case cgi.script_name
@@ -245,12 +245,6 @@ wsServerThread = Thread.new do
 			}
 
 			EM.start_server "127.0.0.1", $wsPort, WsConnection, @messageQueue
-
-			EM.add_periodic_timer($wsPingInterval) {
-				$connectedClients.each { |client|
-					client.ping
-				}
-			}
 
 			#Handle new items in messageQueue
 			processPost = Proc.new { |channel|
