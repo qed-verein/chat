@@ -81,7 +81,7 @@ function SocketConnect()
 	timeout = setTimeout("SocketConnect()", options['wait'] * 1000);
 
 	protocolPrefix = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
-	uri = protocolPrefix + "//" + location.host + "/rubychat/websocket?" + URIEncodeParameters({channel: options["channel"], position: position});
+	uri = protocolPrefix + "//" + location.host + "/websocket?" + URIEncodeParameters({channel: options["channel"], position: position});
 	webSocket = new WebSocket(uri);
 	webSocket.onmessage = OnSocketResponse;
 	webSocket.onerror = OnSocketError;
