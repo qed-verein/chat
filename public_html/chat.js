@@ -70,6 +70,8 @@ function InitSocket()
 	position = -24;
 	posts = Array();
 	RecreatePosts();
+	sendPart.getElementById("name").value = options["name"];
+	sendPart.getElementById("message").focus();
 	SocketConnect();
 }
 
