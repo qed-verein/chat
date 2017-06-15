@@ -133,7 +133,6 @@ function Send()
 	webSocket.send(msg);
 	sendPart.getElementById("message").value = "";
 	sendPart.getElementById("message").focus();
-	clearTimeout(sendTimeout);
 }
 
 // Wird für jede ankommende Nachricht aufgerufen
