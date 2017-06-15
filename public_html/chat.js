@@ -1,5 +1,8 @@
 var options = new Object();
-var version = "20170328000042"; // muss in rubychat ebenfalls geaendert werden
+
+// muss in rubychat ebenfalls geaendert werden
+// use date -u +%Y%m%d%H%M%S
+var version = "20170615131853"; 
 
 var recvPart, sendPart, confPart, logsPart;
 var notification, isActive = true, unreadCount = 0, selectcount = 0;
@@ -70,6 +73,8 @@ function InitSocket()
 	position = -24;
 	posts = Array();
 	RecreatePosts();
+	sendPart.getElementById("name").value = options["name"];
+	sendPart.getElementById("message").focus();
 	SocketConnect();
 }
 
@@ -81,7 +86,7 @@ function SocketConnect()
 	timeout = setTimeout("SocketConnect()", options['wait'] * 1000);
 
 	protocolPrefix = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
-	uri = protocolPrefix + "//" + location.host + "/rubychat/websocket?" + URIEncodeParameters({channel: options["channel"], position: position});
+	uri = protocolPrefix + "//" + location.hostname + "/websocket?" + URIEncodeParameters({channel: options["channel"], position: position});
 	webSocket = new WebSocket(uri);
 	webSocket.onmessage = OnSocketResponse;
 	webSocket.onerror = OnSocketError;
@@ -131,6 +136,8 @@ function Send()
 	    delay: position,
 	    publicid: options["publicid"]});
 	webSocket.send(msg);
+	sendPart.getElementById("message").value = "";
+	sendPart.getElementById("message").focus();
 }
 
 // Wird für jede ankommende Nachricht aufgerufen
