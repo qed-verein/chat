@@ -43,7 +43,7 @@ def handleRequest(cgi)
 	#These headers are sent with every response (except for login-responses)
 	headers = {
 		'Content-Type' => 'application/json; charset=utf-8', #All posts are sent as JSON
-		'Cache-Control' => 'no-cache, must-revalidate', #Posts shouldn't be cached
+		'Cache-Control' => 'no-cache, no-store, must-revalidate', #Posts shouldn't be cached
 		'Expires' => 'Sat, 26 Jul 1997 05:00:00 GMT'}
 	cgi.print cgi.http_header(headers)
 
