@@ -2,7 +2,7 @@ var options = new Object();
 
 // muss in rubychat ebenfalls geaendert werden
 // use date -u +%Y%m%d%H%M%S
-var version = "20170615153225"; 
+var version = "20170615200324"; 
 
 var recvPart, sendPart, confPart, logsPart;
 var notification, isActive = true, unreadCount = 0, selectcount = 0;
@@ -105,6 +105,7 @@ function SocketDisconnect()
 function OnSocketOpen(event)
 {
 	SetStatus("");
+	firstReconnect = true;
 }
 
 function OnSocketResponse(event)
@@ -128,6 +129,12 @@ function OnSocketClose(event)
 	if(event.code == 1000)
 		return;
 
+	if(firstReconnect)
+	{
+		firstReconnect = false;
+		SocketConnect();
+		return;
+	}
 	SetStatus("Die Verbindung wurde beendet.<br>Grund: " + event.code + ": " + event.reason)
 }
 
