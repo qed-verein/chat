@@ -91,6 +91,8 @@ function SocketConnect()
 	webSocket.onmessage = OnSocketResponse;
 	webSocket.onerror = OnSocketError;
 	webSocket.onopen = OnSocketOpen;
+	webSocket.onerror = OnSocketError;
+	webSocket.onclose = OnSocketClose;
 }
 
 function SocketDisconnect()
@@ -117,8 +119,16 @@ function OnSocketResponse(event)
 
 function OnSocketError(event)
 {
-	SetStatus(event.data);
+	SetStatus("Es ist ein Fehler aufgetreten!");
 	timeout = setTimeout(SocketConnect, 10000);
+}
+
+function OnSocketClose(event)
+{
+	if(event.code == 1000)
+		return;
+
+	SetStatus("Die Verbindung wurde beendet.<br>Grund: " + event.code + ": " + event.reason)
 }
 
 function Send()
