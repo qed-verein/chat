@@ -229,44 +229,8 @@ class WsConnection < EM::Connection
 		close_connection_after_writing
 	end
 
-	def send_data(data)
-		if @state == :opening
-			userAgent = "-"
-			unless @handshake.nil? || @handshake.headers.nil? || !@handshake.headers.include?('user-agent')
-				userAgent = @handshake.headers['user-agent']
-			end
-			query = "-"
-			unless @handshake.nil? || @handshake.query.nil?
-				query = @handshake.query
-			end
-			writeToLog sprintf("Send: %s %s %s\n", userAgent, query, data)
-		end
-
-		super
-	end
-
-	def close_connection_after_writing
-		if @state == :opening
-			userAgent = "-"
-			unless @handshake.nil? || @handshake.headers.nil? || !@handshake.headers.include?('User-Agent')
-				userAgent = @handshake.headers['User-Agent']
-			end
-			query = "-"
-			unless @handshake.nil? || @handshake.query.nil?
-				query = @handshake.query
-			end
-			writeToLog sprintf("Closing: %s %s\n", userAgent, query)
-		end
-
-		super
-	end
-
 	#Gets called when connection is closed
 	def unbind
 		$connectedClientsMutex.synchronize { $connectedClients.delete self }
-	end
-
-	def writeToLog(message)
-		$logMutex.synchronize {STDERR.puts message}
 	end
 end
