@@ -1,0 +1,68 @@
+body, input, textarea, select
+{
+	font-family: sans-serif;
+	font-size: 10pt;
+	background-color: gray;
+	margin: 0px;
+}
+
+input, textarea, select
+{
+	border: 1px black solid;
+}
+
+input[type="button"]:hover, input[type="submit"]:hover{
+	border-color: #444;
+	background-color: #ccc;
+	color: #444;
+	cursor: pointer;
+}
+
+a:link, a[onclick]
+{
+	text-decoration: underline;
+	cursor: pointer;
+	color: white;
+}
+
+a:visited
+{
+	color: black;
+}
+
+a:hover
+{
+	color: orange;
+}
+
+.box
+{
+	border: 2px black solid;
+	padding: 1em;
+	margin: 0.5em;
+}
+
+#settingbox, #logbox
+{
+	line-height: 175%;
+}
+
+#settingbox ul
+{
+	margin: 0em;
+	padding: 0em;
+}
+
+#settingbox li
+{
+	display: inline;
+	white-space: nowrap;
+}
+
+#logbox ul
+{
+	display: inline-block;
+	margin: 0em 2em 0em 0em;
+	padding: 0em;
+	list-style-type: none;
+}

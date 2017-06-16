@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html>
+<head>
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="colors.css">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta id="theme-color" name="theme-color" content="#000">
+<script type="text/javascript" src="chat.js"></script>
+<title>Login</title>
+</head>
+<body class="schwarzwiedienacht" onload="LoginInit()">
+
+<fieldset style="max-width: 20em; margin: auto" class="box">
+<legend>Anmeldung</legend>
+<table>
+ <tr>
+  <td><label for="login_username">Benutzername:</label></td>
+  <td><input name="username" id="login_username" size="15"></td>
+ </tr>
+ <tr>
+  <td><label for="login_password">Passwort:</label></td>
+  <td><input type="password" name="password" id="login_password" size="15"></td>
+ </tr>
+ <tr><td colspan="2" style="text-align: center">
+ <input type="submit" name="login" value="Einloggen" onclick="OnLoginClicked('login')"></td></tr>
+</table>
+<p id="message"></p>
+</fieldset>
+
+<div style="margin: 1cm auto; max-width: 50em">
+<b>Hinweise:</b>
+<ul style="margin-top: 0cm">
+<li>Der Username und das Passwort ist dasselbe wie für die <a href="https://qeddb.qed-verein.de/">QED-Datenbank</a>.</li>
+<li>Zum Benutzen des Chats muss JavaScript aktiviert sein.</li>
+<li>Bei Problemen bitte an <a href="mailto:webmaster@qed-verein.de">webmaster@qed-verein.de</a> schreiben.</li>
+</ul>
+</div>
+</body>
+</html>
