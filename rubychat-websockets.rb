@@ -13,6 +13,7 @@ class WsConnection < EM::Connection
 	attr_reader :queue
 
 	attr_accessor :position
+	attr_accessor :ping_failures
 
 	def initialize(queue)
 		@queue = queue
@@ -22,6 +23,8 @@ class WsConnection < EM::Connection
 		@uid = nil #uid=nil means not authorized
 		@handshake = nil
 		@position = 0
+		@ping_failures = 0
+		@state = :opening
 		$connectedClientsMutex.synchronize { $connectedClients.push(self) } #Store connection
 	end
 
@@ -29,7 +32,7 @@ class WsConnection < EM::Connection
 	#Checks are performed to determine the state of the connection and the the data is redirected appropriately
 	def receive_data(data)
 		unless authorized?
-			if @handshake.nil?
+			if @state == :opening
 				handle_handshake data #Client must perform handshake before communicating
 			else
 				close 1002, "Du bist nicht eingeloggt!" #Only one attemped handshake per connection is allowed
@@ -75,10 +78,12 @@ class WsConnection < EM::Connection
 			@channel = query['channel'][0]
 
 			#Set last and send recent posts if requested
-			#Warning: The last passed to ws differs from the position passed to viewHandler
-			last = query.include?('last') ? [query['last'][0].to_i, 10000].min : 0
+			@position = query.include?('position') ? query['position'][0].to_i : 0
+			if @position <= 0
+				@position = [@position, -10000].max
+				@position = $chat.getCurrentId(@channel, -@position)
+			end
 
-			@position = $chat.getCurrentId(@channel, last)
 			$chat.getPostsByStartId(@channel, @position) { |row|
 				send_post row.to_h
 				@position = row.to_h[:id].to_i + 1
@@ -113,6 +118,8 @@ class WsConnection < EM::Connection
 						close
 					when :ping
 						send frame.to_s, :type => :pong
+					when :pong
+						@ping_failures = 0
 					when :text
 						begin
 							parsedJson = JSON.parse frame.to_s
@@ -162,6 +169,15 @@ class WsConnection < EM::Connection
 		}
 
 		EM.defer(operation, callback)
+	end
+
+	def ping()
+		if @ping_failures >= 3
+			close
+			return
+		end
+		@ping_failures += 1
+		send nil, :type => :ping
 	end
 
 	#Gets called when the current connections encounters an error it cannot recover from

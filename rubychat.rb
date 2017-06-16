@@ -43,7 +43,7 @@ def handleRequest(cgi)
 	#These headers are sent with every response (except for login-responses)
 	headers = {
 		'Content-Type' => 'application/json; charset=utf-8', #All posts are sent as JSON
-		'Cache-Control' => 'no-cache, no-store, must-revalidate', #Posts shouldn't be cached
+		'Cache-Control' => 'no-cache, must-revalidate', #Posts shouldn't be cached
 		'Expires' => 'Sat, 26 Jul 1997 05:00:00 GMT'}
 	cgi.print cgi.http_header(headers)
 
@@ -51,7 +51,7 @@ def handleRequest(cgi)
 		cookieAuthenticate cgi #Authenticate via cookie and set the userid
 
 		raise ChatError, "Du bist nicht in den Chat eingeloggt!" if Thread.current[:userid].nil?
-		raise ChatError, "Ungueltige Versionsnummer!" if cgi.has_key? 'version' && cgi['version'] != '20170328000042'
+		raise ChatError, "Ungueltige Versionsnummer!" if cgi.has_key? 'version' && cgi['version'] != '20170615200324'
 
 		#Direct to appropriate handler
 		case cgi.script_name
@@ -245,6 +245,13 @@ wsServerThread = Thread.new do
 			}
 
 			EM.start_server "127.0.0.1", $wsPort, WsConnection, @messageQueue
+
+			#Ping clients every n seconds. This allows us to kick clients who went away silently
+			EM.add_periodic_timer($wsPingInterval) {
+				$connectedClients.each { |client|
+					client.ping
+				}
+			}
 
 			#Handle new items in messageQueue
 			processPost = Proc.new { |channel|
