@@ -231,16 +231,15 @@ class WsConnection < EM::Connection
 
 	def send_data(data)
 		if @state == :opening
-			port, ip = Socket.unpack_sockaddr_in(get_peername)
 			userAgent = "-"
-			unless @handshake.nil? || @handshake.headers.nil? || @handshake.headers.include?('User-Agent')
-				userAgent = @handshake.headers['User-Agent']
+			unless @handshake.nil? || @handshake.headers.nil? || !@handshake.headers.include?('user-agent')
+				userAgent = @handshake.headers['user-agent']
 			end
 			query = "-"
 			unless @handshake.nil? || @handshake.query.nil?
 				query = @handshake.query
 			end
-			writeToLog sprintf("Send: %s %s %s %s\n", ip, userAgent, query, data)
+			writeToLog sprintf("Send: %s %s %s\n", userAgent, query, data)
 		end
 
 		super
@@ -248,16 +247,15 @@ class WsConnection < EM::Connection
 
 	def close_connection_after_writing
 		if @state == :opening
-			port, ip = Socket.unpack_sockaddr_in(get_peername)
 			userAgent = "-"
-			unless @handshake.nil? || @handshake.headers.nil? || @handshake.headers.include?('User-Agent')
+			unless @handshake.nil? || @handshake.headers.nil? || !@handshake.headers.include?('User-Agent')
 				userAgent = @handshake.headers['User-Agent']
 			end
 			query = "-"
 			unless @handshake.nil? || @handshake.query.nil?
 				query = @handshake.query
 			end
-			writeToLog sprintf("Closing: %s %s %s\n", ip, userAgent, query)
+			writeToLog sprintf("Closing: %s %s\n", userAgent, query)
 		end
 
 		super
