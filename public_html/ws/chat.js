@@ -113,7 +113,7 @@ function OnSocketOpen(event)
 	SetStatus("");
 	firstReconnect = true;
 	wait = options['wait'];
-	pingTimer = setInterval(Ping, 60 * 1000);
+	pingTimer = setInterval(Ping, 30 * 1000);
 }
 
 function OnSocketResponse(event)
@@ -124,7 +124,8 @@ function OnSocketResponse(event)
 
 function OnSocketError(event)
 {
-	SetStatus("Es ist ein Fehler aufgetreten!");
+	if(!firstReconnect)
+		SetStatus("Es ist ein Fehler aufgetreten!");
 }
 
 function OnSocketClose(event)
