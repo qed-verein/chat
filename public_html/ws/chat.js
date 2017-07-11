@@ -87,11 +87,11 @@ function SocketConnect()
 {
 	SocketDisconnect();
 	if(!firstReconnect)
-		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server in " + wait + "s ...");
+		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server...");
 
 	protocolPrefix = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
 	uri = protocolPrefix + "//" + location.hostname + "/websocket?" + URIEncodeParameters({channel: options["channel"], position: position});
-	//uri = "ws://chat.qed-verein.de:21000/?" + URIEncodeParameters({channel: options["channel"], position: position});
+	//uri = "ws://localhost:21000/?" + URIEncodeParameters({channel: options["channel"], position: position});
 	webSocket = new WebSocket(uri);
 	webSocket.onmessage = OnSocketResponse;
 	webSocket.onerror = OnSocketError;
@@ -119,6 +119,8 @@ function OnSocketOpen(event)
 function OnSocketResponse(event)
 {
 	obj = JSON.parse(event.data);
+	if(obj['type'] != 'post')
+		return;
 	ProcessPost(obj);
 }
 
@@ -171,7 +173,7 @@ function Ping()
 	if(webSocket.readyState != 1)
 		return;
 
-	msg = JSON.stringify({typt: "ping"});
+	msg = JSON.stringify({type: "ping"});
 	webSocket.send(msg);
 }
 
