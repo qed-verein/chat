@@ -15,7 +15,7 @@ var defaults = {
 		last: 24, botblock: 0, old: 0, publicid: 0, delay: 0, links: 1, title: 1, math: 0, showids: 4,
 		notifications: 1, favicon: 1,
 		layout: 'screen', skin: 'dunkelgrauton',
-		limit: 256,	wait: 60,
+		limit: 256,	wait: 1,
 		redirect: "http://uxul.de/redirect.php?"
 	};
 
@@ -66,7 +66,7 @@ function Init()
 // *   Socket   *
 // *****************
 
-var firstReconnect, webSocket, position, textpos, posts, timeout;
+var firstReconnect, webSocket, position, textpos, posts, timeout, pingTimer, wait;
 
 function InitSocket()
 {
@@ -75,18 +75,23 @@ function InitSocket()
 	RecreatePosts();
 	sendPart.getElementById("name").value = options["name"];
 	sendPart.getElementById("message").focus();
+
+	firstReconnect = true;
+	wait = options['wait'];
+	window.addEventListener("online", SocketConnect);
+
 	SocketConnect();
 }
 
 function SocketConnect()
 {
 	SocketDisconnect();
-	SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
-
-	timeout = setTimeout("SocketConnect()", options['wait'] * 1000);
+	if(!firstReconnect)
+		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server...");
 
 	protocolPrefix = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
 	uri = protocolPrefix + "//" + location.hostname + "/websocket?" + URIEncodeParameters({channel: options["channel"], position: position});
+	//uri = "ws://localhost:21000/?" + URIEncodeParameters({channel: options["channel"], position: position});
 	webSocket = new WebSocket(uri);
 	webSocket.onmessage = OnSocketResponse;
 	webSocket.onerror = OnSocketError;
@@ -98,6 +103,7 @@ function SocketConnect()
 function SocketDisconnect()
 {
 	clearTimeout(timeout);
+	clearInterval(pingTimer);
 	if(webSocket)
 		webSocket.close();
 }
@@ -106,22 +112,22 @@ function OnSocketOpen(event)
 {
 	SetStatus("");
 	firstReconnect = true;
+	wait = options['wait'];
+	pingTimer = setInterval(Ping, 30 * 1000);
 }
 
 function OnSocketResponse(event)
 {
 	obj = JSON.parse(event.data);
+	if(obj['type'] != 'post')
+		return;
 	ProcessPost(obj);
-
-	// Timeout zurücksetzen
-	clearTimeout(timeout);
-	timeout = setTimeout("SocketConnect()", options['wait'] * 1000);
 }
 
 function OnSocketError(event)
 {
-	SetStatus("Es ist ein Fehler aufgetreten!");
-	timeout = setTimeout(SocketConnect, 10000);
+	if(!firstReconnect)
+		SetStatus("Es ist ein Fehler aufgetreten!");
 }
 
 function OnSocketClose(event)
@@ -135,7 +141,12 @@ function OnSocketClose(event)
 		SocketConnect();
 		return;
 	}
-	SetStatus("Die Verbindung wurde beendet.<br>Grund: " + event.code + ": " + event.reason)
+
+	wait = Math.min(wait * 2, 128);
+	timeout = setTimeout(SocketConnect, wait * 1000);
+
+	SetStatus("Die Verbindung wurde beendet.<br>Grund: " + event.code + ": " + event.reason + 
+		"<br/> Neue Verbindung wird in " + wait + " s erstellt.");
 }
 
 function Send()
@@ -155,6 +166,15 @@ function Send()
 	webSocket.send(msg);
 	sendPart.getElementById("message").value = "";
 	sendPart.getElementById("message").focus();
+}
+
+function Ping()
+{
+	if(webSocket.readyState != 1)
+		return;
+
+	msg = JSON.stringify({type: "ping"});
+	webSocket.send(msg);
 }
 
 // Wird für jede ankommende Nachricht aufgerufen
