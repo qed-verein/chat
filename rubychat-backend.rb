@@ -2,6 +2,13 @@
 class ChatBackend
 	#Inserts a new post into db
 	def createPost(name, message, channel, date, user_id, delay, bottag, public_id)
+		if name.nil?
+			name = ''
+		end
+		if message.nil?
+			message = ''
+		end
+
 		sql = "INSERT INTO post (name, message, channel, date, user_id, delay, bottag, publicid) " +
 			"VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 		chatDatabase {|db| db[sql, name, message, channel, date, user_id, delay, bottag, public_id].insert}
@@ -91,6 +98,10 @@ class ChatBackend
 	private
 
 	def colorForName(name)
+		if name.nil?
+			name = ''
+		end
+
 		md5 = Digest::MD5.new
 		r = md5.hexdigest('a' + name + 'a')[-7..-1].to_i(16) % 156 + 100
 		g = md5.hexdigest('b' + name + 'b')[-7..-1].to_i(16) % 156 + 100
