@@ -186,7 +186,7 @@ class WsConnection < EM::Connection
 	end
 
 	def ping()
-		if @ping_failures >= 3
+		if @ping_failures >= $wsFailsToTimeout
 			close
 			return
 		end
