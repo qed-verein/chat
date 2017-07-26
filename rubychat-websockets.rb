@@ -23,6 +23,7 @@ class WsConnection < EM::Connection
 		@uid = nil #uid=nil means not authorized
 		@handshake = nil
 		@position = 0
+		@limit = 10000
 		@ping_failures = 0
 		@state = :opening
 		$connectedClientsMutex.synchronize { $connectedClients.push(self) } #Store connection
@@ -79,14 +80,14 @@ class WsConnection < EM::Connection
 
 			#TODO: Handle database-failures by closing gracefully
 
-			#Set last and send recent posts if requested
+			#Set position, limit and send recent posts if requested
 			@position = query.include?('position') ? query['position'][0].to_i : 0
+			@limit = query.include?('limit') ? query['limit'][0].to_i : 0
 			if @position <= 0
-				@position = [@position, -10000].max
 				@position = $chat.getCurrentId(@channel, -@position)
 			end
 
-			$chat.getPostsByStartId(@channel, @position) { |row|
+			$chat.getPostsByStartId(@channel, @position, @limit) { |row|
 				send_post row.to_h
 				@position = row.to_h[:id].to_i + 1
 			}
