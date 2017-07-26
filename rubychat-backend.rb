@@ -1,5 +1,9 @@
 #This class provides methodes to interface with the chat-db.
 class ChatBackend
+	def initialize()
+		@usernames = Hash.new
+	end
+
 	#Inserts a new post into db
 	def createPost(name, message, channel, date, user_id, delay, bottag, public_id)
 		if name.nil?
@@ -52,13 +56,12 @@ class ChatBackend
 		}
 	end
 
-	SqlPostTemplate = "SELECT post.id AS id, name, message, channel, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS date, user_id, delay, bottag, publicid, username " +
-		"FROM post LEFT JOIN user ON post.user_id=user.id "
+	SqlPostTemplate = "SELECT id, name, message, channel, DATE_FORMAT(date, '%Y-%m-%d %H:%i:%s') AS date, user_id, delay, bottag, publicid FROM post "
 		
 	#Gets all posts in a channel starting with id, orederd asc by id
 	#Callback gets executed for each row
 	def getPostsByStartId(channel, id, limit = 0, &callback)
-		sql = SqlPostTemplate + "WHERE post.id >= ? AND channel = ? ORDER BY id"
+		sql = SqlPostTemplate + "WHERE id >= ? AND channel = ? ORDER BY id"
 		if limit == 0
 			chatDatabase {|db| db.fetch(sql, id, channel, &callback)}
 		else
@@ -68,7 +71,7 @@ class ChatBackend
 	end
 	
 	def getPostsByIdInterval(channel, startId, endId, &callback)
-		sql = SqlPostTemplate + "WHERE channel = ? AND post.id >= ? AND post.id <= ? ORDER BY id"
+		sql = SqlPostTemplate + "WHERE channel = ? AND id >= ? AND id <= ? ORDER BY id"
 		chatDatabase {|db| db.fetch(sql, channel, startId, endId, &callback)}
 	end
 
@@ -82,13 +85,29 @@ class ChatBackend
 		chatDatabase {|db| db.fetch(sql, channel, startDate.strftime("%F %X"), &callback)}
 	end
 	
+	#Use lazy loading to get usernames
+	def getUsername(posting)
+		if @usernames.has_key?(posting[:user_id])
+			return @usernames[posting[:user_id]]
+		else
+			username = ''
+			chatDatabase {|db| username = db[:user].select(:username).where('id = ?', posting[:user_id]).first}
+			if username.nil?
+				username = '?'
+			else
+				username = username[:username]
+			end
+			@usernames[posting[:user_id]] = username
+			return username
+		end
+	end
+
 	def formatAsJson(posting)
 		posting.each {|k, v| posting[k] = v.force_encoding('UTF-8') if v.class == String}
 		if not posting[:publicid] then
-			posting[:username] = nil
 			posting[:user_id] = nil
-		elsif posting[:username].nil? then
-			posting[:username] = '?'
+		else
+			posting[:username] = getUsername(posting)
 		end
 		posting.delete(:publicid)
 		posting.merge!({'type' => 'post', 'color' => colorForName(posting[:name])})
