@@ -137,6 +137,7 @@ class WsConnection < EM::Connection
 									next
 								else
 									close 1002, 'Invalid command: ' + parsedJson['type'] + '!'
+									next
 							end
 						end
 						create_post parsedJson
@@ -171,18 +172,19 @@ class WsConnection < EM::Connection
 
 		#TODO: Handle database-failures by closing due to internal server error
 
-		#Send posts to db asynchroniously to avoid blocking
-		operation = proc {
+		#TODO: Reenable async post-processing (Idea: Use some sort of queue to store posts and then process async)
+		##Send posts to db asynchroniously to avoid blocking
+		#operation = proc {
 			$chat.createPost(name, message, @channel, date, @uid, delay, bottag, publicid)
-		}
+		#}
 
-		#Only notify clients if the db-operation is successful
-		callback = proc {
+		##Only notify clients if the db-operation is successful
+		#callback = proc {
 			$mutex.synchronize { $increment += 1; $condition.broadcast }
 			@queue.push(@channel)
-		}
+		#}
 
-		EM.defer(operation, callback)
+		#EM.defer(operation, callback)
 	end
 
 	def ping()
