@@ -106,6 +106,7 @@ class ChatBackend
 		posting.each {|k, v| posting[k] = v.force_encoding('UTF-8') if v.class == String}
 		if not posting[:publicid] then
 			posting[:user_id] = nil
+			posting[:username] = nil
 		else
 			posting[:username] = getUsername(posting)
 		end
