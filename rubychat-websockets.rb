@@ -70,6 +70,10 @@ class WsConnection < EM::Connection
 			@frame = WebSocket::Frame::Incoming::Server.new(:version => @handshake.version)
 			@state = :open
 
+			if !authorized?
+				close 1002, "Invalid credentials"
+			end
+
 			#Set the channel
 			query = CGI.parse @handshake.query unless @handshake.query.nil?
 			if @handshake.query.nil? || !query.include?('channel')
