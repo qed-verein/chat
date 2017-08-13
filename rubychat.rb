@@ -44,7 +44,9 @@ def handleRequest(cgi)
 	headers = {
 		'Content-Type' => 'application/json; charset=utf-8', #All posts are sent as JSON
 		'Cache-Control' => 'no-cache, must-revalidate', #Posts shouldn't be cached
-		'Expires' => 'Sat, 26 Jul 1997 05:00:00 GMT'}
+		'Expires' => 'Sat, 26 Jul 1997 05:00:00 GMT',
+		'X-Frame-Options' => 'SAMEORIGIN'
+		}
 	cgi.print cgi.http_header(headers)
 
 	begin
@@ -175,9 +177,9 @@ end
 def accountHandler(cgi)
 	if cgi['logout'] == '1' then
 		cookie1 = CGI::Cookie::new('name' => 'userid', 'value' => '',
-			'path' => '/', 'expires' => Time.now - 3600 * 24)
+			'path' => '/', 'expires' => Time.now - 3600 * 24, 'secure' => true, 'httponly' => true)
 		cookie2 = CGI::Cookie::new('name' => 'pwhash', 'value' => '',
-			'path' => '/', 'expires' => Time.now - 3600 * 24)
+			'path' => '/', 'expires' => Time.now - 3600 * 24, 'secure' => true, 'httponly' => true)
 		cgi.out('type' => 'application/json', 'cookie' => [cookie1, cookie2]) {
 			{'result' => 'success', 'message' => 'Ausgeloggt'}.to_json}
 		return
