@@ -6,3 +6,4 @@ $scgiPort = 20000
 $wsPort = 21000 
 $wsPingInterval = 60
 $wsFailsToTimeout = 3
+$hostname = "chat.foo.bar"

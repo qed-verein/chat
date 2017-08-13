@@ -1,6 +1,7 @@
 require 'eventmachine'
 require 'websocket'
 require 'cgi'
+require 'uri'
 
 $connectedClients = Array.new
 $connectedClientsMutex = Mutex.new
@@ -64,6 +65,16 @@ class WsConnection < EM::Connection
 			#without processing the data. Maybe think about queueing this data? Sending handshake-response later is not
 			#an option because this would make it impossible to send errors to the client.
 
+			#Check origin
+			if @handshake.headers.include?('origin')
+				uri = URI(@handshake.headers['origin'])
+				if uri.host != $hostname
+					puts uri.host
+					close 1002, "Invalid origin"
+					return
+				end
+			end
+
 			validate_cookies
 
 			#Create frame for incoming data. This frame will remain for the rest of the connection
@@ -72,6 +83,7 @@ class WsConnection < EM::Connection
 
 			if !authorized?
 				close 1002, "Invalid credentials"
+				return
 			end
 
 			#Set the channel
