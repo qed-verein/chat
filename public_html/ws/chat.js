@@ -142,7 +142,7 @@ function OnSocketClose(event)
 		return;
 	}
 
-	wait = Math.min(wait * 2, 128);
+	wait = Math.min(wait * 2, 32);
 	timeout = setTimeout(SocketConnect, wait * 1000);
 
 	SetStatus("Die Verbindung wurde beendet.<br>Grund: " + event.code + ": " + event.reason + 
