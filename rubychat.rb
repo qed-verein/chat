@@ -177,9 +177,9 @@ end
 def accountHandler(cgi)
 	if cgi['logout'] == '1' then
 		cookie1 = CGI::Cookie::new('name' => 'userid', 'value' => '',
-			'path' => '/', 'expires' => Time.now - 3600 * 24, 'secure' => true)
+			'path' => '/', 'expires' => Time.now - 3600 * 24)
 		cookie2 = CGI::Cookie::new('name' => 'pwhash', 'value' => '',
-			'path' => '/', 'expires' => Time.now - 3600 * 24, 'secure' => true, 'httponly' => true)
+			'path' => '/', 'expires' => Time.now - 3600 * 24)
 		cgi.out('type' => 'application/json', 'cookie' => [cookie1, cookie2]) {
 			{'result' => 'success', 'message' => 'Ausgeloggt'}.to_json}
 		return
