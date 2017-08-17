@@ -177,7 +177,7 @@ end
 def accountHandler(cgi)
 	if cgi['logout'] == '1' then
 		cookie1 = CGI::Cookie::new('name' => 'userid', 'value' => '',
-			'path' => '/', 'expires' => Time.now - 3600 * 24, 'secure' => true, 'httponly' => true)
+			'path' => '/', 'expires' => Time.now - 3600 * 24, 'secure' => true)
 		cookie2 = CGI::Cookie::new('name' => 'pwhash', 'value' => '',
 			'path' => '/', 'expires' => Time.now - 3600 * 24, 'secure' => true, 'httponly' => true)
 		cgi.out('type' => 'application/json', 'cookie' => [cookie1, cookie2]) {
@@ -190,10 +190,11 @@ def accountHandler(cgi)
 		cgi.out('type' => 'application/json') {
 			{'result' => 'fail', 'message' => 'Logindaten sind ungültig'}.to_json}
 	else
+		#Userid cannot be httponly due to the way chat.js detects login-state
 		cookie1 = CGI::Cookie::new('name' => 'userid', 'value' => user[:id].to_i.to_s,
-			'path' => '/', 'expires' => Time.now + 3600 * 24 * 90)
+			'path' => '/', 'expires' => Time.now + 3600 * 24 * 90, 'secure' => $secureCookies)
 		cookie2 = CGI::Cookie::new('name' => 'pwhash', 'value' => user[:password],
-			'path' => '/', 'expires' => Time.now + 3600 * 24 * 90)
+			'path' => '/', 'expires' => Time.now + 3600 * 24 * 90, 'secure' => $secureCookies, 'httponly' => true)
 		cgi.out('type' => 'application/json', 'cookie' => [cookie1, cookie2]) {
 			{'result' => 'success', 'message' => 'Eingeloggt'}.to_json}
 	end
