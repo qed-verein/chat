@@ -99,14 +99,24 @@ class WsConnection < EM::Connection
 			#Set position, limit and send recent posts if requested
 			@position = query.include?('position') ? query['position'][0].to_i : 0
 			@limit = query.include?('limit') ? query['limit'][0].to_i : 0
+			bulk = query.include?('bulk') ? query['bulk'][0].to_i == 1 : false
 			if @position <= 0
 				@position = $chat.getCurrentId(@channel, -@position)
 			end
 
-			$chat.getPostsByStartId(@channel, @position, @limit) { |row|
-				send_post row.to_h
-				@position = row.to_h[:id].to_i + 1
-			}
+			if bulk	
+				posts = []
+				$chat.getPostsByStartId(@channel, @position, @limit) { |row|
+					posts << row.to_h
+					@position = row.to_h[:id].to_i + 1
+				}
+				send_posts posts
+			else
+				$chat.getPostsByStartId(@channel, @position, @limit) { |row|
+					send_post row.to_h
+					@position = row.to_h[:id].to_i + 1
+				}
+			end
 
 			handle_incoming @handshake.leftovers if @handshake.leftovers
 		else
@@ -151,6 +161,8 @@ class WsConnection < EM::Connection
 								when 'ping'
 									send '{"type": "pong"}', :type => :text
 									next
+								when 'post'
+									#Ignore this for legacy-reasons
 								else
 									close 1002, 'Invalid command: ' + parsedJson['type'] + '!'
 									next
@@ -176,6 +188,18 @@ class WsConnection < EM::Connection
 
 	def send_post(posting)
 		send $chat.formatAsJson(posting)
+	end
+
+	#This is used to send posts in bulk
+	#IMPORTANT: There is no size limit -> make sure the client can handle this before requesting it
+	def send_posts(posts)
+		#Create json array
+		array = "["
+		posts.each{|post| array << $chat.formatAsJson(post) + ","}
+		array = array[0..-2] #This removes the trailing ,
+		array << "]"
+
+		send array
 	end
 
 	def create_post(data)
