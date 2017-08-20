@@ -6,14 +6,6 @@ var authSecret;
 
 var VAPID_LUKAS = require('./vapids.json').lukas;
 
-// Object mit dem wir uns registrieren
-function getRegistrationMessage(){
-    return {
-        endpoint: endpoint,
-        key: key,
-        authSecret: authSecret
-    };
-};
 
 // URL mit der wir uns registrieren
 function getRegistrationURL() {
@@ -22,12 +14,19 @@ function getRegistrationURL() {
 
 //registriere uns beim Server
 function register() {
+    // Object mit dem wir uns registrieren
+    var regObj = {
+        endpoint: endpoint,
+        key: key,
+        authSecret: authSecret
+    };
+
     fetch(getRegistrationURL(), {
         method: 'post',
         headers: {
             'Content-type': 'application/json'
         },
-        body: JSON.stringify(getRegistrationMessage())
+        body: JSON.stringify(regObj)
     });
 }
 
@@ -49,7 +48,7 @@ navigator.serviceWorker.register('service-worker.js')
                     });
         }).then(function (subscription) {
     //wir haben uns registriert beim pushManager
-    
+
     // Retrieve the user's public key.
     var rawKey = subscription.getKey ? subscription.getKey('p256dh') : '';
     key = rawKey ?
