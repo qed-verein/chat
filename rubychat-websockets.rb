@@ -69,7 +69,7 @@ class WsConnection < EM::Connection
 			if @handshake.headers.include?('origin')
 				uri = URI(@handshake.headers['origin'])
 				if uri.host != $hostname
-					puts uri.host
+					writeToLog sprintf("Ungültiger Origin: %s", uri.host)
 					close 1002, "Invalid origin"
 					return
 				end
@@ -264,5 +264,9 @@ class WsConnection < EM::Connection
 	#Gets called when connection is closed
 	def unbind
 		$connectedClientsMutex.synchronize { $connectedClients.delete self }
+	end
+
+	def writeToLog(message)
+		$logMutex.synchronize {STDERR.puts message}
 	end
 end

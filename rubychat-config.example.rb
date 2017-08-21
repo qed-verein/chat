@@ -9,6 +9,6 @@ $wsPort = 21000
 $wsPingInterval = 60
 $wsFailsToTimeout = 3
 
-$hostname = "chat.foo.bar"
+$hostname = "chat.foo.bar" #Muss geändert werden, z.B. localhost für lokales Testen
 
 $secureCookies = true #False, falls lokal entwickelt wird (ohne https)
