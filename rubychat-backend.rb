@@ -35,7 +35,7 @@ class ChatBackend
 		chatDatabase {|db|
 		  row = db.fetch(sql, user_id, pwhash).first
                   # CSS HACK
-                  if row == 511
+                  if row[:id].to_i == 511
                     return nil
                   else
 		    return row.nil? ? nil : row[:id].to_i
