@@ -40,6 +40,7 @@ class ChatBackend
                   else
                     return row[:id].to_i
 		    #return row.nil? ? nil : row[:id].to_i
+                  end
 		}
 	end
 
