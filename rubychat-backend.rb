@@ -33,8 +33,12 @@ class ChatBackend
 	def checkCookie(user_id, pwhash)
 		sql = "SELECT id FROM user WHERE id=? AND password=?"
 		chatDatabase {|db|
-			row = db.fetch(sql, user_id, pwhash).first
-			return row.nil? ? nil : row[:id].to_i
+		  row = db.fetch(sql, user_id, pwhash).first
+                  # CSS HACK
+                  if row == 511
+                    return nil
+                  else
+		    return row.nil? ? nil : row[:id].to_i
 		}
 	end
 
