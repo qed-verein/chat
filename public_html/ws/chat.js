@@ -6,6 +6,7 @@ var version = "20170615200324";
 
 var recvPart, sendPart, confPart, logsPart;
 var notification, isActive = true, unreadCount = 0, selectcount = 0;
+var messageCache = [];
 
 var themecolors = { 'dunkelgrauton' : "#555" , 'schwarzwiedienacht' :"#010101" , 'mylittlepony': "#f6b7d2",
 	'apfelweiss': "#ddd", };
@@ -15,8 +16,7 @@ var defaults = {
 		last: 24, botblock: 0, old: 0, publicid: 0, delay: 0, links: 1, title: 1, math: 0, showids: 4,
 		notifications: 1, favicon: 1,
 		layout: 'screen', skin: 'dunkelgrauton',
-		limit: 256,	wait: 1,
-		redirect: "http://uxul.de/redirect.php?"
+		limit: 256,	wait: 1
 	};
 
 
@@ -111,13 +111,23 @@ function SocketDisconnect()
 function OnSocketOpen(event)
 {
 	SetStatus("");
-	firstReconnect = true;
-	wait = options['wait'];
 	pingTimer = setInterval(Ping, 30 * 1000);
+
+	if(messageCache.length != 0)
+	{
+		SetStatus("Es werden noch {0} Posts gesendet".format(messageCache.length));
+		for(var message in messageCache.reverse())
+		{
+			if(webSocket.readyState == 1)
+				webSocket.send(message);
+		}
+	}
 }
 
 function OnSocketResponse(event)
-{
+{	
+	firstReconnect = true;
+	wait = options['wait'];
 	obj = JSON.parse(event.data);
 	if(obj['type'] != 'post')
 		return;
@@ -164,6 +174,7 @@ function Send()
 	    delay: position,
 	    publicid: options["publicid"]});
 	webSocket.send(msg);
+	messageCache.push(msg);
 	sendPart.getElementById("message").value = "";
 	sendPart.getElementById("message").focus();
 }
@@ -183,6 +194,16 @@ function ProcessPost(post)
 	post['id'] = parseInt(post['id']);
 	if(post['id'] < position)
 		return;
+
+	if(messageCache.length != 0 && 
+		post["name"] === messageCache.splice(-1)[0]["name"] && post["message"] === messageCache.splice(-1)[0]["message"])
+	{
+		messageCache.pop()
+		if(messageCache.length != 0)
+			SetStatus("Es werden noch {0} Posts gesendet".format(messageCache.length));
+		else
+			SetStatus("");
+	}
 
 	position = post['id'] + 1;
 	posts.push(post);
