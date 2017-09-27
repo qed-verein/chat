@@ -90,8 +90,8 @@ function SocketConnect()
 		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server...");
 
 	protocolPrefix = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
-	uri = protocolPrefix + "//" + location.hostname + "/websocket?" + URIEncodeParameters({channel: options["channel"], position: position});
-	//uri = "ws://localhost:21000/?" + URIEncodeParameters({channel: options["channel"], position: position});
+	//uri = protocolPrefix + "//" + location.hostname + "/websocket?" + URIEncodeParameters({channel: options["channel"], position: position});
+	uri = "ws://localhost:21000/?" + URIEncodeParameters({channel: options["channel"], position: position});
 	webSocket = new WebSocket(uri);
 	webSocket.onmessage = OnSocketResponse;
 	webSocket.onerror = OnSocketError;
@@ -115,7 +115,7 @@ function OnSocketOpen(event)
 
 	if(messageCache.length != 0)
 	{
-		SetStatus("Es werden noch {0} Posts gesendet".format(messageCache.length));
+		SetStatus("Es werden noch " + messageCache.length + " Posts gesendet");
 		for(var message in messageCache.reverse())
 		{
 			if(webSocket.readyState == 1)
@@ -175,6 +175,8 @@ function Send()
 	    publicid: options["publicid"]});
 	webSocket.send(msg);
 	messageCache.push(msg);
+	if(webSocket.bufferedAmount != 0)
+		SetStatus("Es werden noch " + messageCache.length.toFixed() + " Posts gesendet");
 	sendPart.getElementById("message").value = "";
 	sendPart.getElementById("message").focus();
 }
@@ -200,9 +202,11 @@ function ProcessPost(post)
 	{
 		messageCache.pop()
 		if(messageCache.length != 0)
-			SetStatus("Es werden noch {0} Posts gesendet".format(messageCache.length));
-		else
-			SetStatus("");
+			SetStatus("Es werden noch " + messageCache.length + " Posts gesendet");
+	}
+	else
+	{
+		SetStatus("");
 	}
 
 	position = post['id'] + 1;
