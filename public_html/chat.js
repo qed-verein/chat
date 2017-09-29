@@ -1,8 +1,12 @@
 var options = new Object();
-var version = "20170328000042"; // muss in rubychat ebenfalls geaendert werden
+
+// muss in rubychat ebenfalls geaendert werden
+// use date -u +%Y%m%d%H%M%S
+var version = "20170615200324"; 
 
 var recvPart, sendPart, confPart, logsPart;
 var notification, isActive = true, unreadCount = 0, selectcount = 0;
+var messageCache = [];
 
 var themecolors = { 'dunkelgrauton' : "#555" , 'schwarzwiedienacht' :"#010101" , 'mylittlepony': "#f6b7d2",
 	'apfelweiss': "#ddd", };
@@ -12,8 +16,7 @@ var defaults = {
 		last: 24, botblock: 0, old: 0, publicid: 0, delay: 0, links: 1, title: 1, math: 0, showids: 4,
 		notifications: 1, favicon: 1,
 		layout: 'screen', skin: 'dunkelgrauton',
-		limit: 256,	wait: 60,
-		redirect: "http://uxul.de/redirect.php?"
+		limit: 256,	wait: 1
 	};
 
 
@@ -52,94 +55,139 @@ function Init()
 	if(!ReadCookie('userid')) document.location.href = "account.html?"  + OptionURL();
 
 	window.onerror = ErrorHandler;
-	window.onunload = ReceiverDisconnect;
+	window.onunload = SocketDisconnect;
 	
-	InitReceiver();
-	InitSender();
+	InitSocket();
 	InitSettings();
 	InitNotifications();
 }
 
 // *****************
-// *   Empfänger   *
+// *   Socket   *
 // *****************
 
+var firstReconnect, webSocket, position, textpos, posts, timeout, pingTimer, wait;
 
-var firstReconnect, recvRequest, position, textpos, posts, timeout;
-
-function InitReceiver()
+function InitSocket()
 {
-	recvRequest = new XMLHttpRequest();
+	position = -24;
 	posts = Array();
 	RecreatePosts();
-	position = -24;
-	ReceiverConnect();
+	sendPart.getElementById("name").value = options["name"];
+	sendPart.getElementById("message").focus();
+
+	firstReconnect = true;
+	wait = options['wait'];
+	window.addEventListener("online", SocketConnect);
+
+	SocketConnect();
 }
 
-
-// Erstelle eine neue Verbindung mit dem Server
-function ReceiverConnect()
+function SocketConnect()
 {
-	ReceiverDisconnect();
-	SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server ...");
+	SocketDisconnect();
+	if(!firstReconnect)
+		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server...");
 
-	textpos = 0;
-	firstReconnect = false;
-	timeout = setTimeout("ReceiverConnect()", options['wait'] * 1000);
-
-	uri = "/rubychat/view?" + URIEncodeParameters({
-	    channel: options["channel"], position: position, limit: options["limit"],
-	    version: version, keepalive: Math.ceil(options["wait"] / 2)});
-	// Workaround für https://bugzilla.mozilla.org/show_bug.cgi?id=408901
-	uri += "&random=" + (Math.random() * 1000000);
-	recvRequest.onreadystatechange = OnReceiverResponse;
-	recvRequest.open('GET', uri, true);
-	recvRequest.send();
+	protocolPrefix = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
+	//uri = protocolPrefix + "//" + location.hostname + "/websocket?" + URIEncodeParameters({channel: options["channel"], position: position});
+	uri = "ws://localhost:21000/?" + URIEncodeParameters({channel: options["channel"], position: position});
+	webSocket = new WebSocket(uri);
+	webSocket.onmessage = OnSocketResponse;
+	webSocket.onerror = OnSocketError;
+	webSocket.onopen = OnSocketOpen;
+	webSocket.onerror = OnSocketError;
+	webSocket.onclose = OnSocketClose;
 }
 
-// Schließe die Verbindung
-function ReceiverDisconnect()
+function SocketDisconnect()
 {
 	clearTimeout(timeout);
-	recvRequest.onreadystatechange = null;
-	recvRequest.abort();
+	clearInterval(pingTimer);
+	if(webSocket)
+		webSocket.close();
 }
 
-// Wird aufgerufen, falls der Server eine Antwort geschickt hat.
-function OnReceiverResponse()
+function OnSocketOpen(event)
 {
-	if(recvRequest.readyState < 3)
+	SetStatus("");
+	pingTimer = setInterval(Ping, 30 * 1000);
+
+	if(messageCache.length != 0)
+	{
+		SetStatus("Es werden noch " + messageCache.length + " Posts gesendet");
+		for(var message in messageCache.reverse())
+		{
+			if(webSocket.readyState == 1)
+				webSocket.send(message);
+		}
+	}
+}
+
+function OnSocketResponse(event)
+{	
+	firstReconnect = true;
+	wait = options['wait'];
+	obj = JSON.parse(event.data);
+	if(obj['type'] != 'post')
+		return;
+	ProcessPost(obj);
+}
+
+function OnSocketError(event)
+{
+	if(!firstReconnect)
+		SetStatus("Es ist ein Fehler aufgetreten!");
+}
+
+function OnSocketClose(event)
+{
+	if(event.code == 1000)
 		return;
 
-	if(recvRequest.status < 200 || recvRequest.status >= 300)
+	if(firstReconnect)
+	{
+		firstReconnect = false;
+		SocketConnect();
 		return;
-
-    var end, obj;
-    while((end = recvRequest.responseText.indexOf("\n", textpos)) >= 0)
-    {
-		obj = JSON.parse(recvRequest.responseText.substring(textpos, end));
-
-		if(obj["type"] == "post")
-			ProcessPost(obj);
-		else if(obj["type"] == "error")
-			throw new Error(obj["description"], obj["file"], obj["line"]);
-		else if(obj["type"] != "ok" && obj["type"] != "debug")
-			throw new Error("Unbekannter Typ");
-
-		 if(obj["type"] == "ok" && obj["started"] == "1")
-			SetStatus("");
-		 if(obj["type"] == "ok" && obj["finished"] == "1")
-			firstReconnect = true;
-		textpos = end + 1;
-
-		// Timeout zurücksetzen
-		clearTimeout(timeout);
-		timeout = setTimeout("ReceiverConnect()", options['wait'] * 1000);
 	}
 
-	// Beim ersten Versuch ohne Wartezeiten neu verbinden.
-	if(recvRequest.readyState == 4 && firstReconnect)
-		ReceiverConnect();
+	wait = Math.min(wait * 2, 32);
+	timeout = setTimeout(SocketConnect, wait * 1000);
+
+	SetStatus("Die Verbindung wurde beendet.<br>Grund: " + event.code + ": " + event.reason + 
+		"<br/> Neue Verbindung wird in " + wait + " s erstellt.");
+}
+
+function Send()
+{
+	if(webSocket.readyState != 1)
+	{
+		SetStatus("Dein Post kann aktuell nicht gesendet werden...");
+		return;
+	}
+
+	msg = JSON.stringify({
+	    channel: options["channel"],
+	    name: sendPart.getElementById ("name").value,
+	    message: sendPart.getElementById ("message").value,
+	    delay: position,
+	    publicid: options["publicid"]});
+	webSocket.send(msg);
+	messageCache.push(msg);
+	if(webSocket.bufferedAmount != 0)
+		SetStatus("Es werden noch " + messageCache.length.toFixed() + " Posts gesendet");
+	sendPart.getElementById("message").value = "";
+	sendPart.getElementById("message").focus();
+}
+
+function Ping()
+{
+	if(webSocket.readyState != 1)
+		return;
+
+	msg = JSON.stringify({type: "ping"});
+	webSocket.send(msg);
 }
 
 // Wird für jede ankommende Nachricht aufgerufen
@@ -148,6 +196,18 @@ function ProcessPost(post)
 	post['id'] = parseInt(post['id']);
 	if(post['id'] < position)
 		return;
+
+	if(messageCache.length != 0 && 
+		post["name"] === messageCache.splice(-1)[0]["name"] && post["message"] === messageCache.splice(-1)[0]["message"])
+	{
+		messageCache.pop()
+		if(messageCache.length != 0)
+			SetStatus("Es werden noch " + messageCache.length + " Posts gesendet");
+	}
+	else
+	{
+		SetStatus("");
+	}
 
 	position = post['id'] + 1;
 	posts.push(post);
@@ -335,16 +395,12 @@ function IDString(post)
 	switch (options['showids']){
 	case 1:
 		return userid;
-		break;
 	case 2:
 		return username;
-		break;
 	case 3:
 		return username + (userid ? " ("+userid+")" : "");
-		break;
 	case 4:
 		return userid ? "✓" : "";
-		break;
 	default:
 		return "";
 	} 
@@ -485,78 +541,6 @@ function URIReplaceState()
 {
 	if(history.replaceState) history.replaceState(null, '', '?' + OptionURL());
 }
-
-
-// **************
-// *   Sender   *
-// **************
-
-var sendRequest, sendTimeout;
-
-function InitSender()
-{
-	sendPart.getElementById("name").value = options["name"];
-	sendPart.getElementById("message").focus();
-	sendRequest = null;
-}
-
-// Schickt eine Nachricht zum Server
-function Send()
-{
-	if(sendRequest != null)
-	{
-		SetStatus("Dein alter Post wird noch gesendet ...");
-		return;
-	}
-
-	SetStatus("Sende Post ...");
-	ScrollDown();
-	sendRequest = new XMLHttpRequest();
-	sendRequest.onreadystatechange = OnSenderResponse;
-	sendRequest.open("POST", "/rubychat/post", true);
-	sendRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	sendRequest.setRequestHeader("Content-Encoding", "utf-8");
-
-	sendTimeout = setTimeout("OnSenderError()", options["wait"] * 1000);
-
-	uri = URIEncodeParameters({
-	    channel: options["channel"],
-	    name: sendPart.getElementById ("name").value,
-	    message: sendPart.getElementById ("message").value,
-	    delay: position,
-	    version: version,
-	    publicid: options["publicid"]});
-	sendRequest.send(uri);
-}
-
-// Bestätigung der gesendeten Nachricht
-function OnSenderResponse()
-{
-	if(sendRequest.readyState != 4)
-		return;
-
-	if(sendRequest.status >= 200 && sendRequest.status < 300)
-	{
-		SetStatus("");
-		sendPart.getElementById("message").value = "";
-		sendPart.getElementById("message").focus();
-		clearTimeout(sendTimeout);
-		sendRequest = null;
-	}
-	else OnSenderError();
-}
-
-// Falls beim Senden ein Fehler passiert ist
-function OnSenderError()
-{
-	alert("Dein Post konnte nicht übertragen werden (" +
-		sendRequest.status + ", '" + sendRequest.statusText + "').\n" +
-			sendRequest.responseText);
-	clearTimeout(sendTimeout);
-	sendRequest = null;
-}
-
-
 
 
 // ************
@@ -834,7 +818,7 @@ function ErrorHandler(description, filename, line)
 	//message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
 	SetStatus(message);
 	ScrollDown();
-	ReceiverDisconnect();
+	SocketDisconnect();
 	return false;
 }
 
