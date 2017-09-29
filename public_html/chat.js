@@ -90,8 +90,8 @@ function SocketConnect()
 		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server...");
 
 	protocolPrefix = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
-	//uri = protocolPrefix + "//" + location.hostname + "/websocket?" + URIEncodeParameters({channel: options["channel"], position: position});
-	uri = "ws://localhost:21000/?" + URIEncodeParameters({channel: options["channel"], position: position});
+	uri = protocolPrefix + "//" + location.hostname + "/websocket?" + URIEncodeParameters({channel: options["channel"], position: position});
+	//uri = "ws://localhost:21000/?" + URIEncodeParameters({channel: options["channel"], position: position});
 	webSocket = new WebSocket(uri);
 	webSocket.onmessage = OnSocketResponse;
 	webSocket.onerror = OnSocketError;
