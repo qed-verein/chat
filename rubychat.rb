@@ -53,7 +53,7 @@ def handleRequest(cgi)
 		cookieAuthenticate cgi #Authenticate via cookie and set the userid
 
 		raise ChatError, "Du bist nicht in den Chat eingeloggt!" if Thread.current[:userid].nil?
-		raise ChatError, "Ungueltige Versionsnummer!" if cgi.has_key? 'version' && cgi['version'] != '20170615200324'
+		raise ChatError, "Ungueltige Versionsnummer!" if cgi.has_key? 'version' && cgi['version'] != '20171030131648'
 
 		#Direct to appropriate handler
 		case cgi.script_name

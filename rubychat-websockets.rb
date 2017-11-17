@@ -146,17 +146,22 @@ class WsConnection < EM::Connection
 							handle_fatal_error e
 							return
 						end
-						if parsedJson.has_key?('type') #This is a command sequence, not a post
-							case parsedJson['type']
-								when 'ping'
-									send '{"type": "pong"}', :type => :text
-									next
-								else
-									close 1002, 'Invalid command: ' + parsedJson['type'] + '!'
-									next
-							end
+
+						unless parsedJson.has_key?('type') #Default to post if no type is set
+							parsedJson['type'] = 'post'
 						end
-						create_post parsedJson
+
+						case parsedJson['type']
+							when 'ping'
+								send '{"type": "pong"}', :type => :text
+								next
+							when 'post'
+								create_post parsedJson
+								next
+							else
+					 			close 1002, 'Invalid command: ' + parsedJson['type'] + '!'
+								next
+						end
 					else #We don't know how to handle anything else -> Reject and abandon connection
 						handle_fatal_error :unsupported_data_type
 						return
