@@ -838,7 +838,7 @@ function LoadMathjax()
 
 	var script = recvPart.createElement("script");
 	script.type = "text/javascript";
-	script.src  = "/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&locale=de&noContrib";
+	script.src  = "/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML,Safe&locale=de&noContrib";
 	recvPart.getElementsByTagName("head")[0].appendChild(script);
 	mathjaxProgress = 1;
 }
