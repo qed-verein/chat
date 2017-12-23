@@ -73,6 +73,9 @@ class WsConnection < EM::Connection
 					close 1002, "Invalid origin"
 					return
 				end
+			else
+				close 1002, "Manf ist Schuld."
+				return
 			end
 
 			validate_cookies
