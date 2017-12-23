@@ -159,7 +159,7 @@ function OnSocketClose(event)
 		return;
 	}
 
-	wait = Math.min(wait * 2, 32);
+	wait = Math.min(wait * 2, 16);
 	timeout = setTimeout(SocketConnect, wait * 1000);
 
 	SetStatus("");
