@@ -87,6 +87,7 @@ function InitSocket()
 function SocketConnect()
 {
 	SocketDisconnect();
+	SetReconnect(0, "");
 	if(!firstReconnect)
 		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server...");
 

@@ -69,7 +69,7 @@ class WsConnection < EM::Connection
 			if @handshake.headers.include?('origin')
 				uri = URI(@handshake.headers['origin'])
 				if uri.host != $hostname
-					writeToLog sprintf("Ungültiger Origin: %s", uri.host)
+					writeToLog sprintf("Ungültiger Origin: %s", @handshake.headers['origin'])
 					close 1002, "Invalid origin"
 					return
 				end
