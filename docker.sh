@@ -10,7 +10,10 @@ export MYSQL_CONTAINER_NAME=mysql_chat
 export CHAT_CONTAINER_NAME=chat
 
 export CHAT_NETWORK_NAME=chat_net
-export CHAT_HTTP_PORT=5000
+
+if [ -z ${CHAT_HTTP_PORT} ];
+then export CHAT_HTTP_PORT=5000;
+fi;
 
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
