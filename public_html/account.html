@@ -27,6 +27,21 @@ License along with QED-Chat.  If not, see
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 <meta id="theme-color" name="theme-color" content="#000">
 <script type="text/javascript" src="chat.js"></script>
+<script type="text/javascript">
+    document.getElementById('login_password').onkeypress = function(e) {
+        if(KeyboardEvent.key) {
+            if(e.key == "Enter")
+            {
+                OnLoginClicked('login');
+                return false;
+            }
+        }
+        else if(e.keyCode == 13) {
+            OnLoginClicked('login');
+            return false;
+        }
+    };
+</script>
 <title>Login</title>
 </head>
 <body class="schwarzwiedienacht" onload="LoginInit()">
