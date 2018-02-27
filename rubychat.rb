@@ -1,4 +1,23 @@
 # coding: utf-8
+
+# Copyright (C) 2004-2018 Quod Erat Demonstrandum e.V. <webmaster@qed-verein.de>
+#
+# This file is part of QED-Chat.
+#
+# QED-Chat is free software: you can redistribute it and/or modify it
+# under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# QED-Chat is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License along with QED-Chat.  If not, see
+# <http://www.gnu.org/licenses/>.
+
 require 'thread'
 require 'socket'
 require 'cgi'
@@ -9,6 +28,7 @@ require 'eventmachine'
 require '/etc/chat/rubychat-config.rb'
 require './rubychat-backend.rb'
 require './rubychat-websockets.rb'
+require './rubychat-common.rb'
 
 class CGIAdapter < ::CGI
 	attr_reader :args, :env_table, :stdinput, :stdoutput
@@ -69,7 +89,7 @@ def handleRequest(cgi)
 	rescue Errno::EPIPE => e
 		raise e
 	rescue StandardError => e
-		writeToLog sprintf("\n%s: %s\n%s\n", e.class, e.message, e.backtrace.join("\n"))
+		writeExecption e
 		cgi.print({'type' => 'error', 'description' => e.message + "\n" + e.backtrace.join("\n")}.to_json)
 	end
 end
@@ -166,7 +186,7 @@ def historyHandler(cgi)
 	when 'postrecent'
 		$chat.getPostsByStartId(channel, $chat.getCurrentId(channel, cgi['last'].to_i)) {|row| outputPosting(cgi, row)}
 	when 'fromownpost'
-		$chat.getPostsByStartId(channel, $chat.getLastPostId(channel, Thread.current[:userid])) {|row| outputPosting(cgi, row)}
+		$chat.getPostsByStartId(channel, $chat.getLastPostId(channel, Thread.current[:userid], cgi['skip'].to_i)) {|row| outputPosting(cgi, row)}
 	else
 		raise ChatError, "Unbekannter Modus!"
 	end
@@ -210,12 +230,6 @@ def cookieAuthenticate(cgi)
 	Thread.current[:userid] = $chat.checkCookie(cgi.cookies['userid'][0], cgi.cookies['pwhash'][0])
 end
 
-$logMutex = Mutex.new
-
-def writeToLog(message)
-	$logMutex.synchronize {STDERR.puts message}
-end
-
 $mutex = Mutex.new
 $condition = ConditionVariable.new
 $increment = 0
@@ -244,7 +258,7 @@ wsServerThread = Thread.new do
 		EventMachine.run {
 			#Redirect all uncaught errors raised in the eventloop to stderr
 			EM.error_handler{ |e|
-				writeToLog sprintf("\n%s: %s\n%s\n", e.class, e.message, e.backtrace.join("\n"))
+				writeExecption e
 			}
 
 			EM.start_server "127.0.0.1", $wsPort, WsConnection, @messageQueue
@@ -275,7 +289,7 @@ wsServerThread = Thread.new do
 			@messageQueue.pop &processPost
 		}
 	rescue Exception => e
-		writeToLog sprintf("\n%s: %s\n%s\n", e.class, e.message, e.backtrace.join("\n"))
+		writeExecption e
 	end
 end
 
@@ -296,7 +310,7 @@ begin
 			rescue Errno::EPIPE, Errno::ECONNRESET => e
 				writeToLog sprintf("Verbindung abgebrochen: %s", e.message);
 			rescue Exception => e
-				writeToLog sprintf("\n%s: %s\n%s\n", e.class, e.message, e.backtrace.join("\n"))
+				writeExecption e
 			ensure
 				scgiConnection.close
 			end

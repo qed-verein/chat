@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Copyright (C) 2004-2018 Quod Erat Demonstrandum e.V. <webmaster@qed-verein.de>
 #
 # This file is part of QED-Chat.
@@ -16,17 +18,5 @@
 # License along with QED-Chat.  If not, see
 # <http://www.gnu.org/licenses/>.
 
-# Geaenderte Konfiguration in rubychat-config.rb speichern
-
-$sqlConfig = {:adapter => "mysql2", :host => "localhost",
-	:database => "Datenbankname", :username => "Benutzername", :password => "Passwort"}
-
-$scgiPort = 20000
-$wsPort = 21000 
-
-$wsPingInterval = 60
-$wsFailsToTimeout = 3
-
-$hostname = "chat.foo.bar" #Muss geaendert werden, z.B. localhost fuer lokales Testen
-
-$secureCookies = true #False, falls lokal entwickelt wird (ohne https)
+apache2ctl start
+ruby rubychat.rb

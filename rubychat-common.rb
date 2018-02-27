@@ -1,3 +1,5 @@
+# coding: utf-8
+
 # Copyright (C) 2004-2018 Quod Erat Demonstrandum e.V. <webmaster@qed-verein.de>
 #
 # This file is part of QED-Chat.
@@ -16,17 +18,14 @@
 # License along with QED-Chat.  If not, see
 # <http://www.gnu.org/licenses/>.
 
-# Geaenderte Konfiguration in rubychat-config.rb speichern
+require 'thread'
 
-$sqlConfig = {:adapter => "mysql2", :host => "localhost",
-	:database => "Datenbankname", :username => "Benutzername", :password => "Passwort"}
+$logMutex = Mutex.new
 
-$scgiPort = 20000
-$wsPort = 21000 
+def writeToLog(message)
+	$logMutex.synchronize {STDERR.puts message}
+end
 
-$wsPingInterval = 60
-$wsFailsToTimeout = 3
-
-$hostname = "chat.foo.bar" #Muss geaendert werden, z.B. localhost fuer lokales Testen
-
-$secureCookies = true #False, falls lokal entwickelt wird (ohne https)
+def writeException(ex)
+	writeToLog sprintf("\n%s: %s\n%s\n", ex.class, ex.message, ex.backtrace.join("\n"))
+end

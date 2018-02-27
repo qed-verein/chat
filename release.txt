@@ -1,3 +1,0 @@
-in diesen branch bitte nur pushen wenn was veroeffentlicht werden soll
-
-Zahl um Pushes zu pruefen: 4

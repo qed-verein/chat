@@ -1,3 +1,21 @@
+// Copyright (C) 2004-2018 Quod Erat Demonstrandum e.V. <webmaster@qed-verein.de>
+
+// This file is part of QED-Chat.
+
+// QED-Chat is free software: you can redistribute it and/or modify it
+// under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+
+// QED-Chat is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+
+// You should have received a copy of the GNU Affero General Public
+// License along with QED-Chat.  If not, see
+// <http://www.gnu.org/licenses/>.
+
 var options = new Object();
 
 // muss in rubychat ebenfalls geaendert werden
@@ -624,7 +642,7 @@ function OnHistoryClicked(elt)
 	else if(elt.id == 'last1000')
 		url += URIEncodeParameters({mode: 'postrecent', last: '1000'});
 	else if(elt.id == 'fromOwnPost')
-		url += URIEncodeParameters({mode: 'fromownpost'});
+		url += URIEncodeParameters({mode: 'fromownpost', skip: options['last']});
 	else if(elt.id == 'interval')
 		url += URIEncodeParameters({mode: 'dateinterval',
 			from : logsPart.getElementById("logFrom").value,
