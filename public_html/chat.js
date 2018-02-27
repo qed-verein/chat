@@ -642,7 +642,7 @@ function OnHistoryClicked(elt)
 	else if(elt.id == 'last1000')
 		url += URIEncodeParameters({mode: 'postrecent', last: '1000'});
 	else if(elt.id == 'fromOwnPost')
-		url += URIEncodeParameters({mode: 'fromownpost'});
+		url += URIEncodeParameters({mode: 'fromownpost', skip: options['last']});
 	else if(elt.id == 'interval')
 		url += URIEncodeParameters({mode: 'dateinterval',
 			from : logsPart.getElementById("logFrom").value,

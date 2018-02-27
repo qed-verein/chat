@@ -186,7 +186,7 @@ def historyHandler(cgi)
 	when 'postrecent'
 		$chat.getPostsByStartId(channel, $chat.getCurrentId(channel, cgi['last'].to_i)) {|row| outputPosting(cgi, row)}
 	when 'fromownpost'
-		$chat.getPostsByStartId(channel, $chat.getLastPostId(channel, Thread.current[:userid])) {|row| outputPosting(cgi, row)}
+		$chat.getPostsByStartId(channel, $chat.getLastPostId(channel, Thread.current[:userid], cgi['skip'].to_i)) {|row| outputPosting(cgi, row)}
 	else
 		raise ChatError, "Unbekannter Modus!"
 	end
