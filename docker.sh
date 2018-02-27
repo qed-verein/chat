@@ -38,8 +38,7 @@ then export CHAT_HTTP_PORT=5000;
 fi;
 
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
-   exit 1
+   echo "This script normally needs root"
 fi
 
 echo "Setting up networking..."
