@@ -22,6 +22,7 @@ require 'eventmachine'
 require 'websocket'
 require 'cgi'
 require 'uri'
+require './rubychat-common.rb'
 
 $connectedClients = Array.new
 $connectedClientsMutex = Mutex.new
@@ -90,11 +91,11 @@ class WsConnection < EM::Connection
 				uri = URI(@handshake.headers['origin'])
 				if uri.host != $hostname
 					writeToLog sprintf("Ungültiger Origin: %s", @handshake.headers['origin'])
-					close 1002, "Invalid origin"
+					close 1002, "Ungültiger Origin."
 					return
 				end
 			else
-				close 1002, "Manf ist Schuld."
+				close 1002, "Origin fehlt."
 				return
 			end
 
@@ -105,31 +106,35 @@ class WsConnection < EM::Connection
 			@state = :open
 
 			if !authorized?
-				close 1002, "Invalid credentials"
+				close 1002, "Ungültige Anmeldedaten."
 				return
 			end
 
 			#Set the channel
 			query = CGI.parse @handshake.query unless @handshake.query.nil?
 			if @handshake.query.nil? || !query.include?('channel')
-				handle_fatal_error "Missing parameters"
+				close 1002, "Parameter 'channel' fehlt."
 				return
 			end
 			@channel = query['channel'][0]
 
-			#TODO: Handle database-failures by closing gracefully
+			begin
+				#Set position, limit and send recent posts if requested
+				@position = query.include?('position') ? query['position'][0].to_i : 0
+				@limit = query.include?('limit') ? query['limit'][0].to_i : 0
+				if @position <= 0
+					@position = $chat.getCurrentId(@channel, -@position)
+				end
 
-			#Set position, limit and send recent posts if requested
-			@position = query.include?('position') ? query['position'][0].to_i : 0
-			@limit = query.include?('limit') ? query['limit'][0].to_i : 0
-			if @position <= 0
-				@position = $chat.getCurrentId(@channel, -@position)
+				$chat.getPostsByStartId(@channel, @position, @limit) { |row|
+					send_post row.to_h
+					@position = row.to_h[:id].to_i + 1
+				}
+			rescue Sequel::DatabaseConnectionError => e
+				writeException e
+				handle_fatal_error e, "Fehler beim Kommunizieren mit der Datenbank."
+				return
 			end
-
-			$chat.getPostsByStartId(@channel, @position, @limit) { |row|
-				send_post row.to_h
-				@position = row.to_h[:id].to_i + 1
-			}
 
 			handle_incoming @handshake.leftovers if @handshake.leftovers
 		else
@@ -170,6 +175,12 @@ class WsConnection < EM::Connection
 							return
 						end
 
+						if parsedJson.is_a? Fixnum
+							writeToLog sprintf "Fehler: %s ist Fixnum!", frame.to_s
+							handle_fatal_error :wtf, "wtf"
+							return
+						end
+
 						unless parsedJson.has_key?('type') #Default to post if no type is set
 							parsedJson['type'] = 'post'
 						end
@@ -182,7 +193,7 @@ class WsConnection < EM::Connection
 								create_post parsedJson
 								next
 							else
-					 			close 1002, 'Invalid command: ' + parsedJson['type'] + '!'
+					 			handle_fatal_error :protocol_error, 'type ungültig: ' + parsedJson['type'] + '!'
 								next
 						end
 					else #We don't know how to handle anything else -> Reject and abandon connection
@@ -241,7 +252,7 @@ class WsConnection < EM::Connection
 	end
 
 	#Gets called when the current connections encounters an error it cannot recover from
-	def handle_fatal_error(error)
+	def handle_fatal_error(error, message = nil)
 		error_code =
 				case error
 					when :invalid_payload_encoding then
@@ -251,7 +262,7 @@ class WsConnection < EM::Connection
 					else
 						1002
 				end
-		close error_code
+		close(error_code, message)
 	end
 
 	# Send data
@@ -292,9 +303,5 @@ class WsConnection < EM::Connection
 	#Gets called when connection is closed
 	def unbind
 		$connectedClientsMutex.synchronize { $connectedClients.delete self }
-	end
-
-	def writeToLog(message)
-		$logMutex.synchronize {STDERR.puts message}
 	end
 end

@@ -28,6 +28,7 @@ require 'eventmachine'
 require '/etc/chat/rubychat-config.rb'
 require './rubychat-backend.rb'
 require './rubychat-websockets.rb'
+require './rubychat-common.rb'
 
 class CGIAdapter < ::CGI
 	attr_reader :args, :env_table, :stdinput, :stdoutput
@@ -88,7 +89,7 @@ def handleRequest(cgi)
 	rescue Errno::EPIPE => e
 		raise e
 	rescue StandardError => e
-		writeToLog sprintf("\n%s: %s\n%s\n", e.class, e.message, e.backtrace.join("\n"))
+		writeExecption e
 		cgi.print({'type' => 'error', 'description' => e.message + "\n" + e.backtrace.join("\n")}.to_json)
 	end
 end
@@ -229,12 +230,6 @@ def cookieAuthenticate(cgi)
 	Thread.current[:userid] = $chat.checkCookie(cgi.cookies['userid'][0], cgi.cookies['pwhash'][0])
 end
 
-$logMutex = Mutex.new
-
-def writeToLog(message)
-	$logMutex.synchronize {STDERR.puts message}
-end
-
 $mutex = Mutex.new
 $condition = ConditionVariable.new
 $increment = 0
@@ -263,7 +258,7 @@ wsServerThread = Thread.new do
 		EventMachine.run {
 			#Redirect all uncaught errors raised in the eventloop to stderr
 			EM.error_handler{ |e|
-				writeToLog sprintf("\n%s: %s\n%s\n", e.class, e.message, e.backtrace.join("\n"))
+				writeExecption e
 			}
 
 			EM.start_server "127.0.0.1", $wsPort, WsConnection, @messageQueue
@@ -294,7 +289,7 @@ wsServerThread = Thread.new do
 			@messageQueue.pop &processPost
 		}
 	rescue Exception => e
-		writeToLog sprintf("\n%s: %s\n%s\n", e.class, e.message, e.backtrace.join("\n"))
+		writeExecption e
 	end
 end
 
@@ -315,7 +310,7 @@ begin
 			rescue Errno::EPIPE, Errno::ECONNRESET => e
 				writeToLog sprintf("Verbindung abgebrochen: %s", e.message);
 			rescue Exception => e
-				writeToLog sprintf("\n%s: %s\n%s\n", e.class, e.message, e.backtrace.join("\n"))
+				writeExecption e
 			ensure
 				scgiConnection.close
 			end
