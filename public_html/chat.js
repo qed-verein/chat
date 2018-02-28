@@ -149,6 +149,7 @@ function OnSocketResponse(event)
 			pendingPongs = 0;
 			break;
 		case 'ack':
+			SetStatus("");
 			sendPart.getElementById("message").value = "";
 			sendPart.getElementById("message").focus();
 			sending = false;
