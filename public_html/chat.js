@@ -24,7 +24,8 @@ var version = "20171030131648";
 
 var recvPart, sendPart, confPart, logsPart;
 var notification, isActive = true, unreadCount = 0, selectcount = 0;
-var messageCache = [];
+
+var sending = false;
 
 var themecolors = { 'dunkelgrauton' : "#555" , 'schwarzwiedienacht' :"#010101" , 'mylittlepony': "#f6b7d2",
 	'apfelweiss': "#ddd", };
@@ -110,7 +111,7 @@ function SocketConnect()
 		SetStatus("Verbindung unterbrochen. Erstelle neue Verbindung mit dem Server...");
 
 	protocolPrefix = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
-	uri = protocolPrefix + "//" + location.hostname + "/websocket?" + URIEncodeParameters({channel: options["channel"], position: position});
+	uri = protocolPrefix + "//" + location.hostname + "/websocket?" + URIEncodeParameters({channel: options["channel"], position: position, version: 2});
 	//uri = "ws://localhost:21000/?" + URIEncodeParameters({channel: options["channel"], position: position});
 	webSocket = new WebSocket(uri);
 	webSocket.onmessage = OnSocketResponse;
@@ -132,16 +133,6 @@ function OnSocketOpen(event)
 {
 	SetStatus("");
 	pingTimer = setInterval(Ping, 30 * 1000);
-
-	if(messageCache.length != 0)
-	{
-		SetStatus("Es werden noch " + messageCache.length + " Posts gesendet");
-		for(var message in messageCache.reverse())
-		{
-			if(webSocket.readyState == 1)
-				webSocket.send(message);
-		}
-	}
 }
 
 function OnSocketResponse(event)
@@ -157,11 +148,19 @@ function OnSocketResponse(event)
 		case "pong":
 			pendingPongs = 0;
 			break;
+		case 'ack':
+			sendPart.getElementById("message").value = "";
+			sendPart.getElementById("message").focus();
+			sending = false;
+			break;
 	}
 }
 
 function OnSocketError(event)
 {
+	sendPart.getElementById("message").value = "";
+	sendPart.getElementById("message").focus();
+	sending = false;
 	if(!firstReconnect)
 		SetStatus("Es ist ein Fehler aufgetreten!");
 }
@@ -193,6 +192,13 @@ function Send()
 		return;
 	}
 
+	if(sending)
+	{
+		SetStatus("Dein alter Post wird noch gesendet ...");
+		return
+	}
+
+	sending = true;
 	msg = JSON.stringify({
 	    channel: options["channel"],
 	    name: sendPart.getElementById ("name").value,
@@ -200,11 +206,6 @@ function Send()
 	    delay: position,
 	    publicid: options["publicid"]});
 	webSocket.send(msg);
-	messageCache.push(msg);
-	if(webSocket.bufferedAmount != 0)
-		SetStatus("Es werden noch " + messageCache.length.toFixed() + " Posts gesendet");
-	sendPart.getElementById("message").value = "";
-	sendPart.getElementById("message").focus();
 }
 
 function Ping()
@@ -229,18 +230,6 @@ function ProcessPost(post)
 	post['id'] = parseInt(post['id']);
 	if(post['id'] < position)
 		return;
-
-	if(messageCache.length != 0 && 
-		post["name"] === messageCache.splice(-1)[0]["name"] && post["message"] === messageCache.splice(-1)[0]["message"])
-	{
-		messageCache.pop()
-		if(messageCache.length != 0)
-			SetStatus("Es werden noch " + messageCache.length + " Posts gesendet");
-	}
-	else
-	{
-		SetStatus("");
-	}
 
 	position = post['id'] + 1;
 	posts.push(post);
