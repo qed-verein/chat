@@ -225,7 +225,7 @@ class WsConnection < EM::Connection
 	end
 
 	def send_post(posting)
-		unless @state == opening
+		unless @state == :opening
 			send $chat.formatAsJson(posting)
 		end
 	end
