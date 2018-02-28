@@ -149,6 +149,7 @@ function OnSocketResponse(event)
 			pendingPongs = 0;
 			break;
 		case 'ack':
+			SetStatus("");
 			sendPart.getElementById("message").value = "";
 			sendPart.getElementById("message").focus();
 			sending = false;
@@ -159,12 +160,9 @@ function OnSocketResponse(event)
 function OnSocketError(event)
 {
     if (sending) {
-        sendPart.getElementById("message").value = "";
-        sendPart.getElementById("message").focus();
+        SetStatus("Nachricht konnte nicht gesendet werden!");
         sending = false;
     }
-        if(!firstReconnect)
-                SetStatus("Es ist ein Fehler aufgetreten!");
 }
 
 function OnSocketClose(event)
@@ -182,7 +180,6 @@ function OnSocketClose(event)
 	wait = Math.min(wait * 2, 16);
 	timeout = setTimeout(SocketConnect, wait * 1000);
 
-	SetStatus("");
 	SetReconnect(wait, "Die Verbindung wurde beendet.<br>Grund: " + event.code + ": " + event.reason)
 }
 
