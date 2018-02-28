@@ -158,11 +158,13 @@ function OnSocketResponse(event)
 
 function OnSocketError(event)
 {
-	sendPart.getElementById("message").value = "";
-	sendPart.getElementById("message").focus();
-	sending = false;
-	if(!firstReconnect)
-		SetStatus("Es ist ein Fehler aufgetreten!");
+    if (sending) {
+        sendPart.getElementById("message").value = "";
+        sendPart.getElementById("message").focus();
+        sending = false;
+    }
+        if(!firstReconnect)
+                SetStatus("Es ist ein Fehler aufgetreten!");
 }
 
 function OnSocketClose(event)
