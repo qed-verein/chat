@@ -85,7 +85,12 @@ class WsConnection < EM::Connection
 			send @handshake.to_s, :type => :plain if @handshake.should_respond?
 
 			query = CGI.parse @handshake.query unless @handshake.query.nil?
-			@version = query.include?('version') ? query['version'][0].to_i : 1
+			if @handshake.query.nil? || !query.include?('version')
+				@version = 1
+			else
+				@version = query['version'][0].to_i
+			end
+
 			handle_fatal_error :protocol_error, "Version unbekannt" if @version > 2
 
 			#TODO: It might be possible (if client-server latency is very low) that the client recieves the handshake
