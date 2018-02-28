@@ -36,9 +36,12 @@ class WsConnection < EM::Connection
 
 	attr_accessor :position
 	attr_accessor :ping_failures
+	
+	attr_accessor :version
 
 	def initialize(queue)
 		@queue = queue
+		@version = 1
 	end
 
 	def post_init
@@ -81,6 +84,15 @@ class WsConnection < EM::Connection
 			#Respond if necessary
 			send @handshake.to_s, :type => :plain if @handshake.should_respond?
 
+			query = CGI.parse @handshake.query unless @handshake.query.nil?
+			if @handshake.query.nil? || !query.include?('version')
+				@version = 1
+			else
+				@version = query['version'][0].to_i
+			end
+
+			handle_fatal_error :protocol_error, "Version unbekannt" if @version > 2
+
 			#TODO: It might be possible (if client-server latency is very low) that the client recieves the handshake
 			#before the connections is fully initiallized. This would cause the server to close the connection
 			#without processing the data. Maybe think about queueing this data? Sending handshake-response later is not
@@ -111,7 +123,6 @@ class WsConnection < EM::Connection
 			end
 
 			#Set the channel
-			query = CGI.parse @handshake.query unless @handshake.query.nil?
 			if @handshake.query.nil? || !query.include?('channel')
 				close 1002, "Parameter 'channel' fehlt."
 				return
@@ -214,7 +225,9 @@ class WsConnection < EM::Connection
 	end
 
 	def send_post(posting)
-		send $chat.formatAsJson(posting)
+		unless @state == :opening
+			send $chat.formatAsJson(posting)
+		end
 	end
 
 	def create_post(data)
@@ -230,13 +243,22 @@ class WsConnection < EM::Connection
 		#TODO: Reenable async post-processing (Idea: Use some sort of queue to store posts and then process async)
 		##Send posts to db asynchroniously to avoid blocking
 		#operation = proc {
+		begin
 			$chat.createPost(name, message, @channel, date, @uid, delay, bottag, publicid)
+		rescue Sequel::DatabaseConnectionError
+			handle_fatal_error e, "Fehler beim Kommunizieren mit der Datenbank."
+			return
+		end
+
 		#}
 
 		##Only notify clients if the db-operation is successful
 		#callback = proc {
-			$mutex.synchronize { $increment += 1; $condition.broadcast }
-			@queue.push(@channel)
+		if @version > 1
+			send '{"type": "ack"}', :type => :text
+		end
+		$mutex.synchronize { $increment += 1; $condition.broadcast }
+		@queue.push(@channel)
 		#}
 
 		#EM.defer(operation, callback)

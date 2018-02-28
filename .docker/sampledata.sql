@@ -25,7 +25,7 @@ INSERT INTO user VALUES (7, 'Testuser5', SHA1(CONCAT('Testuser5', '1234')));
 INSERT INTO user VALUES (8, 'Testuser6', SHA1(CONCAT('Testuser6', '1234')));
 INSERT INTO user VALUES (9, 'Testuser7', SHA1(CONCAT('Testuser7', '1234')));
 INSERT INTO user VALUES (10, 'Testuser8', SHA1(CONCAT('Testuser8', '1234')));
-INSERT INTO user VALUES (11, 'Testuser9', SHA1(CONCAT('Testuser9', '1234')));
+INSERT INTO user VALUES (11, 'Testuser9', SHA1(CONCAT('Testuser9', '4321')));
 
 INSERT INTO post VALUES (1, NOW(), '0.0.0.0', 0, 'Admin', 'Das ist ein Testserver! Posts werden nur temporär gespeichert!', 0, 1, '', TRUE);
 INSERT INTO post VALUES (2, NOW(), '0.0.0.0', 0, 'Admin', 'Das ist ein Testserver! Posts werden nur temporär gespeichert!', 0, 1, '', TRUE);
