@@ -131,7 +131,9 @@ function SocketDisconnect()
 
 function OnSocketOpen(event)
 {
+	sending = false;
 	SetStatus("");
+	SetReconnect(0, "");
 	pingTimer = setInterval(Ping, 30 * 1000);
 }
 
@@ -463,6 +465,14 @@ function RecreatePosts()
 	ScrollDown();
 }
 
+function ResetSending()
+{
+	if(sending)
+	{
+		sending = false;
+		SetStatus("");
+	}
+}
 
 // *********************
 // *   Einstellungen   *
