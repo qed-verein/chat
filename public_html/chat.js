@@ -131,7 +131,9 @@ function SocketDisconnect()
 
 function OnSocketOpen(event)
 {
+	sending = false;
 	SetStatus("");
+	SetReconnect(0, "");
 	pingTimer = setInterval(Ping, 30 * 1000);
 }
 
@@ -193,10 +195,11 @@ function Send()
 
 	if(sending)
 	{
-		SetStatus("Dein alter Post wird noch gesendet ...");
+		SetStatus("Dein alter Post wird noch gesendet...");
 		return
 	}
 
+	SetStatus("Dein Post wird gesendet...");
 	sending = true;
 	msg = JSON.stringify({
 	    channel: options["channel"],
@@ -463,6 +466,14 @@ function RecreatePosts()
 	ScrollDown();
 }
 
+function ResetSending()
+{
+	if(sending)
+	{
+		sending = false;
+		SetStatus("");
+	}
+}
 
 // *********************
 // *   Einstellungen   *

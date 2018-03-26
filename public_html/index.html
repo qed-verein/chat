@@ -36,7 +36,7 @@ License along with QED-Chat.  If not, see
 
 <body  onload="Init()">
 
-<div id="messagebox" class="box">
+<div id="messagebox" class="box" onchange="ResetSending()">
 <div id="posts"></div>
 <p id="reconnect" onclick="SocketConnect()"></p>
 <p id="status"></p>
