@@ -238,8 +238,6 @@ class WsConnection < EM::Connection
 		bottag = data.has_key?('bottag') ? data['bottag'].to_i : 0
 		publicid = data.has_key?('publicid') ? (data['publicid'].to_i == 0 ? 0 : 1) : 0
 
-		#TODO: Handle database-failures by closing due to internal server error
-
 		#TODO: Reenable async post-processing (Idea: Use some sort of queue to store posts and then process async)
 		##Send posts to db asynchroniously to avoid blocking
 		#operation = proc {
@@ -250,16 +248,11 @@ class WsConnection < EM::Connection
 			return
 		end
 
-		#}
-
-		##Only notify clients if the db-operation is successful
-		#callback = proc {
 		if @version > 1
 			send '{"type": "ack"}', :type => :text
 		end
 		$mutex.synchronize { $increment += 1; $condition.broadcast }
 		@queue.push(@channel)
-		#}
 
 		#EM.defer(operation, callback)
 	end
@@ -314,6 +307,7 @@ class WsConnection < EM::Connection
 	def close(code = 1000, data = nil)
 		if @state == :open
 			@state = :closing
+			sleep 0.1
 			send data, :type => :close, :code => code
 		else
 			send data, :type => :close if @state == :closing #This only happends when the client asked for closing the connection

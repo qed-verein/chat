@@ -195,10 +195,11 @@ function Send()
 
 	if(sending)
 	{
-		SetStatus("Dein alter Post wird noch gesendet ...");
+		SetStatus("Dein alter Post wird noch gesendet...");
 		return
 	}
 
+	SetStatus("Dein Post wird gesendet...");
 	sending = true;
 	msg = JSON.stringify({
 	    channel: options["channel"],
