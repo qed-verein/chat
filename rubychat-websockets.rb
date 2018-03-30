@@ -307,7 +307,6 @@ class WsConnection < EM::Connection
 	def close(code = 1000, data = nil)
 		if @state == :open
 			@state = :closing
-			sleep 0.1
 			send data, :type => :close, :code => code
 		else
 			send data, :type => :close if @state == :closing #This only happends when the client asked for closing the connection
