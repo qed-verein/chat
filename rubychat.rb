@@ -89,7 +89,7 @@ def handleRequest(cgi)
 	rescue Errno::EPIPE => e
 		raise e
 	rescue StandardError => e
-		writeExecption e
+		writeException e
 		cgi.print({'type' => 'error', 'description' => e.message + "\n" + e.backtrace.join("\n")}.to_json)
 	end
 end
@@ -258,7 +258,7 @@ wsServerThread = Thread.new do
 		EventMachine.run {
 			#Redirect all uncaught errors raised in the eventloop to stderr
 			EM.error_handler{ |e|
-				writeExecption e
+				writeException e
 			}
 
 			EM.start_server "127.0.0.1", $wsPort, WsConnection, @messageQueue
@@ -289,7 +289,7 @@ wsServerThread = Thread.new do
 			@messageQueue.pop &processPost
 		}
 	rescue Exception => e
-		writeExecption e
+		writeException e
 	end
 end
 
@@ -310,7 +310,7 @@ begin
 			rescue Errno::EPIPE, Errno::ECONNRESET => e
 				writeToLog sprintf("Verbindung abgebrochen: %s", e.message);
 			rescue Exception => e
-				writeExecption e
+				writeException e
 			ensure
 				scgiConnection.close
 			end

@@ -27,5 +27,5 @@ def writeToLog(message)
 end
 
 def writeException(ex)
-	writeToLog sprintf("\n%s: %s\n%s\n", ex.class, ex.message, ex.backtrace.join("\n"))
+	writeToLog(sprintf("\n%s: %s\n%s\n", ex.class, ex.message, ex.backtrace.join("\n")))
 end
