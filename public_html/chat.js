@@ -816,7 +816,7 @@ function HtmlEscape (text)
 
 function InsertLinks (text)
 {
-	return text.replace(/https:\/\/|http:\/\/|ftp:\/\/)([^\s]*)/g, 
+	return text.replace(/(https:\/\/|http:\/\/|ftp:\/\/)([^\s]*)/g, 
 		'<a rel="noreferrer" target="_blank" href="$1$2">$1$2</a>');
 }
 
