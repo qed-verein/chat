@@ -265,7 +265,7 @@ function ProcessPost(post)
 		unreadCount += 1;
 		changeFavicon();
 	}
-	ScrollDown();
+	setTimeout(function() { ScrollDown(); }, 100);
 }
 
 // Erstellt einen HTML-Knoten für diese Nachricht
