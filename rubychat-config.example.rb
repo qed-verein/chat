@@ -30,3 +30,7 @@ $wsFailsToTimeout = 3
 $hostname = "chat.foo.bar" #Muss geaendert werden, z.B. localhost fuer lokales Testen
 
 $secureCookies = true #False, falls lokal entwickelt wird (ohne https)
+
+$tokenExpirationSeconds = 3600 * 24 * 90
+$tokenExpirationLeeway = 30
+$tokenSecret = nil

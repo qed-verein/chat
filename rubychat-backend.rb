@@ -16,6 +16,7 @@
 # License along with QED-Chat.  If not, see
 # <http://www.gnu.org/licenses/>.
 
+require 'jwt'
 
 #This class provides methodes to interface with the chat-db.
 class ChatBackend
@@ -38,7 +39,7 @@ class ChatBackend
 	end
 
 	#Verifies the credentials
-	# @return [Hash] Username and password if sucessful, nil if not
+	# @return [Hash] Id and password if sucessful, nil if not
 	def userAuthenticate(username, password)
 		sql = "SELECT id, password FROM user WHERE username=? AND password=SHA1(CONCAT(username, ?))"
 		chatDatabase {|db|
@@ -50,17 +51,21 @@ class ChatBackend
 	#Verifies the cookie
 	# @return [Integer] The uid if sucessful, nil if not
 	def checkCookie(user_id, pwhash)
-		sql = "SELECT id FROM user WHERE id=? AND password=?"
-		chatDatabase {|db|
-		  row = db.fetch(sql, user_id, pwhash).first
-                  # CSS HACK
-                  if row.nil? or (row[:id].to_i == 511)
-                    return nil
-                  else
-                    return row[:id].to_i
-		    #return row.nil? ? nil : row[:id].to_i
-                  end
-		}
+		begin
+			token = JWT.decode(pwhash, $tokenSecret, true, 
+				{ exp_leeway: $tokenExpirationLeeway, sub: user_id, verify_sub: true, algorithm: 'HS512'})
+			return user_id
+		rescue JWT::InvalidSubError
+			writeToLog("Jwt subject missmatch! Wanted: " + token['sub'] + ", received " + user_id)
+		rescue JWT::ExpiredSignature
+			writeToLog("Jwt signature expired! User: " + user_id)
+		end
+	end
+
+	def getCookie(user_id)
+		exp = Time.now.to_i + $tokenExpirationSeconds
+		payload = { exp: exp, sub: user_id}
+		return JWT.encode payload, $tokenSecret, 'HS512'
 	end
 
 	#Gets the id of current post - offset

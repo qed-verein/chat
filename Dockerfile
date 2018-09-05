@@ -32,7 +32,8 @@ RUN apt-get update && apt-get install -y \
     ruby-eventmachine \
     ruby-sequel \
     ruby-json \
-    ruby-mysql2 && \
+    ruby-mysql2 \
+    ruby-jwt && \
     gem update && \
     gem install websocket && \
     a2enmod proxy && \

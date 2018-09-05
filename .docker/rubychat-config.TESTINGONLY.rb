@@ -30,3 +30,7 @@ $wsFailsToTimeout = 3
 $hostname = "localhost"
 
 $secureCookies = false
+
+$tokenExpirationSeconds = 3600 * 24 * 90
+$tokenExpirationLeeway = 30
+$tokenSecret = "topsecret"
