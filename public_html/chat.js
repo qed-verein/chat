@@ -24,6 +24,7 @@ var version = "20171030131648";
 
 var recvPart, sendPart, confPart, logsPart;
 var notification, isActive = true, unreadCount = 0, selectcount = 0;
+var scrolledDown = true;
 
 var sending = false;
 
@@ -75,6 +76,7 @@ function Init()
 
 	window.onerror = ErrorHandler;
 	window.onunload = SocketDisconnect;
+	window.onresize = ResizeHandler;
 	
 	InitSocket();
 	InitSettings();
@@ -265,7 +267,7 @@ function ProcessPost(post)
 		unreadCount += 1;
 		changeFavicon();
 	}
-	setTimeout(function() { ScrollDown(); }, 100);
+	ScrollDown();
 }
 
 // Erstellt einen HTML-Knoten für diese Nachricht
@@ -403,6 +405,16 @@ function FormatMobilePost(post)
 	}
 
 	return li;
+}
+
+//Sorgt dafür dass auf mobilen Geräten nach Öffnen der Tastatur
+//wieder der neueste Post angezeigt wird
+function ResizeHandler()
+{
+	if(scrolledDown)
+	{
+		ScrollDown();
+	}
 }
 
 function IDTitle(post)
