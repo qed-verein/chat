@@ -59,6 +59,8 @@ class ChatBackend
 			writeToLog("Jwt subject missmatch! Wanted: " + token['sub'] + ", received " + user_id)
 		rescue JWT::ExpiredSignature
 			writeToLog("Jwt signature expired! User: " + user_id)
+		rescue Exception => e
+			writeException e
 		end
 	end
 
