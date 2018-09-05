@@ -159,7 +159,6 @@ class WsConnection < EM::Connection
 
 		cookie = CGI::Cookie::parse @handshake.headers['cookie']
 		return unless cookie.keys.include?('userid') && cookie.keys.include?('pwhash')
-		return unless cookie['pwhash'][0].size == 40
 
 		@uid = $chat.checkCookie cookie['userid'][0], cookie['pwhash'][0]
 	end

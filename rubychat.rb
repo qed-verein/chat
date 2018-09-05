@@ -234,7 +234,7 @@ end
 
 def cookieAuthenticate(cgi)
 	return if !cgi.cookies.keys.include?('userid') || !cgi.cookies.keys.include?('pwhash')
-	return if cgi.cookies['pwhash'][0].nil? || cgi.cookies['pwhash'][0].size != 40
+	return if cgi.cookies['pwhash'][0].nil?
 	Thread.current[:userid] = $chat.checkCookie(cgi.cookies['userid'][0], cgi.cookies['pwhash'][0])
 end
 
