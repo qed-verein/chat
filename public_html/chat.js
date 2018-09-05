@@ -828,11 +828,7 @@ function HtmlEscape (text)
 
 function InsertLinks (text)
 {
-<<<<<<< HEAD
-	return text.replace(/(https:\/\/|http:\/\/|ftp:\/\/)([^\s]*)/g, 
-=======
 	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\wäüößÄÜÖ\&.~%\/?#=@:\[\]+\$\,-;!]*)/g,
->>>>>>> parent of c651bd0... Neuer URLRegex
 		'<a rel="noreferrer" target="_blank" href="$1$2">$1$2</a>');
 }
 
