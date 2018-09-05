@@ -411,7 +411,7 @@ function FormatMobilePost(post)
 //wieder der neueste Post angezeigt wird
 function ResizeHandler()
 {
-	if(scrolledDown)
+	if(options['layout'] == 'mobile' && scrolledDown)
 	{
 		ScrollDown();
 	}
