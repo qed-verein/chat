@@ -118,7 +118,7 @@ class WsConnection < EM::Connection
 			@state = :open
 
 			if !authorized?
-				close 1002, "Ungültige Anmeldedaten."
+				close 4000, "Ungültige Anmeldedaten. Versuche am besten dich abzumelden."
 				return
 			end
 

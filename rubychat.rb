@@ -67,7 +67,6 @@ def handleRequest(cgi)
 		'Expires' => 'Sat, 26 Jul 1997 05:00:00 GMT',
 		'X-Frame-Options' => 'SAMEORIGIN'
 		}
-	cgi.print cgi.http_header(headers)
 
 	begin
 		cookieAuthenticate cgi #Authenticate via cookie and set the userid
@@ -83,6 +82,7 @@ def handleRequest(cgi)
 		end
 		raise ChatError, "Ungueltige Versionsnummer!" if cgi.has_key? 'version' && cgi['version'] != '20171030131648'
 
+		cgi.print cgi.http_header(headers)
 		#Direct to appropriate handler
 		case cgi.script_name
 			when "/rubychat/post" #New post

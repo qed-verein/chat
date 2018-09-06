@@ -55,10 +55,12 @@ class ChatBackend
 			token = JWT.decode(pwhash, $tokenSecret, true, 
 				{ exp_leeway: $tokenExpirationLeeway, sub: user_id, verify_sub: true, algorithm: 'HS512'})
 			return user_id
-		rescue JWT::InvalidSubError
-			writeToLog("Jwt subject missmatch! Wanted: " + token['sub'] + ", received " + user_id)
-		rescue JWT::ExpiredSignature
-			writeToLog("Jwt signature expired! User: " + user_id)
+		rescue JWT::InvalidSubError => e
+			writeToLog("Jwt subject missmatch! Wanted: " + user_id + "\n" + e.message)
+		rescue JWT::ExpiredSignature => e
+			writeToLog("Jwt signature expired! User: " + user_id + "\n" + e.message)
+		rescue JWT::DecodeError => e
+			writeToLog("Failed to decode jwt! " + e.message)
 		rescue Exception => e
 			writeException e
 		end
