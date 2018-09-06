@@ -54,6 +54,9 @@ class ChatBackend
 		begin
 			token = JWT.decode(pwhash, $tokenSecret, true, 
 				{ exp_leeway: $tokenExpirationLeeway, algorithm: 'HS512'})
+			
+			puts token["sub"].to_i
+			puts user_id.to_i
 			if token["sub"].to_i != user_id.to_i
 				return nil
 			end
