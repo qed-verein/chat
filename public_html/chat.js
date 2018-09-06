@@ -74,6 +74,8 @@ function Init()
 	LoadOptions();
 	if(!ReadCookie('userid')) document.location.href = "account.html?"  + OptionURL();
 
+	UpgradeCookies();
+
 	window.onerror = ErrorHandler;
 	window.onunload = SocketDisconnect;
 	window.onresize = ResizeHandler;
@@ -81,6 +83,17 @@ function Init()
 	InitSocket();
 	InitSettings();
 	InitNotifications();
+}
+
+function UpgradeCookies()
+{
+	if(ReadCookie('upgrade')) return;
+
+	var endDate = new Date(2018, 09, 06) + 100;
+	if(Date.now() > endDate) return;
+
+	document.cookie = "upgrade=1;expires=" + (endDate + 1).toUTCString() + ";path=/";
+	OnLoginClicked('logout');
 }
 
 // *****************

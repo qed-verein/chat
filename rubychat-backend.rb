@@ -56,7 +56,7 @@ class ChatBackend
 				{ exp_leeway: $tokenExpirationLeeway, sub: user_id, verify_sub: true, algorithm: 'HS512'})
 			return user_id
 		rescue JWT::InvalidSubError => e
-			writeToLog("Jwt subject missmatch! Wanted: " + user_id + "\n" + e.message)
+			writeToLog("Jwt subject missmatch! " + e.message)
 		rescue JWT::ExpiredSignature => e
 			writeToLog("Jwt signature expired! User: " + user_id + "\n" + e.message)
 		rescue JWT::DecodeError => e
