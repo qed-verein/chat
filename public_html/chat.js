@@ -89,10 +89,13 @@ function UpgradeCookies()
 {
 	if(ReadCookie('upgrade')) return;
 
-	var endDate = new Date(2018, 09, 06) + 100;
+	var endDate = new Date(2018, 8, 6);
+	endDate.setDate(endDate.getDate() + 100);
 	if(Date.now() > endDate) return;
 
-	document.cookie = "upgrade=1;expires=" + (endDate + 1).toUTCString() + ";path=/";
+	endDate.setDate(endDate.getDate() + 1);
+
+	document.cookie = "upgrade=1;expires=" + endDate.toUTCString() + ";path=/";
 	OnLoginClicked('logout');
 }
 
