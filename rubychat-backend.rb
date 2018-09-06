@@ -53,11 +53,7 @@ class ChatBackend
 	def checkCookie(user_id, pwhash)
 		begin
 			token = JWT.decode(pwhash, $tokenSecret, true, 
-				{ exp_leeway: $tokenExpirationLeeway, algorithm: 'HS512'})
-			puts token
-			if token["sub"].to_i != user_id.to_i
-				return nil
-			end
+				{ exp_leeway: $tokenExpirationLeeway, sub: user_id.to_s + ".0", verify_sub: true, algorithm: 'HS512'})
 			return user_id
 		rescue JWT::InvalidSubError => e
 			writeToLog("Jwt subject missmatch! " + e.message)
