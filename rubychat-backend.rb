@@ -53,14 +53,14 @@ class ChatBackend
 	def checkCookie(user_id, pwhash)
 		begin
 			token = JWT.decode(pwhash, $tokenSecret, true, 
-				{ exp_leeway: $tokenExpirationLeeway, sub: user_id, verify_sub: true, algorithm: 'HS512'})
+				{ exp_leeway: $tokenExpirationLeeway, sub: user_id.to_i, verify_sub: true, algorithm: 'HS512'})
 			return user_id
 		rescue JWT::InvalidSubError => e
 			writeToLog("Jwt subject missmatch! " + e.message)
 		rescue JWT::ExpiredSignature => e
 			writeToLog("Jwt signature expired! User: " + user_id + "\n" + e.message)
 		rescue JWT::DecodeError => e
-			writeToLog("Failed to decode jwt! " + e.message)
+			
 		rescue Exception => e
 			writeException e
 		end
