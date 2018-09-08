@@ -219,7 +219,7 @@ def accountHandler(cgi)
 			{'result' => 'fail', 'message' => 'Logindaten sind ungültig'}.to_json}
 	else
 		#Userid cannot be httponly due to the way chat.js detects login-state
-		cookie1 = CGI::Cookie::new('name' => 'userid', 'value' => user[:id].to_i.to_s,
+		cookie1 = CGI::Cookie::new('name' => 'userid', 'value' => user[:id],
 			'path' => '/', 'expires' => Time.now + $tokenExpirationSeconds, 'secure' => $secureCookies)
 		cookie2 = CGI::Cookie::new('name' => 'pwhash', 'value' => $chat.getCookie(user[:id]),
 			'path' => '/', 'expires' => Time.now + $tokenExpirationSeconds, 'secure' => $secureCookies, 'httponly' => true)
