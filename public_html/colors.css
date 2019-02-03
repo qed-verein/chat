@@ -107,18 +107,19 @@
 
 .arbeiterrot, .arbeiterrot input, .arbeiterrot textarea, .arbeiterrot select
 {
-	color: #ff7;
-	background-color: #f10;
-	border-color: #a11;
+	color: #ee6;
+	background-color: #f31;
+	border-color: #b21;
 }
 
 .arbeiterrot .box
 {
-	background-color: #e00;
-	border-color: #a11;
+	background-color: #f82008;
+	border-color: #b21;
 }
 
-.arbeiterrot .post .info, .arbeiterrot .post .userid
+.arbeiterrot .post .info, .arbeiterrot .post .userid, .arbeiterrot a
 {
-	color: white;
+	color: #ee6;
 }
+.arbeiterrot a:hover {color: white}
