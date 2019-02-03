@@ -108,13 +108,13 @@
 .arbeiterrot, .arbeiterrot input, .arbeiterrot textarea, .arbeiterrot select
 {
 	color: #ee6;
-	background-color: #f31;
+	background-color: #ff1108;
 	border-color: #b21;
 }
 
 .arbeiterrot .box
 {
-	background-color: #f82008;
+	background-color: #e81008;
 	border-color: #b21;
 }
 
