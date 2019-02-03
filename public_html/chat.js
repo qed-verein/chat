@@ -29,7 +29,7 @@ var scrolledDown = true;
 var sending = false;
 
 var themecolors = { 'dunkelgrauton' : "#555" , 'schwarzwiedienacht' :"#010101" , 'mylittlepony': "#f6b7d2",
-	'apfelweiss': "#ddd", };
+	'apfelweiss': "#ddd", 'arbeiterrot': "#f10" };
 
 var defaults = {
 		channel: "", name: "",
@@ -525,6 +525,7 @@ function InitSettings()
 	skinSelect.add(new Option("Nachtschwarz", 'schwarzwiedienacht'));
 	skinSelect.add(new Option("My Little Pony", 'mylittlepony'));
 	skinSelect.add(new Option("Apfelweiß", 'apfelweiss'));
+	skinSelect.add(new Option("Arbeiterrot", 'arbeiterrot'));
 	skinSelect.value = options['skin'];
 
 	var layoutSelect = confPart.getElementById('layout');
@@ -825,7 +826,8 @@ function InvertColor(color)
 
 function PostColor(post)
 {
-	return (options['skin'] != 'mylittlepony' && options['skin'] != 'apfelweiss') ?
+	return (options['skin'] != 'mylittlepony' && options['skin'] != 'apfelweiss'
+		&& options['skin'] != 'arbeiterrot') ?
 		post['color'] : InvertColor(post['color']);
 }
 

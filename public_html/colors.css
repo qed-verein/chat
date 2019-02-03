@@ -104,3 +104,21 @@
 {
 	color: orange;
 }
+
+.arbeiterrot, .arbeiterrot input, .arbeiterrot textarea, .arbeiterrot select
+{
+	color: #ff7;
+	background-color: #f10;
+	border-color: #a11;
+}
+
+.arbeiterrot .box
+{
+	background-color: #e00;
+	border-color: #a11;
+}
+
+.arbeiterrot .post .info, .arbeiterrot .post .userid
+{
+	color: white;
+}
