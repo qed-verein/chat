@@ -169,7 +169,7 @@ class WsConnection < EM::Connection
 	end
 
 	def banned?()
-		return $chat.user?(:user_id)
+		return $chat.user?(@uid)
 	end
 
 	#Gets called when there is new data and the connection is already initiallized
@@ -239,7 +239,7 @@ class WsConnection < EM::Connection
 	end
 
 	def create_post(data)
-		if banned?(@uid)
+		if banned?
 			close 4001, "Du bist gebannt. Versuche es später nochmal."
 			return
 		end
