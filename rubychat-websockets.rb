@@ -169,7 +169,7 @@ class WsConnection < EM::Connection
 	end
 
 	def banned?()
-		return $chat.user?(@uid)
+		return !$chat.user?(@uid)
 	end
 
 	#Gets called when there is new data and the connection is already initiallized
