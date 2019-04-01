@@ -150,6 +150,14 @@ class ChatBackend
 		posting.to_json
 	end
 
+	def user?(user_id)
+		sql = "SELECT id FROM user WHERE id=?"
+		chatDatabase {|db|
+			row = db.fetch(sql, user_id).first
+			return !row.nil?
+		}
+	end
+
 	private
 
 	def colorForName(name)

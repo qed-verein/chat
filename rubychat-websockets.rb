@@ -117,8 +117,13 @@ class WsConnection < EM::Connection
 			@frame = WebSocket::Frame::Incoming::Server.new(:version => @handshake.version)
 			@state = :open
 
-			if !authorized?
+			unless authorized?
 				close 4000, "Ungültige Anmeldedaten. Versuche am besten dich abzumelden."
+				return
+			end
+
+			if banned?
+				close 4001, "Du bist gebannt. Versuche es später nochmal."
 				return
 			end
 
@@ -161,6 +166,10 @@ class WsConnection < EM::Connection
 		return unless cookie.keys.include?('userid') && cookie.keys.include?('pwhash')
 
 		@uid = $chat.checkCookie cookie['userid'][0], cookie['pwhash'][0]
+	end
+
+	def banned?()
+		return !$chat.user?(@uid)
 	end
 
 	#Gets called when there is new data and the connection is already initiallized
@@ -230,6 +239,11 @@ class WsConnection < EM::Connection
 	end
 
 	def create_post(data)
+		if banned?
+			close 4001, "Du bist gebannt. Versuche es später nochmal."
+			return
+		end
+
 		name = data['name']
 		message = data['message']
 		date = Time.new.strftime "%Y-%m-%d %H-%M-%S"
