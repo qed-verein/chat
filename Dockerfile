@@ -18,7 +18,7 @@
 # License along with QED-Chat.  If not, see
 # <http://www.gnu.org/licenses/>.
 
-FROM debian:stretch
+FROM debian:buster
 
 ENV DEBIAN_FRONTEND noninteractive 
 RUN apt-get update && apt-get install -y \ 
