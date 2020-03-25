@@ -26,6 +26,7 @@ RUN apt-get update && apt-get install -y \
     libmariadbclient-dev \
     libpq-dev \
     libgdbm-dev \
+    libgdbm-compat-dev \
     ruby \ 
     ruby-dev \ 
     rubygems \
