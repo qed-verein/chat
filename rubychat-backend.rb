@@ -126,7 +126,7 @@ class ChatBackend
 			return @usernames[posting[:user_id]]
 		else
 			username = ''
-			chatDatabase {|db| username = db[:user].select(:username).where('id = ?', posting[:user_id]).first}
+			chatDatabase {|db| username = db[:user].select(:username).where(id: posting[:user_id]).first}
 			if username.nil?
 				username = '?'
 			else
