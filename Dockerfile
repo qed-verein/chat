@@ -18,13 +18,15 @@
 # License along with QED-Chat.  If not, see
 # <http://www.gnu.org/licenses/>.
 
-FROM debian:stretch
+FROM debian:buster
 
 ENV DEBIAN_FRONTEND noninteractive 
 RUN apt-get update && apt-get install -y \ 
     build-essential \
     libmariadbclient-dev \
     libpq-dev \
+    libgdbm-dev \
+    libgdbm-compat-dev \
     ruby \ 
     ruby-dev \ 
     rubygems \
@@ -38,7 +40,8 @@ RUN apt-get update && apt-get install -y \
     gem install websocket && \
     a2enmod proxy && \
     a2enmod proxy_wstunnel && \
-    a2enmod proxy_scgi
+    a2enmod proxy_scgi && \
+    a2enmod rewrite
 
 ADD . /code
 WORKDIR /code

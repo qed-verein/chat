@@ -54,7 +54,7 @@ docker rm $CHAT_CONTAINER_NAME
 
 echo "Starting mysql server..."
 docker run -d --name=$MYSQL_CONTAINER_NAME --restart=always --network=$CHAT_NETWORK_NAME \
-    -e MYSQL_ROOT_PASSWORD=$PASSWORD_MYSQL -e MYSQL_DATABASE=chat mariadb:10.1 \
+    -e MYSQL_ROOT_PASSWORD=$PASSWORD_MYSQL -e MYSQL_DATABASE=chat mariadb:10.3 \
     --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
 echo "Building chat container..."

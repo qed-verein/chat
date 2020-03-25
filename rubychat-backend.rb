@@ -126,7 +126,7 @@ class ChatBackend
 			return @usernames[posting[:user_id]]
 		else
 			username = ''
-			chatDatabase {|db| username = db[:user].select(:username).where('id = ?', posting[:user_id]).first}
+			chatDatabase {|db| username = db[:user].select(:username).where(id: posting[:user_id]).first}
 			if username.nil?
 				username = '?'
 			else
@@ -148,6 +148,14 @@ class ChatBackend
 		posting.delete(:publicid)
 		posting.merge!({'type' => 'post', 'color' => colorForName(posting[:name])})
 		posting.to_json
+	end
+
+	def user?(user_id)
+		sql = "SELECT id FROM user WHERE id=?"
+		chatDatabase {|db|
+			row = db.fetch(sql, user_id).first
+			return !row.nil?
+		}
 	end
 
 	private
