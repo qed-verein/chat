@@ -38,7 +38,8 @@ RUN apt-get update && apt-get install -y \
     gem install websocket && \
     a2enmod proxy && \
     a2enmod proxy_wstunnel && \
-    a2enmod proxy_scgi
+    a2enmod proxy_scgi && \
+    a2enmod rewrite
 
 ADD . /code
 WORKDIR /code
