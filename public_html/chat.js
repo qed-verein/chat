@@ -826,8 +826,7 @@ function InvertColor(color)
 
 function PostColor(post)
 {
-	return (options['skin'] != 'mylittlepony' && options['skin'] != 'apfelweiss'
-		&& options['skin'] != 'arbeiterrot') ?
+	return (options['skin'] != 'mylittlepony' && options['skin'] != 'apfelweiss') ?
 		post['color'] : InvertColor(post['color']);
 }
 

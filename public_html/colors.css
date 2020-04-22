@@ -122,4 +122,11 @@
 {
 	color: #ee6;
 }
+
+.arbeiterrot tr.post > .message, .name
+{
+    filter: invert(100%);
+    -webkit-filter: invert(100%);
+}
+
 .arbeiterrot a:hover {color: white}
