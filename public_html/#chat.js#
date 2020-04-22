@@ -29,7 +29,7 @@ var scrolledDown = true;
 var sending = false;
 
 var themecolors = { 'dunkelgrauton' : "#555" , 'schwarzwiedienacht' :"#010101" , 'mylittlepony': "#f6b7d2",
-	'apfelweiss': "#ddd", 'arbeiterrot': "#f10" };
+	'apfelweiss': "#ddd", };
 
 var defaults = {
 		channel: "", name: "",
@@ -74,8 +74,6 @@ function Init()
 	LoadOptions();
 	if(!ReadCookie('userid')) document.location.href = "account.html?"  + OptionURL();
 
-	UpgradeCookies();
-
 	window.onerror = ErrorHandler;
 	window.onunload = SocketDisconnect;
 	window.onresize = ResizeHandler;
@@ -83,20 +81,6 @@ function Init()
 	InitSocket();
 	InitSettings();
 	InitNotifications();
-}
-
-function UpgradeCookies()
-{
-	if(ReadCookie('upgrade2')) return;
-
-	var endDate = new Date(2018, 8, 8);
-	endDate.setDate(endDate.getDate() + 100);
-	if(Date.now() > endDate) return;
-
-	endDate.setDate(endDate.getDate() + 1);
-
-	document.cookie = "upgrade2=1;expires=" + endDate.toUTCString() + ";path=/";
-	OnLoginClicked('logout');
 }
 
 // *****************
@@ -525,7 +509,6 @@ function InitSettings()
 	skinSelect.add(new Option("Nachtschwarz", 'schwarzwiedienacht'));
 	skinSelect.add(new Option("My Little Pony", 'mylittlepony'));
 	skinSelect.add(new Option("Apfelweiß", 'apfelweiss'));
-	skinSelect.add(new Option("Arbeiterrot", 'arbeiterrot'));
 	skinSelect.value = options['skin'];
 
 	var layoutSelect = confPart.getElementById('layout');
@@ -845,7 +828,7 @@ function HtmlEscape (text)
 
 function InsertLinks (text)
 {
-	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\wäüößÄÜÖ\&.~%\/?#=@:\[\]+\$\,-;!]*)/g,
+	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\wäüößÄÜÖẞ()\&.~%\/?#=@:\[\]+\$\,-;!]*)/g,
 		'<a rel="noreferrer" target="_blank" href="$1$2">$1$2</a>');
 }
 
