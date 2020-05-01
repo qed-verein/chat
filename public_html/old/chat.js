@@ -17,21 +17,23 @@
 // <http://www.gnu.org/licenses/>.
 
 var options = new Object();
-var version = "20171030131648"; // muss in rubychat ebenfalls geaendert werden
+
+// muss in rubychat ebenfalls geaendert werden
+// use date -u +%Y%m%d%H%M%S
+var version = "20171030131648"; 
 
 var recvPart, sendPart, confPart, logsPart;
 var notification, isActive = true, unreadCount = 0, selectcount = 0;
 
 var themecolors = { 'dunkelgrauton' : "#555" , 'schwarzwiedienacht' :"#010101" , 'mylittlepony': "#f6b7d2",
-	'apfelweiss': "#ddd", };
+	'apfelweiss': "#ddd", 'arbeiterrot': "#f10" };
 
 var defaults = {
 		channel: "", name: "",
 		last: 24, botblock: 0, old: 0, publicid: 0, delay: 0, links: 1, title: 1, math: 0, showids: 4,
 		notifications: 1, favicon: 1,
 		layout: 'screen', skin: 'dunkelgrauton',
-		limit: 256,	wait: 60,
-		redirect: "http://uxul.de/redirect.php?"
+		limit: 256,	wait: 1
 	};
 
 
@@ -427,6 +429,7 @@ function InitSettings()
 	skinSelect.add(new Option("Nachtschwarz", 'schwarzwiedienacht'));
 	skinSelect.add(new Option("My Little Pony", 'mylittlepony'));
 	skinSelect.add(new Option("Apfelweiß", 'apfelweiss'));
+	skinSelect.add(new Option("Arbeiterrot", 'arbeiterrot'));
 	skinSelect.value = options['skin'];
 
 	var layoutSelect = confPart.getElementById('layout');
@@ -733,8 +736,6 @@ function URIEncodeParameters(params)
 		result.push(encodeURIComponent(key) + "=" + encodeURIComponent(params[key]));
 	return result.join("&");
 }
-
-
 
 /* Originally from http://papermashup.com/read-url-get-variables-withjavascript/, but adapted. */
 function URIDecodeParameters() {
