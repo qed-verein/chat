@@ -829,13 +829,6 @@ function ScrollDown()
 	if(node) node.scrollTop = node.scrollHeight;
 }
 
-function HtmlEscape (text)
-{
-	if(!text) return '';
-	text = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-	return text.replace(/\"/g, "&quot;").replace(/\n/g, "<br>");
-}
-
 function InsertLinks(element, text)
 {
 	for (const [index, s] of text.split(URL_REGEX).entries()) {
