@@ -126,8 +126,7 @@
 
 .arbeiterrot .message, .arbeiterrot .name
 {
-    filter: invert(100%);
-    -webkit-filter: invert(100%);
+    color: #ff0;
 }
 
 .arbeiterrot a:hover {color: white}
