@@ -16,7 +16,13 @@
 /* License along with QED-Chat.  If not, see */
 /* <http://www.gnu.org/licenses/>. */
 
-.schwarzwiedienacht, .schwarzwiedienacht input, .schwarzwiedienacht textarea, .schwarzwiedienacht select
+.schwarzwiedienacht
+{
+	color: #ccc;
+	background-color: #111;
+}
+
+.schwarzwiedienacht input, .schwarzwiedienacht textarea, .schwarzwiedienacht select
 {
 	color: #ccc;
 	background-color: #000;
