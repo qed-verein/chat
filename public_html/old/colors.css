@@ -47,10 +47,37 @@
 	border-color: #aaa;
 }
 
+.apfelweiss .post .name, .apfelweiss .post .message
+{
+    filter: invert(100%);
+    -webkit-filter: invert(100%);    
+}
+
 .apfelweiss .post .info, .apfelweiss .post .userid
 {
 	color: #333;
 }
+
+.apfelweiss a
+{
+	color: green; 
+}
+
+.apfelweiss .message a
+{
+	color: #ff7fff; /* inverted green */
+}
+
+.apfelweiss a:hover
+{
+	color: orange;
+}
+
+.apfelweiss .message a:hover
+{
+	color: #005aff; /* inverted orange */
+}
+
 
 .dunkelgrauton, .dunkelgrauton input, .dunkelgrauton textarea, .dunkelgrauton select, .dunkelgrauton .box
 {
@@ -96,13 +123,31 @@
 	color: #283873;
 }
 
-.mylittlepony a, .apfelweiss a
+.mylittlepony a
 {
-	color: green;
+	color: green; 
 }
-.mylittlepony a:hover, .apfelweiss a:hover
+
+.mylittlepony .message a
+{
+	color: #ff7fff;/* inverted green */
+}
+
+.mylittlepony a:hover
 {
 	color: orange;
+}
+
+
+.mylittlepony .message a:hover
+{
+	color: #005aff; /* inverted orange */
+}
+
+.mylittlepony .post .name, .mylittlepony .post .message
+{
+    filter: invert(100%);
+    -webkit-filter: invert(100%);
 }
 
 .arbeiterrot, .arbeiterrot input, .arbeiterrot textarea, .arbeiterrot select
@@ -123,7 +168,7 @@
 	color: #ee6;
 }
 
-.arbeiterrot .message, .arbeiterrot .name
+.arbeiterrot .post .message, .arbeiterrot .post .name
 {
     color: #ff0;
 }
