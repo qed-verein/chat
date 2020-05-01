@@ -20,9 +20,11 @@ var options = new Object();
 
 // muss in rubychat ebenfalls geaendert werden
 // use date -u +%Y%m%d%H%M%S
-var version = "20171030131648"; 
+const version = "20171030131648"; 
 
-var recvPart, sendPart, confPart, logsPart;
+const URL_REGEX = new RegExp(/((?:https:\/\/|http:\/\/|ftp:\/\/)(?:[\wäüößÄÜÖ\&.~%\/?#=@:\[\]+\$\,-;!]*))/);
+const WHOLE_URL_REGEX = new RegExp("^"+URL_REGEX.source+"$");
+
 var notification, isActive = true, unreadCount = 0, selectcount = 0;
 var scrolledDown = true;
 
@@ -53,9 +55,6 @@ function LoadOptions()
 		if(booleanOptions.indexOf(key) >= 0)
 			options[key] = parseInt(options[key]) ? 1 : 0;
 	}
-
-	recvPart = sendPart = confPart = logsPart = document;
-
 }
 
 function OptionURL()
@@ -111,8 +110,8 @@ function InitSocket()
 	position = -24;
 	posts = Array();
 	RecreatePosts();
-	sendPart.getElementById("name").value = options["name"];
-	sendPart.getElementById("message").focus();
+	document.getElementById("name").value = options["name"];
+	document.getElementById("message").focus();
 
 	firstReconnect = true;
 	wait = options['wait'];
@@ -170,8 +169,8 @@ function OnSocketResponse(event)
 			break;
 		case 'ack':
 			SetStatus("");
-			sendPart.getElementById("message").value = "";
-			sendPart.getElementById("message").focus();
+			document.getElementById("message").value = "";
+			document.getElementById("message").focus();
 			sending = false;
 			break;
 	}
@@ -221,8 +220,8 @@ function Send()
 	sending = true;
 	msg = JSON.stringify({
 	    channel: options["channel"],
-	    name: sendPart.getElementById ("name").value,
-	    message: sendPart.getElementById ("message").value,
+	    name: document.getElementById ("name").value,
+	    message: document.getElementById ("message").value,
 	    delay: position,
 	    publicid: options["publicid"]});
 	webSocket.send(msg);
@@ -256,7 +255,7 @@ function ProcessPost(post)
 
 	if (!options["old"])
 	{
-		var container = recvPart.getElementById("posts");
+		var container = document.getElementById("posts");
 		for (var node = container.lastChild, i = 1; node != null; ++i)
 		{
 			var temp = node;
@@ -266,7 +265,7 @@ function ProcessPost(post)
 		}
 	}
 
-	AppendPost(recvPart.getElementById('posts'), post);
+	AppendPost(document.getElementById('posts'), post);
 	ProcessMath();
 	UpdateTitle(post['message']);
 	if (window.Notification && Notification.permission === "granted" && !isActive && options['notifications']) {
@@ -302,40 +301,43 @@ function AppendPost(container, post)
 // Stellt eine Nachricht als HTML dar (Version für große Bildschrime)
 function FormatScreenPost(post)
 {
-	var tr = recvPart.createElement('tr');
-	tr.setAttribute('id', 'post' + post['id']);
-	tr.setAttribute('class', 'post');
-	tr.setAttribute('style', 'color:#' + post["color"]);
+	var tr = document.createElement('tr');
+	tr.id = 'post' + post['id'];
+	tr.classList.add('post');
+	tr.style.color='#' + post["color"];
 
-	var delay = recvPart.createElement('span');
-	delay.setAttribute('class', 'delay');
-	delay.appendChild(recvPart.createTextNode(DelayString(post)));
+	var delay = document.createElement('span');
+	delay.classList.add('delay');
+	delay.appendChild(document.createTextNode(DelayString(post)));
 
-	var date = recvPart.createElement('span');
-	date.setAttribute('class', 'date');
-	date.appendChild(recvPart.createTextNode(post['date'].substr(5)));
+	var date = document.createElement('span');
+	date.classList.add('date');
+	date.appendChild(document.createTextNode(post['date'].substr(5)));
 
-	var info = recvPart.createElement('td');
-	info.setAttribute('class', 'info');
+	var info = document.createElement('td');
+	info.classList.add('info');
 	if(options['delay']) info.appendChild(delay);
 	info.appendChild(date);
 	tr.appendChild(info);
 
-	var userid = recvPart.createElement('td');
-	userid.setAttribute('class', 'userid');
-	userid.appendChild(recvPart.createTextNode(IDString(post)));
+	var userid = document.createElement('td');
+	userid.classList.add('userid');
+	userid.appendChild(document.createTextNode(IDString(post)));
 	userid.title=IDTitle(post);
 	if(options['showids']) tr.appendChild(userid);
 
-	var name = recvPart.createElement('td');
-	name.innerHTML = HtmlEscape(post["name"] + ":");
-	name.setAttribute('class', 'name');
+	var name = document.createElement('td');
+	name.appendChild(document.createTextNode(post["name"] + ":"));
+	name.classList.add('name');
 	tr.appendChild(name);
 
-	var message = recvPart.createElement('td');
-	message.innerHTML = HtmlEscape(post["message"]);
-	if(options["links"]) message.innerHTML = InsertLinks(message.innerHTML);
-	message.setAttribute('class', 'message');
+	var message = document.createElement('td');
+	if(options["links"]) {
+	    InsertLinks(message, post["message"]);
+	} else {
+	    message.appendChild(document.createTextNode(post["message"]));
+        }
+	message.classList.add('message');
 	tr.appendChild(message);
 
 	return tr;
@@ -344,32 +346,32 @@ function FormatScreenPost(post)
 // Stellt eine Nachricht als HTML dar (Version für kleine Bildschrime)
 function FormatMobilePost(post)
 {
-	var li = recvPart.createElement('li');
-	li.setAttribute('id', 'post' + post['id']);
-	li.setAttribute('class', 'post');
-	li.setAttribute('style', 'color:#' + post["color"]);
+	var li = document.createElement('li');
+	li.id = 'post' + post['id'];
+	li.classList.add('post');
+	li.style.color='#' + post["color"];
 
-	var name = recvPart.createElement('span');
-	name.innerHTML = HtmlEscape(post["name"] + ":");
-	name.setAttribute('class', 'name');
+	var name = document.createElement('span');
+	name.appendChild(document.createTextNode(post["name"] + ":"));
+	name.classList.add('name');
 	li.appendChild(name);
 
-	var date = recvPart.createElement('span');
-	date.setAttribute('class', 'date');
-	date.appendChild(recvPart.createTextNode(post['date']));
+	var date = document.createElement('span');
+	date.classList.add('date');
+	date.appendChild(document.createTextNode(post['date']));
 	
-	var userid = recvPart.createElement('span');
-	userid.setAttribute('class', 'userid');
+	var userid = document.createElement('span');
+	userid.classList.add('userid');
 	var useridstr = IDString(post)
-	userid.appendChild(recvPart.createTextNode(useridstr ? "[" + IDString(post) + "]" : ""));
+	userid.appendChild(document.createTextNode(useridstr ? "[" + IDString(post) + "]" : ""));
 	userid.title=IDTitle(post);
 
-	var delay = recvPart.createElement('span');
-	delay.setAttribute('class', 'delay');
-	delay.appendChild(recvPart.createTextNode(DelayString(post)));
+	var delay = document.createElement('span');
+	delay.classList.add('delay');
+	delay.appendChild(document.createTextNode(DelayString(post)));
 
-	var info = recvPart.createElement('span');
-	info.setAttribute('class', 'info');
+	var info = document.createElement('span');
+	info.classList.add('info');
 	info.appendChild(date);
 	if(options['showids'])
 		info.appendChild(userid);
@@ -377,10 +379,13 @@ function FormatMobilePost(post)
 		info.appendChild(delay);
 	li.appendChild(info);
 
-	var message = recvPart.createElement('span');
-	message.innerHTML = HtmlEscape(post["message"]);
-	if(options["links"]) message.innerHTML = InsertLinks(message.innerHTML);
-	message.setAttribute('class', 'message');
+	var message = document.createElement('span');
+	if(options["links"]) {
+	    InsertLinks(message, post["message"]);
+	} else {
+	    message.appendChild(document.createTextNode(post["message"]));
+        }
+	message.classList.add('message');
 	li.appendChild(message);
 	
 	if (!inHistoryMode){
@@ -478,14 +483,14 @@ function DelayString(post)
 function RecreatePosts()
 {
 	var container;
-	if(options['layout'] == 'mobile') container = recvPart.createElement('ul');
-	else container = recvPart.createElement('table');
+	if(options['layout'] == 'mobile') container = document.createElement('ul');
+	else container = document.createElement('table');
 	container.id = 'posts';
 
 	var from = (options["old"] || inHistoryMode) ? 0 : Math.max(0, posts.length - options["last"]);
 	for (var cursor = from; cursor != posts.length; ++cursor)
 		AppendPost(container, posts[cursor]);
-	var node = recvPart.getElementById('posts');
+	var node = document.getElementById('posts');
 	node.parentNode.replaceChild(container, node);
 
 	if(posts.length != 0 && !inHistoryMode) UpdateTitle(posts[posts.length - 1]['message']);
@@ -509,18 +514,18 @@ function ResetSending()
 
 function InitSettings()
 {
-	confPart.getElementById("publicid").checked = options["publicid"];
-	confPart.getElementById("delay").checked = options["delay"];
-	confPart.getElementById("links").checked = options["links"];
-	confPart.getElementById("old").checked = options["old"];
-	confPart.getElementById("last").value = count = options["last"];
-	confPart.getElementById("botblock").checked = options["botblock"];
-	confPart.getElementById("math").checked = options["math"];
-	confPart.getElementById("notifications").checked = options["notifications"];
-	confPart.getElementById("favicon").checked = options["favicon"];
-	confPart.getElementById("showids").value = options["showids"];
+	document.getElementById("publicid").checked = options["publicid"];
+	document.getElementById("delay").checked = options["delay"];
+	document.getElementById("links").checked = options["links"];
+	document.getElementById("old").checked = options["old"];
+	document.getElementById("last").value = count = options["last"];
+	document.getElementById("botblock").checked = options["botblock"];
+	document.getElementById("math").checked = options["math"];
+	document.getElementById("notifications").checked = options["notifications"];
+	document.getElementById("favicon").checked = options["favicon"];
+	document.getElementById("showids").value = options["showids"];
 
-	var skinSelect = confPart.getElementById('skin');
+	var skinSelect = document.getElementById('skin');
 	skinSelect.add(new Option("Dunkelgrauton", 'dunkelgrauton'));
 	skinSelect.add(new Option("Nachtschwarz", 'schwarzwiedienacht'));
 	skinSelect.add(new Option("My Little Pony", 'mylittlepony'));
@@ -528,7 +533,7 @@ function InitSettings()
 	skinSelect.add(new Option("Arbeiterrot", 'arbeiterrot'));
 	skinSelect.value = options['skin'];
 
-	var layoutSelect = confPart.getElementById('layout');
+	var layoutSelect = document.getElementById('layout');
 	layoutSelect.add(new Option("für Bildschirme", 'screen'));
 	layoutSelect.add(new Option("mobile Version", 'mobile'));
 	layoutSelect.value = options['layout'];
@@ -538,21 +543,21 @@ function InitSettings()
 
 function UpdateSettings()
 {
-	options["publicid"] = confPart.getElementById("publicid").checked ? 1 : 0;
-	options["delay"] = confPart.getElementById("delay").checked ? 1 : 0;
-	options["links"] = confPart.getElementById("links").checked ? 1 : 0;
-	options["old"] = confPart.getElementById("old").checked ? 1 : 0;
-	options["botblock"] = confPart.getElementById("botblock").checked ? 1 : 0;
-	options["notifications"] = confPart.getElementById("notifications").checked ? 1 : 0;
-	options["skin"] = confPart.getElementById("skin").value;
-	options["layout"] = confPart.getElementById("layout").value;
-	options["math"] = confPart.getElementById("math").checked ? 1 : 0;
-	options["name"] = sendPart.getElementById("name").value;
-	options["favicon"] = confPart.getElementById("favicon").checked ? 1 : 0;
+	options["publicid"] = document.getElementById("publicid").checked ? 1 : 0;
+	options["delay"] = document.getElementById("delay").checked ? 1 : 0;
+	options["links"] = document.getElementById("links").checked ? 1 : 0;
+	options["old"] = document.getElementById("old").checked ? 1 : 0;
+	options["botblock"] = document.getElementById("botblock").checked ? 1 : 0;
+	options["notifications"] = document.getElementById("notifications").checked ? 1 : 0;
+	options["skin"] = document.getElementById("skin").value;
+	options["layout"] = document.getElementById("layout").value;
+	options["math"] = document.getElementById("math").checked ? 1 : 0;
+	options["name"] = document.getElementById("name").value;
+	options["favicon"] = document.getElementById("favicon").checked ? 1 : 0;
 
-	options["showids"] = parseInt(confPart.getElementById("showids").value);
+	options["showids"] = parseInt(document.getElementById("showids").value);
 
-	var input = confPart.getElementById("last");
+	var input = document.getElementById("last");
 	var num = parseInt(input.value);
 	if(isNaN(num)) num = options["last"];
 	input.value = options["last"] = Math.min(Math.max(num, 1), 1000);
@@ -563,14 +568,14 @@ function UpdateSettings()
 
 function Decrease()
 {
-	var input = confPart.getElementById("last");
+	var input = document.getElementById("last");
 	input.value = options['last'] = Math.max(1, parseInt(input.value) - 1);
 	ApplySettings();
 }
 
 function Increase()
 {
-	var input = confPart.getElementById("last");
+	var input = document.getElementById("last");
 	input.value = options['last'] = Math.min(1000, parseInt(input.value) + 1);
 	ApplySettings();
 }
@@ -580,8 +585,8 @@ function ApplySettings()
 	if(!inHistoryMode) {
 		URIReplaceState();
 		RecreatePosts();
-		sendPart.getElementById('name').placeholder = options['layout'] == 'mobile' ? 'Name' : '';
-		sendPart.getElementById('message').placeholder = options['layout'] == 'mobile' ? 'Nachricht' : '';	
+		document.getElementById('name').placeholder = options['layout'] == 'mobile' ? 'Name' : '';
+		document.getElementById('message').placeholder = options['layout'] == 'mobile' ? 'Nachricht' : '';	
 	}
 	if(options['math'] == 1) LoadMathjax();
 
@@ -673,8 +678,8 @@ function OnHistoryClicked(elt)
 		url += URIEncodeParameters({mode: 'fromownpost', skip: options['last']});
 	else if(elt.id == 'interval')
 		url += URIEncodeParameters({mode: 'dateinterval',
-			from : logsPart.getElementById("logFrom").value,
-			to : logsPart.getElementById("logTo").value});
+			from : document.getElementById("logFrom").value,
+			to : document.getElementById("logTo").value});
 	else if(elt.id == 'sincepost')
 		url += URIEncodeParameters({mode: 'lastownpost'});
 
@@ -702,14 +707,7 @@ function Quote()
 		if (child.style.backgroundColor == 'blue'){
 			child.ontouchstart();
 			child.ontouchend();
-		/*	child.style.backgroundColor = '';
-			for (var j = 0; j < li.children.length; j++){
-				child.children[j].style.color = '';
-				}*/
-		    q = posts[posts.length-i]['date'] +" " + posts[posts.length-i]['name'].trim() + ": " + posts[posts.length-i]['message']+"\n" + q;
-			//q+=posts[i]['date'] +" " +(options['ip'] ?  posts[i]['ip'] : "") + posts[i]['name'].trim() + ": " + posts[i]['message']+"\n";
-
-//q += child.children[1].children[0].innerHTML + " " + (options['ip'] ?  child.children[1].children[1].innerHTML : "") +  child.children[0].innerHTML + " " +  child.children[2].innerHTML + "\n";
+		        q = posts[posts.length-i]['date'] +" " + posts[posts.length-i]['name'].trim() + ": " + posts[posts.length-i]['message']+"\n" + q;
 		}
 			
 	}
@@ -761,7 +759,7 @@ function UpdateReconnect()
 	if(reconnectSeconds <= 0)
 	{
 		clearInterval(reconnectTimer);
-		recvPart.getElementById("reconnect").innerHTML = "";
+		document.getElementById("reconnect").innerHTML = "";
 		return;
 	}
 
@@ -772,12 +770,19 @@ function UpdateReconnect()
 		text = reconnectText + "</br>";
 	text += "Neue Verbindung wird in " + reconnectSeconds + " s erstellt."
 
-	recvPart.getElementById("reconnect").innerHTML = text;
+	document.getElementById("reconnect").innerHTML = text;
 }
 
 function SetStatus(text)
 {
-    recvPart.getElementById("status").innerHTML = text;
+    const lines = text.split("\n");
+    const status = document.getElementById("status");
+    status.innerHTML = "";
+    
+    for (var i = 0; i < lines.length; i++) {
+        status.appendChild(document.createTextNode(lines[i]));
+        if (i < lines.length - 1) status.append(document.createElement("br"));
+    }
     ScrollDown();
 }
 
@@ -820,7 +825,7 @@ function changeFavicon() {
 
 function ScrollDown()
 {
-	var node = recvPart.getElementById("posts").parentNode;
+	var node = document.getElementById("posts").parentNode;
 	if(node) node.scrollTop = node.scrollHeight;
 }
 
@@ -831,10 +836,20 @@ function HtmlEscape (text)
 	return text.replace(/\"/g, "&quot;").replace(/\n/g, "<br>");
 }
 
-function InsertLinks (text)
+function InsertLinks(element, text)
 {
-	return text.replace (/(https:\/\/|http:\/\/|ftp:\/\/)([\wäüößÄÜÖ\&.~%\/?#=@:\[\]+\$\,-;!]*)/g,
-		'<a rel="noreferrer" target="_blank" href="$1$2">$1$2</a>');
+	for (const [index, s] of text.split(URL_REGEX).entries()) {
+	    if (WHOLE_URL_REGEX.test(s)) { // double check url regex - we could use position in array, but as javascript-URLs could lead to XSS better safe than sorry
+	        var link = document.createElement("a");
+	        link.rel = "noreferrer";
+	        link.target = "_blank";
+	        link.href = s;
+	        link.appendChild(document.createTextNode(s));
+	        element.appendChild(link);
+	    } else { 
+                element.appendChild(document.createTextNode(s));
+            }
+	}
 }
 
 function UpdateTitle(message)
@@ -861,7 +876,7 @@ function LoadMathjax()
 
 	var authorInit = "function() { MathJax.Hub.Register.StartupHook(" +
 		"'End', function() {parent.mathjaxProgress = 2; RecreatePosts();})}"
-	var config = recvPart.createElement("script");
+	var config = document.createElement("script");
 	config.type = "text/javascript";
 	config[(window.opera ? "innerHTML" : "text")] =
 		"window.MathJax = {" +
@@ -869,12 +884,12 @@ function LoadMathjax()
 		" displayAlign: 'left'," +
 		//" 'HTML-CSS': {linebreaks: {automatic: true}}" +
 		"};";
-	recvPart.getElementsByTagName("head")[0].appendChild(config);
+	document.getElementsByTagName("head")[0].appendChild(config);
 
-	var script = recvPart.createElement("script");
+	var script = document.createElement("script");
 	script.type = "text/javascript";
 	script.src  = "/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML,Safe&locale=de&noContrib";
-	recvPart.getElementsByTagName("head")[0].appendChild(script);
+	document.getElementsByTagName("head")[0].appendChild(script);
 	mathjaxProgress = 1;
 }
 
@@ -887,8 +902,8 @@ function ProcessMath()
 
 function ErrorHandler(description, filename, line)
 {
-	message = "Ein Fehler trat auf:<br>";
-	message += HtmlEscape(description) + "<br>";
+	message = "Ein Fehler trat auf:\n";
+	message += description + "\n";
 	message += "In Datei " + filename + ", Zeile " + line + ".<br>";
 	//message += "Bitte Seite neu laden. (Unter Firefox Strg+Shift+R).";
 	SetStatus(message);
