@@ -305,7 +305,7 @@ function FormatScreenPost(post)
 	var tr = recvPart.createElement('tr');
 	tr.setAttribute('id', 'post' + post['id']);
 	tr.setAttribute('class', 'post');
-	tr.setAttribute('style', 'color:#' + PostColor(post));
+	tr.setAttribute('style', 'color:#' + post["color"]);
 
 	var delay = recvPart.createElement('span');
 	delay.setAttribute('class', 'delay');
@@ -347,7 +347,7 @@ function FormatMobilePost(post)
 	var li = recvPart.createElement('li');
 	li.setAttribute('id', 'post' + post['id']);
 	li.setAttribute('class', 'post');
-	li.setAttribute('style', 'color:#' + PostColor(post));
+	li.setAttribute('style', 'color:#' + post["color"]);
 
 	var name = recvPart.createElement('span');
 	name.innerHTML = HtmlEscape(post["name"] + ":");
@@ -817,18 +817,6 @@ function changeFavicon() {
 	document.head.appendChild(link);
 }
 
-function InvertColor(color)
-{
-	var s = (parseInt(color,16) ^ 0xFFFFFF).toString(16);
-	return Array(6-s.length+1).join("0") + s;
-	//return "0".repeat(6-s.length)+s; <- geht erst ab ECMA-Script6
-}
-
-function PostColor(post)
-{
-	return (options['skin'] != 'mylittlepony' && options['skin'] != 'apfelweiss') ?
-		post['color'] : InvertColor(post['color']);
-}
 
 function ScrollDown()
 {
