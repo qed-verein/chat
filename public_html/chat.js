@@ -37,7 +37,7 @@ var defaults = {
 		channel: "", name: "",
 		last: 24, botblock: 0, old: 0, publicid: 0, delay: 0, links: 1, title: 1, math: 0, showids: 4,
 		notifications: 1, favicon: 1,
-		layout: 'screen', skin: 'dunkelgrauton',
+		layout: 'screen', skin: 'schwarzwiedienacht',
 		limit: 256,	wait: 1
 	};
 
