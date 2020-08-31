@@ -84,15 +84,14 @@ def handleRequest(cgi)
 
 		cgi.print cgi.http_header(headers)
 		#Direct to appropriate handler
-		case cgi.script_name
-			when "/rubychat/post" #New post
-				postHandler cgi
-			when "/rubychat/view" #Get long-polling request
-				viewHandler cgi
-			when "/rubychat/history" #Get history (range of posts)
-				historyHandler cgi
-			else
-				raise ChatError, "Unbekannter Befehl!"
+		if cgi.request_method == "POST" && cgi.script_name ==  "/rubychat/post" #New post
+			postHandler cgi
+		elsif cgi.request_method == "GET" && cgi.script_name == "/rubychat/view" #Get long-polling request
+			viewHandler cgi
+		elsif cgi.request_method == "GET" && cgi.script_name == "/rubychat/history" #Get history (range of posts)
+			historyHandler cgi
+		else
+			raise ChatError, "Unbekannter Befehl!"
 		end
 	rescue Errno::EPIPE => e
 		raise e
