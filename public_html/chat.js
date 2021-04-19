@@ -22,7 +22,7 @@ var options = new Object();
 // use date -u +%Y%m%d%H%M%S
 const version = "20171030131648"; 
 
-const URL_REGEX = new RegExp(/((?:https:\/\/|http:\/\/|ftp:\/\/)(?:[\wäüößÄÜÖ\&.~%\/?#=@:\[\]+\$\,-;!]*))/);
+const URL_REGEX = new RegExp(/((?:https:\/\/|http:\/\/|ftp:\/\/)(?:[\wäüößÄÜÖ\&.~%\/?#=@:\[\]+\$\,-;!\(\)]*))/);
 const WHOLE_URL_REGEX = new RegExp("^"+URL_REGEX.source+"$");
 
 var notification, isActive = true, unreadCount = 0, selectcount = 0;
@@ -36,7 +36,7 @@ var themecolors = { 'dunkelgrauton' : "#555" , 'schwarzwiedienacht' :"#010101" ,
 var defaults = {
 		channel: "", name: "",
 		last: 24, botblock: 0, old: 0, publicid: 0, delay: 0, links: 1, title: 1, math: 0, showids: 4,
-		notifications: 1, favicon: 1,
+		notifications: 0, favicon: 1,
 		layout: 'screen', skin: 'schwarzwiedienacht',
 		limit: 256,	wait: 1
 	};
