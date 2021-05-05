@@ -84,3 +84,7 @@ a:hover
 	padding: 0em;
 	list-style-type: none;
 }
+
+#logbox input[type="date"] {
+    width: 10em;
+}
