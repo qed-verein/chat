@@ -25,7 +25,7 @@ const version = "20171030131648";
 const URL_REGEX = new RegExp(/((?:https:\/\/|http:\/\/|ftp:\/\/)(?:[\wäüößÄÜÖ\&.~%\/?#=@:\[\]+\$\,-;!\(\)]*))/);
 const WHOLE_URL_REGEX = new RegExp("^"+URL_REGEX.source+"$");
 
-var notification, isActive = true, unreadCount = 0, selectcount = 0;
+var notification, isActive = true, unreadCount = 0, selectcount = 0, finalizeTimeout=0;
 var scrolledDown = true;
 
 var sending = false;
@@ -266,6 +266,16 @@ function ProcessPost(post)
 	}
 
 	AppendPost(document.getElementById('posts'), post);
+	if (!isActive){
+		unreadCount += 1;
+	}
+	clearTimeout(finalizeTimeout);
+	finalizeTimeout = setTimeout(FinalizePosts, 30, post);
+	
+}
+
+function FinalizePosts(post)
+{
 	ProcessMath();
 	UpdateTitle(post['message']);
 	if (window.Notification && Notification.permission === "granted" && !isActive && options['notifications']) {
@@ -279,7 +289,6 @@ function ProcessPost(post)
 		}
 	}
 	if (!isActive){
-		unreadCount += 1;
 		changeFavicon();
 	}
 	ScrollDown();
