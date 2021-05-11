@@ -25,8 +25,10 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     libmariadbclient-dev \
     libpq-dev \
+    libssl-dev \
     libgdbm-dev \
     libgdbm-compat-dev \
+    libffi-dev \
     ruby \ 
     ruby-dev \ 
     rubygems \
