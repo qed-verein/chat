@@ -724,6 +724,8 @@ function Quote()
 	document.getElementById("quote").style.display = "none";
 	selectcount = 0;
 	RecreatePosts();
+	document.getElementById("message").focus();
+	document.getElementById("message").setSelectionRange(q.length+1, q.length+1);
 }
 
 
