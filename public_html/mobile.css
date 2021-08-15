@@ -74,6 +74,10 @@ body
 	overflow-x: hidden;
 	width: 98%;
 	float: left;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
 }
 
 #inputbox p {display: inline}

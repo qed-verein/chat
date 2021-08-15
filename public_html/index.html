@@ -47,10 +47,10 @@ License along with QED-Chat.  If not, see
 	<input id="name" placeholder="Name" size="10" onchange="UpdateSettings()" tabindex="1"></p>
 	<p><label for="message">Text:</label>
 	<textarea id="message" placeholder="Nachricht" rows="3" cols="10" tabindex="2"></textarea></p>
-	<p><input id="send" type="submit" value="Senden" onclick="Send()" tabindex="3">
+	<p><input id="quote" type="button" value="Zitieren" onclick="Quote()" style="display: none;" tabindex="6">
+	<input id="send" type="submit" value="Senden" onclick="Send()" tabindex="3">
 	<input id="showsettingsbutton" type="button" value="Einstellen" onclick="ShowMenu('settings')" tabindex="4">
-	<input id="showlogsbutton" type="button" value="Logs" onclick="ShowMenu('logs')" tabindex="5">
-	<input id="quote" type="button" value="Zitieren" onclick="Quote()" style="display: none;" tabindex="6"></p>
+	<input id="showlogsbutton" type="button" value="Logs" onclick="ShowMenu('logs')" tabindex="5"></p>
 </div>
 
 <div id="settingbox" class="box">
