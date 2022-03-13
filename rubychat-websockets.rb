@@ -318,13 +318,8 @@ class WsConnection < EM::Connection
 	#Closes the connection
 	# @param code [Integer] Errorcode with which to close the connection. Default is 1000 = CLOSE_NORMAL
 	def close(code = 1000, data = nil)
-		if @state == :open
-			@state = :closing
-			send data, :type => :close, :code => code
-		else
-			send data, :type => :close if @state == :closing #This only happends when the client asked for closing the connection
-			@state = :closed
-		end
+		send data, :type => :close, :code => code
+		@state = :closed
 		close_connection_after_writing
 	end
 
